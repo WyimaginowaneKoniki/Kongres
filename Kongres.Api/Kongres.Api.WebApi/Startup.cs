@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Hosting;
+using Kongres.Api.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kongres.Api.WebApi
 {
@@ -18,6 +20,10 @@ namespace Kongres.Api.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSpaStaticFiles(config => config.RootPath = $"{reactPath}/build");
+
+            services.AddDbContext<KongresDbContext>(options => {
+                options.UseMySql("Server=localhost; Database=Kongres; Uid=root; Pwd=;");
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
