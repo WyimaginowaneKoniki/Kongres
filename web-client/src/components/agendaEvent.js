@@ -1,16 +1,34 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import '../App.css';
 
 function AgendaEvent(props) {
+    const styles = makeStyles({
+        title: {
+            textAlign: 'left',
+            margin: '0 25%',
+            width: '60%',
+        },
+        time: {
+            textAlign: 'center',
+            width: '20%',
+            margin: '0',
+        },
+        desc: {
+            textAlign: 'left',
+            margin: '0 20%',
+            display: 'block',
+            width: '60%',
+        },
+      });
+
+    const style = styles();
+
     return (
         <div>
-            <div className="Agenda-time">
-                <h3>{props.time1} - {props.time2}</h3>
-            </div>
-            <div className="Agenda-content">
-                <h2>{props.title}</h2>
-                <span>{props.content}</span>
-            </div>
+            <h2 className={style.title}>{props.title}</h2>
+            <h3 className={style.time}>{props.time1} - {props.time2}</h3>
+            <span className={style.desc}>{props.content}</span>
         </div>
     )
 }
