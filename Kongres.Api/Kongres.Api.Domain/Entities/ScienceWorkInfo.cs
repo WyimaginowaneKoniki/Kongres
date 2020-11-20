@@ -6,7 +6,7 @@ namespace Kongres.Api.Domain.Entities
     {
         public uint Id { get; set; }
         public string FileName { get; set; }
-        public uint Version { get; set; }
+        public byte Version { get; set; }
         public DateTime DateAdd { get; set; }
         public ScienceWork ScienceWork { get; set; }
     }
