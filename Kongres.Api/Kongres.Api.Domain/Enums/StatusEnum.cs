@@ -2,5 +2,11 @@ using System;
 
 namespace Kongres.Api.Domain.Enums
 {
-    public enum StatusEnum { WaitingForReview, ToCorrect, Accepted, Rejected }
+    public enum StatusEnum : byte
+    {
+        WaitingForReview,
+        ToCorrect,
+        Accepted,
+        Rejected
+    }
 }
