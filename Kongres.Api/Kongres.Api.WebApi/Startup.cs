@@ -10,16 +10,28 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Hosting;
 using Autofac;
 using Kongres.Api.Application.Modules;
+using Kongres.Api.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Kongres.Api.WebApi
 {
     public class Startup
     {
         private const string reactPath = "../../web-client";
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSpaStaticFiles(config => config.RootPath = $"{reactPath}/build");
+
+            services.AddDbContext<KongresDbContext>(options
+                => options.UseMySql(_configuration["Database:ConnectionString"]));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -27,8 +39,10 @@ namespace Kongres.Api.WebApi
             builder.RegisterModule<MediatRModule>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context)
         {
+            context.Database.EnsureCreated();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
