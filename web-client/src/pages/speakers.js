@@ -31,11 +31,11 @@ function Speakers() {
             desc={speaker1.desc}
           />
           <KeynoteSpeaker
-            photo={speaker1.photo}
-            name={speaker1.name}
-            spec={speaker1.spec}
-            university={speaker1.university}
-            desc={speaker1.desc}
+            photo={speaker2.photo}
+            name={speaker2.name}
+            spec={speaker2.spec}
+            university={speaker2.university}
+            desc={speaker2.desc}
           />
           <KeynoteSpeaker
             photo={speaker1.photo}
@@ -45,11 +45,11 @@ function Speakers() {
             desc={speaker1.desc}
           />
           <KeynoteSpeaker
-            photo={speaker1.photo}
-            name={speaker1.name}
-            spec={speaker1.spec}
-            university={speaker1.university}
-            desc={speaker1.desc}
+            photo={speaker2.photo}
+            name={speaker2.name}
+            spec={speaker2.spec}
+            university={speaker2.university}
+            desc={speaker2.desc}
           />
       </div>  
     );

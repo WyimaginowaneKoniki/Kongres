@@ -40,12 +40,10 @@ function KeynoteSpeaker(props) {
 
     const style = styles();
 
-      console.log(props.photo);
-
     return (
         <div className={style.main}>
             <div className={style.left}>
-                <img className={style.photo} src={props.photo} alt="This is a photo of Speaker."/>
+                <img className={style.photo} src={props.photo} alt="Speaker"/>
             </div>
             <div className={style.right}>
                 <h4 className={style.name}>{props.name}</h4>
