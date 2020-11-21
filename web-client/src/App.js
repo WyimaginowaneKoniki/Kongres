@@ -8,6 +8,7 @@ import Speakers from './pages/speakers';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Navigation from './components/navigation';
+import Regulations from './pages/regulations';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/speakers" component={Speakers} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
+            <Route path="/regulations" component={Regulations} />
           </Switch>
         </div>
       </Router>
