@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Hosting;
+using Autofac;
+using Kongres.Api.Application.Modules;
 
 namespace Kongres.Api.WebApi
 {
@@ -20,13 +22,18 @@ namespace Kongres.Api.WebApi
             services.AddSpaStaticFiles(config => config.RootPath = $"{reactPath}/build");
         }
 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<MediatRModule>();
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-          
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
