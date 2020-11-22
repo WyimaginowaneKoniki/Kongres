@@ -9,6 +9,8 @@ import About from './pages/about';
 import Contact from './pages/contact';
 import Navigation from './components/Navigation';
 import Regulations from './pages/regulations';
+import CookiesPolicy from './pages/cookies-policy';
+import PrivacyPolicy from './pages/privacy-policy';
 
 function App() {
     return (
@@ -22,6 +24,8 @@ function App() {
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/regulations" component={Regulations} />
+            <Route path="/cookies-policy" component={CookiesPolicy} />
+            <Route path="/privacy-policy" component={PrivacyPolicy} />
           </Switch>
         </div>
       </Router>
