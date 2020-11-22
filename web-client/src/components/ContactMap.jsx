@@ -3,7 +3,7 @@ import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-function GoogleMap(props) {
+function ContactMap(props) {
     const styles = makeStyles({
         maps:
         {
@@ -30,4 +30,4 @@ function GoogleMap(props) {
     )
 }
 
-export default GoogleMap; 
+export default ContactMap; 

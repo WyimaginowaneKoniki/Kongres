@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
-import Informations from '../components/ContactInfo'
-import GoogleMaps from '../components/ContactMap'
+import ContactInfo from '../components/ContactInfo'
+import ContactMap from '../components/ContactMap'
 import picture from '../images/empty-image.png'
 
 
@@ -46,7 +46,7 @@ function Contact(props) {
           <h1>Contact</h1>
 
           <div>
-            <Informations
+            <ContactInfo
               path = {inf1.path}
               link = {inf1.link}
               name = {inf1.name}
@@ -54,7 +54,7 @@ function Contact(props) {
               street = {inf1.street}
             />
 
-            <Informations
+            <ContactInfo
               path = {inf2.path}
               link = {inf2.link}
               name = {inf2.name}
@@ -62,14 +62,14 @@ function Contact(props) {
               street = {inf2.street}
             />
 
-            <Informations
+            <ContactInfo
               path = {inf3.path}
               name = {inf3.name}
               icon = {inf3.icon}
               street = {inf3.street}
             />
 
-            <Informations
+            <ContactInfo
               path = {inf4.path}
               link = {inf4.link}
               name = {inf4.name}
@@ -77,7 +77,7 @@ function Contact(props) {
               street = {inf4.street}
             />
 
-            <GoogleMaps
+            <ContactMap
               path = {map.path}
             />
           </div>

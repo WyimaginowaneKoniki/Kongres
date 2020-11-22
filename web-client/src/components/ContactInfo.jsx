@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import '../App.css';
 
-function Information(props) {
+function ContactInfo(props) {
     const styles = makeStyles({
         main:
         {
@@ -74,4 +74,4 @@ function Information(props) {
     }
 }
 
-export default Information; 
+export default ContactInfo; 
