@@ -64,7 +64,7 @@ function ContactInfo(props) {
         return (
         <div className={style.main}>
             <div className={style.left}>
-                <img src={props.path} className={style.photo} alt={props.icon}></img>
+                <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
             </div>
             <div className={style.right}>
                 <h3 className={style.text}>{props.name}</h3>

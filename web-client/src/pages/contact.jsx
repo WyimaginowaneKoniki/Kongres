@@ -11,7 +11,7 @@ function Contact(props) {
     street: false,
     link: "mailto:conference@gmail.com",
     name: "conference@gmail.com",
-    icon: "Email icon"
+    alternativeText: "Email icon"
   };
 
   const inf2 = {
@@ -19,14 +19,14 @@ function Contact(props) {
     street: false,
     link: "tel:987654321",
     name: "987654321",
-    icon: "Phone icon"
+    alternativeText: "Phone icon"
   };
 
   const inf3 = {
     path: picture,
     street: true,
     name: "Parkowa 11/12", 
-    icon: "Address icon"
+    alternativeText: "Address icon"
   };
 
   const inf4 = {
@@ -34,7 +34,7 @@ function Contact(props) {
     street: false,
     link: "https://github.com/WyimaginowaneKoniki/Kongres",
     name: "github.com/WyimaginowaneKoniki/Kongres",
-    icon: "Github icon"
+    alternativeText: "Github icon"
   };
 
   const map = {
@@ -50,7 +50,7 @@ function Contact(props) {
               path = {inf1.path}
               link = {inf1.link}
               name = {inf1.name}
-              icon = {inf1.icon}
+              alternativeText = {inf1.alternativeText}
               street = {inf1.street}
             />
 
@@ -58,14 +58,14 @@ function Contact(props) {
               path = {inf2.path}
               link = {inf2.link}
               name = {inf2.name}
-              icon = {inf2.icon}
+              alternativeText = {inf2.alternativeText}
               street = {inf2.street}
             />
 
             <ContactInfo
               path = {inf3.path}
               name = {inf3.name}
-              icon = {inf3.icon}
+              alternativeText = {inf3.alternativeText}
               street = {inf3.street}
             />
 
@@ -73,7 +73,7 @@ function Contact(props) {
               path = {inf4.path}
               link = {inf4.link}
               name = {inf4.name}
-              icon = {inf4.icon}
+              alternativeText = {inf4.alternativeText}
               street = {inf4.street}
             />
 
