@@ -1,33 +1,40 @@
 import React from 'react';
 import '../App.css';
-import Informations from '../components/information'
-import GoogleMaps from '../components/maps'
+import Informations from '../components/ContactInfo'
+import GoogleMaps from '../components/ContactMap'
 import picture from '../images/empty-image.png'
 
 
 function Contact(props) {
   const inf1 = {
     path: picture,
+    street: false,
     link: "mailto:conference@gmail.com",
-    name: "conference@gmail.com" 
+    name: "conference@gmail.com",
+    icon: "Email icon"
   };
 
   const inf2 = {
     path: picture, 
+    street: false,
     link: "tel:987654321",
-    name: "987654321" 
+    name: "987654321",
+    icon: "Phone icon"
   };
 
   const inf3 = {
     path: picture,
-    link: "#",
-    name: "Parkowa 11/12" 
+    street: true,
+    name: "Parkowa 11/12", 
+    icon: "Address icon"
   };
 
   const inf4 = {
     path: picture,
+    street: false,
     link: "https://github.com/WyimaginowaneKoniki/Kongres",
-    name: "github.com/WyimaginowaneKoniki/Kongres" 
+    name: "github.com/WyimaginowaneKoniki/Kongres",
+    icon: "Github icon"
   };
 
   const map = {
@@ -43,23 +50,31 @@ function Contact(props) {
               path = {inf1.path}
               link = {inf1.link}
               name = {inf1.name}
+              icon = {inf1.icon}
+              street = {inf1.street}
             />
 
             <Informations
               path = {inf2.path}
               link = {inf2.link}
               name = {inf2.name}
+              icon = {inf2.icon}
+              street = {inf2.street}
             />
 
             <Informations
               path = {inf3.path}
               name = {inf3.name}
+              icon = {inf3.icon}
+              street = {inf3.street}
             />
 
             <Informations
               path = {inf4.path}
               link = {inf4.link}
               name = {inf4.name}
+              icon = {inf4.icon}
+              street = {inf4.street}
             />
 
             <GoogleMaps

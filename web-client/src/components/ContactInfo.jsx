@@ -36,23 +36,42 @@ function Information(props) {
 
             '&:hover' :
             {
-                color: 'red',
+                color: 'grey',
             }
         }
     });
 
     const style = styles();
 
-    return (
+    
+    if(props.street == false)
+    {
+        return (
         <div className={style.main}>
             <div className={style.left}>
-                <img src={props.path} className={style.photo} alt="not found!"></img>
+                <img src={props.path} className={style.photo} alt={props.icon}></img>
             </div>
             <div className={style.right}>
-                <a href={props.link} className={style.a}><h3 className={style.text}>{props.name}</h3></a>
+                <a href={props.link} className={style.a}>
+                <h3 className={style.text}>{props.name}</h3>
+                </a>
             </div>
         </div>
-    )
+        )
+    }
+    else
+    {
+        return (
+        <div className={style.main}>
+            <div className={style.left}>
+                <img src={props.path} className={style.photo} alt={props.icon}></img>
+            </div>
+            <div className={style.right}>
+                <h3 className={style.text}>{props.name}</h3>
+            </div>
+        </div>
+        )
+    }
 }
 
 export default Information; 

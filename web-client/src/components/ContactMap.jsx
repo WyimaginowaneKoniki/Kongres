@@ -25,7 +25,7 @@ function GoogleMap(props) {
 
     return(
         <div className={style.maps}>
-            <iframe className={style.map} src={props.path} title="This is a unique title"></iframe>
+            <iframe className={style.map} src={props.path} title="Google Maps address Kaszubska 23"></iframe>
         </div>
     )
 }
