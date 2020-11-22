@@ -34,7 +34,7 @@ function ContactInfo(props) {
             textDecoration: 'none',
             color: 'black',
 
-            '&:hover' :
+            '&:hover':
             {
                 color: 'grey',
             }
@@ -44,12 +44,12 @@ function ContactInfo(props) {
     const style = styles();
 
     
-    if(props.street === false)
+    if(props.link)
     {
         return (
         <div className={style.main}>
             <div className={style.left}>
-                <img src={props.path} className={style.photo} alt={props.icon}></img>
+                <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
             </div>
             <div className={style.right}>
                 <a href={props.link} className={style.a}>

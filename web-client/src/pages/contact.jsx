@@ -8,7 +8,6 @@ import picture from '../images/empty-image.png'
 function Contact(props) {
   const inf1 = {
     path: picture,
-    street: false,
     link: "mailto:conference@gmail.com",
     name: "conference@gmail.com",
     alternativeText: "Email icon"
@@ -16,7 +15,6 @@ function Contact(props) {
 
   const inf2 = {
     path: picture, 
-    street: false,
     link: "tel:987654321",
     name: "987654321",
     alternativeText: "Phone icon"
@@ -24,14 +22,12 @@ function Contact(props) {
 
   const inf3 = {
     path: picture,
-    street: true,
     name: "Parkowa 11/12", 
     alternativeText: "Address icon"
   };
 
   const inf4 = {
     path: picture,
-    street: false,
     link: "https://github.com/WyimaginowaneKoniki/Kongres",
     name: "github.com/WyimaginowaneKoniki/Kongres",
     alternativeText: "Github icon"
@@ -51,7 +47,6 @@ function Contact(props) {
               link = {inf1.link}
               name = {inf1.name}
               alternativeText = {inf1.alternativeText}
-              street = {inf1.street}
             />
 
             <ContactInfo
@@ -59,14 +54,12 @@ function Contact(props) {
               link = {inf2.link}
               name = {inf2.name}
               alternativeText = {inf2.alternativeText}
-              street = {inf2.street}
             />
 
             <ContactInfo
               path = {inf3.path}
               name = {inf3.name}
               alternativeText = {inf3.alternativeText}
-              street = {inf3.street}
             />
 
             <ContactInfo
@@ -74,7 +67,6 @@ function Contact(props) {
               link = {inf4.link}
               name = {inf4.name}
               alternativeText = {inf4.alternativeText}
-              street = {inf4.street}
             />
 
             <ContactMap
