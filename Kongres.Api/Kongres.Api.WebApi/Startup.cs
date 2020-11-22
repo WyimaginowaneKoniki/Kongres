@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Hosting;
 using Autofac;
 using Kongres.Api.Application.Modules;
+using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure.Context;
+using Kongres.Api.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -32,6 +35,11 @@ namespace Kongres.Api.WebApi
 
             services.AddDbContext<KongresDbContext>(options
                 => options.UseMySql(_configuration["Database:ConnectionString"]));
+
+            services.AddIdentityCore<User>()
+                    .AddDefaultTokenProviders();
+
+            services.AddTransient<IUserStore<User>, UserStore>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
