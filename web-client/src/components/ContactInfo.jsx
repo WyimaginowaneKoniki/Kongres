@@ -44,7 +44,7 @@ function Information(props) {
     const style = styles();
 
     
-    if(props.street == false)
+    if(props.street === false)
     {
         return (
         <div className={style.main}>
