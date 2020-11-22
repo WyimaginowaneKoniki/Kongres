@@ -7,7 +7,7 @@ import Agenda from './pages/agenda';
 import Speakers from './pages/speakers';
 import About from './pages/about';
 import Contact from './pages/contact';
-import Navigation from './components/navigation';
+import Navigation from './components/Navigation';
 import Regulations from './pages/regulations';
 
 function App() {

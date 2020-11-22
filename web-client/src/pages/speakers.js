@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import KeynoteSpeaker from '../components/keynoteSpeaker'
+import KeynoteSpeaker from '../components/KeynoteSpeaker'
 import picture from '../images/empty-image.png'
 
 function Speakers() {

@@ -21,9 +21,7 @@ function Navigation() {
             <Link to = '/contact'>
                 <li>Contact</li>
             </Link>
-            <Link to = 'regulations'>
-                <li>Regulations</li>
-            </Link>
+ 
             </ul>
         </nav>
     );

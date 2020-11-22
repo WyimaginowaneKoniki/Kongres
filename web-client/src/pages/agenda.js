@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import AgendaEvents from '../components/agendaEvent'
+import AgendaEvents from '../components/AgendaEvent'
 import { makeStyles } from '@material-ui/core/styles';
 
 function Agenda(props) {
