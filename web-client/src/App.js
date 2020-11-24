@@ -12,6 +12,7 @@ import Navigation from './components/Navigation';
 import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
+import AddingWork from './pages/adding-work';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/regulations" component={Regulations} />
             <Route path="/cookies-policy" component={CookiesPolicy} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
+            <Route path="/adding-work" component={AddingWork} />
           </Switch>
         </div>
       </Router>
