@@ -1,6 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Button from "@material-ui/core/Button";
 import "../App.css";
 
 function SignUpForm(props) {
@@ -11,14 +14,18 @@ function SignUpForm(props) {
     form: {
       display: "flex",
       flexDirection: "column",
-      width: "200px",
+      width: "400px",
       margin: "16px",
     },
     textfield: {
       marginBottom: "32px",
+      width: "300px",
     },
     formcontrol: {
       marginBottom: "32px",
+    },
+    btnSignup: {
+      width: "100px",
     },
   });
 
@@ -93,7 +100,26 @@ function SignUpForm(props) {
           }}
           variant="outlined"
         />
-        
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              required
+              name="acceptance"
+              color="primary"
+            />
+          }
+          label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
+        />
+
+        <Button
+          className={style.btnSignup}
+          color="primary"
+          type="submit"
+          variant="contained"
+        >
+          Sign up
+        </Button>
       </form>
     </div>
   );
