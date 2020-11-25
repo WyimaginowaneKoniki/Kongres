@@ -10,13 +10,13 @@ function AboutInfo(props) {
             marginBottom: '20%',
             width: '80%',
             margin: 'auto',
-            fontSize: '105%',
+            fontSize: '16px',
         },
         left:
         {
             width: '48%',
             float: 'left',
-            textAlign: 'justify',
+            textAlign: 'left',
         },
         right:
         {
@@ -32,24 +32,23 @@ function AboutInfo(props) {
         {
             width: '48%',
             float: 'right',
-            textAlign: 'justify',
+            textAlign: 'left',
         },
         photo:
         {
             float: 'left',
             width: '100%',
         },
-
     });
 
     const style = styles();
 
-    if(props.isImageRight === true)
+    if(props.isImageRight)
     {
         return(
             <div className={style.main}>
                 <div className={style.left}>
-                    <h5>{props.head}</h5>
+                    <h2>{props.head}</h2>
                     <p>{props.text}</p>
                     <a href={props.link}>{props.adnotation}</a>
                 </div>
@@ -67,13 +66,12 @@ function AboutInfo(props) {
                     <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
                 </div>
                 <div className={style.righttext}>
-                    <h5>{props.head}</h5>
+                    <h2>{props.head}</h2>
                     <p>{props.text}</p>
                     <a href={props.link}>{props.adnotation}</a>
                 </div>
             </div>
         )
-
     }
 }
 
