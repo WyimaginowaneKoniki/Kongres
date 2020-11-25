@@ -10,7 +10,7 @@ function AddingWork(props) {
             margin: 'auto',
         },
         left: {
-            backgroundColor: 'red',
+            // backgroundColor: 'red',
             width: '50%',
             height: '50vh',
             float: 'left',
