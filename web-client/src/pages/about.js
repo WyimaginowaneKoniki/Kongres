@@ -3,8 +3,25 @@ import '../App.css';
 import picture from '../images/empty-image.png'
 import AboutInfo from '../components/AboutInfo'
 import AboutProfil from '../components/AboutProfil';
+import { makeStyles } from '@material-ui/core/styles';
 
 function About(props) {
+  const styles = makeStyles({
+    main:
+    {
+      width: '100%',
+      padding: '10%',
+    },
+    position:
+      {
+        width: '40%',
+        float: 'left',
+        paddingBottom: '5%',
+      },
+  });
+
+  const style = styles();
+
   const about1 = {
     path: picture,
     head: "Info about conference",
@@ -20,26 +37,32 @@ function About(props) {
     text: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
     adnotation: "See rules for Reviewers and Participants ->",
     link: "/reviewers",
-    isImageRight: false
+    isImageRight: false,
   };
 
   const profil1 = {
-    path1: picture,
-    name1: "Dominik Tyc",
-    description1: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
-    path2: picture,
-    name2: "Sandra Uptas",
-    description2: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
+    path: picture,
+    name: "Dominik Tyc",
+    description: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
   };
 
   const profil2 = {
-    path1: picture,
-    name1: "Kamil Donda",
-    description1: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
-    path2: picture,
-    name2: "Robert Kwoll",
-    description2: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
+    path: picture,
+    name: "Sandra Uptas",
+    description: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
   };
+
+  const profil3 = {
+    path: picture,
+    name: "Kamil Donda",
+    description: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
+  };
+
+  const profil4 = {
+    path: picture,
+    name: "Robert Kwoll",
+    description: "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
+  }
 
     return (
       <div>
@@ -65,25 +88,39 @@ function About(props) {
             />
           </div>
 
-          <div>
-            <AboutProfil
-              path1 = {profil1.path1}
-              name1 = {profil1.name1}
-              description1 = {profil1.description1}
-              path2 = {profil1.path2}
-              name2 = {profil1.name2}
-              description2 = {profil1.description2}
-            />
+          <div className={style.main}>
+            <div className={style.position}>
+              <AboutProfil
+                path = {profil1.path}
+                name = {profil1.name}
+                description = {profil1.description}
+              />
+            </div>
 
-            <AboutProfil
-              path1 = {profil2.path1}
-              name1 = {profil2.name1}
-              description1 = {profil2.description1}
-              path2 = {profil2.path2}
-              name2 = {profil2.name2}
-              description2 = {profil2.description2}
-            />
-          </div>
+            <div className={style.position}>
+              <AboutProfil
+                path = {profil2.path}
+                name = {profil2.name}
+                description = {profil2.description}
+              />
+              </div>
+
+              <div className={style.position}>
+              <AboutProfil
+                path = {profil3.path}
+                name = {profil3.name}
+                description = {profil3.description}
+              />
+            </div>
+            
+            <div className={style.position}>
+              <AboutProfil
+                path = {profil4.path}
+                name = {profil4.name}
+                description = {profil4.description}
+              />
+              </div>
+            </div>
       </div>  
     );
 }

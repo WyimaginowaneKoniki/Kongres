@@ -7,15 +7,16 @@ function AboutInfo(props) {
         main:
         {
             padding: '5%',
+            marginBottom: '20%',
             width: '80%',
             margin: 'auto',
+            fontSize: '105%',
         },
         left:
         {
             width: '48%',
             float: 'left',
             textAlign: 'justify',
-            fontSize: '90%',
         },
         right:
         {
@@ -24,20 +25,18 @@ function AboutInfo(props) {
         },
         leftphoto:
         {
-            marginTop: '25%',
             width: '48%',
+            float: 'left',
         },
         righttext:
         {
             width: '48%',
             float: 'right',
             textAlign: 'justify',
-            fontSize: '90%',
         },
         photo:
         {
             float: 'left',
-            display: 'block',
             width: '100%',
         },
 
