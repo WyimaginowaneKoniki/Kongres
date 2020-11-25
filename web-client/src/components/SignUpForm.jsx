@@ -4,6 +4,11 @@ import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 import "../App.css";
 
 function SignUpForm(props) {
@@ -14,6 +19,7 @@ function SignUpForm(props) {
     form: {
       display: "flex",
       flexDirection: "column",
+      textAlign: "left",
       width: "400px",
       margin: "16px",
     },
@@ -21,15 +27,37 @@ function SignUpForm(props) {
       marginBottom: "32px",
       width: "300px",
     },
-    formcontrol: {
+    formControl: {
+      marginBottom: "32px",
+      width: "300px",
+    },
+    formControlLabel: {
       marginBottom: "32px",
     },
     btnSignup: {
       width: "100px",
     },
+    menuItem: {
+      textAlign: "left",
+    },
+    inputLabel: {
+      backgroundColor: "white",
+      padding: "0px 4px",
+      marginLeft: "-4px",
+    },
   });
 
   const style = styles();
+  const [values, setValues] = React.useState({
+    specialization: "",
+  });
+
+  function handleChange(event) {
+    setValues((oldValues) => ({
+      ...oldValues,
+      [event.target.name]: event.target.value,
+    }));
+  }
 
   return (
     <div className={style.main}>
@@ -37,7 +65,7 @@ function SignUpForm(props) {
         <TextField
           className={style.textfield}
           required
-          id="first-name"
+          id="first-name-signup"
           name="first-name"
           label="First name"
           autoComplete="first-name"
@@ -50,7 +78,7 @@ function SignUpForm(props) {
         <TextField
           className={style.textfield}
           required
-          id="last-name"
+          id="last-name-signup"
           name="last-name"
           label="Last name"
           autoComplete="family-name"
@@ -63,7 +91,7 @@ function SignUpForm(props) {
         <TextField
           className={style.textfield}
           required
-          id="email"
+          id="email-signup"
           name="email"
           label="Email"
           placeholder="email@example.com"
@@ -77,7 +105,7 @@ function SignUpForm(props) {
         <TextField
           className={style.textfield}
           required
-          id="new-password"
+          id="new-password-signup"
           name="new-password"
           label="Password"
           type="password"
@@ -91,7 +119,7 @@ function SignUpForm(props) {
 
         <TextField
           className={style.textfield}
-          id="university"
+          id="university-signup"
           name="university"
           label="University"
           autoComplete="organization"
@@ -101,14 +129,57 @@ function SignUpForm(props) {
           variant="outlined"
         />
 
+        <TextField
+          className={style.textfield}
+          id="academic-title-signup"
+          name="academic-title"
+          label="Academic title"
+          autoComplete="job-title"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+        />
+
+        <FormControl variant="outlined" className={style.formControl} required>
+          <InputLabel shrink htmlFor="specialization-signup" className={style.inputLabel}>
+            Specialization
+          </InputLabel>
+          <Select
+            displayEmpty
+            value={values.specialization}
+            onChange={handleChange}
+            input={
+              <OutlinedInput notched name="specialization" id="specialization-signup" />
+            }
+          >
+            <MenuItem className={style.MenuItem} value="">
+              Select
+            </MenuItem>
+            <MenuItem className={style.MenuItem} value={"Computer Science"}>
+              Computer Science
+            </MenuItem>
+            <MenuItem className={style.MenuItem} value={"Mathematics"}>
+              Mathematics
+            </MenuItem>
+            <MenuItem className={style.MenuItem} value={"Biology"}>
+              Biology
+            </MenuItem>
+            <MenuItem className={style.MenuItem} value={"Chemistry"}>
+              Chemistry
+            </MenuItem>
+            <MenuItem className={style.MenuItem} value={"Psychics"}>
+              Psychics
+            </MenuItem>
+            <MenuItem className={style.MenuItem} value={"Geography"}>
+              Geography
+            </MenuItem>
+          </Select>
+        </FormControl>
+
         <FormControlLabel
-          control={
-            <Checkbox
-              required
-              name="acceptance"
-              color="primary"
-            />
-          }
+          className={style.formControlLabel}
+          control={<Checkbox required name="acceptance" color="primary" />}
           label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
         />
 
