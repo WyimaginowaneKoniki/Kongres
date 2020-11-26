@@ -84,7 +84,7 @@ function DropZone() {
 
     const fileInputRef = useRef();
 
-    const _maxFileSize = 10485760; // 1024 * 1024 * 10 = 10 MB
+    const _maxFileSize = 20971520; // 1024 * 1024 * 20 = 20 MB
 
     let _file = null;
     const [_message, SetMessage] = useState(null);
@@ -107,7 +107,6 @@ function DropZone() {
     const FileDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
-        // console.log(file);
          AddFile(file);
     }
 
@@ -116,13 +115,13 @@ function DropZone() {
         const isSizeValid = ValidateSize(file);
 
         if (!isSizeValid && !isFileValid) {
-            ShowMessage("Too large file and invalid format. Only PDF file not greather than 10 MB can be uploaded.");
+            ShowMessage("Too large file and invalid format. Only PDF file not greather than 20 MB can be uploaded.");
         }
         else if(!isFileValid) {
             ShowMessage("Invalid file format. Only PDF file format can be uploaded.");
         }
         else if (!isSizeValid) {
-            ShowMessage("Too large file. Only file not greather than 10 MB can be uploaded.");
+            ShowMessage("Too large file. Only file not greather than 20 MB can be uploaded.");
         }
         else{
             _file = file;
@@ -204,7 +203,7 @@ function DropZone() {
                         <span className={style.message}>{_message}</span>
                     </div>
                 </div>
-                <div className={style.inputInfo}>Accepted file types: .pdf, max file size: 10MB</div>
+                <div className={style.inputInfo}>Accepted file types: .pdf, max file size: 20MB</div>
             </div>
             <div style={_divStyle}>
                 <img className={style.logo} src={pdfIcon} alt="Logo"/>
