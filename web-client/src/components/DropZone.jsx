@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import uploadIcon from '../images/upload.png';
 import pdfIcon from '../images/pdf-icon.png';
@@ -66,9 +66,14 @@ function DropZone() {
             margin: '3%',
             float: 'right',
         },
+        dialog: {
+            display: 'none',
+        },
     });
 
     const style = styles();
+
+    const fileInputRef = useRef();
 
     const _maxFileSize = 10485760; // 1024 * 1024 * 10 = 10 MB
 
@@ -93,12 +98,13 @@ function DropZone() {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
         // console.log(file);
+         AddFile(file);
+    }
 
+    const AddFile = (file) => {
         const isFileValid = ValidateFile(file);
         const isSizeValid = ValidateSize(file);
-        // console.log(`The fileType is PDF:  ${isFileValid}`);
-        // console.log(`The fileSize <= 10MB: ${isSizeValid}`);
-
+        
         if(isFileValid && isSizeValid) {
             _file = file;
             SetFileName(file.name);
@@ -106,7 +112,6 @@ function DropZone() {
             SetDivStyle({display: 'block', textAlign: 'left'})
             console.log(_file);
         }
-        
     }
 
     const ValidateFile = (file) => {
@@ -137,6 +142,16 @@ function DropZone() {
         _file = null;
     }
 
+    const OpenDialog = () => {
+        fileInputRef.current.click();
+    }
+
+    const FileSelected = () => {
+        if (fileInputRef.current.files[0]) {
+            AddFile(fileInputRef.current.files[0]);
+        }
+    }
+
     return (
         <div className={style.container}>
             <div className={style.dropContainer}
@@ -146,13 +161,19 @@ function DropZone() {
                 onDrop={FileDrop}>
                 <div className={style.top}>
                     <div className={style.dropMessage}>
+                    
+                        <input ref={fileInputRef} className={style.dialog}
+                        type="file" onChange={FileSelected}/>
+
                         <div className={style.uploadIcon}></div>
-                            <Box lineHeight={2} m={1}>
+
+                        <Box lineHeight={2} m={1}>
                             Drag & Drop file here
                             <br/>
                             or
                             <br/>
-                            <Button variant='outlined' color="primary" className={style.btn}>Browse file</Button>
+                            <Button variant='outlined' color="primary" 
+                            className={style.btn} onClick={OpenDialog}>Browse file</Button>
                         </Box>
                     </div>
                 </div>
