@@ -12,7 +12,7 @@ function DropZone() {
         },
         dropContainer: {
             margin: '0px',
-            height: '300px',
+            height: '350px',
             border: '3px dashed #aaaaaa',
         },
         top: {
@@ -36,6 +36,11 @@ function DropZone() {
             margin: '0 auto',
             paddingTop: '30px',
         },
+        message: {
+            color: 'red',
+            padding: '2%',
+            fontSize: '15px',
+        },
         inputInfo: {
             height: '10%',
             width: '100%',
@@ -53,8 +58,12 @@ function DropZone() {
         },
         fileName: {
             height: '30px',
+            width: '60%',
             margin: '3%',
             float: 'left',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
         },
         fileSize: {
             height: '30px',
@@ -78,6 +87,7 @@ function DropZone() {
     const _maxFileSize = 10485760; // 1024 * 1024 * 10 = 10 MB
 
     let _file = null;
+    const [_message, SetMessage] = useState(null);
     const [_fileName, SetFileName] = useState(null);
     const [_fileSize, SetFileSize] = useState(null);
     const [_divStyle, SetDivStyle] = useState({display: 'none', textAlign: 'left'});
@@ -104,14 +114,30 @@ function DropZone() {
     const AddFile = (file) => {
         const isFileValid = ValidateFile(file);
         const isSizeValid = ValidateSize(file);
-        
-        if(isFileValid && isSizeValid) {
+
+        if (!isSizeValid && !isFileValid) {
+            ShowMessage("Too large file and invalid format. Only PDF file not greather than 10 MB can be uploaded.");
+        }
+        else if(!isFileValid) {
+            ShowMessage("Invalid file format. Only PDF file format can be uploaded.");
+        }
+        else if (!isSizeValid) {
+            ShowMessage("Too large file. Only file not greather than 10 MB can be uploaded.");
+        }
+        else{
             _file = file;
             SetFileName(file.name);
             SetFileSize(FileSize(file.size));
             SetDivStyle({display: 'block', textAlign: 'left'})
             console.log(_file);
         }
+    }
+
+    const ShowMessage = (message) => {
+        SetMessage(message);
+        setTimeout(() => {
+            SetMessage(null);
+		}, 4000);
     }
 
     const ValidateFile = (file) => {
@@ -175,6 +201,7 @@ function DropZone() {
                             <Button variant='outlined' color="primary" 
                             className={style.btn} onClick={OpenDialog}>Browse file</Button>
                         </Box>
+                        <span className={style.message}>{_message}</span>
                     </div>
                 </div>
                 <div className={style.inputInfo}>Accepted file types: .pdf, max file size: 10MB</div>
