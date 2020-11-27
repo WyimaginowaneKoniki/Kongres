@@ -1,5 +1,6 @@
 using Autofac;
 using Kongres.Api.Application.Modules;
+using Kongres.Api.Application.Services;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure.Context;
 using Kongres.Api.Infrastructure.Identity;
@@ -56,7 +57,7 @@ namespace Kongres.Api.WebApi
             builder.RegisterModule<MediatRModule>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context, RoleManager<Role> roleManager)
         {
             context.Database.EnsureCreated();
 
@@ -72,6 +73,9 @@ namespace Kongres.Api.WebApi
             app.UseRouting();
 
             app.UseAuthentication();
+
+            IdentityDataInitializer.SeedData(roleManager);
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
