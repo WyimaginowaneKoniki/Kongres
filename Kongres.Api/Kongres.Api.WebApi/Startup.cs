@@ -36,10 +36,16 @@ namespace Kongres.Api.WebApi
             services.AddDbContext<KongresDbContext>(options
                 => options.UseMySql(_configuration["Database:ConnectionString"]));
 
-            services.AddIdentityCore<User>()
-                    .AddDefaultTokenProviders();
+            services.AddIdentity<User, UserRole>();
 
             services.AddTransient<IUserStore<User>, UserStore>();
+
+            services.AddControllers()
+                .AddJsonOptions(x =>
+                {
+                    // change json response formatting
+                    x.JsonSerializerOptions.WriteIndented = true;
+                });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -61,6 +67,14 @@ namespace Kongres.Api.WebApi
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseSpa(spa =>
             {

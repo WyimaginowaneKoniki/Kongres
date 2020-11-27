@@ -13,5 +13,6 @@ namespace Kongres.Api.Infrastructure.Context
         public DbSet<ScienceWork> ScienceWorks { get; set; }
         public DbSet<ScienceWorkInfo> ScienceWorkInfos { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
     }
 }

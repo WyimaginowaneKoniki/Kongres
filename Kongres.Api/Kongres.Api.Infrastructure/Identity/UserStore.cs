@@ -51,7 +51,7 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Name);
+            return Task.FromResult(user.UserName);
         }
 
         public Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
@@ -62,7 +62,7 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.Name = userName;
+            user.UserName = userName;
 
             return Task.CompletedTask;
         }
@@ -75,10 +75,10 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Name);
+            return Task.FromResult(user.UserName);
         }
 
-        public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
+        public Task SetNormalizedUserNameAsync(User user, string normalizedUserName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user is null)
@@ -86,7 +86,7 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.Name = normalizedName;
+            user.UserName = normalizedUserName;
 
             return Task.CompletedTask;
         }
@@ -104,7 +104,7 @@ namespace Kongres.Api.Infrastructure.Identity
             var affectedRows = await _context.SaveChangesAsync(cancellationToken);
             return affectedRows > 0
                 ? IdentityResult.Success
-                : IdentityResult.Failed(new IdentityError { Description = $"Could not create user {user.Name}." });
+                : IdentityResult.Failed(new IdentityError { Description = $"Could not create user {user.UserName}." });
         }
 
         public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
@@ -120,7 +120,7 @@ namespace Kongres.Api.Infrastructure.Identity
             var affectedRows = await _context.SaveChangesAsync(cancellationToken);
             return affectedRows > 0
                 ? IdentityResult.Success
-                : IdentityResult.Failed(new IdentityError { Description = $"Could not update user {user.Name}." });
+                : IdentityResult.Failed(new IdentityError { Description = $"Could not update user {user.UserName}." });
         }
 
         public async Task<IdentityResult> DeleteAsync(User user, CancellationToken cancellationToken)
@@ -136,7 +136,7 @@ namespace Kongres.Api.Infrastructure.Identity
             var affectedRows = await _context.SaveChangesAsync(cancellationToken);
             return affectedRows > 0
                 ? IdentityResult.Success
-                : IdentityResult.Failed(new IdentityError { Description = $"Could not delete user {user.Name}." });
+                : IdentityResult.Failed(new IdentityError { Description = $"Could not delete user {user.UserName}." });
         }
 
         public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
@@ -158,7 +158,7 @@ namespace Kongres.Api.Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
 
             return await _context.Users.SingleOrDefaultAsync(
-                x => x.Name.Equals(normalizedUserName), cancellationToken);
+                x => x.UserName.Equals(normalizedUserName), cancellationToken);
         }
         #endregion
 
