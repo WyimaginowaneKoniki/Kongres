@@ -16,7 +16,7 @@ namespace Kongres.Api.WebApi
 {
     public class Startup
     {
-        private const string reactPath = "../../web-client";
+        private const string ReactPath = "../../web-client";
         private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
@@ -26,12 +26,12 @@ namespace Kongres.Api.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSpaStaticFiles(config => config.RootPath = $"{reactPath}/build");
+            services.AddSpaStaticFiles(config => config.RootPath = $"{ReactPath}/build");
 
             services.AddDbContext<KongresDbContext>(options
                 => options.UseMySql(_configuration["Database:ConnectionString"]));
 
-            services.AddIdentity<User, UserRole>(options =>
+            services.AddIdentity<User, Role>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
@@ -41,6 +41,7 @@ namespace Kongres.Api.WebApi
             }).AddDefaultTokenProviders();
 
             services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<Role>, RoleStore>();
 
             services.AddControllers()
                 .AddJsonOptions(x =>
@@ -80,7 +81,7 @@ namespace Kongres.Api.WebApi
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = reactPath;
+                spa.Options.SourcePath = ReactPath;
 
                 if (env.IsDevelopment())
                 {

@@ -1,6 +1,8 @@
 ﻿using Kongres.Api.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Kongres.Api.Infrastructure.Context;
@@ -8,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kongres.Api.Infrastructure.Identity
 {
-    public class UserStore : IUserStore<User>, IUserPasswordStore<User>
+    public class UserStore : IUserRoleStore<User>, IUserPasswordStore<User>
     {
         private readonly KongresDbContext _context;
 
@@ -196,6 +198,81 @@ namespace Kongres.Api.Infrastructure.Identity
             }
 
             return Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
+        }
+        #endregion
+
+        #region IUserRoleStore
+        public async Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var isNotInRole = await IsInRoleAsync(user, roleName, cancellationToken);
+
+            if (isNotInRole)
+            {
+                var role = await _context.Roles.SingleOrDefaultAsync(
+                    x => x.Name.Equals(roleName), cancellationToken);
+                var userRole = new UserRole()
+                {
+                    Role = role,
+                    User = user
+                };
+
+                await _context.UserRoles.AddAsync(userRole, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+        }
+
+        public async Task RemoveFromRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var userRole = await _context.UserRoles.SingleOrDefaultAsync(
+                x => x.User.Id == user.Id && x.Role.Name.Equals(roleName), cancellationToken);
+
+            _context.UserRoles.Remove(userRole);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await _context.UserRoles.Where(x => x.User.Id == user.Id)
+                                           .Select(x => x.Role.Name)
+                                           .ToListAsync(cancellationToken);
+        }
+
+        public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(_context.UserRoles.Any(
+                x => x.User.Id == user.Id && x.Role.Name.Equals(roleName)));
+        }
+
+        public async Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        {
+
+            return await _context.UserRoles.Where(x => x.Role.Name.Equals(roleName))
+                                           .Select(x => x.User)
+                                           .ToListAsync(cancellationToken);
         }
         #endregion
     }
