@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Logo from '../images/empty-image.png'
@@ -26,14 +26,14 @@ function Navigation() {
             justifyContent: "space-around",
             alignItems: "flex-end",
             height: '100%',
-            '& a': {
-                textDecoration: 'none',
-                color: 'black',
-            },
-            '& a:hover': {
-                color: 'gray',
-            },
-          },
+        },
+        link: {
+            color: 'black',
+            textDecoration: 'none',
+        },
+        activeLink: {
+            color: 'blue',
+        },
     });
 
     const style = styles();
@@ -45,29 +45,29 @@ function Navigation() {
             </div>
             <Box className={style.box}>
                 <Box>
-                    <Link to = '/'>
+                    <NavLink exact to = '/' className={style.link} activeClassName={style.activeLink}>
                         Home
-                    </Link>
+                    </NavLink>
                 </Box>
                 <Box>
-                    <Link to = '/agenda'>
+                    <NavLink exact to = '/agenda' className={style.link} activeClassName={style.activeLink}>
                         Agenda
-                    </Link>
+                    </NavLink>
                 </Box>
                 <Box>
-                    <Link to = '/speakers'>
+                    <NavLink exact to = '/speakers' className={style.link} activeClassName={style.activeLink}>
                         Keynote Speakers
-                    </Link>
+                    </NavLink>
                 </Box>
                 <Box>
-                    <Link to = '/about'>
+                    <NavLink exact to = '/about' className={style.link} activeClassName={style.activeLink}>
                         About
-                    </Link>
+                    </NavLink>
                 </Box>
                 <Box>
-                    <Link to = '/contact'>
+                    <NavLink exact to = '/contact' className={style.link} activeClassName={style.activeLink}>
                         Contact
-                    </Link>
+                    </NavLink>
                 </Box>
             </Box>
         </div>
