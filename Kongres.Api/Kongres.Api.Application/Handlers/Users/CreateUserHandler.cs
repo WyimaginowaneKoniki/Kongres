@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Kongres.Api.Application.Commands.Users;
 using Kongres.Api.Domain.Entities;
 using MediatR;
@@ -22,10 +23,17 @@ namespace Kongres.Api.Application.Handlers.Users
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            if (!UserType.IsContains(request.UserType))
+            {
+                throw new ArgumentException("Wrong user type");
+            }
+
+            var userName = $"{request.UserType}:{request.Email}";
+
             var user = new User()
             {
                 Name = request.Name,
-                UserName = request.Email,
+                UserName = userName,
                 Surname = request.Surname,
                 Degree = request.Degree,
                 Email = request.Email,
