@@ -1,9 +1,11 @@
-﻿using Kongres.Api.Application.Commands.Users;
+﻿using System.Linq;
+using Kongres.Api.Application.Commands.Users;
 using Kongres.Api.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
+using Kongres.Api.Domain.Enums;
 
 namespace Kongres.Api.Application.Handlers.Users
 {
@@ -31,7 +33,12 @@ namespace Kongres.Api.Application.Handlers.Users
                 University = request.University
             };
 
-            await _userManager.CreateAsync(user, request.PasswordHash);
+            var createUserResult = await _userManager.CreateAsync(user, request.PasswordHash);
+
+            if (createUserResult.Succeeded && UserType.IsContains(request.UserType))
+            {
+                await _userManager.AddToRoleAsync(user, request.UserType);
+            }
         }
     }
 }

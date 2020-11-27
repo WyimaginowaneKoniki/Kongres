@@ -1,4 +1,4 @@
-﻿using Kongres.Api.Domain.Entities;
+using Kongres.Api.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -210,9 +210,9 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var isNotInRole = await IsInRoleAsync(user, roleName, cancellationToken);
+            var isInRole = await IsInRoleAsync(user, roleName, cancellationToken);
 
-            if (isNotInRole)
+            if (!isInRole)
             {
                 var role = await _context.Roles.SingleOrDefaultAsync(
                     x => x.Name.Equals(roleName), cancellationToken);
