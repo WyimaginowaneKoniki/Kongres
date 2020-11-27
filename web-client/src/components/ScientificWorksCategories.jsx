@@ -13,7 +13,11 @@ function ScientificWorksCategories(props)
         },
         btn:
         {
-            backgroundColor: 'pink', //kolorki pozmienaic po najechaniu rowniez
+            backgroundColor: '#ADD8E6', 
+            border: 'none',
+            '&:hover':{
+                border: 'none',
+            }
         }
     });
 

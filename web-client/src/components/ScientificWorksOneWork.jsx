@@ -25,14 +25,14 @@ function ScientificWorksOneWork(props)
         {
             float: 'left',
             fontSize: '12px',
-            color: 'blue', //zmienic kolor
+            color: '#0000CD', //zmienic kolor
             paddingRight: '2.5%',
         },
         dot:
         {
             float: 'left',
             fontSize: '80px',
-            color: 'grey', //zmienic kolor
+            color: '#DCDCDC', 
             marginTop: '-62px',
             paddingRight: '2.5%',
         },
@@ -74,8 +74,6 @@ function ScientificWorksOneWork(props)
         btn2:
         {
             float: 'left',
-            backgroundColor: 'blue', //zmienic kolor
-            color: 'white',
         },
     });
 
@@ -95,7 +93,7 @@ function ScientificWorksOneWork(props)
             <div className={style.buttons}>
                 <Button variant='outlined' color="primary" 
                             className={style.btn1}>Download full work</Button>
-                <Button variant='outlined' color="primary" 
+                <Button variant='contained' color="primary" 
                             className={style.btn2}>Read more</Button>
             </div>
         </div>
