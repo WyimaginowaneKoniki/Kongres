@@ -6,8 +6,10 @@ function ContactInfo(props) {
     const styles = makeStyles({
         main:
         {
-            padding: '5%',
-            width: '60%',
+            paddingTop: '3%',
+            paddingLeft: '5%',
+            width: '50%',
+            float: 'left',
         },
         left:
         {
@@ -22,7 +24,7 @@ function ContactInfo(props) {
         photo:
         {
             display: 'block',
-            width: '60%',
+            width: '70%',
             borderRadius: '50%',
         },
         text:
