@@ -37,8 +37,7 @@ namespace Kongres.Api.WebApi
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
-                options.User.AllowedUserNameCharacters =
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+:";
+                options.User.AllowedUserNameCharacters = _configuration["Identity:AllowedUserNameCharacters"];
             }).AddDefaultTokenProviders();
 
             services.AddTransient<IUserStore<User>, UserStore>();

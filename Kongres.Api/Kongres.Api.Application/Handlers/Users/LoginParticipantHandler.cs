@@ -23,8 +23,7 @@ namespace Kongres.Api.Application.Handlers.Users
         protected override async Task Handle(LoginParticipantCommand request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var userName = $"{UserType.Participant}:{request.UserName}";
+            var userName = $"{nameof(UserTypeEnum.Participant)}:{request.UserName}";
 
             var user = await _userManager.FindByNameAsync(userName);
 

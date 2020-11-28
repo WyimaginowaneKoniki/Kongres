@@ -24,7 +24,7 @@ namespace Kongres.Api.Application.Handlers.Users
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var userName = $"{UserType.Reviewer}:{request.UserName}";
+            var userName = $"{nameof(UserTypeEnum.Reviewer)}:{request.UserName}";
 
             var user = await _userManager.FindByNameAsync(userName);
 

@@ -22,12 +22,13 @@ namespace Kongres.Api.Application.Handlers.Users
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!UserType.IsContains(request.UserType))
+            if (!Enum.IsDefined(typeof(UserTypeEnum), request.UserType))
             {
                 throw new ArgumentException("Wrong user type");
             }
 
-            var userName = $"{request.UserType}:{request.Email}";
+            var userType = Enum.Parse(typeof(UserTypeEnum), request.UserType).ToString();
+            var userName = $"{userType}:{request.Email}";
 
             var user = new User
             {
@@ -42,9 +43,9 @@ namespace Kongres.Api.Application.Handlers.Users
 
             var createUserResult = await _userManager.CreateAsync(user, request.PasswordHash);
 
-            if (createUserResult.Succeeded && UserType.IsContains(request.UserType))
+            if (createUserResult.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, request.UserType);
+                await _userManager.AddToRoleAsync(user, userType);
             }
         }
     }
