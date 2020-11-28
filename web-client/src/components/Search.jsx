@@ -25,7 +25,7 @@ function Search(props)
       },
       search:
       {
-        width: '90%',
+        width: '70%',
         textAlign: 'left',
         float: 'left',
       },
