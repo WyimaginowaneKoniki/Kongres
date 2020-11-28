@@ -57,7 +57,8 @@ namespace Kongres.Api.WebApi
             builder.RegisterModule<MediatRModule>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context, RoleManager<Role> roleManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context,
+            RoleManager<Role> roleManager)
         {
             context.Database.EnsureCreated();
 

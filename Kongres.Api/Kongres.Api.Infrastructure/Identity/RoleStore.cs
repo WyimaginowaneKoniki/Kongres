@@ -148,10 +148,8 @@ namespace Kongres.Api.Infrastructure.Identity
             {
                 return await _context.Roles.FindAsync(id);
             }
-            else
-            {
-                return await Task.FromResult((Role)null);
-            }
+
+            return await Task.FromResult((Role)null);
         }
 
         public async Task<Role> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
@@ -159,7 +157,7 @@ namespace Kongres.Api.Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
 
             return await _context.Roles.SingleOrDefaultAsync(
-                x => x.Name.Equals(normalizedRoleName), cancellationToken);
+                x => x.Name == normalizedRoleName, cancellationToken);
         }
     }
 }

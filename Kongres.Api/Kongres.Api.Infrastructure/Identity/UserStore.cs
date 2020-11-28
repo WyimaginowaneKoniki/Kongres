@@ -1,12 +1,12 @@
 using Kongres.Api.Domain.Entities;
+using Kongres.Api.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Kongres.Api.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace Kongres.Api.Infrastructure.Identity
 {
@@ -149,10 +149,8 @@ namespace Kongres.Api.Infrastructure.Identity
             {
                 return await _context.Users.FindAsync(id);
             }
-            else
-            {
-                return await Task.FromResult((User)null);
-            }
+
+            return await Task.FromResult((User)null);
         }
 
         public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -160,7 +158,7 @@ namespace Kongres.Api.Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
 
             return await _context.Users.SingleOrDefaultAsync(
-                x => x.NormalizedUserName.Equals(normalizedUserName), cancellationToken);
+                x => x.NormalizedUserName == normalizedUserName, cancellationToken);
         }
         #endregion
 
@@ -215,7 +213,7 @@ namespace Kongres.Api.Infrastructure.Identity
             if (!isInRole)
             {
                 var role = await _context.Roles.SingleOrDefaultAsync(
-                    x => x.Name.Equals(roleName), cancellationToken);
+                    x => x.Name == roleName, cancellationToken);
                 var userRole = new UserRole()
                 {
                     Role = role,
@@ -236,7 +234,7 @@ namespace Kongres.Api.Infrastructure.Identity
             }
 
             var userRole = await _context.UserRoles.SingleOrDefaultAsync(
-                x => x.User.Id == user.Id && x.Role.Name.Equals(roleName), cancellationToken);
+                x => x.User.Id == user.Id && x.Role.Name == roleName, cancellationToken);
 
             _context.UserRoles.Remove(userRole);
             await _context.SaveChangesAsync(cancellationToken);
@@ -264,13 +262,13 @@ namespace Kongres.Api.Infrastructure.Identity
             }
 
             return Task.FromResult(_context.UserRoles.Any(
-                x => x.User.Id == user.Id && x.Role.Name.Equals(roleName)));
+                x => x.User.Id == user.Id && x.Role.Name == roleName));
         }
 
         public async Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
 
-            return await _context.UserRoles.Where(x => x.Role.Name.Equals(roleName))
+            return await _context.UserRoles.Where(x => x.Role.Name == roleName)
                                            .Select(x => x.User)
                                            .ToListAsync(cancellationToken);
         }

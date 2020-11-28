@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Kongres.Api.Application.Commands.Users;
 using Kongres.Api.Domain.Entities;
 using MediatR;
@@ -29,7 +29,7 @@ namespace Kongres.Api.Application.Handlers.Users
 
             var userName = $"{request.UserType}:{request.Email}";
 
-            var user = new User()
+            var user = new User
             {
                 Name = request.Name,
                 UserName = userName,
