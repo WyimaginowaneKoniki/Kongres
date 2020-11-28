@@ -16,13 +16,23 @@ namespace Kongres.Api.Application.Services
             if (!roleManager.RoleExistsAsync(nameof(UserTypeEnum.Participant)).Result)
             {
                 var role = new Role { Name = nameof(UserTypeEnum.Participant) };
-                await roleManager.CreateAsync(role);
+                var result = roleManager.CreateAsync(role).Result;
+
+                if (!result.Succeeded)
+                {
+                    // Log about error
+                }
             }
 
             if (!roleManager.RoleExistsAsync(nameof(UserTypeEnum.Reviewer)).Result)
             {
                 var role = new Role { Name = nameof(UserTypeEnum.Reviewer) };
-                await roleManager.CreateAsync(role);
+                var result = roleManager.CreateAsync(role).Result;
+
+                if (!result.Succeeded)
+                {
+                    // Log about error
+                }
             }
         }
     }
