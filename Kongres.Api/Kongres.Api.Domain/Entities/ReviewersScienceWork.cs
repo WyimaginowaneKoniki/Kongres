@@ -1,5 +1,3 @@
-using System;
-
 namespace Kongres.Api.Domain.Entities
 {
     public class ReviewersScienceWork

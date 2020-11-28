@@ -3,14 +3,16 @@ using System;
 using Kongres.Api.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kongres.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(KongresDbContext))]
-    partial class KongresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201127135208_Add table Roles")]
+    partial class AddtableRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,17 +67,12 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<byte>("Rating")
                         .HasColumnType("tinyint unsigned");
 
-                    b.Property<uint?>("ReviewerId")
-                        .HasColumnType("int unsigned");
-
-                    b.Property<uint?>("VersionOfScienceWorkId")
+                    b.Property<uint?>("ReviewersScienceWorkId")
                         .HasColumnType("int unsigned");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReviewerId");
-
-                    b.HasIndex("VersionOfScienceWorkId");
+                    b.HasIndex("ReviewersScienceWorkId");
 
                     b.ToTable("Reviews");
                 });
@@ -108,9 +105,6 @@ namespace Kongres.Api.Infrastructure.Migrations
                         .HasColumnType("int unsigned");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("NormalizedName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
@@ -149,7 +143,7 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.ToTable("ScienceWorks");
                 });
 
-            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkFile", b =>
+            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkInfo", b =>
                 {
                     b.Property<uint>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,7 +165,7 @@ namespace Kongres.Api.Infrastructure.Migrations
 
                     b.HasIndex("ScienceWorkId");
 
-                    b.ToTable("ScienceWorkFiles");
+                    b.ToTable("ScienceWorkInfos");
                 });
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.User", b =>
@@ -187,9 +181,6 @@ namespace Kongres.Api.Infrastructure.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("NormalizedUserName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("PasswordHash")
@@ -249,13 +240,9 @@ namespace Kongres.Api.Infrastructure.Migrations
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.Review", b =>
                 {
-                    b.HasOne("Kongres.Api.Domain.Entities.User", "Reviewer")
+                    b.HasOne("Kongres.Api.Domain.Entities.ReviewersScienceWork", "ReviewersScienceWork")
                         .WithMany()
-                        .HasForeignKey("ReviewerId");
-
-                    b.HasOne("Kongres.Api.Domain.Entities.ScienceWorkFile", "VersionOfScienceWork")
-                        .WithMany()
-                        .HasForeignKey("VersionOfScienceWorkId");
+                        .HasForeignKey("ReviewersScienceWorkId");
                 });
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.ReviewersScienceWork", b =>
@@ -276,7 +263,7 @@ namespace Kongres.Api.Infrastructure.Migrations
                         .HasForeignKey("MainAuthorId");
                 });
 
-            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkFile", b =>
+            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkInfo", b =>
                 {
                     b.HasOne("Kongres.Api.Domain.Entities.ScienceWork", "ScienceWork")
                         .WithMany()

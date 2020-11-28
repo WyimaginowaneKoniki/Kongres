@@ -3,14 +3,16 @@ using System;
 using Kongres.Api.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kongres.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(KongresDbContext))]
-    partial class KongresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201128120855_Connect Review with ScienceWorkFile insted of ReviewersScienceWork")]
+    partial class ConnectReviewwithScienceWorkFileinstedofReviewersScienceWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,15 +67,10 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<byte>("Rating")
                         .HasColumnType("tinyint unsigned");
 
-                    b.Property<uint?>("ReviewerId")
-                        .HasColumnType("int unsigned");
-
                     b.Property<uint?>("VersionOfScienceWorkId")
                         .HasColumnType("int unsigned");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReviewerId");
 
                     b.HasIndex("VersionOfScienceWorkId");
 
@@ -249,10 +246,6 @@ namespace Kongres.Api.Infrastructure.Migrations
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.Review", b =>
                 {
-                    b.HasOne("Kongres.Api.Domain.Entities.User", "Reviewer")
-                        .WithMany()
-                        .HasForeignKey("ReviewerId");
-
                     b.HasOne("Kongres.Api.Domain.Entities.ScienceWorkFile", "VersionOfScienceWork")
                         .WithMany()
                         .HasForeignKey("VersionOfScienceWorkId");
