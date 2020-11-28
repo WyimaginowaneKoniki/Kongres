@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using Kongres.Api.Domain.Enums;
-
-namespace Kongres.Api.Domain.Entities
+﻿namespace Kongres.Api.Domain.Entities
 {
     public class Role
     {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Kongres.Api.Application.Commands.Users;
 using Kongres.Api.Domain.Entities;
 using MediatR;

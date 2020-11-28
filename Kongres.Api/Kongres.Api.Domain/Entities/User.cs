@@ -1,6 +1,3 @@
-using System;
-using Kongres.Api.Domain.Enums;
-
 namespace Kongres.Api.Domain.Entities
 {
     public class User

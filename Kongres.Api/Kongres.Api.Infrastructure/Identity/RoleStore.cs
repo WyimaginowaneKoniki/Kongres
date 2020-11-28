@@ -1,7 +1,6 @@
-using Kongres.Api.Domain.Entities;
+﻿using Kongres.Api.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Kongres.Api.Infrastructure.Context;
