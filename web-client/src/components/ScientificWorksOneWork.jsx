@@ -19,7 +19,7 @@ function ScientificWorksOneWork(props)
         {
             width: '100%',
             float: 'left',
-            marginTop: '-20px',
+            marginTop: '-25px',
         },
         category:
         {
@@ -31,9 +31,8 @@ function ScientificWorksOneWork(props)
         dot:
         {
             float: 'left',
-            fontSize: '80px',
+            fontSize: '28px',
             color: '#DCDCDC', 
-            marginTop: '-62px',
             paddingRight: '2.5%',
         },
         date:
@@ -52,8 +51,8 @@ function ScientificWorksOneWork(props)
             width: '94%',
             float: 'left',
             textAlign: 'left',
-            marginTop: '-70px',
             fontSize: '14px',
+            paddingBottom: '2%',
         },
         a:
         {
@@ -87,12 +86,12 @@ function ScientificWorksOneWork(props)
             <h2 className={style.h2}>{props.title}</h2>
             <div className={style.panel}>
                 <a href={props.link}><p className={style.category}>{props.categories}</p></a>
-                <p className={style.dot}>.</p>
+                <span className={style.dot}>&bull;</span>
                 <p className={style.date}>{props.data}</p>
-                <p className={style.dot}>.</p>
+                <span className={style.dot}>&bull;</span>
                 <p className={style.author}>{props.authors}</p>
             </div>
-            <p className={style.text}>{props.text}</p>
+            <span className={style.text}>{props.text}</span>
             <div className={style.buttons}>
                 <Button variant='outlined' color="primary" 
                             className={style.btn1}>Download full work</Button>

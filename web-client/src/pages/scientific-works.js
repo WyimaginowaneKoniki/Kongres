@@ -26,7 +26,7 @@ function ScientificWorks(props) {
             width: '35%',
             float: 'right',
         },
-        h4:
+        h3:
         {
             paddingTop: '5%',
             width: '100%',
@@ -136,7 +136,7 @@ function ScientificWorks(props) {
           <div className={style.right}>
             <Search/>
 
-            <h4 className={style.h4}>Categories</h4>
+            <h3 className={style.h3}>Categories</h3>
             <ScientificWorksCategories
                 name = {category1.name}
             />
@@ -147,7 +147,7 @@ function ScientificWorks(props) {
                 name = {category3.name}
             />
 
-            <h4 className={style.h4}>Recent authors / works</h4>
+            <h3 className={style.h3}>Recent authors / works</h3>
             <ScientificWorksRecentAuthors
                 path = {recent1.path}
                 alternativeText = {recent1.alternativeText}
