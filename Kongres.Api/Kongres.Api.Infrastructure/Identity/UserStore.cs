@@ -77,7 +77,7 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.UserName);
+            return Task.FromResult(user.NormalizedUserName);
         }
 
         public Task SetNormalizedUserNameAsync(User user, string normalizedUserName, CancellationToken cancellationToken)
@@ -88,7 +88,7 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.UserName = normalizedUserName;
+            user.NormalizedUserName = normalizedUserName;
 
             return Task.CompletedTask;
         }
@@ -160,7 +160,7 @@ namespace Kongres.Api.Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
 
             return await _context.Users.SingleOrDefaultAsync(
-                x => x.UserName.Equals(normalizedUserName), cancellationToken);
+                x => x.NormalizedUserName.Equals(normalizedUserName), cancellationToken);
         }
         #endregion
 

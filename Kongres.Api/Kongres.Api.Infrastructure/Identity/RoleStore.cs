@@ -1,4 +1,4 @@
-﻿using Kongres.Api.Domain.Entities;
+using Kongres.Api.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
@@ -125,7 +125,7 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(role));
             }
 
-            return Task.FromResult(role.Name);
+            return Task.FromResult(role.NormalizedName);
         }
 
         public Task SetNormalizedRoleNameAsync(Role role, string normalizedName, CancellationToken cancellationToken)
@@ -136,7 +136,7 @@ namespace Kongres.Api.Infrastructure.Identity
                 throw new ArgumentNullException(nameof(role));
             }
 
-            role.Name = normalizedName;
+            role.NormalizedName = normalizedName;
 
             return Task.CompletedTask;
         }

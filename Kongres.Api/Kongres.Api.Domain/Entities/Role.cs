@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Kongres.Api.Domain.Enums;
 
 namespace Kongres.Api.Domain.Entities
@@ -7,5 +7,6 @@ namespace Kongres.Api.Domain.Entities
     {
         public uint Id { get; set; }
         public string Name { get; set; }
+        public string NormalizedName { get; set; }
     }
 }
