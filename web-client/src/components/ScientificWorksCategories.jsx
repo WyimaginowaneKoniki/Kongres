@@ -13,11 +13,7 @@ function ScientificWorksCategories(props)
         },
         btn:
         {
-            backgroundColor: '#ADD8E6', 
-            border: 'none',
-            '&:hover':{
-                border: 'none',
-            }
+            textTransform: 'none',
         }
     });
 
@@ -25,7 +21,7 @@ function ScientificWorksCategories(props)
 
     return(
         <div className={style.main}>
-            <Button variant='outlined' color="primary" 
+            <Button variant='contained' color="primary" 
                             className={style.btn}>{props.name}</Button>
         </div>
     )   

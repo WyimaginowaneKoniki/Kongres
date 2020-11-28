@@ -25,6 +25,8 @@ function Search(props)
       },
       search:
       {
+        width: '90%',
+        textAlign: 'left',
         float: 'left',
       },
     });

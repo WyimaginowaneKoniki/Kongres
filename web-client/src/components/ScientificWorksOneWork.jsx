@@ -25,7 +25,7 @@ function ScientificWorksOneWork(props)
         {
             float: 'left',
             fontSize: '12px',
-            color: '#0000CD', //zmienic kolor
+            color: '#3f51b5', 
             paddingRight: '2.5%',
         },
         dot:
@@ -70,26 +70,29 @@ function ScientificWorksOneWork(props)
         {
             float: 'left',
             marginRight: '5%',
+            textTransform: 'none',
         },
         btn2:
         {
             float: 'left',
+            textTransform: 'none',
         },
     });
 
     const style = styles();
 
+    //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download
     return(
         <div className={style.main}>
             <h2 className={style.h2}>{props.title}</h2>
             <div className={style.panel}>
-                <p className={style.category}>{props.categories}</p>
+                <a href={props.link}><p className={style.category}>{props.categories}</p></a>
                 <p className={style.dot}>.</p>
                 <p className={style.date}>{props.data}</p>
                 <p className={style.dot}>.</p>
                 <p className={style.author}>{props.authors}</p>
             </div>
-            <p className={style.text}>{props.text}<a href={props.link} className={style.a}>Read more...</a></p>
+            <p className={style.text}>{props.text}</p>
             <div className={style.buttons}>
                 <Button variant='outlined' color="primary" 
                             className={style.btn1}>Download full work</Button>
