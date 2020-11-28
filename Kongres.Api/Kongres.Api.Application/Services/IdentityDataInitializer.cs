@@ -11,7 +11,7 @@ namespace Kongres.Api.Application.Services
             SeedRoles(roleManager);
         }
 
-        public static async void SeedRoles(RoleManager<Role> roleManager)
+        public static void SeedRoles(RoleManager<Role> roleManager)
         {
             if (!roleManager.RoleExistsAsync(nameof(UserTypeEnum.Participant)).Result)
             {
