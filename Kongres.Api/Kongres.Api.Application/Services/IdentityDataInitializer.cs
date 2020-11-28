@@ -19,7 +19,6 @@ namespace Kongres.Api.Application.Services
                 await roleManager.CreateAsync(role);
             }
 
-
             if (!roleManager.RoleExistsAsync(UserType.Reviewer).Result)
             {
                 var role = new Role { Name = UserType.Reviewer };

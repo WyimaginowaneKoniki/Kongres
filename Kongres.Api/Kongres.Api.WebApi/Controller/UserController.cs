@@ -8,7 +8,6 @@ namespace Kongres.Api.WebApi.Controller
 {
     public class UserController : ApiControllerBase
     {
-
         public UserController(IMediator mediator) : base(mediator) { }
 
         // api/User/Register

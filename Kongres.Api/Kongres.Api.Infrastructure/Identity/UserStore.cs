@@ -267,6 +267,7 @@ namespace Kongres.Api.Infrastructure.Identity
 
         public async Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
 
             return await _context.UserRoles.Where(x => x.Role.Name == roleName)
                                            .Select(x => x.User)
