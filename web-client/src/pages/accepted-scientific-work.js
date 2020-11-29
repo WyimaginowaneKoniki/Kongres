@@ -9,7 +9,7 @@ function AcceptedScientificWork(props)
     const styles = makeStyles({
         path:
         {
-            width: '100%',
+            width: '70%',
             padding: '2%',
             paddingLeft: '10%',
             float: 'left',
