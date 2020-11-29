@@ -9,12 +9,11 @@ function About(props) {
   const styles = makeStyles({
     main:
     {
-      width: '100%',
       padding: '10%',
     },
     position:
       {
-        width: '40%',
+        width: '50%',
         float: 'left',
         paddingBottom: '5%',
       },

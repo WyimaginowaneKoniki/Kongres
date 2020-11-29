@@ -62,17 +62,8 @@ function ScientificWorks(props) {
         text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ',
     };
 
-    const category1 = {
-        name: 'Mathematics',
-    }
-
-    const category2 = {
-        name: 'Technology',
-    }
-
-    const category3 = {
-        name: 'Computer Science',
-    }
+    const categories = ['Mathematics', 'Technology', 'Computer Science'];
+    const categoryList = categories.map(name => <ScientificWorksCategories name = {name}/>)
 
     const recent1 = {
         path: picture,
@@ -137,15 +128,7 @@ function ScientificWorks(props) {
             <Search/>
 
             <h3 className={style.h3}>Categories</h3>
-            <ScientificWorksCategories
-                name = {category1.name}
-            />
-            <ScientificWorksCategories
-                name = {category2.name}
-            />
-            <ScientificWorksCategories
-                name = {category3.name}
-            />
+            {categoryList}
 
             <h3 className={style.h3}>Recent authors / works</h3>
             <ScientificWorksRecentAuthors
