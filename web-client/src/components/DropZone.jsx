@@ -82,7 +82,7 @@ function DropZone() {
 
     const style = styles();
 
-    const fileInputRef = useRef();
+    const _fileInputRef = useRef();
 
     const _maxFileSize = 20971520; // 1024 * 1024 * 20 = 20 MB
 
@@ -168,12 +168,12 @@ function DropZone() {
     }
 
     const OpenDialog = () => {
-        fileInputRef.current.click();
+        _fileInputRef.current.click();
     }
 
     const FileSelected = () => {
-        if (fileInputRef.current.files[0]) {
-            AddFile(fileInputRef.current.files[0]);
+        if (_fileInputRef.current.files[0]) {
+            AddFile(_fileInputRef.current.files[0]);
         }
     }
 
@@ -187,7 +187,7 @@ function DropZone() {
                 <div className={style.top}>
                     <div className={style.dropMessage}>
                     
-                        <input ref={fileInputRef} className={style.dialog}
+                        <input ref={_fileInputRef} className={style.dialog}
                         type="file" onChange={FileSelected}/>
 
                         <div className={style.uploadIcon}></div>
