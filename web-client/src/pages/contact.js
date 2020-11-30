@@ -53,6 +53,7 @@ function Contact(props) {
             {infoList}
             
             <ContactMap path = {map.path}/>
+
           </div>
       </div>  
     );

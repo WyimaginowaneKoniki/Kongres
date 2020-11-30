@@ -22,16 +22,6 @@ function AboutInfo(props) {
         {
             width: '48%',
             float: 'right',
-        },
-        leftphoto:
-        {
-            width: '48%',
-            float: 'left',
-        },
-        righttext:
-        {
-            width: '48%',
-            float: 'right',
             textAlign: 'left',
         },
         photo:
@@ -42,37 +32,19 @@ function AboutInfo(props) {
     });
 
     const style = styles();
+    const infos = [<h2>{props.head}</h2>, <p>{props.text}</p>, <a href={props.link}>{props.adnotation}</a>]
+    const image = <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
 
-    if(props.isImageRight)
-    {
-        return(
+    return(
             <div className={style.main}>
                 <div className={style.left}>
-                    <h2>{props.head}</h2>
-                    <p>{props.text}</p>
-                    <a href={props.link}>{props.adnotation}</a>
+                    {props.isImageRight ? infos : image}
                 </div>
                 <div className={style.right}>
-                    <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
+                    {props.isImageRight ? image : infos}
                 </div>
             </div>
         )
-    }
-    else
-    {
-        return(
-            <div className={style.main}>
-                <div className={style.leftphoto}>
-                    <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
-                </div>
-                <div className={style.righttext}>
-                    <h2>{props.head}</h2>
-                    <p>{props.text}</p>
-                    <a href={props.link}>{props.adnotation}</a>
-                </div>
-            </div>
-        )
-    }
 }
 
 export default AboutInfo; 
