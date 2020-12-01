@@ -49,11 +49,10 @@ function Contact(props) {
       <div>
           <h1>Contact</h1>
 
+          <ContactMap path = {map.path}/>
+
           <div> 
             {infoList}
-            
-            <ContactMap path = {map.path}/>
-
           </div>
       </div>  
     );
