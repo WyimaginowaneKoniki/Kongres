@@ -31,7 +31,7 @@ function AcceptedScientificWorkComponents(props)
             paddingLeft: '5%',
             fontSize: '12px',
         },
-        h2:
+        h1:
         {
             width: '100%',
             float: 'left',
@@ -142,7 +142,7 @@ function AcceptedScientificWorkComponents(props)
                     <span> <Button variant='contained' color="primary" 
                             className={style.btn}>{props.name}</Button> </span> 
                 </span>
-                <h2 className={style.h2}>{props.title}</h2>
+                <h1 className={style.h1}>{props.title}</h1>
                 <div className={style.author}>
                 <span className={style.shared}>Shared by</span>
                     <p className={style.lefttitle}>
