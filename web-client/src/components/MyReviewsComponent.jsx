@@ -23,6 +23,14 @@ function MyReviewsComponent(props)
             width: '70%',
             float: 'right',
         },
+        status:
+        {
+            width: '100%',
+            float: 'left',
+            textAlign: 'left',
+            paddingLeft: '5%',
+            color: 'red',
+        },
         date:
         {
             width: '100%',
@@ -136,6 +144,7 @@ function MyReviewsComponent(props)
                 <p>PDF</p>
             </div>
             <div className={style.right}>
+                <span className={style.status}>{props.status}</span>
                 <span className={style.date}>
                     <span>{props.currentDate}</span> 
                     <span>&nbsp; (Edited: {props.modificationDate}) &nbsp;</span> 
@@ -161,6 +170,8 @@ function MyReviewsComponent(props)
                 <p className={style.text}>{props.text}</p>
                 <Button variant='outlined' color="primary" 
                             className={style.btn1}>Download full work</Button>
+                 <Button variant='contained' color="primary" 
+                            className={style.btn1}>Add review</Button>
             </div>
         </div>
     )

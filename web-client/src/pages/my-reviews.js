@@ -1,6 +1,8 @@
 import React from 'react';
 import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
+import picture from '../images/empty-image.png'
+import MyReviewsComponent from '../components/MyReviewsComponent';
 
 function MyReviews(props) {
     const styles = makeStyles ({
@@ -23,6 +25,7 @@ function MyReviews(props) {
     const style = styles();
 
     const scientificWork = {
+        status: 'Status',
         currentDate: '30/11/2020',
         modificationDate: '15/11/2020',
         name: 'Mathematics',
@@ -40,6 +43,7 @@ function MyReviews(props) {
         <div className={style.main}>
             <p className={style.path}>Scientific works / <span className={style.title}>{scientificWork.title}</span></p>
             <MyReviewsComponent
+                status = {scientificWork.status}
                 currentDate = {scientificWork.currentDate}
                 modificationDate = {scientificWork.modificationDate}
                 name = {scientificWork.name}

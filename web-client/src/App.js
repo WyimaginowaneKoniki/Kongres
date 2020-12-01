@@ -13,7 +13,6 @@ import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
 import ScientificWorks from './pages/scientific-works';
-import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
 
 function App() {
