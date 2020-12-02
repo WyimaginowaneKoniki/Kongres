@@ -1,7 +1,13 @@
 import React from 'react';
+import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import '../App.css';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { DialogActions, DialogContent } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Rating from '@material-ui/lab/Rating';
 
 function MyReviewsComponent(props)
 {
@@ -134,9 +140,73 @@ function MyReviewsComponent(props)
             marginLeft: '5%',
             float: 'left',
         },
+        mainDialog:
+        {
+            margin: 'auto',
+        },
+        dialogTitle:
+        {
+            fontWeight: 'bold',
+            textAlign: 'center',
+        },
+        range:
+        {
+            textAlign: 'center',
+            float: 'center',
+            margin: 'auto',
+        },
+        grade:
+        {
+            float: 'left',
+        },
+        stars:
+        {
+            float: 'left',
+            marginLeft: '10%',
+        },
+        label:
+        {
+            float: 'left',
+            marginLeft: '10%',
+        },
+        info:
+        {
+            width: '100%',
+            float: 'center',
+            margin: 'auto',
+            textAlign: 'center',
+            fontSize: '14px',
+        },
+        textArea:
+        {
+            resize: 'none',
+            border: '2px solid grey',
+            padding: '2%',
+            lineHeight: '1.5',
+            width: '95%',
+            height: 120,
+        },
     });
 
+    const labels = {
+        1: 'to improve',
+        2: 'OK',
+        3: 'excellent'
+    };
+
     const style = styles();
+
+    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState(1);
+    const [hover, setHover] = React.useState(1);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return(
         <div className={style.main}>
@@ -153,7 +223,7 @@ function MyReviewsComponent(props)
                 </span>
                 <h1 className={style.h1}>{props.title}</h1>
                 <div className={style.author}>
-                <span className={style.shared}>Shared by</span>
+                    <span className={style.shared}>Shared by</span>
                     <p className={style.lefttitle}>
                         <img src={props.path} className={style.photo} alt={props.alternativeText}></img> 
                     </p>
@@ -170,8 +240,51 @@ function MyReviewsComponent(props)
                 <p className={style.text}>{props.text}</p>
                 <Button variant='outlined' color="primary" 
                             className={style.btn1}>Download full work</Button>
-                 <Button variant='contained' color="primary" 
+                <div>
+                    <Button variant='contained' color="primary" onClick={handleClickOpen} 
                             className={style.btn1}>Add review</Button>
+                    <Dialog 
+                        className={style.mainDialog}
+                        open = {open}
+                        onClose = {handleClose}
+                    >
+                    <DialogTitle id='alert-dialog-title' className={style.dialogTitle}>{'Add your review'}</DialogTitle>
+                    <DialogContent>
+                        <Box component='fieldset' mb={3} borderColor='transparent' className={style.range}>
+                            <Typography component='legend' className={style.grade}>Grade:</Typography>
+                            <Rating className={style.stars}
+                                max={3}
+                                value={value}
+                                onChange={(event, newValue) => {
+                                    setValue(newValue);
+                                }}
+                                onChangeActive={(event, newHover) => {
+                                    setHover(newHover);
+                                }}
+                            />
+                            {value !== null && <Box ml={2} className={style.label}>{labels[hover !== -1 ? hover : value]}</Box>}
+                        </Box>
+                        <p className={style.info}>Review must contain comment or/and file</p>
+                    </DialogContent>
+                    <DialogContent>
+                        <p>Comment</p>
+                        <textarea
+                            className={style.textArea} 
+                            placeholder='Add comment'
+                            cols="50"
+                            rows = '10px'
+                            maxLength='255'
+                            />
+                    </DialogContent>
+                    <DialogContent>
+                        <p> Drag&Drop</p>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant='contained' color="primary" onClick={handleClose}
+                            className={style.btn1}>Add review</Button>
+                    </DialogActions>
+                </Dialog>
+                </div>
             </div>
         </div>
     )
