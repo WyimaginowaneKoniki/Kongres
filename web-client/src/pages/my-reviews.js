@@ -36,7 +36,8 @@ function MyReviews(props) {
         degree: 'PhD in Computer Science',
         university: 'Silesian University of Technology',
         authors: 'Sam Smith, Ashley Blue',
-        text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. '
+        text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ',
+        review: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.'
     };
 
     return(
@@ -55,6 +56,7 @@ function MyReviews(props) {
                 university = {scientificWork.university}
                 authors = {scientificWork.authors}
                 text = {scientificWork.text}
+                review = {scientificWork.review}
                 />
         </div>
     )

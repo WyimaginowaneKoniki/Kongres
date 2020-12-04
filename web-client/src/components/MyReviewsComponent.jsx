@@ -186,6 +186,20 @@ function MyReviewsComponent(props)
             width: '95%',
             height: 120,
         },
+        currentVersion:
+        {
+            width: '100%',
+            float: 'left',
+            marginTop: '5%',
+            textAlign: 'left',
+            border: '1px solid black', 
+        },
+        review:
+        {
+            width: '100%',
+            float: 'left',
+            border: '1px solid red', 
+        },
     });
 
     const labels = {
@@ -199,6 +213,10 @@ function MyReviewsComponent(props)
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(1);
     const [hover, setHover] = React.useState(1);
+
+    let d = new Date();
+    let hours = `${d.getHours()}:${d.getMinutes()}`;
+    let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -238,16 +256,17 @@ function MyReviewsComponent(props)
                     <span className={style.othername}>{props.authors}</span>
                 </div>
                 <p className={style.text}>{props.text}</p>
+
                 <Button variant='outlined' color="primary" 
-                            className={style.btn1}>Download full work</Button>
-                <div>
-                    <Button variant='contained' color="primary" onClick={handleClickOpen} 
-                            className={style.btn1}>Add review</Button>
-                    <Dialog 
-                        className={style.mainDialog}
-                        open = {open}
-                        onClose = {handleClose}
-                    >
+                    className={style.btn1}>Download full work</Button>
+                <Button variant='contained' color="primary" onClick={handleClickOpen} 
+                    className={style.btn1}>Add review</Button>
+                    
+                <Dialog 
+                    className={style.mainDialog}
+                    open = {open}
+                    onClose = {handleClose}
+                >
                     <DialogTitle id='alert-dialog-title' className={style.dialogTitle}>{'Add your review'}</DialogTitle>
                     <DialogContent>
                         <Box component='fieldset' mb={3} borderColor='transparent' className={style.range}>
@@ -284,6 +303,27 @@ function MyReviewsComponent(props)
                             className={style.btn1}>Add review</Button>
                     </DialogActions>
                 </Dialog>
+            </div>
+            <div className={style.currentVersion}>
+                <p>
+                    <span>Current version</span>
+                    <span>{date}</span>
+                    <span>gwiazdki</span>
+                </p>
+                <div className={style.review}>
+                <div>
+                    <img src={props.path} className={style.image} alt={props.alternativeText}></img>
+                    <span> Me </span>
+                </div>
+                <div>
+                    <Box component="fieldset" mb={3} max={3} borderColor="transparent">
+                        <Rating name="read-only" value={value} readOnly />
+                    </Box>
+                    <span>{date} {hours}</span>
+                    <span>{props.review}</span>
+                    <Button variant='outlined' color="primary" 
+                        className={style.btn1}>Download review</Button>
+                </div>
                 </div>
             </div>
         </div>
