@@ -188,17 +188,75 @@ function MyReviewsComponent(props)
         },
         currentVersion:
         {
-            width: '100%',
+            width: '75%',
             float: 'left',
             marginTop: '5%',
             textAlign: 'left',
-            border: '1px solid black', 
         },
         review:
         {
             width: '100%',
             float: 'left',
-            border: '1px solid red', 
+        },
+        leftReview:
+        {
+            width: '15%',
+            float: 'left',
+        },
+        rightReview:
+        {
+            width: '80%',
+            float: 'right',
+        },
+        reviewVersion:
+        {
+            float: 'left',
+            paddingRight: '5%',
+            fontSize: '20px',
+            fontWeight: 'bold',
+            paddingBottom: '3.2%',
+            paddingTop: '1%',
+        },
+        data:
+        {
+            float: 'left',
+            color: 'grey',
+            paddingRight: '5%',
+            paddingBottom: '3.4%',
+            paddingTop: '1.3%',
+        },
+        starVersion:
+        {
+            float: 'left',
+            paddingTop: '0.3%',
+            paddingBottom: '2%',
+        },
+        image:
+        {
+            width: '70%',
+            height: 70,
+            borderRadius: '50%',
+            float: 'center',
+            marginLeft: '12%',
+        },
+        me:
+        {
+            width: '100%',
+            float: 'left',
+            textAlign: 'center',
+        },
+        rightDate:
+        {
+            float: 'right',
+            color: 'grey',
+        },
+        textReview:
+        {
+            width: '95%',
+            float: 'left',
+            paddingLeft: '2%',
+            fontSize: '16px',
+            paddingBottom: '2%',
         },
     });
 
@@ -306,24 +364,28 @@ function MyReviewsComponent(props)
             </div>
             <div className={style.currentVersion}>
                 <p>
-                    <span>Current version</span>
-                    <span>{date}</span>
-                    <span>gwiazdki</span>
+                    <span className={style.reviewVersion}>Current version</span>
+                    <span className={style.data}>{date}</span>
+                    <span className={style.starVersion}>
+                        <Box component="fieldset" borderColor="transparent">
+                            <Rating name="read-only" max={3} value={value} readOnly />
+                        </Box>
+                    </span>
                 </p>
                 <div className={style.review}>
-                <div>
-                    <img src={props.path} className={style.image} alt={props.alternativeText}></img>
-                    <span> Me </span>
-                </div>
-                <div>
-                    <Box component="fieldset" mb={3} max={3} borderColor="transparent">
-                        <Rating name="read-only" value={value} readOnly />
-                    </Box>
-                    <span>{date} {hours}</span>
-                    <span>{props.review}</span>
-                    <Button variant='outlined' color="primary" 
-                        className={style.btn1}>Download review</Button>
-                </div>
+                    <div className={style.leftReview}>
+                        <img src={props.path} className={style.image} alt={props.alternativeText}></img>
+                        <span className={style.me}> Me </span>
+                    </div>
+                    <div className={style.rightReview}>
+                        <Box component="fieldset" borderColor="transparent">
+                            <Rating name="read-only" max={3} value={value} readOnly />
+                            <span className={style.rightDate}>{date} {hours}</span>
+                        </Box>
+                        <span className={style.textReview}>{props.review}</span>
+                        <Button variant='outlined' color="primary" 
+                            className={style.btn}>Download review</Button>
+                    </div>
                 </div>
             </div>
         </div>
