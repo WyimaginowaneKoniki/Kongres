@@ -11,7 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import * as yup from "yup";
-import { appendErrors, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import "../App.css";
 
@@ -62,10 +62,17 @@ export default function SignUpForm() {
     lastName: yup
       .string()
       .matches(/^[^0-9]*$/, "Last name shouldn't contain numbers")
-      .required("Required field")
+      .required("Required field"),
+    email: yup
+      .string()
+      .email("Email should have correct format")
+      .required("Required field"),
   });
 
   const { register, handleSubmit, control, errors } = useForm({
+    defaultValues: {
+      email: '',
+    },
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
@@ -115,16 +122,20 @@ export default function SignUpForm() {
           {
             <TextField
               className={style.textField}
+              inputRef={register}
               required
               id="email-signup"
               name="email"
               label="Email"
+              type="email"
               placeholder="email@example.com"
               autoComplete="email"
               InputLabelProps={{
                 shrink: true,
               }}
               variant="outlined"
+              error={!!errors.email}
+              helperText={errors?.email?.message}
             />
             /*
         <TextField
