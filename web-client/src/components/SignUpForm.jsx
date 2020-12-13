@@ -57,11 +57,11 @@ export default function SignUpForm() {
   const schema = yup.object().shape({
     firstName: yup
       .string()
-      .matches(/^[^0-9]*$/, "First name shouldn't contain numbers")
+      .matches(/^[A-Za-z]*$/, "First name should only contain letters")
       .required("Required field"),
     lastName: yup
       .string()
-      .matches(/^[^0-9]*$/, "Last name shouldn't contain numbers")
+      .matches(/^[A-Za-z]*$/, "Last name should only contain letters")
       .required("Required field"),
     email: yup
       .string()
