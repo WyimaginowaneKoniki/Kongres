@@ -72,17 +72,17 @@ function WorkForReviewComponent(props)
             borderRadius: '50%',
             height: 80,
         },
-        lefttitle:
+        leftTitle:
         {
             width: '28%',
             float: 'left',
         },
-        righttitle:
+        rightTitle:
         {
             width: '70%',
             float: 'right',
         },
-        authorname:
+        authorName:
         {
             paddingTop: '5%',
             width: '100%',
@@ -115,12 +115,12 @@ function WorkForReviewComponent(props)
             textAlign: 'left',
             color: 'grey',
         },
-        othername:
+        otherName:
         {
             width: '100%',
             float: 'left',
             textAlign: 'left',
-            marginTop: '12%',
+            marginTop: '6%',
             fontWeight: 'bold',
         },
         text:
@@ -217,6 +217,10 @@ function WorkForReviewComponent(props)
             paddingBottom: '3.2%',
             paddingTop: '1%',
         },
+        labelVersion:
+        {
+            paddingLeft: '10%',
+        },
         data:
         {
             float: 'left',
@@ -228,6 +232,7 @@ function WorkForReviewComponent(props)
         starVersion:
         {
             float: 'left',
+            width: '20%',
             paddingTop: '0.3%',
             paddingBottom: '2%',
         },
@@ -300,18 +305,18 @@ function WorkForReviewComponent(props)
                 <h1 className={style.h1}>{props.title}</h1>
                 <div className={style.author}>
                     <span className={style.shared}>Shared by</span>
-                    <p className={style.lefttitle}>
+                    <p className={style.leftTitle}>
                         <img src={props.path} className={style.photo} alt={props.alternativeText}></img> 
                     </p>
-                    <p className={style.righttitle}>
-                        <span className={style.authorname}>{props.author}</span>
+                    <p className={style.rightTitle}>
+                        <span className={style.authorName}>{props.author}</span>
                         <span className={style.degree}>{props.degree}</span>
                         <span className={style.university}>{props.university}</span>
                     </p>
                 </div>
                 <div className={style.authors}>
                     <span className={style.other}>Other authors</span>
-                    <span className={style.othername}>{props.authors}</span>
+                    <span className={style.otherName}>{props.authors}</span>
                 </div>
                 <p className={style.text}>{props.text}</p>
 
@@ -369,6 +374,7 @@ function WorkForReviewComponent(props)
                     <span className={style.starVersion}>
                         <Box component="fieldset" borderColor="transparent">
                             <Rating name="read-only" max={3} value={value} readOnly />
+                            <span className={style.labelVersion}>{labels[hover !== -1 ? hover : value]} </span>
                         </Box>
                     </span>
                 </p>
@@ -380,6 +386,7 @@ function WorkForReviewComponent(props)
                     <div className={style.rightReview}>
                         <Box component="fieldset" borderColor="transparent">
                             <Rating name="read-only" max={3} value={value} readOnly />
+                            <span className={style.labelVersion}>{labels[hover !== -1 ? hover : value]}</span>
                             <span className={style.rightDate}>{date} {hours}</span>
                         </Box>
                         <span className={style.textReview}>{props.review}</span>
