@@ -2,9 +2,9 @@ import React from 'react';
 import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import picture from '../images/empty-image.png'
-import MyReviewsComponent from '../components/MyReviewsComponent';
+import WorkForReviewComponent from '../components/WorkForReviewComponent';
 
-function MyReviews(props) {
+function WorkForReview(props) {
     const styles = makeStyles ({
         path:
         {
@@ -43,7 +43,7 @@ function MyReviews(props) {
     return(
         <div className={style.main}>
             <p className={style.path}>Scientific works / <span className={style.title}>{scientificWork.title}</span></p>
-            <MyReviewsComponent
+            <WorkForReviewComponent
                 status = {scientificWork.status}
                 currentDate = {scientificWork.currentDate}
                 modificationDate = {scientificWork.modificationDate}
@@ -62,4 +62,4 @@ function MyReviews(props) {
     )
 }
 
-export default MyReviews;
+export default WorkForReview;

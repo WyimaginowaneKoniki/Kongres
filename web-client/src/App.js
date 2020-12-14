@@ -13,7 +13,7 @@ import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
 import ScientificWorks from './pages/scientific-works';
-import MyReviews from './pages/my-reviews';
+import WorkForReview from './pages/work-for-review';
 
 function App() {
     return (
@@ -30,7 +30,7 @@ function App() {
             <Route path="/cookies-policy" component={CookiesPolicy} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/scientific-works" component={ScientificWorks} />
-            <Route path="/my-reviews" component={MyReviews} />
+            <Route path="/work-for-review" component={WorkForReview} />
           </Switch>
         </div>
       </Router>

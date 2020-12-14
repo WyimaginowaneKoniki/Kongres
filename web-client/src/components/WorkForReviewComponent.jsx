@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 
-function MyReviewsComponent(props)
+function WorkForReviewComponent(props)
 {
     const styles = makeStyles({
         main:
@@ -261,9 +261,9 @@ function MyReviewsComponent(props)
     });
 
     const labels = {
-        1: 'to improve',
-        2: 'OK',
-        3: 'excellent'
+        1: 'rejected',
+        2: 'correct',
+        3: 'accepted'
     };
 
     const style = styles();
@@ -392,4 +392,4 @@ function MyReviewsComponent(props)
     )
 }
 
-export default MyReviewsComponent;
+export default WorkForReviewComponent;
