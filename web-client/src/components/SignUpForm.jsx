@@ -80,14 +80,12 @@ export default function SignUpForm() {
       .required("Required field"),
     password: yup
       .string()
-      //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+      .required("Required field")
+      .min(12, "Password must be at least 12 characters long")
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,255}$/,
-        "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special"
-      )
-      .min(12, "Password should be at least 12 characters long")
-      .max(255, "Password should be 255 characters or less")
-      .required("Required field"),
+        /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
+      ),      
     university: yup.string().max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
@@ -204,9 +202,10 @@ export default function SignUpForm() {
               }
             />
             {/*  to do: add helper text */}
-            <FormHelperText id="helper-text-password-signup">
-              {errors?.password?.message}
+            <FormHelperText error={true} id="helper-text-password-signup">
+             {errors?.password?.message}  
             </FormHelperText>
+  
           </FormControl>
           <TextField
             className={style.textField}
