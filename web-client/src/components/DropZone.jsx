@@ -5,7 +5,7 @@ import pdfIcon from '../images/pdf-icon.png';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
-function DropZone() {
+function DropZone({SET_FILE}) {
     const styles = makeStyles({
         container: {
             width: '600px',
@@ -128,7 +128,7 @@ function DropZone() {
             SetFileName(file.name);
             SetFileSize(FileSize(file.size));
             SetDivStyle({display: 'block', textAlign: 'left'})
-            console.log(_file);
+            SET_FILE(_file);
         }
     }
 
@@ -165,6 +165,7 @@ function DropZone() {
         SetFileName(null);
         SetFileSize(null);
         _file = null;
+        SET_FILE(_file);
     }
 
     const OpenDialog = () => {
