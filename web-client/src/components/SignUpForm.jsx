@@ -24,12 +24,14 @@ import "../App.css";
 const styles = makeStyles({
   main: {
     padding: "2%",
+    display: "flex",
   },
   form: {
     display: "flex",
     flexDirection: "column",
+    float: "left",
     textAlign: "left",
-    width: "400px",
+    maxWidth: "400px",
     margin: "16px",
   },
   textField: {
@@ -57,9 +59,27 @@ const styles = makeStyles({
   formHelperText: {
     marginBottom: "32px",
   },
+  heading: {
+    textAlign: "left",
+  },
+  content: {
+    textAlign: "left",
+    display: "block",
+  },
+  btn: {
+    margin: "8px 0px",
+  },
+  columns: {
+    display: "flex",
+  },
+  signInUpOther: {
+    maxWidth: "400px",
+    float: "left",
+    marginLeft: "144px",
+  },
 });
 
-export default function SignUpForm() {
+export default function SignUpForm(props) {
   const [values, setValues] = React.useState({
     specialization: "",
     password: "",
@@ -125,200 +145,209 @@ export default function SignUpForm() {
   return (
     <Container component="main">
       <div className={style.main}>
-        <form
-          className={style.form}
-          noValidate
-          onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
-        >
-          <TextField
-            className={style.textField}
-            inputRef={register}
-            required
-            id="first-name-signup"
-            name="firstName"
-            label="First name"
-            autoComplete="first-name"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            error={!!errors.firstName}
-            helperText={errors?.firstName?.message}
-          />
-          <TextField
-            className={style.textField}
-            inputRef={register}
-            required
-            id="last-name-signup"
-            name="lastName"
-            label="Last name"
-            autoComplete="family-name"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            error={!!errors.lastName}
-            helperText={errors?.lastName?.message}
-          />
-          <TextField
-            className={style.textField}
-            inputRef={register}
-            required
-            id="email-signup"
-            name="email"
-            label="Email"
-            type="email"
-            placeholder="email@example.com"
-            autoComplete="email"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            error={!!errors.email}
-            helperText={errors?.email?.message}
-          />
-          <FormControl
-            className={style.textField}
-            required
-            name="password"
-            variant="outlined"
-            error={!!errors.password}
+        <div classname={style.columns}>
+          <form
+            className={style.form}
+            noValidate
+            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
           >
-            <InputLabel shrink className={style.inputLabel}>
-              Password
-            </InputLabel>
-            <OutlinedInput
+            <TextField
+              className={style.textField}
               inputRef={register}
-              id="password-signup"
-              name="password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              autoComplete="new-password"
-              onChange={handleChange("password")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
+              required
+              id="first-name-signup"
+              name="firstName"
+              label="First name"
+              autoComplete="first-name"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              error={!!errors.firstName}
+              helperText={errors?.firstName?.message}
             />
-            {/*  to do: add helper text and/or strength bar */}
-            <FormHelperText error={true} id="helper-text-password-signup">
-              {errors?.password?.message}
-            </FormHelperText>
-          </FormControl>
-          <TextField
-            className={style.textField}
-            inputRef={register}
-            id="university-signup"
-            name="university"
-            label="University"
-            autoComplete="organization"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            error={!!errors.university}
-            helperText={errors?.university?.message}
-          />
-          <TextField
-            className={style.textField}
-            inputRef={register}
-            id="academic-title-signup"
-            name="academicTitle"
-            label="Academic title"
-            autoComplete="job-title"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            error={!!errors.academicTitle}
-            helperText={errors?.academicTitle?.message}
-          />
-          <FormControl
-            variant="outlined"
-            name="specialization"
-            className={style.formControl}
-            required
-            error={!!errors.specialization}
-          >
-            <InputLabel
-              shrink
-              htmlFor="specialization-signup"
-              className={style.inputLabel}
+            <TextField
+              className={style.textField}
+              inputRef={register}
+              required
+              id="last-name-signup"
+              name="lastName"
+              label="Last name"
+              autoComplete="family-name"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              error={!!errors.lastName}
+              helperText={errors?.lastName?.message}
+            />
+            <TextField
+              className={style.textField}
+              inputRef={register}
+              required
+              id="email-signup"
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="email@example.com"
+              autoComplete="email"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              error={!!errors.email}
+              helperText={errors?.email?.message}
+            />
+            <FormControl
+              className={style.textField}
+              required
+              name="password"
+              variant="outlined"
+              error={!!errors.password}
             >
-              Specialization
-            </InputLabel>
-            <Select
-              displayEmpty
+              <InputLabel shrink className={style.inputLabel}>
+                Password
+              </InputLabel>
+              <OutlinedInput
+                inputRef={register}
+                id="password-signup"
+                name="password"
+                type={values.showPassword ? "text" : "password"}
+                value={values.password}
+                autoComplete="new-password"
+                onChange={handleChange("password")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {/*  to do: add helper text and/or strength bar */}
+              <FormHelperText error={true} id="helper-text-password-signup">
+                {errors?.password?.message}
+              </FormHelperText>
+            </FormControl>
+            <TextField
+              className={style.textField}
+              inputRef={register}
+              id="university-signup"
+              name="university"
+              label="University"
+              autoComplete="organization"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              error={!!errors.university}
+              helperText={errors?.university?.message}
+            />
+            <TextField
+              className={style.textField}
+              inputRef={register}
+              id="academic-title-signup"
+              name="academicTitle"
+              label="Academic title"
+              autoComplete="job-title"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              error={!!errors.academicTitle}
+              helperText={errors?.academicTitle?.message}
+            />
+            <FormControl
+              variant="outlined"
               name="specialization"
-              value={specialization}
-              onChange={handleChangeSelect}
-              input={
-                <OutlinedInput
-                  notched
+              className={style.formControl}
+              required
+              error={!!errors.specialization}
+            >
+              <InputLabel
+                shrink
+                htmlFor="specialization-signup"
+                className={style.inputLabel}
+              >
+                Specialization
+              </InputLabel>
+              <Select
+                displayEmpty
+                name="specialization"
+                value={specialization}
+                onChange={handleChangeSelect}
+                input={
+                  <OutlinedInput
+                    notched
+                    inputRef={register}
+                    name="specialization"
+                    id="specialization-signup"
+                  />
+                }
+              >
+                <MenuItem className={style.MenuItem} value="">
+                  Select
+                </MenuItem>
+                <MenuItem className={style.MenuItem} value={"Computer Science"}>
+                  Computer Science
+                </MenuItem>
+                <MenuItem className={style.MenuItem} value={"Mathematics"}>
+                  Mathematics
+                </MenuItem>
+                <MenuItem className={style.MenuItem} value={"Biology"}>
+                  Biology
+                </MenuItem>
+                <MenuItem className={style.MenuItem} value={"Chemistry"}>
+                  Chemistry
+                </MenuItem>
+                <MenuItem className={style.MenuItem} value={"Psychics"}>
+                  Psychics
+                </MenuItem>
+                <MenuItem className={style.MenuItem} value={"Geography"}>
+                  Geography
+                </MenuItem>
+              </Select>
+            </FormControl>
+            <FormControlLabel
+              className={style.formControlLabel}
+              control={
+                <Checkbox
                   inputRef={register}
-                  name="specialization"
-                  id="specialization-signup"
+                  required
+                  id="acceptance-signup"
+                  name="acceptance"
+                  color="primary"
                 />
               }
+              label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
+              inputRef={register}
+              name="acceptance"
+            />
+            <FormHelperText error className={style.formHelperText}>
+              {errors.acceptance ? errors.acceptance.message : " "}
+            </FormHelperText>
+            <Button
+              className={style.btnSignup}
+              color="primary"
+              type="submit"
+              variant="contained"
             >
-              <MenuItem className={style.MenuItem} value="">
-                Select
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                Computer Science
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                Mathematics
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Biology"}>
-                Biology
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                Chemistry
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Psychics"}>
-                Psychics
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Geography"}>
-                Geography
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <FormControlLabel
-            className={style.formControlLabel}
-            control={
-              <Checkbox
-                inputRef={register}
-                required
-                id="acceptance-signup"
-                name="acceptance"
-                color="primary"
-              />
-            }
-            label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
-            inputRef={register}
-            name="acceptance"
-          />
-          <FormHelperText error className={style.formHelperText}>
-            {errors.acceptance ? errors.acceptance.message : " "}
-          </FormHelperText>
-          <Button
-            className={style.btnSignup}
-            color="primary"
-            type="submit"
-            variant="contained"
-          >
-            Sign up
-          </Button>
-        </form>
+              Sign up
+            </Button>
+          </form>
+          <div className={style.signInUpOther}>
+            <h2 className={style.heading}>{props.heading}</h2>
+            <p className={style.content}>{props.content}</p>
+            <Button variant="outlined" color="primary" classname={style.btn}>
+              {props.btn}
+            </Button>
+          </div>
+        </div>
       </div>
     </Container>
   );
