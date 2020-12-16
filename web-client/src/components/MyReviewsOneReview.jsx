@@ -13,7 +13,9 @@ function MyReviewsOneReview(props)
         },
         h2:
         {
+            width: '90%',
             float: 'left',
+            textAlign: 'left',
             margin: 'auto',
             marginTop: '2%',
         },
