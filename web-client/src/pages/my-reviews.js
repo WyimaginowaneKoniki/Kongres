@@ -1,9 +1,10 @@
 import React from 'react';
 import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
-import ScientificWorksOneWork from '../components/ScientificWorksOneWork'
-import ScientificWorksCategories from '../components/ScientificWorksCategories'
+import MyReviewsOneReview from '../components/MyReviewsOneReview'
+import MyReviewsCategories from '../components/MyReviewsCategories'
 import Search from '../components/Search'
+import picture from '../images/empty-image.png'
 
 function MyReviews(props) {
     const styles = makeStyles({
@@ -43,22 +44,28 @@ function MyReviews(props) {
             data: '30/11/2020',
             authors: 'John Doe, Sam Smith, Ashley Blue',
             text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ',
+            path: picture,
+            author: 'John Doe',
+            modificationDate: '12/12/2020',
         }
     ];
 
-    const reviewList = reviews.map(work =>
-        <ScientificWorksOneWork
-            title = {work.title}
-            categories = {work.categories}
-            data = {work.data}
-            authors = {work.authors}
-            text = {work.text}
-            link = {work.link}
+    const reviewList = reviews.map(review =>
+        <MyReviewsOneReview
+            title = {review.title}
+            categories = {review.categories}
+            data = {review.data}
+            authors = {review.authors}
+            text = {review.text}
+            link = {review.link}
+            path = {review.path}
+            author = {review.author}
+            modificationDate = {review.modificationDate}
         />
     )
 
     const status = ['Waiting for review', 'Reviewed', 'Ended', 'Accepted', 'Rejected'];
-    const statusList = status.map(name => <ScientificWorksCategories name = {name}/>)
+    const statusList = status.map(name => <MyReviewsCategories name = {name}/>)
 
     return(
         <div className={style.main}>
