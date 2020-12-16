@@ -8,6 +8,7 @@ import { DialogActions, DialogContent } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function WorkForReviewComponent(props)
 {
@@ -295,7 +296,9 @@ function WorkForReviewComponent(props)
                 <p>PDF</p>
             </div>
             <div className={style.right}>
-                <span className={style.status}>{props.status}</span>
+                <Tooltip title='Status' placement='top-start'>
+                    <span className={style.status}>{props.status}</span>
+                </Tooltip>
                 <span className={style.date}>
                     <span>{props.currentDate}</span> 
                     <span>&nbsp; (Edited: {props.modificationDate}) &nbsp;</span> 
@@ -372,10 +375,11 @@ function WorkForReviewComponent(props)
                     <span className={style.reviewVersion}>Current version</span>
                     <span className={style.data}>{date}</span>
                     <span className={style.starVersion}>
+                    <Tooltip title={labels[hover !== -1 ? hover : value]} placement='top'>
                         <Box component="fieldset" borderColor="transparent">
                             <Rating name="read-only" max={3} value={value} readOnly />
-                            <span className={style.labelVersion}>{labels[hover !== -1 ? hover : value]} </span>
                         </Box>
+                    </Tooltip>
                     </span>
                 </p>
                 <div className={style.review}>
@@ -384,11 +388,12 @@ function WorkForReviewComponent(props)
                         <span className={style.me}> Me </span>
                     </div>
                     <div className={style.rightReview}>
-                        <Box component="fieldset" borderColor="transparent">
-                            <Rating name="read-only" max={3} value={value} readOnly />
-                            <span className={style.labelVersion}>{labels[hover !== -1 ? hover : value]}</span>
-                            <span className={style.rightDate}>{date} {hours}</span>
-                        </Box>
+                        <Tooltip title={labels[hover !== -1 ? hover : value]} placement='top-start'>
+                            <Box component="fieldset" borderColor="transparent">
+                                <Rating name="read-only" max={3} value={value} readOnly />
+                                <span className={style.rightDate}>{date} {hours}</span>
+                            </Box>
+                        </Tooltip>
                         <span className={style.textReview}>{props.review}</span>
                         <Button variant='outlined' color="primary" 
                             className={style.btn}>Download review</Button>
