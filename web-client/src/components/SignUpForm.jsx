@@ -41,7 +41,7 @@ const styles = makeStyles({
     width: "300px",
   },
   formControlLabel: {
-    marginBottom: "32px",
+    marginBottom: "8px",
   },
   btnSignup: {
     width: "100px",
@@ -54,6 +54,9 @@ const styles = makeStyles({
     padding: "0px 4px",
     marginLeft: "-4px",
   },
+  formHelperText: {
+    marginBottom: "32px",
+  },
 });
 
 export default function SignUpForm() {
@@ -63,6 +66,7 @@ export default function SignUpForm() {
     showPassword: false,
   });
 
+  const [specialization, setSpecialization] = React.useState("");
   const schema = yup.object().shape({
     firstName: yup
       .string()
@@ -85,15 +89,15 @@ export default function SignUpForm() {
       .matches(
         /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
-      ),      
+      ),
     university: yup.string().max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
-    specialization: yup.string().required("Required field"),
+    acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
   });
 
-  const { register, handleSubmit, control, errors } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     defaultValues: {
       email: "",
     },
@@ -113,6 +117,9 @@ export default function SignUpForm() {
     event.preventDefault();
   };
 
+  const handleChangeSelect = (event) => {
+    setSpecialization(event.target.value);
+  };
   const style = styles();
 
   return (
@@ -175,7 +182,6 @@ export default function SignUpForm() {
             required
             name="password"
             variant="outlined"
-            inputRef={register}
             error={!!errors.password}
           >
             <InputLabel shrink className={style.inputLabel}>
@@ -187,6 +193,7 @@ export default function SignUpForm() {
               name="password"
               type={values.showPassword ? "text" : "password"}
               value={values.password}
+              autoComplete="new-password"
               onChange={handleChange("password")}
               endAdornment={
                 <InputAdornment position="end">
@@ -201,11 +208,10 @@ export default function SignUpForm() {
                 </InputAdornment>
               }
             />
-            {/*  to do: add helper text */}
+            {/*  to do: add helper text and/or strength bar */}
             <FormHelperText error={true} id="helper-text-password-signup">
-             {errors?.password?.message}  
+              {errors?.password?.message}
             </FormHelperText>
-  
           </FormControl>
           <TextField
             className={style.textField}
@@ -240,7 +246,7 @@ export default function SignUpForm() {
             name="specialization"
             className={style.formControl}
             required
-            inputRef={register}
+            error={!!errors.specialization}
           >
             <InputLabel
               shrink
@@ -251,10 +257,16 @@ export default function SignUpForm() {
             </InputLabel>
             <Select
               displayEmpty
-              value={values.specialization}
-              // onChange={handleChange}
+              name="specialization"
+              value={specialization}
+              onChange={handleChangeSelect}
               input={
-                <OutlinedInput notched name="specialization" id="specialization-signup" />
+                <OutlinedInput
+                  notched
+                  inputRef={register}
+                  name="specialization"
+                  id="specialization-signup"
+                />
               }
             >
               <MenuItem className={style.MenuItem} value="">
@@ -286,13 +298,18 @@ export default function SignUpForm() {
               <Checkbox
                 inputRef={register}
                 required
+                id="acceptance-signup"
                 name="acceptance"
                 color="primary"
-                defaultValue={false}
               />
             }
             label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
-          />{" "}
+            inputRef={register}
+            name="acceptance"
+          />
+          <FormHelperText error className={style.formHelperText}>
+            {errors.acceptance ? errors.acceptance.message : " "}
+          </FormHelperText>
           <Button
             className={style.btnSignup}
             color="primary"
