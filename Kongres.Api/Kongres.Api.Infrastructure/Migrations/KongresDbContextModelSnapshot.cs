@@ -65,12 +65,17 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<byte>("Rating")
                         .HasColumnType("tinyint unsigned");
 
-                    b.Property<uint?>("ReviewersScienceWorkId")
+                    b.Property<uint?>("ReviewerId")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<uint?>("VersionOfScienceWorkId")
                         .HasColumnType("int unsigned");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReviewersScienceWorkId");
+                    b.HasIndex("ReviewerId");
+
+                    b.HasIndex("VersionOfScienceWorkId");
 
                     b.ToTable("Reviews");
                 });
@@ -94,6 +99,23 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ReviewersScienceWorks");
+                });
+
+            modelBuilder.Entity("Kongres.Api.Domain.Entities.Role", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWork", b =>
@@ -127,7 +149,7 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.ToTable("ScienceWorks");
                 });
 
-            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkInfo", b =>
+            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkFile", b =>
                 {
                     b.Property<uint>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,7 +171,7 @@ namespace Kongres.Api.Infrastructure.Migrations
 
                     b.HasIndex("ScienceWorkId");
 
-                    b.ToTable("ScienceWorkInfos");
+                    b.ToTable("ScienceWorkFiles");
                 });
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.User", b =>
@@ -167,7 +189,10 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Photo")
@@ -182,12 +207,33 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<string>("University")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<byte>("UserType")
-                        .HasColumnType("tinyint unsigned");
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Kongres.Api.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned");
+
+                    b.Property<uint?>("RoleId")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<uint?>("UserId")
+                        .HasColumnType("int unsigned");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.Answer", b =>
@@ -203,9 +249,13 @@ namespace Kongres.Api.Infrastructure.Migrations
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.Review", b =>
                 {
-                    b.HasOne("Kongres.Api.Domain.Entities.ReviewersScienceWork", "ReviewersScienceWork")
+                    b.HasOne("Kongres.Api.Domain.Entities.User", "Reviewer")
                         .WithMany()
-                        .HasForeignKey("ReviewersScienceWorkId");
+                        .HasForeignKey("ReviewerId");
+
+                    b.HasOne("Kongres.Api.Domain.Entities.ScienceWorkFile", "VersionOfScienceWork")
+                        .WithMany()
+                        .HasForeignKey("VersionOfScienceWorkId");
                 });
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.ReviewersScienceWork", b =>
@@ -226,11 +276,22 @@ namespace Kongres.Api.Infrastructure.Migrations
                         .HasForeignKey("MainAuthorId");
                 });
 
-            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkInfo", b =>
+            modelBuilder.Entity("Kongres.Api.Domain.Entities.ScienceWorkFile", b =>
                 {
                     b.HasOne("Kongres.Api.Domain.Entities.ScienceWork", "ScienceWork")
                         .WithMany()
                         .HasForeignKey("ScienceWorkId");
+                });
+
+            modelBuilder.Entity("Kongres.Api.Domain.Entities.UserRole", b =>
+                {
+                    b.HasOne("Kongres.Api.Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.HasOne("Kongres.Api.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
