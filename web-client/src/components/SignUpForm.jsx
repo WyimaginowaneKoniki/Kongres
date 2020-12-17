@@ -47,6 +47,7 @@ const styles = makeStyles({
   },
   btnSignup: {
     width: "100px",
+    textTransform: "none",
   },
   menuItem: {
     textAlign: "left",
@@ -66,8 +67,9 @@ const styles = makeStyles({
     textAlign: "left",
     display: "block",
   },
-  btn: {
+  btnSignIn: {
     margin: "8px 0px",
+    textTransform: "none",
   },
   columns: {
     display: "flex",
@@ -151,6 +153,7 @@ export default function SignUpForm(props) {
             noValidate
             onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
           >
+            {/* FirstName Input */}
             <TextField
               className={style.textField}
               inputRef={register}
@@ -166,6 +169,8 @@ export default function SignUpForm(props) {
               error={!!errors.firstName}
               helperText={errors?.firstName?.message}
             />
+
+            {/* LastName Input */}
             <TextField
               className={style.textField}
               inputRef={register}
@@ -181,6 +186,8 @@ export default function SignUpForm(props) {
               error={!!errors.lastName}
               helperText={errors?.lastName?.message}
             />
+
+            {/* Email Input */}
             <TextField
               className={style.textField}
               inputRef={register}
@@ -198,6 +205,8 @@ export default function SignUpForm(props) {
               error={!!errors.email}
               helperText={errors?.email?.message}
             />
+
+            {/* Password Input */}
             <FormControl
               className={style.textField}
               required
@@ -234,6 +243,8 @@ export default function SignUpForm(props) {
                 {errors?.password?.message}
               </FormHelperText>
             </FormControl>
+
+            {/* University Input */}
             <TextField
               className={style.textField}
               inputRef={register}
@@ -248,6 +259,8 @@ export default function SignUpForm(props) {
               error={!!errors.university}
               helperText={errors?.university?.message}
             />
+
+            {/* AcademicTitle Input */}
             <TextField
               className={style.textField}
               inputRef={register}
@@ -262,6 +275,8 @@ export default function SignUpForm(props) {
               error={!!errors.academicTitle}
               helperText={errors?.academicTitle?.message}
             />
+
+            {/* Specialization Input - Select*/}
             <FormControl
               variant="outlined"
               name="specialization"
@@ -313,6 +328,8 @@ export default function SignUpForm(props) {
                 </MenuItem>
               </Select>
             </FormControl>
+
+            {/* Acceptance - Rules of Conference */}
             <FormControlLabel
               className={style.formControlLabel}
               control={
@@ -331,6 +348,8 @@ export default function SignUpForm(props) {
             <FormHelperText error className={style.formHelperText}>
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
+
+            {/* Button Submit */}
             <Button
               className={style.btnSignup}
               color="primary"
@@ -340,10 +359,12 @@ export default function SignUpForm(props) {
               Sign up
             </Button>
           </form>
+
+          {/* Info about signing in */}
           <div className={style.signInUpOther}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Button variant="outlined" color="primary" classname={style.btn}>
+            <Button variant="outlined" color="primary" className={style.btnSignIn}>
               {props.btn}
             </Button>
           </div>
