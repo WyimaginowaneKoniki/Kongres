@@ -27,9 +27,7 @@ function MyReviewsOneReview(props)
         author:
         {
             float: 'left',
-            textAlign: 'left',
-            margin: 'auto',
-            marginTop: '1%',
+            fontSize: '12px',
         },
         photo:
         {
@@ -53,11 +51,18 @@ function MyReviewsOneReview(props)
             color: '#3f51b5', 
             paddingRight: '2.5%',
         },
+        dot:
+        {
+            float: 'left',
+            fontSize: '28px',
+            color: '#DCDCDC', 
+            paddingRight: '2.5%',
+        },
         date:
         {
             float: 'left',
             fontSize: '12px',
-            paddingRight: '0.5%',
+            paddingRight: '2.5%',
         },
         text:
         {
@@ -93,20 +98,18 @@ function MyReviewsOneReview(props)
 
     const style = styles();
 
-    //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download
+    //https://www.xspdf.com/resolution/50694881.html <- information for button download
     return(
         <div className={style.main}>
             <Button variant='outlined' color="primary" 
                         className={style.btn1}>Waiting for review</Button>
             <h2 className={style.h2}>{props.title}</h2>
-            <p className={style.author}>
-                <img src={props.path} className={style.photo} alt={props.alternativeText}></img> 
-                <span className={style.name}>{props.author}</span>
-            </p>
             <div className={style.panel}>
                 <a href={props.link}><p className={style.category}>{props.categories}</p></a>
+                <span className={style.dot}>&bull;</span>
                 <p className={style.date}>{props.data}</p>
-                <p className={style.date}>(Edited: {props.modificationDate})</p>
+                <span className={style.dot}>&bull;</span>
+                <p className={style.author}>{props.authors}</p>
             </div>
             <span className={style.text}>{props.text}</span>
             <div className={style.buttons}>
