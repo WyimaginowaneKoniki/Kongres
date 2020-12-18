@@ -107,7 +107,7 @@ function MyReviewsOneReview(props)
             <div className={style.panel}>
                 <a href={props.link}><p className={style.category}>{props.categories}</p></a>
                 <span className={style.dot}>&bull;</span>
-                <p className={style.date}>{props.data}</p>
+                <p className={style.date}>{props.data} (Edited: {props.modificationDate})</p>
                 <span className={style.dot}>&bull;</span>
                 <p className={style.author}>{props.authors}</p>
             </div>
