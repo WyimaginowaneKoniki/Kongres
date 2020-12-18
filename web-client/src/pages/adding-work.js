@@ -79,6 +79,15 @@ function AddingWork(props) {
     console.log(_file);
   };
 
+  const [values, setValues] = React.useState({
+    title: "",
+    description: "",
+  });
+  const [counts, setCounts] = React.useState({
+    title: 0,
+    description: 0,
+  });
+
   const [specialization, setSpecialization] = React.useState("");
   const schema = yup.object().shape({
     title: yup
@@ -88,10 +97,7 @@ function AddingWork(props) {
       .required("Required field"),
     description: yup
       .string()
-      .matches(
-        /^[A-Za-z0-9]*$/,
-        "Description should only contain letters and digits"
-      )
+      .matches(/^[A-Za-z0-9]*$/, "Description should only contain letters and digits")
       .max(255, "Description should be 255 characters or less")
       .required("Required field"),
   });
@@ -100,6 +106,11 @@ function AddingWork(props) {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+    setCounts({ ...counts, [prop]: event.target.value.length });
+  };
 
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
@@ -129,7 +140,11 @@ function AddingWork(props) {
                 inputRef={addingWork}
                 id="title-adding-work"
                 name="title"
-                // onChange={handleChange("title")}
+                value={values.title}
+                onChange={handleChange("title")}
+                endAdornment={
+                  <InputAdornment position="end">{counts.title}</InputAdornment>
+                }
               />
               <FormHelperText error={true} id="helper-text-title-adding-work">
                 {errors?.title?.message}
@@ -153,7 +168,10 @@ function AddingWork(props) {
                 name="description"
                 multiline
                 rows={4}
-                // onChange={handleChange("description")}
+                onChange={handleChange("description")}
+                endAdornment={
+                  <InputAdornment position="end">{counts.description}</InputAdornment>
+                }
               />
               <FormHelperText
                 error={true}
@@ -221,7 +239,7 @@ function AddingWork(props) {
               color="primary"
               type="submit"
               variant="contained"
-              onClick={buttonClick}
+              // onClick={buttonClick}
             >
               Add work
             </Button>
