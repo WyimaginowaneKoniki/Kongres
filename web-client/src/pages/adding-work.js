@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 import "../App.css";
 import DropZone from "../components/DropZone";
 import Button from "@material-ui/core/Button";
@@ -10,10 +11,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Container, IconButton } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 const { useState } = React;
 
 function AddingWork(props) {
@@ -47,7 +49,7 @@ function AddingWork(props) {
     },
     formControl: {
       marginBottom: "32px",
-      width: "300px",
+      width: "100%",
     },
     inputLabel: {
       backgroundColor: "white",
@@ -59,6 +61,10 @@ function AddingWork(props) {
       // marginRight: '5%',
       float: "right",
       textTransform: "none",
+    },
+    textFieldAuthor: {
+      marginBottom: "10px",
+      width: "100%",
     },
   });
 
@@ -84,6 +90,8 @@ function AddingWork(props) {
 
   const maxTitleSize = 127;
   const maxDescriptionSize = 255;
+  const maxAuthors = 9;
+  const maxAuthorName = 53;
 
   const [specialization, setSpecialization] = React.useState("");
   const schema = yup.object().shape({
@@ -103,6 +111,11 @@ function AddingWork(props) {
         `Description should be ${maxDescriptionSize} characters or less`
       )
       .required("Required field"),
+    authors: yup
+      .string()
+      .matches(/^[A-Za-z]*$/, "Author's name should only contain letters")
+      .max(maxAuthorName, `Author's name should be ${maxAuthorName} characters or less`)
+
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -118,6 +131,78 @@ function AddingWork(props) {
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
   };
+
+  const [authors, setAuthor] = useState([{ id: uuidv4()}]);
+
+  const handleAddField = () => {
+    console.log("authors", authors);
+
+    // Get ID of last TextField with Author and check, if this input is not empty
+    const a = authors[authors.length - 1];
+    const last = document.getElementById("authors-" + a.id);
+    if(last.value != "" && authors.length < maxAuthors)
+      setAuthor([...authors, { id: uuidv4()}]);
+  };
+
+  const handleChangeInput = (id, event) => {
+    const newAuthorField = authors.map((i) => {
+      if (id === i.id) {
+        i[event.target.name] = event.target.value;
+      }
+      return i;
+    });
+
+    setAuthor(newAuthorField);
+  };
+
+  const authorList = authors.map((a) => {
+    if (authors[authors.length - 1].id == a.id)
+      return (
+        <div key={a.id}>
+          <TextField
+            className={style.textFieldAuthor}
+            inputRef={register}
+            id={"authors-" + a.id}
+            name="authors"
+            autoComplete="authors"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleAddField}>
+                    <AddIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            onChange={(event) => handleChangeInput(a.id, event)}
+            variant="outlined"
+            error={!!errors.authors}
+            helperText={errors?.authors?.message}
+          />
+        </div>
+      );
+    return (
+      <div key={a.id}>
+        <TextField
+          className={style.textFieldAuthor}
+          inputRef={register}
+          id={"authors-" + a.id}
+          name="authors"
+          autoComplete="authors"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={(event) => handleChangeInput(a.id, event)}
+          variant="outlined"
+          error={!!errors.authors}
+          helperText={errors?.authors?.message}
+        />
+      </div>
+    );
+  });
 
   return (
     <div className={style.main}>
@@ -173,6 +258,7 @@ function AddingWork(props) {
               }}
               multiline
               rows={4}
+              placeholder="Add text"
               onChange={handleChange("description")}
               variant="outlined"
               error={!!errors.description}
@@ -231,6 +317,23 @@ function AddingWork(props) {
                 </MenuItem>
               </Select>
             </FormControl>
+
+            {/* Authors */}
+            <TextField
+              className={style.textFieldAuthor}
+              inputRef={register}
+              id="authors-adding-work"
+              name="authors"
+              label="Authors"
+              autoComplete="authors"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value="John Doe"
+              variant="outlined"
+            />
+
+            {authorList}
 
             <Button
               className={style.addButton}
