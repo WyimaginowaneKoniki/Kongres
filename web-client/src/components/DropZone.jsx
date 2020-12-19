@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 function DropZone({SET_FILE}) {
     const styles = makeStyles({
         container: {
-            width: '600px',
+            width: '550px',
         },
         dropContainer: {
             margin: '0px',

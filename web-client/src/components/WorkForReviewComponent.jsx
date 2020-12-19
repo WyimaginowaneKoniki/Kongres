@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import Tooltip from '@material-ui/core/Tooltip';
+import DropZone from "../components/DropZone";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -144,6 +145,7 @@ function WorkForReviewComponent(props)
             textTransform: 'none',
             marginLeft: '5%',
             float: 'left',
+            marginBottom: '5%',
         },
         mainDialog:
         {
@@ -156,7 +158,7 @@ function WorkForReviewComponent(props)
         },
         range:
         {
-            width: '100%',
+            width: '99%',
             textAlign: 'center',
             float: 'center',
             margin: 'auto',
@@ -179,9 +181,9 @@ function WorkForReviewComponent(props)
         {
             width: '100%',
             textAlign: 'center',
-            fontSize: '14px',
-            paddingTop: '10%',
-            paddingBottom: '5%',
+            fontSize: '16px',
+            paddingTop: '2.5%',
+            paddingBottom: '2.5%',
         },
         textField:
         {
@@ -282,6 +284,11 @@ function WorkForReviewComponent(props)
     let hours = `${d.getHours()}:${d.getMinutes()}`;
     let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
 
+    const [_file, SetFile] = React.useState(null);
+    const passFile = (f) => {
+        SetFile(f);
+    };
+
     const [values, setValues] = React.useState({
         commit: "",
       });
@@ -318,7 +325,7 @@ function WorkForReviewComponent(props)
             maxCommentSize,
             `Comment should be ${maxCommentSize} characters or less`
           )
-        .required("Required field"),
+        .required("Required field"), //sprawdzanie czy comm czy file
     });
 
     const { register, handleSubmit , errors } = useForm({
@@ -376,59 +383,65 @@ function WorkForReviewComponent(props)
                     open = {open}
                     onClose = {handleClose}
                 >
-                    <DialogTitle id='alert-dialog-title' className={style.dialogTitle}>{'Add your review'}</DialogTitle>
-                    <DialogContent>
-                        <Box component='fieldset' mb={3} borderColor='transparent' className={style.range}>
-                            <Typography component='legend' className={style.grade}>Grade:</Typography>
-                            <Rating className={style.stars}
-                                max={3}
-                                value={value}
-                                onChange={(event, newValue) => {
-                                    setValue(newValue);
-                                }}
-                                onChangeActive={(event, newHover) => {
-                                    setHover(newHover);
-                                }}
-                            />
-                            {value !== null && <Box ml={2} className={style.label}>{labels[hover !== -1 ? hover : value]}</Box>}
-                        </Box>
-                        <p className={style.info}>Review must contain comment or/and file</p>
-                    </DialogContent>
-                    <DialogContent>
-                    <TextField
-                        className={style.textField}
-                        inputRef={register}
-                        required
-                        id="comment-adding-work"
-                        name="comment"
-                        label="Comment"
-                        autoComplete="comment"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    {counts.comment}/{maxCommentSize}
-                                </InputAdornment>
-                            ),
-                        }}
-                        multiline
-                        rows={5}
-                        placeholder="Add text"
-                        onChange={handleChange("comment")}
-                        variant="outlined"
-                        error={!!errors.comment}
-                        helperText={errors?.comment?.message}
-                    />
-                    </DialogContent>
-                    <DialogContent>
-                        <p> Drag&Drop</p>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant='contained' color="primary"
-                            className={style.btn1}>Add review</Button>
-                    </DialogActions>
+                    <form
+                        className={style.form}
+                        noValidate
+                        onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+                    >
+                        <DialogTitle id='alert-dialog-title' className={style.dialogTitle}>{'Add your review'}</DialogTitle>
+                        <DialogContent>
+                            <Box component='fieldset' mb={3} borderColor='transparent' className={style.range}>
+                                <Typography component='legend' className={style.grade}>Grade:</Typography>
+                                <Rating className={style.stars}
+                                    max={3}
+                                    value={value}
+                                    onChange={(event, newValue) => {
+                                        setValue(newValue);
+                                    }}
+                                    onChangeActive={(event, newHover) => {
+                                        setHover(newHover);
+                                    }}
+                                />
+                                {value !== null && <Box ml={2} className={style.label}>{labels[hover !== -1 ? hover : value]}</Box>}
+                            </Box>
+                            <p className={style.info}>Review must contain comment or/and file</p>
+                        </DialogContent>
+                        <DialogContent>
+                        <TextField
+                            className={style.textField}
+                            inputRef={register}
+                            required
+                            id="comment-adding-work"
+                            name="comment"
+                            label="Comment"
+                            autoComplete="comment"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        {counts.comment}/{maxCommentSize}
+                                    </InputAdornment>
+                                ),
+                            }}
+                            multiline
+                            rows={6}
+                            placeholder="Add text"
+                            onChange={handleChange("comment")}
+                            variant="outlined"
+                            error={!!errors.comment}
+                            helperText={errors?.comment?.message}
+                        />
+                        </DialogContent>
+                        <DialogContent className={style.drag}>
+                            <DropZone SET_FILE={passFile} />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button variant='contained' color="primary"
+                                className={style.btn1} type='submit'>Add review</Button>
+                        </DialogActions>
+                    </form>
                 </Dialog>
             </div>
 
