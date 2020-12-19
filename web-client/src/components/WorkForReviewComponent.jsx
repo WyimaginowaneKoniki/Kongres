@@ -4,11 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { DialogActions, DialogContent } from '@material-ui/core';
+import { DialogActions, DialogContent, TextField } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import Tooltip from '@material-ui/core/Tooltip';
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 function WorkForReviewComponent(props)
 {
@@ -143,7 +147,7 @@ function WorkForReviewComponent(props)
         },
         mainDialog:
         {
-            margin: 'auto',
+            maxWidth: '100%',
         },
         dialogTitle:
         {
@@ -152,6 +156,7 @@ function WorkForReviewComponent(props)
         },
         range:
         {
+            width: '100%',
             textAlign: 'center',
             float: 'center',
             margin: 'auto',
@@ -173,19 +178,14 @@ function WorkForReviewComponent(props)
         info:
         {
             width: '100%',
-            float: 'center',
-            margin: 'auto',
             textAlign: 'center',
             fontSize: '14px',
+            paddingTop: '10%',
+            paddingBottom: '5%',
         },
-        textArea:
+        textField:
         {
-            resize: 'none',
-            border: '2px solid grey',
-            padding: '2%',
-            lineHeight: '1.5',
-            width: '95%',
-            height: 120,
+            width: "100%",
         },
         currentVersion:
         {
@@ -282,6 +282,10 @@ function WorkForReviewComponent(props)
     let hours = `${d.getHours()}:${d.getMinutes()}`;
     let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
 
+    const [values, setValues] = React.useState({
+        commit: "",
+      });
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -290,8 +294,42 @@ function WorkForReviewComponent(props)
         setOpen(false);
     };
 
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+        setCounts({ ...counts, [prop]: event.target.value.length });
+      };
+
+    //Form
+    const maxCommentSize = 255;
+
+    const [counts, setCounts] = React.useState({
+        title: 0,
+        description: 0,
+      });
+
+    const schema = yup.object().shape({
+        comment: yup
+        .string()
+        .matches(
+            /^[A-Za-z0-9]*$/,
+            "Comment should only contain letters and digits"    
+        )
+        .max(
+            maxCommentSize,
+            `Comment should be ${maxCommentSize} characters or less`
+          )
+        .required("Required field"),
+    });
+
+    const { register, handleSubmit , errors } = useForm({
+        mode: "onBlur",
+        resolver: yupResolver(schema)
+    });
+
     return(
         <div className={style.main}>
+
+            {/*First Page PDF */}
             <div className={style.left}>
                 <p>PDF</p>
             </div>
@@ -299,6 +337,8 @@ function WorkForReviewComponent(props)
                 <Tooltip title='Status' placement='top-start'>
                     <span className={style.status}>{props.status}</span>
                 </Tooltip>
+
+                {/* Panel includes status, date add work, date modification and category  */}
                 <span className={style.date}>
                     <span>{props.currentDate}</span> 
                     <span>&nbsp; (Edited: {props.modificationDate}) &nbsp;</span> 
@@ -306,6 +346,8 @@ function WorkForReviewComponent(props)
                             className={style.btn}>{props.name}</Button> </span> 
                 </span>
                 <h1 className={style.h1}>{props.title}</h1>
+
+                {/* Panel includes photo, name author, degree, univeristy */}
                 <div className={style.author}>
                     <span className={style.shared}>Shared by</span>
                     <p className={style.leftTitle}>
@@ -327,7 +369,8 @@ function WorkForReviewComponent(props)
                     className={style.btn1}>Download full work</Button>
                 <Button variant='contained' color="primary" onClick={handleClickOpen} 
                     className={style.btn1}>Add review</Button>
-                    
+
+                {/* All Dialog in Popup */}    
                 <Dialog 
                     className={style.mainDialog}
                     open = {open}
@@ -352,24 +395,44 @@ function WorkForReviewComponent(props)
                         <p className={style.info}>Review must contain comment or/and file</p>
                     </DialogContent>
                     <DialogContent>
-                        <p>Comment</p>
-                        <textarea
-                            className={style.textArea} 
-                            placeholder='Add comment'
-                            cols="50"
-                            rows = '10px'
-                            maxLength='255'
-                            />
+                    <TextField
+                        className={style.textField}
+                        inputRef={register}
+                        required
+                        id="comment-adding-work"
+                        name="comment"
+                        label="Comment"
+                        autoComplete="comment"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {counts.comment}/{maxCommentSize}
+                                </InputAdornment>
+                            ),
+                        }}
+                        multiline
+                        rows={5}
+                        placeholder="Add text"
+                        onChange={handleChange("comment")}
+                        variant="outlined"
+                        error={!!errors.comment}
+                        helperText={errors?.comment?.message}
+                    />
                     </DialogContent>
                     <DialogContent>
                         <p> Drag&Drop</p>
                     </DialogContent>
                     <DialogActions>
-                        <Button variant='contained' color="primary" onClick={handleClose}
+                        <Button variant='contained' color="primary"
                             className={style.btn1}>Add review</Button>
                     </DialogActions>
                 </Dialog>
             </div>
+
+            {/*Review*/}
             <div className={style.currentVersion}>
                 <p>
                     <span className={style.reviewVersion}>Current version</span>
