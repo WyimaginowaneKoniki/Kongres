@@ -145,7 +145,7 @@ function WorkForReviewComponent(props)
             textTransform: 'none',
             marginLeft: '5%',
             float: 'left',
-            marginBottom: '5%',
+            marginBottom: '2%',
         },
         mainDialog:
         {
@@ -181,9 +181,9 @@ function WorkForReviewComponent(props)
         {
             width: '100%',
             textAlign: 'center',
-            fontSize: '16px',
-            paddingTop: '2.5%',
-            paddingBottom: '2.5%',
+            fontSize: '14px',
+            margin: 'auto',
+            paddingTop: '1%',
         },
         textField:
         {
@@ -295,6 +295,7 @@ function WorkForReviewComponent(props)
 
     const handleClickOpen = () => {
         setOpen(true);
+        counts.comment = 0
     };
 
     const handleClose = () => {
@@ -312,9 +313,18 @@ function WorkForReviewComponent(props)
     const [counts, setCounts] = React.useState({
         title: 0,
         description: 0,
-      });
+    });
 
     const schema = yup.object().shape({
+        stars: yup
+        .string(),
+        //.required('Review must contain rating'),
+        file: yup
+        .string()
+        .when('stars', (stars, schema) => {
+            if(value === null)
+                return yup.string().required('Review must contain rating')
+        }),
         comment: yup
         .string()
         .matches(
@@ -324,8 +334,13 @@ function WorkForReviewComponent(props)
         .max(
             maxCommentSize,
             `Comment should be ${maxCommentSize} characters or less`
-          )
-        .required("Required field"), //sprawdzanie czy comm czy file
+        )
+        .when('file', (file, schema) => {
+            if(_file === null)
+                return yup.string().required('Review must contain comment or/and file')
+            if(value == null)
+                return yup.string().required('Review must contain rating')
+        })
     });
 
     const { register, handleSubmit , errors } = useForm({
@@ -401,6 +416,10 @@ function WorkForReviewComponent(props)
                                     onChangeActive={(event, newHover) => {
                                         setHover(newHover);
                                     }}
+                                    inputRef={register}
+                                    required
+                                    //error={!!errors.comment}
+                                    //helperText={errors?.comment?.message}
                                 />
                                 {value !== null && <Box ml={2} className={style.label}>{labels[hover !== -1 ? hover : value]}</Box>}
                             </Box>
@@ -411,7 +430,7 @@ function WorkForReviewComponent(props)
                             className={style.textField}
                             inputRef={register}
                             required
-                            id="comment-adding-work"
+                            id="comment-work-for-review"
                             name="comment"
                             label="Comment"
                             autoComplete="comment"
@@ -435,7 +454,16 @@ function WorkForReviewComponent(props)
                         />
                         </DialogContent>
                         <DialogContent className={style.drag}>
-                            <DropZone SET_FILE={passFile} />
+                            <DropZone SET_FILE={passFile}
+                                inputRef={register}
+                                required
+                                //id="file-work-for-review"
+                                //name="file"
+                                //label="File"
+                                //autoComplete="file"
+                                error={!!errors.comment}
+                                helperText={errors?.comment?.message}
+                            />
                         </DialogContent>
                         <DialogActions>
                             <Button variant='contained' color="primary"
