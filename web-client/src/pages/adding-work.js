@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container, IconButton } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from '@material-ui/icons/Remove';
 const { useState } = React;
 
 function AddingWork(props) {
@@ -144,6 +145,12 @@ function AddingWork(props) {
       setAuthor([...authors, { id: uuidv4()}]);
   };
 
+  const handleRemoveFields = (id) => {
+    const values  = [...authors];
+    values.splice(values.findIndex(value => value.id === id), 1);
+    setAuthor(values);
+  }
+
   const handleChangeInput = (id, event) => {
     const newAuthorField = authors.map((i) => {
       if (id === i.id) {
@@ -195,6 +202,15 @@ function AddingWork(props) {
           InputLabelProps={{
             shrink: true,
           }}
+          InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => handleRemoveFields(a.id)}>
+                    <RemoveIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           onChange={(event) => handleChangeInput(a.id, event)}
           variant="outlined"
           error={!!errors.authors}
