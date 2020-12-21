@@ -316,15 +316,8 @@ function WorkForReviewComponent(props)
     });
 
     const schema = yup.object().shape({
-        stars: yup
-        .string(),
-        //.required('Review must contain rating'),
         file: yup
-        .string()
-        .when('stars', (stars, schema) => {
-            if(value === null)
-                return yup.string().required('Review must contain rating')
-        }),
+        .string(),
         comment: yup
         .string()
         .matches(
@@ -338,8 +331,8 @@ function WorkForReviewComponent(props)
         .when('file', (file, schema) => {
             if(_file === null)
                 return yup.string().required('Review must contain comment or/and file')
-            if(value == null)
-                return yup.string().required('Review must contain rating')
+            // if(value == null)
+            //     return yup.string().required('Review must contain rating')
         })
     });
 
@@ -411,15 +404,12 @@ function WorkForReviewComponent(props)
                                     max={3}
                                     value={value}
                                     onChange={(event, newValue) => {
-                                        setValue(newValue);
+                                        if(newValue !== null)
+                                            setValue(newValue);
                                     }}
                                     onChangeActive={(event, newHover) => {
                                         setHover(newHover);
                                     }}
-                                    inputRef={register}
-                                    required
-                                    //error={!!errors.comment}
-                                    //helperText={errors?.comment?.message}
                                 />
                                 {value !== null && <Box ml={2} className={style.label}>{labels[hover !== -1 ? hover : value]}</Box>}
                             </Box>
@@ -461,8 +451,8 @@ function WorkForReviewComponent(props)
                                 //name="file"
                                 //label="File"
                                 //autoComplete="file"
-                                error={!!errors.comment}
-                                helperText={errors?.comment?.message}
+                                //error={!!errors.comment}
+                                //helperText={errors?.comment?.message}
                             />
                         </DialogContent>
                         <DialogActions>
