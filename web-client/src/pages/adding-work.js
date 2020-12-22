@@ -1,5 +1,4 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import "../App.css";
 import DropZone from "../components/DropZone";
 import Button from "@material-ui/core/Button";
@@ -14,9 +13,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Container, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from '@material-ui/icons/Remove';
+import RemoveIcon from "@material-ui/icons/Remove";
 const { useState } = React;
 
 function AddingWork(props) {
@@ -113,13 +112,22 @@ function AddingWork(props) {
       )
       .required("Required field"),
     authors: yup
-      .string()
-      .matches(/^[A-Za-z]*$/, "Author's name should only contain letters")
-      .max(maxAuthorName, `Author's name should be ${maxAuthorName} characters or less`)
-
+      .array()
+      .of(
+        yup.object().shape({
+          name: yup
+            .string()
+            .matches(/^[A-Za-z]*$/, "Author's name should only contain letters")
+            .max(
+              maxAuthorName,
+              `Author's name should be ${maxAuthorName} characters or less`
+            ),
+        })
+      )
+      .max(maxAuthors, "You need at least three friends"),
   });
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, getValues, setValue } = useForm({
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
@@ -133,90 +141,76 @@ function AddingWork(props) {
     setSpecialization(event.target.value);
   };
 
-  const [authors, setAuthor] = useState([{ id: uuidv4()}]);
+  // based on: 
+  // https://codesandbox.io/s/field-array-validation-with-yup-vdfss?file=/src/friendsSchema.js
+  const [authors, setAuthors] = useState([{ name: "" }]);
 
-  const handleAddField = () => {
-    console.log("authors", authors);
-
-    // Get ID of last TextField with Author and check, if this input is not empty
-    const a = authors[authors.length - 1];
-    const last = document.getElementById("authors-" + a.id);
-    if(last.value != "" && authors.length < maxAuthors)
-      setAuthor([...authors, { id: uuidv4()}]);
+  const addAuthor = () => {
+    if (authors.length !== maxAuthors) setAuthors([...authors, { name: "" }]);
   };
 
-  const handleRemoveFields = (id) => {
-    const values  = [...authors];
-    values.splice(values.findIndex(value => value.id === id), 1);
-    setAuthor(values);
-  }
+  const removeAuthor = (index) => () => {
+    // get values
+    const { authors } = getValues({ nest: true });
 
-  const handleChangeInput = (id, event) => {
-    const newAuthorField = authors.map((i) => {
-      if (id === i.id) {
-        i[event.target.name] = event.target.value;
-      }
-      return i;
-    });
+    // create a copy
+    const newAuthors = [...authors];
 
-    setAuthor(newAuthorField);
+    // remove by index
+    newAuthors.splice(index, 1);
+
+    // update values
+    setAuthors(newAuthors);
+
+    for (let i = 0; i < newAuthors.length; i++) {
+      setValue(`authors[${i}].name`, newAuthors[i].name);
+    }
   };
 
-  const authorList = authors.map((a) => {
-    if (authors[authors.length - 1].id == a.id)
-      return (
-        <div key={a.id}>
-          <TextField
-            className={style.textFieldAuthor}
-            inputRef={register}
-            id={"authors-" + a.id}
-            name="authors"
-            autoComplete="authors"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleAddField}>
-                    <AddIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            onChange={(event) => handleChangeInput(a.id, event)}
-            variant="outlined"
-            error={!!errors.authors}
-            helperText={errors?.authors?.message}
-          />
-        </div>
-      );
+  // create authors' list
+  const authorList = authors.map((_, index) => {
+    const fieldName = `authors[${index}]`;
+    let addOrRemoveBtn;
+    // when current author is the last one
+    // user can add new author to the list
+    if (authors.length - 1 === index) {
+      addOrRemoveBtn = {
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={addAuthor}>
+              <AddIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+      };
+    } else {
+      // otherwise, user can remove selected author
+      addOrRemoveBtn = {
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={removeAuthor(index)}>
+              <RemoveIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+      };
+    }
+
     return (
-      <div key={a.id}>
-        <TextField
-          className={style.textFieldAuthor}
-          inputRef={register}
-          id={"authors-" + a.id}
-          name="authors"
-          autoComplete="authors"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => handleRemoveFields(a.id)}>
-                    <RemoveIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          onChange={(event) => handleChangeInput(a.id, event)}
-          variant="outlined"
-          error={!!errors.authors}
-          helperText={errors?.authors?.message}
-        />
-      </div>
+      <TextField
+        className={style.textFieldAuthor}
+        inputRef={register}
+        name={`${fieldName}.name`}
+        key={fieldName}
+        autoComplete="authors"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={addOrRemoveBtn}
+        variant="outlined"
+        error={!!errors?.authors?.[index]?.name}
+        helperText={errors?.authors?.[index]?.name?.message}
+      />
     );
   });
 
