@@ -13,6 +13,7 @@ function SignUpParticipant(props) {
         heading: "Sign in",
         content: "If you have already an account, sign in here",
         btn: "Sign in",
+        participant: true,
       };
 
       return (
@@ -24,6 +25,7 @@ function SignUpParticipant(props) {
                 heading={signInParticipant.heading}
                 content={signInParticipant.content}
                 btn={signInParticipant.btn}
+                participant={signInParticipant.participant}
             />
           </div>
         </div>
