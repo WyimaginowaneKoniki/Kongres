@@ -97,14 +97,14 @@ function AddingWork(props) {
   const schema = yup.object().shape({
     title: yup
       .string()
-      .matches(/^[A-Za-z0-9]*$/, "Title should only contain letters and digits")
+      .matches(/^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/, "Title should only contain letters, digits, spaces and hyphens")
       .max(maxTitleSize, `Title should be ${maxTitleSize} characters or less`)
       .required("Required field"),
     description: yup
       .string()
       .matches(
-        /^[A-Za-z0-9]*$/,
-        "Description should only contain letters and digits"
+        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/,
+        "Description should only contain letters, digits, spaces and hyphens"
       )
       .max(
         maxDescriptionSize,
@@ -117,14 +117,15 @@ function AddingWork(props) {
         yup.object().shape({
           name: yup
             .string()
-            .matches(/^[A-Za-z]*$/, "Author's name should only contain letters")
+            .matches(/^[A-Za-z ]*$/, "Author's name should only contain letters and spaces")
+            // .required("Required field")
             .max(
               maxAuthorName,
               `Author's name should be ${maxAuthorName} characters or less`
             ),
         })
       )
-      .max(maxAuthors, "You need at least three friends"),
+      .max(maxAuthors, "You cannot add more authors"),
   });
 
   const { register, handleSubmit, errors, getValues, setValue } = useForm({
