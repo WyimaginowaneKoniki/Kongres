@@ -97,7 +97,10 @@ function AddingWork(props) {
   const schema = yup.object().shape({
     title: yup
       .string()
-      .matches(/^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/, "Title should only contain letters, digits, spaces and hyphens")
+      .matches(
+        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/,
+        "Title should only contain letters, digits, spaces and hyphens"
+      )
       .max(maxTitleSize, `Title should be ${maxTitleSize} characters or less`)
       .required("Required field"),
     description: yup
@@ -117,7 +120,10 @@ function AddingWork(props) {
         yup.object().shape({
           name: yup
             .string()
-            .matches(/^[A-Za-z ]*$/, "Author's name should only contain letters and spaces")
+            .matches(
+              /^[A-Za-z ]*$/,
+              "Author's name should only contain letters and spaces"
+            )
             // .required("Required field")
             .max(
               maxAuthorName,
@@ -142,12 +148,19 @@ function AddingWork(props) {
     setSpecialization(event.target.value);
   };
 
-  // based on: 
+  // based on:
   // https://codesandbox.io/s/field-array-validation-with-yup-vdfss?file=/src/friendsSchema.js
   const [authors, setAuthors] = useState([{ name: "" }]);
 
   const addAuthor = () => {
-    if (authors.length !== maxAuthors) setAuthors([...authors, { name: "" }]);
+    // get id of last author
+    const lastAuthor = document.getElementById(
+      `authors[${authors.length - 1}]`
+    );
+    // if count of authors < maxAuthors and last author is not empty
+    if (authors.length !== maxAuthors && lastAuthor.value.length !== 0) {
+      setAuthors([...authors, { name: "" }]);
+    }
   };
 
   const removeAuthor = (index) => () => {
@@ -196,11 +209,11 @@ function AddingWork(props) {
         ),
       };
     }
-
     return (
       <TextField
         className={style.textFieldAuthor}
         inputRef={register}
+        id={`${fieldName}`}
         name={`${fieldName}.name`}
         key={fieldName}
         autoComplete="authors"
