@@ -7,6 +7,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Link } from 'react-router-dom';
 
 const styles = makeStyles({
   main: {
@@ -109,10 +110,9 @@ export default function SignInForm(props) {
               noValidate
               onSubmit={handleSubmit((data) => {
                 if (AreEmailAndPasswordCorrect()) {
-                    SetMessageStyle(correctStyle);
-                    alert(JSON.stringify(data));
-                }
-                else SetMessageStyle(incorrectStyle);
+                  SetMessageStyle(correctStyle);
+                  alert(JSON.stringify(data));
+                } else SetMessageStyle(incorrectStyle);
               })}
             >
               {/* Login/Email Input */}
@@ -154,7 +154,11 @@ export default function SignInForm(props) {
                 helperText={errors?.password?.message}
               />
               {/* Info about correct password and email */}
-              <FormHelperText error={true} style={_messageStyle} className={style.formHelperText}>
+              <FormHelperText
+                error={true}
+                style={_messageStyle}
+                className={style.formHelperText}
+              >
                 {"Error: Incorrect password or/and email"}
               </FormHelperText>
               {/* Button Submit */}
@@ -173,13 +177,15 @@ export default function SignInForm(props) {
           <div className={style.signUp}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Button
-              variant="outlined"
-              color="primary"
-              className={style.btnSignUp}
-            >
-              {props.btn}
-            </Button>
+            <Link to={props.link} style={{textDecoration: 'none'}}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={style.btnSignUp}
+              >
+                {props.btn}
+              </Button>
+            </Link>
           </div>
         </div>
       </Container>

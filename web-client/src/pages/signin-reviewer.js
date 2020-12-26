@@ -7,6 +7,7 @@ function SignInReviewer() {
     heading: "Don't have an account?",
     content: "If you want to review... or something... sign up",
     btn: "Sign up",
+    link: "/signup-reviewer"
   };
   return (
     <div>
@@ -16,6 +17,7 @@ function SignInReviewer() {
         heading={signUpReviewer.heading}
         content={signUpReviewer.content}
         btn={signUpReviewer.btn}
+        link={signUpReviewer.link}
       />
     </div>
   );
