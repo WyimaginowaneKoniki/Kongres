@@ -394,7 +394,10 @@ function WorkForReviewComponent(props)
                     <form
                         className={style.form}
                         noValidate
-                        onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+                        onSubmit={handleSubmit((data) => {
+                        data.stars = value
+                        alert(JSON.stringify(data))
+                        })}
                     >
                         <DialogTitle id='alert-dialog-title' className={style.dialogTitle}>{'Add your review'}</DialogTitle>
                         <DialogContent>
@@ -447,12 +450,6 @@ function WorkForReviewComponent(props)
                             <DropZone SET_FILE={passFile}
                                 inputRef={register}
                                 required
-                                //id="file-work-for-review"
-                                //name="file"
-                                //label="File"
-                                //autoComplete="file"
-                                //error={!!errors.comment}
-                                //helperText={errors?.comment?.message}
                             />
                         </DialogContent>
                         <DialogActions>
