@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from 'react-router-dom';
+import Dialog from '@material-ui/core/Dialog';
 
 const styles = makeStyles({
   main: {
@@ -39,6 +40,7 @@ const styles = makeStyles({
   btnSignIn: {
     width: "100px",
     textTransform: "none",
+    float: "right",
   },
   btnSignUp: {
     margin: "8px 0px",
@@ -51,6 +53,12 @@ const styles = makeStyles({
   },
   formHelperText: {
     marginBottom: "32px",
+  },
+  textButton: {
+    textTransform: "none",
+  },
+  mainDialog: {
+    
   },
 });
 
@@ -79,7 +87,10 @@ export default function SignInForm(props) {
     const [values, setValues] = React.useState({
       email: "",
       password: "",
+      forgotEmail: "",
     });
+
+    const [open, setOpen] = React.useState(false);
 
     const schema = yup.object().shape({
       email: yup
@@ -97,6 +108,14 @@ export default function SignInForm(props) {
 
     const handleChange = (prop) => (event) => {
       setValues({ ...values, [prop]: event.target.value });
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
     };
 
     const style = styles();
@@ -161,15 +180,26 @@ export default function SignInForm(props) {
               >
                 {"Error: Incorrect password or/and email"}
               </FormHelperText>
-              {/* Button Submit */}
-              <Button
-                className={style.btnSignIn}
-                color="primary"
-                type="submit"
-                variant="contained"
-              >
-                Sign in
-              </Button>
+
+              <div>
+                {/* Forgot password */}
+                <Button
+                  className={style.textButton}
+                  color="primary"
+                  onClick={handleClickOpen}
+                >
+                  Forgot password?
+                </Button>
+                {/* Button Submit */}
+                <Button
+                  className={style.btnSignIn}
+                  color="primary"
+                  type="submit"
+                  variant="contained"
+                >
+                  Sign in
+                </Button>
+              </div>
             </form>
           </div>
 
@@ -177,7 +207,7 @@ export default function SignInForm(props) {
           <div className={style.signUp}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Link to={props.link} style={{textDecoration: 'none'}}>
+            <Link to={props.link} style={{ textDecoration: "none" }}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -188,6 +218,42 @@ export default function SignInForm(props) {
             </Link>
           </div>
         </div>
+
+        <Dialog className={style.mainDialog} open={open} onClose={handleClose}>
+          <form
+            className={style.form}
+            noValidate
+            // onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+          >
+            <TextField
+              className={style.textField}
+            //   inputRef={register}
+              required
+              id="forgot-email-signin"
+              name="forgot-email"
+              label="Login/Email"
+              type="email"
+              value={values.forgotEmail}
+              autoComplete="email"
+              onChange={handleChange("forgotEmail")}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+            //   error={!!errors.email}
+            //   helperText={errors?.email?.message}
+            />
+            {/* Button Send */}
+            <Button
+              className={style.btnSignIn}
+              color="primary"
+            //   type="submit"
+              variant="contained"
+            >
+              Send
+            </Button>
+          </form>
+        </Dialog>
       </Container>
     );
   }
