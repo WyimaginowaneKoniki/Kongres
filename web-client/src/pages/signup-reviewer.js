@@ -14,12 +14,16 @@ function SignUpReviewer() {
     content: "If you have already an account, sign in here",
     btn: "Sign in",
   };
+
+  const Register = (data) => alert(JSON.stringify(data));
+
   return (
     <div>
       <h1>Sign up as Reviewer</h1>
       <SignInUpInfo content={signUpReviewerInfo.content} />
       <div>
         <SignUpForm
+          GetFormData={Register}
           heading={signInReviewer.heading}
           content={signInReviewer.content}
           btn={signInReviewer.btn}

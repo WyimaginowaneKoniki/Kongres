@@ -144,14 +144,16 @@ export default function SignUpForm(props) {
   };
   const style = styles();
 
+  const onSubmit = (data) => props.GetFormData(data);
+
   return (
     <Container component="main">
       <div className={style.main}>
-        <div classname={style.columns}>
+        <div className={style.columns}>
           <form
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* FirstName Input */}
             <TextField
