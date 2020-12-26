@@ -150,7 +150,8 @@ export default function SignUpForm(props) {
           <form
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit((data) => 
+            alert(JSON.stringify(data)))}
           >
             {/* FirstName Input */}
             <TextField
@@ -280,8 +281,6 @@ export default function SignUpForm(props) {
               variant="outlined"
               name="specialization"
               className={style.formControl}
-              required
-              error={!!errors.specialization}
             >
               <InputLabel
                 shrink
@@ -298,11 +297,13 @@ export default function SignUpForm(props) {
                 input={
                   <OutlinedInput
                     notched
-                    inputRef={register}
                     name="specialization"
                     id="specialization-signup"
                   />
                 }
+                inputRef={register}
+                error={!!errors.specialization}
+                helperText={errors?.specialization?.message}
               >
                 <MenuItem className={style.MenuItem} value="">
                   Select
@@ -329,7 +330,7 @@ export default function SignUpForm(props) {
             </FormControl>
 
             {/* Avatar */}
-            {props.participant ? <Avatar/> : null}
+            {props.participant ? <Avatar name='avatar'/> : null}
 
             {/* Acceptance - Rules of Conference */}
             <FormControlLabel
