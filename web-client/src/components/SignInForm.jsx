@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -47,25 +48,55 @@ const styles = makeStyles({
     float: "left",
     marginLeft: "144px",
   },
+  formHelperText: {
+    marginBottom: "32px",
+  },
 });
+
+const correctStyle = {
+  display: "none",
+};
+const incorrectStyle = {
+  display: "block",
+};
 
 export default function SignInForm(props) {
 
-    const schema = yup.object().shape({
-        email: yup
-          .string()
-          .email("Email should have correct format")
-          .required("Required field"),
+    const data = {
+        email: "mail@gmail.com",
+        password: "xd",
+    };
 
-        password: yup
-          .string()
-          .required("Required field"),
-      });
-    
-      const { register, handleSubmit, errors } = useForm({
-        mode: "onBlur",
-        resolver: yupResolver(schema),
-      });
+    const AreEmailAndPasswordCorrect = () => {
+        if(data.email === values.email && data.password === values.password)
+            return true;
+        return false;
+    }
+
+    const [_messageStyle, SetMessageStyle] = useState(correctStyle);
+
+    const [values, setValues] = React.useState({
+      email: "",
+      password: "",
+    });
+
+    const schema = yup.object().shape({
+      email: yup
+        .string()
+        .email("Email should have correct format")
+        .required("Required field"),
+
+      password: yup.string().required("Required field"),
+    });
+
+    const { register, handleSubmit, errors } = useForm({
+      mode: "onBlur",
+      resolver: yupResolver(schema),
+    });
+
+    const handleChange = (prop) => (event) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
 
     const style = styles();
 
@@ -76,7 +107,13 @@ export default function SignInForm(props) {
             <form
               className={style.form}
               noValidate
-              onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+              onSubmit={handleSubmit((data) => {
+                if (AreEmailAndPasswordCorrect()) {
+                    SetMessageStyle(correctStyle);
+                    alert(JSON.stringify(data));
+                }
+                else SetMessageStyle(incorrectStyle);
+              })}
             >
               {/* Login/Email Input */}
               <TextField
@@ -87,7 +124,9 @@ export default function SignInForm(props) {
                 name="email"
                 label="Login/Email"
                 type="email"
+                value={values.email}
                 autoComplete="email"
+                onChange={handleChange("email")}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -104,7 +143,9 @@ export default function SignInForm(props) {
                 name="password"
                 label="Password"
                 type="password"
+                value={values.password}
                 autoComplete="current-password"
+                onChange={handleChange("password")}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -112,6 +153,10 @@ export default function SignInForm(props) {
                 error={!!errors.password}
                 helperText={errors?.password?.message}
               />
+              {/* Info about correct password and email */}
+              <FormHelperText error={true} style={_messageStyle} className={style.formHelperText}>
+                {"Error: Incorrect password or/and email"}
+              </FormHelperText>
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
