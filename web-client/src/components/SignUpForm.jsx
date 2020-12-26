@@ -144,7 +144,10 @@ export default function SignUpForm(props) {
   };
   const style = styles();
 
-  const onSubmit = (data) => props.GetFormData(data);
+  const onSubmit = (data) => {
+    data.specialization = specialization;
+    props.GetFormData(data);
+  };
 
   return (
     <Container component="main">
