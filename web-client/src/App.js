@@ -16,6 +16,7 @@ import SignUpReviewer from './pages/signup-reviewer';
 import ScientificWorks from './pages/scientific-works';
 import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
+import SignInReviewer from './pages/signin-reviewer'
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/scientific-works" component={ScientificWorks} />
             <Route path="/accepted-scientific-work" component={AcceptedScientificWork} />
             <Route path="/my-reviews" component={MyReviews} />
+            <Route path="/signin-reviewer" component={SignInReviewer} />
           </Switch>
         </div>
       </Router>
