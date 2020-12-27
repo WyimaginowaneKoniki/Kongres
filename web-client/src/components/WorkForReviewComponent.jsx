@@ -14,6 +14,12 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Select from 'react-dropdown-select';
+import Dropdown from 'react-dropdown';
+//import Dropdown from 'react-bootstrap/Dropdown'
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
 function WorkForReviewComponent(props)
 {
@@ -341,6 +347,11 @@ function WorkForReviewComponent(props)
         resolver: yupResolver(schema)
     });
 
+    // const options = [
+    //     'Previous version', 'two', 'three ale co>'
+    //   ];
+    //   const defaultOption = options[0];
+
     return(
         <div className={style.main}>
 
@@ -490,6 +501,34 @@ function WorkForReviewComponent(props)
                             className={style.btn}>Download review</Button>
                     </div>
                 </div>
+                {/*DropDown*/}
+                {/* <Select options={'lol'}/> */}
+                {/* <Dropdown.Menu show>
+                    <Dropdown.Item>Siema</Dropdown.Item>
+                    <Dropdown.Item>eniu</Dropdown.Item>
+                </Dropdown.Menu> */}
+                <MenuList>
+                    <MenuItem>
+                        <p> Current version </p> 
+                        <p> 12/12/2020 </p>
+                        <Rating value={3} max={3} readOnly/>
+                    </MenuItem>
+                    <MenuItem>
+                        <p> Previous version </p> 
+                        <p> 20/11/2020 </p>
+                        <Rating value={3} max={3} readOnly/>
+                    </MenuItem>
+                    <MenuItem>
+                        <p> Previous version </p> 
+                        <p> 10/11/2020 </p>
+                        <Rating value={2} max={3} readOnly/>
+                    </MenuItem>
+                    <MenuItem>
+                        <p> Previous version </p> 
+                        <p> 05/11/2020 </p>
+                        <Rating value={2} max={3} readOnly/>
+                    </MenuItem>
+                </MenuList>
             </div>
         </div>
     )
