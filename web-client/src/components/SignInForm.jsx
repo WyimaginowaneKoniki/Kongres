@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
@@ -7,8 +7,8 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from 'react-router-dom';
-import PopUpForgotPassword from '../components/PopUpForgotPassword';
+import { Link } from "react-router-dom";
+import PopUpForgotPassword from "../components/PopUpForgotPassword";
 
 const styles = makeStyles({
   main: {
@@ -57,9 +57,10 @@ const styles = makeStyles({
   textButton: {
     textTransform: "none",
   },
-  mainDialog: {
-    
-  },
+  bottomMessage: {
+    marginTop: "300px",
+    display: "block",
+  }
 });
 
 const correctStyle = {
@@ -110,10 +111,6 @@ export default function SignInForm(props) {
   const passEmail = (email) => {
     SetForgotEmail(email);
   };
-
-  const showForgotEmail = () => {
-    alert(_forgotEmail);
-  }
 
   const style = styles();
 
@@ -179,8 +176,7 @@ export default function SignInForm(props) {
             </FormHelperText>
             <div>
               {/* Forgot password */}
-              <PopUpForgotPassword SET_EMAIL={passEmail}/>
-              <Button onClick={showForgotEmail}>Click</Button>
+              <PopUpForgotPassword SET_EMAIL={passEmail} />
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
@@ -198,7 +194,7 @@ export default function SignInForm(props) {
         <div className={style.signUp}>
           <h2 className={style.heading}>{props.heading}</h2>
           <p className={style.content}>{props.content}</p>
-          <Link to={props.link} style={{ textDecoration: "none" }}>
+          <Link to={props.signUpLink} style={{ textDecoration: "none" }}>
             <Button
               variant="outlined"
               color="primary"
@@ -209,42 +205,10 @@ export default function SignInForm(props) {
           </Link>
         </div>
       </div>
-
-      {/* <Dialog className={style.mainDialog} open={open} onClose={handleClose}>
-          <form
-            className={style.form}
-            noValidate
-            // onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
-          >
-            <TextField
-              className={style.textField}
-            //   inputRef={register}
-              required
-              id="forgot-email-signin"
-              name="forgot-email"
-              label="Login/Email"
-              type="email"
-              value={values.forgotEmail}
-              autoComplete="email"
-              onChange={handleChange("forgotEmail")}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-            //   error={!!errors.email}
-            //   helperText={errors?.email?.message}
-            />
-            Button Send
-            <Button
-              className={style.btnSignIn}
-              color="primary"
-            //   type="submit"
-              variant="contained"
-            >
-              Send
-            </Button>
-          </form>
-        </Dialog> */}
+      <span className={style.bottomMessage}>
+        If you want to sign in as {props.signInAs}, Sign in{" "}
+        <Link to={props.signInAsOtherLink}>here</Link>
+      </span>
     </Container>
   );
 }

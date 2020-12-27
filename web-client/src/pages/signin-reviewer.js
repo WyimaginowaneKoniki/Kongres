@@ -7,7 +7,9 @@ function SignInReviewer() {
     heading: "Don't have an account?",
     content: "If you want to review... or something... sign up",
     btn: "Sign up",
-    link: "/signup-reviewer"
+    signUpLink: "/signup-reviewer",
+    signInAs: "participant",
+    signInAsOtherLink: "/signin-participant",
   };
   return (
     <div>
@@ -17,7 +19,9 @@ function SignInReviewer() {
         heading={signUpReviewer.heading}
         content={signUpReviewer.content}
         btn={signUpReviewer.btn}
-        link={signUpReviewer.link}
+        signUpLink={signUpReviewer.signUpLink}
+        signInAs={signUpReviewer.signInAs}
+        signInAsOtherLink={signUpReviewer.signInAsOtherLink}
       />
     </div>
   );
