@@ -8,7 +8,6 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from 'react-router-dom';
-import Dialog from '@material-ui/core/Dialog';
 import PopUpForgotPassword from '../components/PopUpForgotPassword';
 
 const styles = makeStyles({
@@ -89,8 +88,6 @@ export default function SignInForm(props) {
     password: "",
   });
 
-  const [open, setOpen] = React.useState(false);
-
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -107,14 +104,6 @@ export default function SignInForm(props) {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const style = styles();
