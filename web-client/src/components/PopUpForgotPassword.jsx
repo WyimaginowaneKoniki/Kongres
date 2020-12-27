@@ -44,18 +44,18 @@ const styles = makeStyles({
 });
 
 const sendSuccessfullyStyle = {
-  display: "block",
+  visibility: "visible",
   color: "green",
 };
 const sendUnsuccessfullyStyle = {
-  display: "block",
+  visibility: "visible",
   color: "red",
 };
 const defaultStyle = {
-  display: "none",
+  visibility: "hidden",
 };
 
-export default function PopUpForgotPassword(props) {
+export default function PopUpForgotPassword({SET_EMAIL}) {
   const [values, setValues] = React.useState({
     email: "",
   });
@@ -90,10 +90,7 @@ export default function PopUpForgotPassword(props) {
 
   const [_messageStyle, SetMessageStyle] = useState(defaultStyle);
 
-  const sendSuccessfully = (isSuccessfully) => {
-    if (isSuccessfully) SetMessageStyle(sendSuccessfullyStyle);
-    else SetMessageStyle(sendUnsuccessfullyStyle);
-  };
+  let isSuccessfully = true;
 
   return (
     <div className={style.main}>
@@ -114,8 +111,13 @@ export default function PopUpForgotPassword(props) {
             noValidate
             // If email has been sent successfully or not
             onSubmit={handleSubmit((data) => {
-                if(sendSuccessfully(false))
-                    alert(JSON.stringify(data))
+                if(isSuccessfully){
+                    SetMessageStyle(sendSuccessfullyStyle);
+                    alert(data.email);
+                    // Send email to parent component
+                    SET_EMAIL(data.email);
+                }
+                else SetMessageStyle(sendUnsuccessfullyStyle);
             })}
           >
             <TextField
@@ -147,7 +149,7 @@ export default function PopUpForgotPassword(props) {
             </Button>
           </form>
         </div>
-        <span className={style.message} style={_messageStyle}>Link has been sent</span>
+        <span className={style.message} style={_messageStyle}>{isSuccessfully ? "Link has been sent" : "Link has not been sent"}</span>
       </Dialog>
     </div>
   );

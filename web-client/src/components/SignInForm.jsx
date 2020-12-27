@@ -106,6 +106,15 @@ export default function SignInForm(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
+  const [_forgotEmail, SetForgotEmail] = useState(null);
+  const passEmail = (email) => {
+    SetForgotEmail(email);
+  };
+
+  const showForgotEmail = () => {
+    alert(_forgotEmail);
+  }
+
   const style = styles();
 
   return (
@@ -170,7 +179,8 @@ export default function SignInForm(props) {
             </FormHelperText>
             <div>
               {/* Forgot password */}
-              <PopUpForgotPassword />
+              <PopUpForgotPassword SET_EMAIL={passEmail}/>
+              <Button onClick={showForgotEmail}>Click</Button>
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
