@@ -72,7 +72,7 @@ function AddingWork(props) {
 
   const style = styles();
 
-  const [_file, SetFile] = useState(null);
+  const [file, SetFile] = useState(null);
   const passFile = (f) => {
     SetFile(f);
   };
@@ -235,6 +235,7 @@ function AddingWork(props) {
             noValidate
             onSubmit={handleSubmit((data) => {
               data.specialization = specialization;
+              console.log(file);
             alert(JSON.stringify(data));
             })}
           >
@@ -394,7 +395,7 @@ function AddingWork(props) {
         </div>
       </div>
       <div className={style.right}>
-        <DropZone SET_FILE={passFile} />
+        <DropZone SetFile={passFile} />
       </div>
     </div>
   );

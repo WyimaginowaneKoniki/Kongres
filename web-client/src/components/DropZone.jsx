@@ -5,7 +5,7 @@ import pdfIcon from '../images/pdf-icon.png';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
-function DropZone({SET_FILE}) {
+function DropZone(props) {
     const styles = makeStyles({
         container: {
             width: '600px',
@@ -82,15 +82,15 @@ function DropZone({SET_FILE}) {
 
     const style = styles();
 
-    const _fileInputRef = useRef();
+    const fileInputRef = useRef();
 
-    const _maxFileSize = 20971520; // 1024 * 1024 * 20 = 20 MB
+    const maxFileSize = 20971520; // 1024 * 1024 * 20 = 20 MB
 
-    let _file = null;
-    const [_message, SetMessage] = useState(null);
-    const [_fileName, SetFileName] = useState(null);
-    const [_fileSize, SetFileSize] = useState(null);
-    const [_divStyle, SetDivStyle] = useState({display: 'none', textAlign: 'left'});
+    let file = null;
+    const [message, SetMessage] = useState(null);
+    const [fileName, SetFileName] = useState(null);
+    const [fileSize, SetFileSize] = useState(null);
+    const [divStyle, SetDivStyle] = useState({display: 'none', textAlign: 'left'});
 
     const DragOver = (e) => {
         e.preventDefault();
@@ -106,13 +106,13 @@ function DropZone({SET_FILE}) {
 
     const FileDrop = (e) => {
         e.preventDefault();
-        const file = e.dataTransfer.files[0];
-         AddFile(file);
+        const f = e.dataTransfer.files[0];
+         AddFile(f);
     }
 
-    const AddFile = (file) => {
-        const isFileValid = ValidateFile(file);
-        const isSizeValid = ValidateSize(file);
+    const AddFile = (f) => {
+        const isFileValid = ValidateFile(f);
+        const isSizeValid = ValidateSize(f);
 
         if (!isSizeValid && !isFileValid) {
             ShowMessage("Too large file and invalid format. Only PDF file not greather than 20 MB can be uploaded.");
@@ -124,11 +124,11 @@ function DropZone({SET_FILE}) {
             ShowMessage("Too large file. Only file not greather than 20 MB can be uploaded.");
         }
         else{
-            _file = file;
+            file = f;
             SetFileName(file.name);
             SetFileSize(FileSize(file.size));
             SetDivStyle({display: 'block', textAlign: 'left'})
-            SET_FILE(_file);
+            props.SetFile(file);
         }
     }
 
@@ -139,17 +139,17 @@ function DropZone({SET_FILE}) {
 		}, 4000);
     }
 
-    const ValidateFile = (file) => {
+    const ValidateFile = (f) => {
         const validTypes = ['application/pdf'];
-        if (validTypes.indexOf(file.type) === -1) {
+        if (validTypes.indexOf(f.type) === -1) {
             return false;
         }
         return true;
     }
 
-    const ValidateSize = (file) => {
-        const size = file.size;
-        return (_maxFileSize >= size);
+    const ValidateSize = (f) => {
+        const size = f.size;
+        return (maxFileSize >= size);
     }
 
     const FileSize = (size) => {
@@ -164,17 +164,17 @@ function DropZone({SET_FILE}) {
         SetDivStyle({display: 'none', textAlign: 'left'});
         SetFileName(null);
         SetFileSize(null);
-        _file = null;
-        SET_FILE(_file);
+        file = null;
+        props.SetFile(file);
     }
 
     const OpenDialog = () => {
-        _fileInputRef.current.click();
+        fileInputRef.current.click();
     }
 
     const FileSelected = () => {
-        if (_fileInputRef.current.files[0]) {
-            AddFile(_fileInputRef.current.files[0]);
+        if (fileInputRef.current.files[0]) {
+            AddFile(fileInputRef.current.files[0]);
         }
     }
 
@@ -188,7 +188,7 @@ function DropZone({SET_FILE}) {
                 <div className={style.top}>
                     <div className={style.dropMessage}>
                     
-                        <input ref={_fileInputRef} className={style.dialog}
+                        <input ref={fileInputRef} className={style.dialog}
                         type="file" onChange={FileSelected}/>
 
                         <div className={style.uploadIcon}></div>
@@ -201,15 +201,15 @@ function DropZone({SET_FILE}) {
                             <Button variant='outlined' color="primary" 
                             className={style.btn} onClick={OpenDialog}>Browse file</Button>
                         </Box>
-                        <span className={style.message}>{_message}</span>
+                        <span className={style.message}>{message}</span>
                     </div>
                 </div>
                 <div className={style.inputInfo}>Accepted file types: .pdf, max file size: 20MB</div>
             </div>
-            <div style={_divStyle}>
+            <div style={divStyle}>
                 <img className={style.logo} src={pdfIcon} alt="Logo"/>
-                <span className={style.fileName}>{_fileName}</span>
-                <span className={style.fileSize}>{_fileSize}</span>
+                <span className={style.fileName}>{fileName}</span>
+                <span className={style.fileSize}>{fileSize}</span>
                 <span className={style.exit} onClick={Delete}>x</span>
             </div>
         </div>
