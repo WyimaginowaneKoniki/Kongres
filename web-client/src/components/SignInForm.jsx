@@ -71,12 +71,12 @@ const incorrectStyle = {
 };
 
 export default function SignInForm(props) {
-  // This is data received from API
+  // This is response received from API
   const response = {
     status: 200,
   };
 
-  const [_messageStyle, SetMessageStyle] = useState(correctStyle);
+  const [messageStyle, SetMessageStyle] = useState(correctStyle);
 
   const [values, setValues] = React.useState({
     email: "",
@@ -101,7 +101,7 @@ export default function SignInForm(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const [_forgotEmail, SetForgotEmail] = useState(null);
+  const [forgotEmail, SetForgotEmail] = useState(null);
   const passEmail = (email) => {
     SetForgotEmail(email);
   };
@@ -163,7 +163,7 @@ export default function SignInForm(props) {
             {/* Info about correct password and email */}
             <FormHelperText
               error={true}
-              style={_messageStyle}
+              style={messageStyle}
               className={style.formHelperText}
             >
               {"Error: Incorrect password or/and email"}
@@ -171,7 +171,7 @@ export default function SignInForm(props) {
             <div>
               {/* Forgot password */}
               <PopUpForgotPassword SetEmail={passEmail} />
-              {console.log(_forgotEmail)}
+              {console.log(forgotEmail)}
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
