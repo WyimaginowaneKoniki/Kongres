@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import picture from "../images/blank-profile-picture.png";
+import React, { useState } from 'react';
+import defaultPicture from "../images/blank-profile-picture.png";
 import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = () => ({
+const styles = makeStyles({
   main: {
     width: "100%",
     marginBottom: "5%",
@@ -32,60 +32,69 @@ const useStyles = () => ({
   },
 });
 
-class Avatar extends Component {
-  state = {
-    profileImg: picture,
+function Avatar(props) {
+  // From:
+  // https://stackoverflow.com/a/61745110/14865551
+  // Stores the picture
+  const [avatarFile, SetAvatarFile] = useState(null);
+
+  // Stores the source of the picture
+  const [avatarURL, SetAvatarURL] = useState(defaultPicture);
+  // File and ULR:
+  // https://stackoverflow.com/a/61302835/14865551
+
+  const onChangePicture = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.match("image.*")){
+      SetAvatarFile(file);
+      SetAvatarURL(URL.createObjectURL(file));
+    }
+      
+    else {
+      alert("Invalid input type!");
+    }
   };
 
-  imageHandler = (e) => {
-    const reader = new FileReader();
-    var file = e.target.files[0];
-
-    reader.onload = () => {
-      if (reader.readyState === 2) this.setState({ profileImg: reader.result });
-    };
-
-    if (file && file.type.match("image.*")) reader.readAsDataURL(file);
+  const onRemovePicture = () => {
+    SetAvatarFile(null);
+    SetAvatarURL(defaultPicture);
   };
 
-  delete = () => {
-    this.setState({ profileImg: picture });
-  };
+  const style = styles();
 
-  render() {
-    const { profileImg } = this.state;
-    const { classes } = this.props;
-    return (
-      <div className={classes.main}>
-        <div className={classes.img}>
-          <img src={profileImg} alt="" id="img" className={classes.photo} />
-          <Button
-            color="secondary"
-            onClick={this.delete}
-            className={classes.btn}
-          >
-            Delete photo
-          </Button>
-        </div>
+  console.log(avatarFile);
+  console.log(avatarURL);
+
+  return (
+    <div className={style.main}>
+      <div className={style.img}>
+        <img src={avatarURL} alt="" id="img" className={style.photo} />
         <Button
-          variant="outlined"
-          color="primary"
-          component="label"
-          className={classes.btn1}
+          color="secondary"
+          onClick={onRemovePicture}
+          className={style.btn}
         >
-          {profileImg === picture ? "Add" : "Edit"} photo
-          <input
-            type="file"
-            accept="image/*"
-            name="image-upload"
-            id="input"
-            onChange={this.imageHandler}
-            hidden
-          />
+          Delete photo
         </Button>
       </div>
-    );
-  }
+      <Button
+        variant="outlined"
+        color="primary"
+        component="label"
+        className={style.btn1}
+      >
+        {avatarURL === defaultPicture ? "Add" : "Edit"} photo
+        <input
+          type="file"
+          accept="image/*"
+          name="image-upload"
+          id="input"
+          onChange={onChangePicture}
+          hidden
+        />
+      </Button>
+    </div>
+  );
 }
 
-export default withStyles(useStyles)(Avatar);
+export default Avatar;
