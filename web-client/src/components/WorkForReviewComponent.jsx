@@ -147,6 +147,14 @@ function WorkForReviewComponent(props)
             float: 'left',
             marginBottom: '2%',
         },
+        btn2:
+        {
+            textTransform: 'none',
+            marginLeft: '5%',
+            float: 'left',
+            marginBottom: '2%',
+            marginRight: '2.5%',
+        },
         mainDialog:
         {
             maxWidth: '100%',
@@ -374,7 +382,7 @@ function WorkForReviewComponent(props)
                         </DialogContent>
                         <DialogActions>
                             <Button variant='contained' color="primary"
-                                className={style.btn1} type='submit'>Add review</Button>
+                                className={style.btn2} type='submit'>Add review</Button>
                         </DialogActions>
                     </form>
                 </Dialog>

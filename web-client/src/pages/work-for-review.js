@@ -119,14 +119,10 @@ function WorkForReview(props) {
   const [open, setOpen] = useState([true, ...(new Array(versions.length - 1).fill(false))]);
 
   function handleOnClick(item) {
-    for (let i = 0; i < open.length; i++) {
-      // open clicked version
-      if (item === i && !open[i]) 
-        open[i] = true;
-      // otherwise close it
-      else 
-        open[i] = false;
-    }
+    if (!open[item])
+      open[item] = true;
+    else
+      open[item] = false;
 
     setOpen([...open]);
   }

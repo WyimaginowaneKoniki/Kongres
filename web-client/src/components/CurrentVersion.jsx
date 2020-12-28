@@ -43,7 +43,7 @@ function CurrentVersion(props){
             height: 80,
             borderRadius: '50%',
             float: 'center',
-            marginLeft: '12%',
+            marginLeft: '20%',
         },
         me:
         {
