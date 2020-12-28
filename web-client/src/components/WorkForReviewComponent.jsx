@@ -14,12 +14,6 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Select from 'react-dropdown-select';
-import Dropdown from 'react-dropdown';
-//import Dropdown from 'react-bootstrap/Dropdown'
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 
 function WorkForReviewComponent(props)
 {
@@ -80,7 +74,7 @@ function WorkForReviewComponent(props)
         },
         photo:
         {
-            width: '90%',
+            width: 80,
             borderRadius: '50%',
             height: 80,
         },
@@ -195,83 +189,6 @@ function WorkForReviewComponent(props)
         {
             width: "100%",
         },
-        currentVersion:
-        {
-            width: '75%',
-            float: 'left',
-            marginTop: '5%',
-            textAlign: 'left',
-        },
-        review:
-        {
-            width: '100%',
-            float: 'left',
-        },
-        leftReview:
-        {
-            width: '15%',
-            float: 'left',
-        },
-        rightReview:
-        {
-            width: '80%',
-            float: 'right',
-        },
-        reviewVersion:
-        {
-            float: 'left',
-            paddingRight: '5%',
-            fontSize: '20px',
-            fontWeight: 'bold',
-            paddingBottom: '3.2%',
-            paddingTop: '1%',
-        },
-        labelVersion:
-        {
-            paddingLeft: '10%',
-        },
-        data:
-        {
-            float: 'left',
-            color: 'grey',
-            paddingRight: '5%',
-            paddingBottom: '3.4%',
-            paddingTop: '1.3%',
-        },
-        starVersion:
-        {
-            float: 'left',
-            width: '20%',
-            paddingTop: '0.3%',
-            paddingBottom: '2%',
-        },
-        image:
-        {
-            width: '70%',
-            height: 70,
-            borderRadius: '50%',
-            float: 'center',
-            marginLeft: '12%',
-        },
-        me:
-        {
-            width: '100%',
-            float: 'left',
-            textAlign: 'center',
-        },
-        rightDate:
-        {
-            float: 'right',
-            color: 'grey',
-        },
-        textReview:
-        {
-            width: '95%',
-            float: 'left',
-            paddingLeft: '2%',
-            fontSize: '16px',
-            paddingBottom: '2%',
-        },
     });
 
     const labels = {
@@ -286,10 +203,6 @@ function WorkForReviewComponent(props)
     const [value, setValue] = React.useState(1);
     const [hover, setHover] = React.useState(1);
 
-    let d = new Date();
-    let hours = `${d.getHours()}:${d.getMinutes()}`;
-    let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-
     const [_file, SetFile] = React.useState(null);
     const passFile = (f) => {
         SetFile(f);
@@ -301,7 +214,8 @@ function WorkForReviewComponent(props)
 
     const handleClickOpen = () => {
         setOpen(true);
-        counts.comment = 0
+        counts.comment = 0;
+        SetFile(null);
     };
 
     const handleClose = () => {
@@ -470,66 +384,13 @@ function WorkForReviewComponent(props)
                     </form>
                 </Dialog>
             </div>
-
-            {/*Review*/}
-            <div className={style.currentVersion}>
-                <p>
-                    <span className={style.reviewVersion}>Current version</span>
-                    <span className={style.data}>{date}</span>
-                    <span className={style.starVersion}>
-                    <Tooltip title={labels[hover !== -1 ? hover : value]} placement='top'>
-                        <Box component="fieldset" borderColor="transparent">
-                            <Rating name="read-only" max={3} value={value} readOnly />
-                        </Box>
-                    </Tooltip>
-                    </span>
-                </p>
-                <div className={style.review}>
-                    <div className={style.leftReview}>
-                        <img src={props.path} className={style.image} alt={props.alternativeText}></img>
-                        <span className={style.me}> Me </span>
-                    </div>
-                    <div className={style.rightReview}>
-                        <Tooltip title={labels[hover !== -1 ? hover : value]} placement='top-start'>
-                            <Box component="fieldset" borderColor="transparent">
-                                <Rating name="read-only" max={3} value={value} readOnly />
-                                <span className={style.rightDate}>{date} {hours}</span>
-                            </Box>
-                        </Tooltip>
-                        <span className={style.textReview}>{props.review}</span>
-                        <Button variant='outlined' color="primary" 
-                            className={style.btn}>Download review</Button>
-                    </div>
-                </div>
                 {/*DropDown*/}
                 {/* <Select options={'lol'}/> */}
                 {/* <Dropdown.Menu show>
                     <Dropdown.Item>Siema</Dropdown.Item>
                     <Dropdown.Item>eniu</Dropdown.Item>
                 </Dropdown.Menu> */}
-                <MenuList>
-                    <MenuItem>
-                        <p> Current version </p> 
-                        <p> 12/12/2020 </p>
-                        <Rating value={3} max={3} readOnly/>
-                    </MenuItem>
-                    <MenuItem>
-                        <p> Previous version </p> 
-                        <p> 20/11/2020 </p>
-                        <Rating value={3} max={3} readOnly/>
-                    </MenuItem>
-                    <MenuItem>
-                        <p> Previous version </p> 
-                        <p> 10/11/2020 </p>
-                        <Rating value={2} max={3} readOnly/>
-                    </MenuItem>
-                    <MenuItem>
-                        <p> Previous version </p> 
-                        <p> 05/11/2020 </p>
-                        <Rating value={2} max={3} readOnly/>
-                    </MenuItem>
-                </MenuList>
-            </div>
+                
         </div>
     )
 }
