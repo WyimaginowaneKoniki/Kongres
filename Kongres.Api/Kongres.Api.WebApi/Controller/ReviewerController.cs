@@ -1,9 +1,8 @@
-﻿using MediatR;
+﻿using Kongres.Api.Application.Commands.Reviewer;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Kongres.Api.Application.Commands.Participant;
-using Kongres.Api.Application.Commands.Reviewer;
 
 namespace Kongres.Api.WebApi.Controller
 {
@@ -13,7 +12,7 @@ namespace Kongres.Api.WebApi.Controller
 
         // api/Reviewer/Register
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] CreateParticipantCommand command)
+        public async Task<IActionResult> Register([FromBody] CreateReviewerCommand command)
         {
             await CommandAsync(command);
             return Ok();

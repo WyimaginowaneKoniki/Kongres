@@ -26,10 +26,10 @@ namespace Kongres.Api.Application.Handlers.Participant
 
             var user = new User
             {
-                Name = request.Name,
+                Name = request.FirstName,
                 UserName = userName,
-                Surname = request.Surname,
-                Degree = request.Degree,
+                Surname = request.LastName,
+                Degree = request.AcademicTitle,
                 Email = request.Email,
                 Specialization = request.Specialization,
                 University = request.University

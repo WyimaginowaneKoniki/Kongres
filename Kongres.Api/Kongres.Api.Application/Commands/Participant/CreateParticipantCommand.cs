@@ -6,11 +6,11 @@ namespace Kongres.Api.Application.Commands.Participant
     {
         public string Email { get; set; }
         public string Password { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Specialization { get; set; }
         public string University { get; set; }
-        public string Degree { get; set; }
+        public string AcademicTitle { get; set; }
         public string Photo { get; set; }
     }
 }
