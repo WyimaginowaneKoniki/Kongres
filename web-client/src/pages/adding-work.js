@@ -16,6 +16,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IconButton } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 const { useState } = React;
 
 function AddingWork(props) {
@@ -61,6 +64,9 @@ function AddingWork(props) {
     textFieldAuthor: {
       marginBottom: "10px",
       width: "100%",
+    },
+    formControlLabel: {
+      marginBottom: "8px",
     },
   });
 
@@ -123,6 +129,7 @@ function AddingWork(props) {
         })
       )
       .max(maxAuthors, "You cannot add more authors"),
+      acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
   });
 
   const { register, handleSubmit, errors, getValues, setValue } = useForm({
@@ -353,6 +360,26 @@ function AddingWork(props) {
             />
 
             {authorList}
+
+            {/* Acceptance - Rules of Conference */}
+            <FormControlLabel
+              className={style.formControlLabel}
+              control={
+                <Checkbox
+                  inputRef={register}
+                  required
+                  id="acceptance-signup"
+                  name="acceptance"
+                  color="primary"
+                />
+              }
+              label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
+              inputRef={register}
+              name="acceptance"
+            />
+            <FormHelperText error className={style.formHelperText}>
+              {errors.acceptance ? errors.acceptance.message : " "}
+            </FormHelperText>
 
             <Button
               className={style.addButton}
