@@ -33,34 +33,10 @@ function CurrentVersion(props){
             width: '80%',
             float: 'right',
         },
-        // reviewVersion:
-        // {
-        //     float: 'left',
-        //     paddingRight: '5%',
-        //     fontSize: '20px',
-        //     fontWeight: 'bold',
-        //     paddingBottom: '3.2%',
-        //     paddingTop: '1%',
-        // },
         labelVersion:
         {
             paddingLeft: '10%',
         },
-        // data:
-        // {
-        //     float: 'left',
-        //     color: 'grey',
-        //     paddingRight: '5%',
-        //     paddingBottom: '3.4%',
-        //     paddingTop: '1.3%',
-        // },
-        // starVersion:
-        // {
-        //     float: 'left',
-        //     width: '20%',
-        //     paddingTop: '0.3%',
-        //     paddingBottom: '2%',
-        // },
         image:
         {
             width: 80,

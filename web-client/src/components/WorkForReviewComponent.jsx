@@ -210,7 +210,7 @@ function WorkForReviewComponent(props)
 
     const [values, setValues] = React.useState({
         commit: "",
-      });
+    });
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -225,7 +225,7 @@ function WorkForReviewComponent(props)
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
         setCounts({ ...counts, [prop]: event.target.value.length });
-      };
+    };
 
     //Form
     const maxCommentSize = 255;
@@ -251,8 +251,6 @@ function WorkForReviewComponent(props)
         .when('file', (file, schema) => {
             if(_file === null)
                 return yup.string().required('Review must contain comment or/and file')
-            // if(value == null)
-            //     return yup.string().required('Review must contain rating')
         })
     });
 
@@ -260,11 +258,6 @@ function WorkForReviewComponent(props)
         mode: "onBlur",
         resolver: yupResolver(schema)
     });
-
-    // const options = [
-    //     'Previous version', 'two', 'three ale co>'
-    //   ];
-    //   const defaultOption = options[0];
 
     return(
         <div className={style.main}>
@@ -324,7 +317,9 @@ function WorkForReviewComponent(props)
                         alert(JSON.stringify(data))
                         })}
                     >
-                        <DialogTitle id='alert-dialog-title' className={style.dialogTitle}>{'Add your review'}</DialogTitle>
+                        <DialogTitle id='alert-dialog-title' className={style.dialogTitle}>
+                            {'Add your review'}
+                        </DialogTitle>
                         <DialogContent>
                             <Box component='fieldset' mb={3} borderColor='transparent' className={style.range}>
                                 <Typography component='legend' className={style.grade}>Grade:</Typography>
@@ -383,14 +378,7 @@ function WorkForReviewComponent(props)
                         </DialogActions>
                     </form>
                 </Dialog>
-            </div>
-                {/*DropDown*/}
-                {/* <Select options={'lol'}/> */}
-                {/* <Dropdown.Menu show>
-                    <Dropdown.Item>Siema</Dropdown.Item>
-                    <Dropdown.Item>eniu</Dropdown.Item>
-                </Dropdown.Menu> */}
-                
+            </div>                
         </div>
     )
 }
