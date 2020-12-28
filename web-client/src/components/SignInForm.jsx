@@ -177,6 +177,7 @@ export default function SignInForm(props) {
             <div>
               {/* Forgot password */}
               <PopUpForgotPassword SET_EMAIL={passEmail} />
+              {console.log(_forgotEmail)}
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
