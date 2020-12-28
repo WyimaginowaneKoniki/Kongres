@@ -41,10 +41,6 @@ function Contact(props) {
       <div>
           <h1>Contact</h1>
 
-            <ContactMap
-              path = {map.path}
-            />
-
           <div>
             <ContactInfo
               path = {inf1.path}
@@ -71,6 +67,10 @@ function Contact(props) {
               link = {inf4.link}
               name = {inf4.name}
               alternativeText = {inf4.alternativeText}
+            />
+
+            <ContactMap
+              path = {map.path}
             />
           </div>
       </div>  
