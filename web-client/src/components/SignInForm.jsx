@@ -170,7 +170,7 @@ export default function SignInForm(props) {
             </FormHelperText>
             <div>
               {/* Forgot password */}
-              <PopUpForgotPassword SET_EMAIL={passEmail} />
+              <PopUpForgotPassword SetEmail={passEmail} />
               {console.log(_forgotEmail)}
               {/* Button Submit */}
               <Button

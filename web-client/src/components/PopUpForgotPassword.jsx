@@ -61,13 +61,15 @@ export default function PopUpForgotPassword(props) {
   });
 
   const schema = yup.object().shape({
-    email: yup.string().email("Email should have correct format"),
-    //   .required("Required field"),
+    email: yup
+      .string()
+      .email("Email should have correct format")
+      .required("Required field"),
   });
 
   const [open, setOpen] = React.useState(false);
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, errors } = useForm({
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
@@ -92,6 +94,15 @@ export default function PopUpForgotPassword(props) {
 
   let isSuccessfully = true;
 
+  const submit = () => {
+    if (isSuccessfully) {
+      SetMessageStyle(sendSuccessfullyStyle);
+      alert(values.email);
+      // Send email to parent component
+      props.SetEmail(values.email);
+    } else SetMessageStyle(sendUnsuccessfullyStyle);
+  };
+
   return (
     <div className={style.main}>
       {/* Forgot password */}
@@ -106,23 +117,11 @@ export default function PopUpForgotPassword(props) {
       <Dialog open={open} onClose={handleClose}>
         <span className={style.message}>You will receive link...</span>
         <div className={style.content}>
-          <form
-            className={style.form}
-            noValidate
-            // If email has been sent successfully or not
-            onSubmit={handleSubmit((data) => {
-              if (isSuccessfully) {
-                SetMessageStyle(sendSuccessfullyStyle);
-                alert(data.email);
-                // Send email to parent component
-                props.SET_EMAIL(data.email);
-              } else SetMessageStyle(sendUnsuccessfullyStyle);
-            })}
-          >
+          <div className={style.form}>
             <TextField
               className={style.textField}
               inputRef={register}
-              // required
+              required
               id="forgot-email-signin"
               name="email"
               label="Login/Email"
@@ -141,12 +140,13 @@ export default function PopUpForgotPassword(props) {
             <Button
               className={style.send}
               color="primary"
-              type="submit"
+              // type="submit"
               variant="contained"
+              onClick={submit}
             >
               Send
             </Button>
-          </form>
+          </div>
         </div>
         <span className={style.message} style={_messageStyle}>
           {isSuccessfully ? "Link has been sent" : "Link has not been sent"}
