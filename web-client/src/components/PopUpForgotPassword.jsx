@@ -55,7 +55,7 @@ const defaultStyle = {
   visibility: "hidden",
 };
 
-export default function PopUpForgotPassword({SET_EMAIL}) {
+export default function PopUpForgotPassword(props) {
   const [values, setValues] = React.useState({
     email: "",
   });
@@ -111,13 +111,12 @@ export default function PopUpForgotPassword({SET_EMAIL}) {
             noValidate
             // If email has been sent successfully or not
             onSubmit={handleSubmit((data) => {
-                if(isSuccessfully){
-                    SetMessageStyle(sendSuccessfullyStyle);
-                    alert(data.email);
-                    // Send email to parent component
-                    SET_EMAIL(data.email);
-                }
-                else SetMessageStyle(sendUnsuccessfullyStyle);
+              if (isSuccessfully) {
+                SetMessageStyle(sendSuccessfullyStyle);
+                alert(data.email);
+                // Send email to parent component
+                props.SET_EMAIL(data.email);
+              } else SetMessageStyle(sendUnsuccessfullyStyle);
             })}
           >
             <TextField
@@ -149,7 +148,9 @@ export default function PopUpForgotPassword({SET_EMAIL}) {
             </Button>
           </form>
         </div>
-        <span className={style.message} style={_messageStyle}>{isSuccessfully ? "Link has been sent" : "Link has not been sent"}</span>
+        <span className={style.message} style={_messageStyle}>
+          {isSuccessfully ? "Link has been sent" : "Link has not been sent"}
+        </span>
       </Dialog>
     </div>
   );

@@ -71,9 +71,10 @@ const incorrectStyle = {
 };
 
 export default function SignInForm(props) {
+  // This is data received from API
   const data = {
-    email: "mail@gmail.com",
-    password: "xd",
+    email: "",
+    password: "",
   };
 
   const AreEmailAndPasswordCorrect = () => {
