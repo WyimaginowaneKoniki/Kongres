@@ -56,9 +56,7 @@ const defaultStyle = {
 };
 
 export default function PopUpForgotPassword(props) {
-  const [values, setValues] = React.useState({
-    email: "",
-  });
+  const [email, setEmail] = React.useState("");
 
   const schema = yup.object().shape({
     email: yup
@@ -74,14 +72,14 @@ export default function PopUpForgotPassword(props) {
     resolver: yupResolver(schema),
   });
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange = (event) => {
+    setEmail(event.target.value);
   };
 
   const handleClickOpen = () => {
     setOpen(true);
     SetMessageStyle(defaultStyle);
-    values.email = "";
+    setEmail("");
   };
 
   const handleClose = () => {
@@ -90,16 +88,16 @@ export default function PopUpForgotPassword(props) {
 
   const style = styles();
 
-  const [_messageStyle, SetMessageStyle] = useState(defaultStyle);
+  const [messageStyle, SetMessageStyle] = useState(defaultStyle);
 
   let isSuccessfully = true;
 
   const submit = () => {
     if (isSuccessfully) {
       SetMessageStyle(sendSuccessfullyStyle);
-      alert(values.email);
+      alert(email);
       // Send email to parent component
-      props.SetEmail(values.email);
+      props.SetEmail(email);
     } else SetMessageStyle(sendUnsuccessfullyStyle);
   };
 
@@ -126,9 +124,9 @@ export default function PopUpForgotPassword(props) {
               name="email"
               label="Login/Email"
               type="email"
-              value={values.email}
+              value={email}
               autoComplete="email"
-              onChange={handleChange("email")}
+              onChange={handleChange}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -148,7 +146,7 @@ export default function PopUpForgotPassword(props) {
             </Button>
           </div>
         </div>
-        <span className={style.message} style={_messageStyle}>
+        <span className={style.message} style={messageStyle}>
           {isSuccessfully ? "Link has been sent" : "Link has not been sent"}
         </span>
       </Dialog>
