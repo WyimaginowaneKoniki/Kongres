@@ -13,6 +13,7 @@ import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
 import SignUpReviewer from './pages/signup-reviewer';
+import SignUpParticipant from './pages/signup-participant';
 import ScientificWorks from './pages/scientific-works';
 import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/cookies-policy" component={CookiesPolicy} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/signup-reviewer" component={SignUpReviewer} />
+            <Route path="/signup-participant" component={SignUpParticipant} />
             <Route path="/scientific-works" component={ScientificWorks} />
             <Route path="/accepted-scientific-work" component={AcceptedScientificWork} />
             <Route path="/my-reviews" component={MyReviews} />

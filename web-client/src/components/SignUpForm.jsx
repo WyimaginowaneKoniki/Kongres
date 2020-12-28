@@ -18,8 +18,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-import "../App.css";
+import Avatar from "../components/Avatar";
 
 const styles = makeStyles({
   main: {
@@ -151,7 +150,8 @@ export default function SignUpForm(props) {
           <form
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit((data) => 
+            alert(JSON.stringify(data)))}
           >
             {/* FirstName Input */}
             <TextField
@@ -281,8 +281,6 @@ export default function SignUpForm(props) {
               variant="outlined"
               name="specialization"
               className={style.formControl}
-              required
-              error={!!errors.specialization}
             >
               <InputLabel
                 shrink
@@ -299,11 +297,13 @@ export default function SignUpForm(props) {
                 input={
                   <OutlinedInput
                     notched
-                    inputRef={register}
                     name="specialization"
                     id="specialization-signup"
                   />
                 }
+                inputRef={register}
+                error={!!errors.specialization}
+                helperText={errors?.specialization?.message}
               >
                 <MenuItem className={style.MenuItem} value="">
                   Select
@@ -328,6 +328,9 @@ export default function SignUpForm(props) {
                 </MenuItem>
               </Select>
             </FormControl>
+
+            {/* Avatar */}
+            {props.participant ? <Avatar name='avatar'/> : null}
 
             {/* Acceptance - Rules of Conference */}
             <FormControlLabel
