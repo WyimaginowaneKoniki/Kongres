@@ -25,14 +25,12 @@ function AddingWork(props) {
       margin: "auto",
     },
     left: {
-      // backgroundColor: 'red',
       width: "50%",
       height: "50vh",
       float: "left",
       textAlign: "left",
     },
     right: {
-      // backgroundColor: 'green',
       width: "50%",
       height: "50vh",
       float: "left",
@@ -57,8 +55,6 @@ function AddingWork(props) {
       marginLeft: "-4px",
     },
     addButton: {
-      // float: 'left',
-      // marginRight: '5%',
       float: "right",
       textTransform: "none",
     },
@@ -73,10 +69,6 @@ function AddingWork(props) {
   const [_file, SetFile] = useState(null);
   const passFile = (f) => {
     SetFile(f);
-  };
-
-  const buttonClick = () => {
-    console.log(_file);
   };
 
   const [values, setValues] = React.useState({
@@ -124,7 +116,6 @@ function AddingWork(props) {
               /^[A-Za-z ]*$/,
               "Author's name should only contain letters and spaces"
             )
-            // .required("Required field")
             .max(
               maxAuthorName,
               `Author's name should be ${maxAuthorName} characters or less`
@@ -235,7 +226,10 @@ function AddingWork(props) {
         <div className={style.container}>
           <form
             noValidate
-            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit((data) => {
+              data.specialization = specialization;
+            alert(JSON.stringify(data));
+            })}
           >
             {/* Title */}
             <TextField
@@ -308,6 +302,7 @@ function AddingWork(props) {
                 displayEmpty
                 name="specialization"
                 value={specialization}
+                required
                 onChange={handleChangeSelect}
                 input={
                   <OutlinedInput
