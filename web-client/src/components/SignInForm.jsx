@@ -72,15 +72,8 @@ const incorrectStyle = {
 
 export default function SignInForm(props) {
   // This is data received from API
-  const data = {
-    email: "",
-    password: "",
-  };
-
-  const AreEmailAndPasswordCorrect = () => {
-    if (data.email === values.email && data.password === values.password)
-      return true;
-    return false;
+  const response = {
+    status: 200,
   };
 
   const [_messageStyle, SetMessageStyle] = useState(correctStyle);
@@ -123,7 +116,7 @@ export default function SignInForm(props) {
             className={style.form}
             noValidate
             onSubmit={handleSubmit((data) => {
-              if (AreEmailAndPasswordCorrect()) {
+              if (response.status === 200) {
                 SetMessageStyle(correctStyle);
                 alert(JSON.stringify(data));
               } else SetMessageStyle(incorrectStyle);
