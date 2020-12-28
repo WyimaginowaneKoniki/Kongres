@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import picture from '../images/blank-profile-picture.png'
+import picture from '../images/blank-profile-picture.png';
 import Button from "@material-ui/core/Button";
-//import Resizer from 'react-image-file-resizer';
 import { withStyles } from "@material-ui/core/styles";
+//import Resizer from 'react-image-file-resizer';
 
 const useStyles = theme => ({
     main:
@@ -55,14 +55,14 @@ class Avatar extends Component {
     //     }, 'base64' );
     // });
 
-    reader.onload = () =>{
+    reader.onload = () => {
       //resizeFile(file)
-      if(reader.readyState === 2){
-        this.setState({profileImg: reader.result})
-      }
+      if(reader.readyState === 2)
+        this.setState({profileImg: reader.result});
     }
+
     if (file &&  file.type.match('image.*'))
-        reader.readAsDataURL(file)
+      reader.readAsDataURL(file)
   };
 
   delete = () => {
@@ -78,14 +78,13 @@ class Avatar extends Component {
 					<img src={profileImg} alt="" id="img" className={classes.photo} />
           <Button color="secondary" onClick={this.delete} className={classes.btn}>Delete photo</Button>
 				</div> 
-          <Button variant='outlined' color="primary" component="label" className={classes.btn1}>
-					  {profileImg === picture ?  'Add' : 'Edit'} photo
-            <input type="file" accept="image/*" name="image-upload" id="input" onChange={this.imageHandler} hidden/>
-          </Button>
+        <Button variant='outlined' color="primary" component="label" className={classes.btn1}>
+					{profileImg === picture ?  'Add' : 'Edit'} photo
+          <input type="file" accept="image/*" name="image-upload" id="input" onChange={this.imageHandler} hidden/>
+        </Button>
 			</div>
-        );
-   
-    }
+    );
+  }
 }
 
 export default withStyles(useStyles)(Avatar);
