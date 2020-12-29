@@ -17,6 +17,8 @@ import SignUpParticipant from './pages/signup-participant';
 import ScientificWorks from './pages/scientific-works';
 import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
+import SignInReviewer from './pages/signin-reviewer';
+import SignInParticipant from './pages/signin-participant';
 
 function App() {
     return (
@@ -37,6 +39,8 @@ function App() {
             <Route path="/scientific-works" component={ScientificWorks} />
             <Route path="/accepted-scientific-work" component={AcceptedScientificWork} />
             <Route path="/my-reviews" component={MyReviews} />
+            <Route path="/signin-reviewer" component={SignInReviewer} />
+            <Route path="/signin-participant" component={SignInParticipant} />
           </Switch>
         </div>
       </Router>
