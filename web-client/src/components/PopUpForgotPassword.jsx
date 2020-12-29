@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -6,6 +6,8 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Dialog from "@material-ui/core/Dialog";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const styles = makeStyles({
   main: {
@@ -43,17 +45,9 @@ const styles = makeStyles({
   },
 });
 
-const sendSuccessfullyStyle = {
-  visibility: "visible",
-  color: "green",
-};
-const sendUnsuccessfullyStyle = {
-  visibility: "visible",
-  color: "red",
-};
-const defaultStyle = {
-  visibility: "hidden",
-};
+function Alert(props) {
+  return <MuiAlert elevation={6} {...props} />;
+}
 
 export default function PopUpForgotPassword(props) {
   const [email, setEmail] = React.useState("");
@@ -65,7 +59,9 @@ export default function PopUpForgotPassword(props) {
       .required("Required field"),
   });
 
-  const [open, setOpen] = React.useState(false);
+  const [open, SetOpen] = React.useState(false);
+  const [openAlertSuccess, SetOpenAlertSuccess] = React.useState(false);
+  const [openAlertError, SetOpenAlertError] = React.useState(false);
 
   const { register, errors } = useForm({
     mode: "onBlur",
@@ -77,28 +73,38 @@ export default function PopUpForgotPassword(props) {
   };
 
   const handleClickOpen = () => {
-    setOpen(true);
-    SetMessageStyle(defaultStyle);
+    SetOpen(true);
     setEmail("");
   };
 
   const handleClose = () => {
-    setOpen(false);
+    SetOpen(false);
+  };
+
+  // Show alert: successfully or unsuccessfully
+  const ShowAlert = (bool) => {
+    if(bool) SetOpenAlertSuccess(true);
+    else SetOpenAlertError(true);
+  };
+
+  // Close alert
+  const CloseAlert = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    SetOpenAlertSuccess(false);
+    SetOpenAlertError(false);
   };
 
   const style = styles();
 
-  const [messageStyle, SetMessageStyle] = useState(defaultStyle);
-
-  let isSuccessfully = true;
+  let isSuccessfully = email !== "";
 
   const submit = () => {
     if (isSuccessfully) {
-      SetMessageStyle(sendSuccessfullyStyle);
-      alert(email);
-      // Send email to parent component
       props.SetEmail(email);
-    } else SetMessageStyle(sendUnsuccessfullyStyle);
+      alert(email);
+    }
+    ShowAlert(isSuccessfully);
   };
 
   return (
@@ -138,7 +144,6 @@ export default function PopUpForgotPassword(props) {
             <Button
               className={style.send}
               color="primary"
-              // type="submit"
               variant="contained"
               onClick={submit}
             >
@@ -146,10 +151,27 @@ export default function PopUpForgotPassword(props) {
             </Button>
           </div>
         </div>
-        <span className={style.message} style={messageStyle}>
-          {isSuccessfully ? "Link has been sent" : "Link has not been sent"}
-        </span>
       </Dialog>
+      {/* Successfully send email */}
+      <Snackbar
+        open={openAlertSuccess}
+        autoHideDuration={4000}
+        onClose={CloseAlert}
+      >
+        <Alert onClose={CloseAlert} severity={"success"}>
+          {"Link has been sent"}
+        </Alert>
+      </Snackbar>
+      {/* Unsuccessfully send email */}
+      <Snackbar
+        open={openAlertError}
+        autoHideDuration={4000}
+        onClose={CloseAlert}
+      >
+        <Alert onClose={CloseAlert} severity={"error"}>
+          {"Link has not been sent"}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
