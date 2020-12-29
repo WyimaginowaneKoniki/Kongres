@@ -17,8 +17,8 @@ function SignUpReviewer() {
     btn: "Sign in",
   };
 
-  const Register = (data) =>
-    {axios
+  const Register = (data) => {
+    axios
       .post("https://localhost:5001/api/Reviewer/Register", data)
       .then((response) => {
         // OK
@@ -29,8 +29,8 @@ function SignUpReviewer() {
         else if (response.status === 409) {
           // show error or smth
         }
-      })
-    };
+      });
+  };
 
   return (
     <div>
