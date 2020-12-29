@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -49,8 +49,10 @@ function Alert(props) {
   return <MuiAlert elevation={6} {...props} />;
 }
 
+const duration = 4000;
+
 export default function PopUpForgotPassword(props) {
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = useState("");
 
   const schema = yup.object().shape({
     email: yup
@@ -155,7 +157,7 @@ export default function PopUpForgotPassword(props) {
       {/* Successfully send email */}
       <Snackbar
         open={openAlertSuccess}
-        autoHideDuration={4000}
+        autoHideDuration={duration}
         onClose={CloseAlert}
       >
         <Alert onClose={CloseAlert} severity={"success"}>
@@ -165,7 +167,7 @@ export default function PopUpForgotPassword(props) {
       {/* Unsuccessfully send email */}
       <Snackbar
         open={openAlertError}
-        autoHideDuration={4000}
+        autoHideDuration={duration}
         onClose={CloseAlert}
       >
         <Alert onClose={CloseAlert} severity={"error"}>
