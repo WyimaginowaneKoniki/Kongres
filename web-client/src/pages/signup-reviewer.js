@@ -3,7 +3,6 @@ import "../App.css";
 import SignInUpInfo from "../components/SignInUpInfo";
 import SignUpForm from "../components/SignUpForm";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 
 function SignUpReviewer() {
   const signUpReviewerInfo = {
