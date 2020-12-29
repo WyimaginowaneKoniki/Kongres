@@ -14,7 +14,6 @@ function SignInUpInfo(props) {
             justifyContent: 'center',
             textAlign: 'left',
             margin: '0 20%',
-
             width: '30%',
         },
       });
