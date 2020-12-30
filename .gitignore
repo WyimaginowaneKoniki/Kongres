@@ -515,4 +515,4 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore,dotnetcore,react,visualstudio,visualstudiocode
-Kongres.Api/Kongres.Api.WebApi/Files/
+Kongres.Api/Kongres.Api.WebApi/Files/*
