@@ -8,7 +8,7 @@ import CurrentVersionWithReplyToReview from '../components/CurrentVersionWithRep
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
-function MyWork(props) {
+function MyWork(props){
     const styles = makeStyles ({
         path:
         {
@@ -70,7 +70,7 @@ function MyWork(props) {
             title: "Current Version",
             date: "30/12/2020",
             stars: 3,
-            review1: [
+            reviews:[
                 {
                     name: 'Reviewer1',
                     path: picture,
@@ -79,9 +79,7 @@ function MyWork(props) {
                     textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
                     answer: null,
                     answerDate: null,
-                }
-            ],
-            review2: [
+                },
                 {
                     name: 'Reviewer2',
                     path: picture,
@@ -90,9 +88,7 @@ function MyWork(props) {
                     textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
                     answer: null,
                     answerDate: null,
-                }
-            ],
-            review3: [
+                },
                 {
                     name: 'Reviewer3',
                     path: picture,
@@ -108,7 +104,7 @@ function MyWork(props) {
             title: "Previous Version",
             date: "10/12/2020",
             stars: 2,
-            review1: [
+            reviews: [
                 {
                     name: 'Reviewer1',
                     path: picture,
@@ -117,9 +113,7 @@ function MyWork(props) {
                     textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
                     answer: "Thank you for your feedback!",
                     answerDate: "12/12/2020",
-                }
-            ],
-            review2: [
+                },
                 {
                     name: 'Reviewer2',
                     path: picture,
@@ -128,9 +122,7 @@ function MyWork(props) {
                     textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
                     answer: "Thank you for your feedback!",
                     answerDate: "12/12/2020",
-                }
-            ],
-            review3: [
+                },
                 {
                     name: 'Reviewer3',
                     path: picture,
@@ -155,48 +147,35 @@ function MyWork(props) {
     setOpen([...open]);
   }
 
-  const reviewList = versions.map((review, i) => (
-    <div>
-      <div className={style.row} onClick={() => handleOnClick(i)}>
-        <span className={style.version}> {review.title} </span>
-        <span className={style.version}> {review.date} </span>
-        <Rating value={review.stars} max={3} className={style.version} readOnly />
-        {open[i] ? 
-          <ArrowDropDownIcon className={style.arrow} />
-        : <ArrowDropUpIcon className={style.arrow} />}
-      </div>
-      {open[i] ? 
-        <CurrentVersionWithReplyToReview
-            name={review.review1[0].name}
-            path={review.review1[0].path}
-            stars={review.review1[0].stars}
-            review={review.review1[0].textReview}
-            date={review.review1[0].date}
-            answer={review.review1[0].answer}
-            answerDate={review.review1[0].answerDate}
-        /> : null}
-        {open[i] ? 
-        <CurrentVersionWithReplyToReview
-            name={review.review2[0].name}
-            path={review.review2[0].path}
-            stars={review.review2[0].stars}
-            review={review.review2[0].textReview}
-            date={review.review2[0].date}
-            answer={review.review2[0].answer}
-            answerDate={review.review2[0].answerDate}
-        /> : null}
-        {open[i] ? 
-        <CurrentVersionWithReplyToReview
-            name={review.review3[0].name}
-            path={review.review3[0].path}
-            stars={review.review3[0].stars}
-            review={review.review3[0].textReview}
-            date={review.review3[0].date}
-            answer={review.review3[0].answer}
-            answerDate={review.review3[0].answerDate}
-        /> : null}
+  const versionList = versions.map((version, i) => {
+    let reviewsList = [];
+    for(let j = 0; j < versions[i].reviews.length; j++)
+    {
+        reviewsList.push(
+            <CurrentVersionWithReplyToReview
+            name={version.reviews[j].name}
+            path={version.reviews[j].path}
+            stars={version.reviews[j].stars}
+            review={version.reviews[j].textReview}
+            date={version.reviews[j].date}
+            answer={version.reviews[j].answer}
+            answerDate={version.reviews[j].answerDate}
+            />
+        );
+    }
+    return(
+    <div key={i}>
+        <div className={style.row} onClick={() => handleOnClick(i)}>
+            <span className={style.version}> {version.title} </span>
+            <span className={style.version}> {version.date} </span>
+            <Rating value={version.stars} max={3} className={style.version} readOnly />
+            {open[i] ? 
+            <ArrowDropDownIcon className={style.arrow} />
+            : <ArrowDropUpIcon className={style.arrow} />}
+        </div>
+        {open[i] ? reviewsList : null}
     </div>
-  ));
+  )});
 
     return(
         <div className={style.main}>
@@ -214,7 +193,7 @@ function MyWork(props) {
                 university = {myWork.university}
                 authors = {myWork.authors}
             />
-            <div className={style.menu}>{reviewList}</div>
+            <div className={style.menu}>{versionList}</div>
         </div>
     )
 }
