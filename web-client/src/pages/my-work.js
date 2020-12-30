@@ -192,6 +192,7 @@ function MyWork(props){
                 degree = {myWork.degree}
                 university = {myWork.university}
                 authors = {myWork.authors}
+                text = {myWork.text}
             />
             <div className={style.menu}>{versionList}</div>
         </div>

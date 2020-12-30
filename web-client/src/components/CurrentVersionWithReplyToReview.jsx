@@ -102,6 +102,10 @@ function CurrentVersionWithReplyToReview(props)
             float: 'left',
             color:'grey',
         },
+        btn:
+        {
+            textTransform: 'none',
+        },
         btn2:
         {
             textTransform: 'none',
@@ -140,6 +144,7 @@ function CurrentVersionWithReplyToReview(props)
     };
 
     const maxCommentSize = 255;
+    const file = null;
 
     const [counts, setCounts] = useState({
         title: 0,
@@ -187,9 +192,9 @@ function CurrentVersionWithReplyToReview(props)
                                 <span className={style.rightDate}>{props.date} {hours}</span>
                             </Box>
                         </Tooltip>
-                        <span className={style.textReview}>{props.review}</span>
-                        <Button variant='outlined' color="primary" 
-                            className={style.btn}>Download review</Button>
+                        {props.review !== "" ? <span className={style.textReview}>{props.review}</span> : null}
+                        {file !== null ? <Button variant='outlined' color="primary" 
+                            className={style.btn}>Download review</Button> : null}
                     </div>
                 </div>
                 <div className={style.reply}>
