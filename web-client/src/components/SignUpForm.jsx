@@ -123,7 +123,7 @@ export default function SignUpForm(props) {
       .required("Required field"),
   });
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, errors } = useForm({
     defaultValues: {
       email: "",
     },
@@ -149,34 +149,20 @@ export default function SignUpForm(props) {
 
   const style = styles();
 
-  const [photo, setPhoto] = React.useState(null);
+  // store reference/data of form
+  const formRef = React.useRef(null);
 
-  const onSubmit = (data) => {
-    var formData = new FormData();
-    
-    if (props.participant) {
-      formData.append("Avatar", photo);
-    }
-
-    formData.append("FirstName", data.firstName);
-    formData.append("LastName", data.lastName);
-    formData.append("Email", data.email);
-    formData.append("Password", data.password);
-    formData.append("University", data.university);
-    formData.append("AcademicTitle", data.academicTitle);
-    formData.append("Specialization", specialization);
-
-    props.GetFormData(formData);
-  };
+  const handleSubmit = () => props.GetFormData(new FormData(formRef.current));
 
   return (
     <Container component="main">
       <div className={style.main}>
         <div className={style.columns}>
           <form
+            ref={formRef}
             className={style.form}
             noValidate
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit}
           >
             {/* FirstName Input */}
             <TextField
@@ -355,9 +341,7 @@ export default function SignUpForm(props) {
             </FormControl>
 
             {/* Avatar */}
-            {props.participant ? (
-              <Avatar name="avatar" saveAvatar={setPhoto} />
-            ) : null}
+            {props.participant ? <Avatar name="avatar" /> : null}
 
             {/* Acceptance - Rules of Conference */}
             <FormControlLabel

@@ -32,7 +32,7 @@ const styles = makeStyles({
   },
 });
 
-function Avatar(props) {
+function Avatar() {
   // Stores the source of the picture
   // File and ULR:
   // https://stackoverflow.com/a/61302835/14865551
@@ -42,15 +42,12 @@ function Avatar(props) {
     const file = e.target.files[0];
     if (file && file.type.match("image.*")) {
       SetAvatarURL(URL.createObjectURL(file));
-      // send avatar to parent
-      props.saveAvatar(file);
     } else {
       alert("Invalid input type!");
     }
   };
 
   const onRemovePicture = () => {
-    props.saveAvatar(null);
     SetAvatarURL(defaultPicture);
   };
 
@@ -78,7 +75,7 @@ function Avatar(props) {
         <input
           type="file"
           accept="image/*"
-          name="image-upload"
+          name="avatar"
           id="input"
           onChange={onChangePicture}
           hidden
