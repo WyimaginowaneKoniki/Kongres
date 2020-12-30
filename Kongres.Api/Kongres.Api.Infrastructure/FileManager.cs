@@ -16,6 +16,9 @@ namespace Kongres.Api.Infrastructure
 
         public async Task<string> SaveFile(IFormFile file)
         {
+            if (file == null)
+                return null;
+
             // get file's extension
             var mime = file.FileName.Split(".")[^1];
             // randomize fileName
