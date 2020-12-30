@@ -76,7 +76,9 @@ function MyWork(props) {
                     path: picture,
                     date: "30/12/2020",
                     stars: 3,
-                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.'
+                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
+                    answer: null,
+                    answerDate: null,
                 }
             ],
             review2: [
@@ -85,7 +87,9 @@ function MyWork(props) {
                     path: picture,
                     date: "28/12/2020",
                     stars: 3,
-                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.'
+                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
+                    answer: null,
+                    answerDate: null,
                 }
             ],
             review3: [
@@ -94,7 +98,9 @@ function MyWork(props) {
                     path: picture,
                     date: "22/12/2020",
                     stars: 3,
-                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.'
+                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
+                    answer: "Thank you for your feedback!",
+                    answerDate: "26/12/2020",
                 }
             ]
         },
@@ -108,7 +114,9 @@ function MyWork(props) {
                     path: picture,
                     date: "10/12/2020",
                     stars: 2,
-                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.'
+                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
+                    answer: "Thank you for your feedback!",
+                    answerDate: "12/12/2020",
                 }
             ],
             review2: [
@@ -117,7 +125,9 @@ function MyWork(props) {
                     path: picture,
                     date: "08/12/2020",
                     stars: 2,
-                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.'
+                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
+                    answer: "Thank you for your feedback!",
+                    answerDate: "12/12/2020",
                 }
             ],
             review3: [
@@ -126,7 +136,9 @@ function MyWork(props) {
                     path: picture,
                     date: "07/12/2020",
                     stars: 2,
-                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.'
+                    textReview: 'Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.',
+                    answer: "Thank you for your feedback!",
+                    answerDate: "12/12/2020",
                 }
             ]
         }
@@ -160,6 +172,8 @@ function MyWork(props) {
             stars={review.review1[0].stars}
             review={review.review1[0].textReview}
             date={review.review1[0].date}
+            answer={review.review1[0].answer}
+            answerDate={review.review1[0].answerDate}
         /> : null}
         {open[i] ? 
         <CurrentVersionWithReplyToReview
@@ -168,6 +182,8 @@ function MyWork(props) {
             stars={review.review2[0].stars}
             review={review.review2[0].textReview}
             date={review.review2[0].date}
+            answer={review.review2[0].answer}
+            answerDate={review.review2[0].answerDate}
         /> : null}
         {open[i] ? 
         <CurrentVersionWithReplyToReview
@@ -176,6 +192,8 @@ function MyWork(props) {
             stars={review.review3[0].stars}
             review={review.review3[0].textReview}
             date={review.review3[0].date}
+            answer={review.review3[0].answer}
+            answerDate={review.review3[0].answerDate}
         /> : null}
     </div>
   ));

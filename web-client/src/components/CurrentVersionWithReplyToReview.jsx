@@ -108,6 +108,21 @@ function CurrentVersionWithReplyToReview(props)
             marginRight: '2.5%',
             float: 'right',
         },
+        yourReplay:
+        {
+            width: '50%',
+            fontWeight: 'bold',
+            float: 'left',
+            fontSize: '20px',
+            marginLeft: '2%',
+        },
+        message:
+        {
+            width: '100%',
+            float: 'left',
+            marginLeft: '2%',
+            marginTop: '3%',
+        },
     });
 
     const style = styles();
@@ -178,12 +193,12 @@ function CurrentVersionWithReplyToReview(props)
                     </div>
                 </div>
                 <div className={style.reply}>
-                    <span className={style.replyToReview}>Reply to review</span>
+                    {props.answer === null ? <span className={style.replyToReview}>Reply to review</span> : null}
                     <div className={style.leftReply}>
                         <img src={props.path} className={style.image} alt={props.alternativeText}></img>
                         <span className={style.me}> John Doe </span>
                     </div>
-                    <div className={style.rightReply}>
+                    {props.answer === null ? <div className={style.rightReply}>
                         <form
                             className={style.form}
                             noValidate
@@ -220,7 +235,12 @@ function CurrentVersionWithReplyToReview(props)
                             <Button variant='contained' color="primary"
                                 className={style.btn2} type='submit'>Send</Button>
                         </form>
-                    </div>
+                    </div> :
+                    <div className={style.rightReply}>
+                        <span className={style.yourReplay}>Your replay</span>
+                        <span className={style.rightDate}>{props.answerDate} {hours}</span>
+                        <span className={style.message}>{props.answer}</span>
+                    </div> }
                 </div>  
             </div>
     )
