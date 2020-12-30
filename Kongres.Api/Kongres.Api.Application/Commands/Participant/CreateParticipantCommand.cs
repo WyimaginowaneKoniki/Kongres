@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.Text.Json.Serialization;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Kongres.Api.Application.Commands.Participant
 {
@@ -11,6 +13,6 @@ namespace Kongres.Api.Application.Commands.Participant
         public string Specialization { get; set; }
         public string University { get; set; }
         public string AcademicTitle { get; set; }
-        public string Photo { get; set; }
+        public IFormFile Avatar { get; set; }
     }
 }

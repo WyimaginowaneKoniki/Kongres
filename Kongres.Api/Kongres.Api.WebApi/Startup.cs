@@ -2,6 +2,7 @@ using Autofac;
 using Kongres.Api.Application.Modules;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Domain.Entities;
+using Kongres.Api.Infrastructure;
 using Kongres.Api.Infrastructure.Context;
 using Kongres.Api.Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,7 @@ namespace Kongres.Api.WebApi
 
             services.AddTransient<IUserStore<User>, UserStore>();
             services.AddTransient<IRoleStore<Role>, RoleStore>();
+            services.AddSingleton<IFileManager, FileManager>();
 
             services.AddControllers()
                 .AddJsonOptions(x =>

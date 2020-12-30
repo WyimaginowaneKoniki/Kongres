@@ -12,7 +12,7 @@ namespace Kongres.Api.WebApi.Controller
 
         // api/Participant/Register
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] CreateParticipantCommand command)
+        public async Task<IActionResult> Register([FromForm] CreateParticipantCommand command)
         {
             await CommandAsync(command);
             return Ok();

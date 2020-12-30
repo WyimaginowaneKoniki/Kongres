@@ -111,11 +111,16 @@ export default function SignUpForm(props) {
         /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
       ),
-    university: yup.string().max(255, "University should be 255 character long or less"),
+    university: yup
+      .string()
+      .max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
-    acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
+    acceptance: yup
+      .boolean()
+      .oneOf([true], "Required field")
+      .required("Required field"),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -141,11 +146,27 @@ export default function SignUpForm(props) {
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
   };
+
   const style = styles();
 
+  const [photo, setPhoto] = React.useState(null);
+
   const onSubmit = (data) => {
-    data.specialization = specialization;
-    props.GetFormData(data);
+    var formData = new FormData();
+    
+    if (props.participant) {
+      formData.append("Avatar", photo);
+    }
+
+    formData.append("FirstName", data.firstName);
+    formData.append("LastName", data.lastName);
+    formData.append("Email", data.email);
+    formData.append("Password", data.password);
+    formData.append("University", data.university);
+    formData.append("AcademicTitle", data.academicTitle);
+    formData.append("Specialization", specialization);
+
+    props.GetFormData(formData);
   };
 
   return (
@@ -334,7 +355,9 @@ export default function SignUpForm(props) {
             </FormControl>
 
             {/* Avatar */}
-            {props.participant ? <Avatar name='avatar'/> : null}
+            {props.participant ? (
+              <Avatar name="avatar" saveAvatar={setPhoto} />
+            ) : null}
 
             {/* Acceptance - Rules of Conference */}
             <FormControlLabel
@@ -371,7 +394,11 @@ export default function SignUpForm(props) {
           <div className={style.signInUpOther}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Button variant="outlined" color="primary" className={style.btnSignIn}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={style.btnSignIn}
+            >
               {props.btn}
             </Button>
           </div>

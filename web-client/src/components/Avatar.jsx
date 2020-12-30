@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import defaultPicture from "../images/blank-profile-picture.png";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -33,37 +33,28 @@ const styles = makeStyles({
 });
 
 function Avatar(props) {
-  // From:
-  // https://stackoverflow.com/a/61745110/14865551
-  // Stores the picture
-  const [avatarFile, SetAvatarFile] = useState(null);
-
   // Stores the source of the picture
-  const [avatarURL, SetAvatarURL] = useState(defaultPicture);
   // File and ULR:
   // https://stackoverflow.com/a/61302835/14865551
+  const [avatarURL, SetAvatarURL] = useState(defaultPicture);
 
   const onChangePicture = (e) => {
     const file = e.target.files[0];
-    if (file && file.type.match("image.*")){
-      SetAvatarFile(file);
+    if (file && file.type.match("image.*")) {
       SetAvatarURL(URL.createObjectURL(file));
-    }
-      
-    else {
+      // send avatar to parent
+      props.saveAvatar(file);
+    } else {
       alert("Invalid input type!");
     }
   };
 
   const onRemovePicture = () => {
-    SetAvatarFile(null);
+    props.saveAvatar(null);
     SetAvatarURL(defaultPicture);
   };
 
   const style = styles();
-
-  console.log(avatarFile);
-  console.log(avatarURL);
 
   return (
     <div className={style.main}>
