@@ -364,13 +364,14 @@ export default function SignUpForm(props) {
           </form>
 
           {/* Info about signing in */}
+          {props.btn ? 
           <div className={style.signInUpOther}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
             <Button variant="outlined" color="primary" className={style.btnSignIn}>
               {props.btn}
             </Button>
-          </div>
+          </div> : null }
         </div>
       </div>
     </Container>
