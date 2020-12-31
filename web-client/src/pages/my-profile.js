@@ -2,6 +2,7 @@ import React from 'react';
 import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import SignUpForm from '../components/SignUpForm';
+import ChangePassword from '../components/ChangePassword';
 
 function MyProfile(props)
 {
@@ -38,6 +39,15 @@ function MyProfile(props)
 
     const style = styles();
 
+    const myProfil = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'John.doe@gmail.com',
+        academicTitle: '',
+        university: '',
+        specialization: 'Biology',
+    }
+
     return(
         <div className={style.main}>
             <h1 className={style.h1}> My Profile</h1>
@@ -49,7 +59,15 @@ function MyProfile(props)
                 <h2 className={style.h2}>Rules</h2>
             </div>
             <div className={style.right}>
-                <SignUpForm></SignUpForm>
+                {/* <SignUpForm
+                  firstName = {myProfil.firstName}
+                  lastName = {myProfil.lastName}
+                  email = {myProfil.email}
+                  academicTitle = {myProfil.academicTitle}
+                  university = {myProfil.university}
+                  specialization = {myProfil.specialization}
+                /> */}
+                <ChangePassword></ChangePassword>
             </div>
         </div>
     )
