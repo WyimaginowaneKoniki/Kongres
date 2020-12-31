@@ -67,12 +67,12 @@ function DropZone(props) {
         },
         fileSize: {
             height: '30px',
-            margin: '3%',
+            margin: '3% 2%',
             float: 'left',
         },
         exit: {
             height: '30px',
-            margin: '3%',
+            margin: '3% 2%',
             float: 'right',
         },
         dialog: {

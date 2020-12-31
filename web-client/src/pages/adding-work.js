@@ -236,7 +236,12 @@ function AddingWork(props) {
             onSubmit={handleSubmit((data) => {
               data.specialization = specialization;
               console.log(file);
-            alert(JSON.stringify(data));
+              if(file !== null) {
+                alert(JSON.stringify(data));
+              }
+              else {
+                console.log("File is null");
+              }
             })}
           >
             {/* Title */}
