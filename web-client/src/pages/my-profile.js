@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
-import SignUpForm from '../components/SignUpForm';
+import PersonalInformation from '../components/PersonalInformation';
 import ChangePassword from '../components/ChangePassword';
 
 function MyProfile(props)
@@ -26,7 +26,7 @@ function MyProfile(props)
         right:
         {
             float: 'right',
-            width: '40%',
+            width: '50%',
         },
         h2:
         {
@@ -34,6 +34,10 @@ function MyProfile(props)
             marginTop: '10%',
             marginBottom: '15%',
             marginLeft: '10%',
+            '&:hover':
+            {
+                cursor: 'pointer',
+            }
         },
     })
 
@@ -46,28 +50,57 @@ function MyProfile(props)
         academicTitle: '',
         university: '',
         specialization: 'Biology',
+        participant: true,
+    }
+
+    const [panel, SetPanel] = React.useState(true);
+    const [info, SetInfo] = React.useState('blue');
+    const [password, SetPassword] = React.useState('black');
+
+    const moveToWork = () => {
+    }
+
+    const moveToPersonalInformation = () => {
+        SetPanel(true);
+        SetInfo('blue');
+        SetPassword('black');
+    }
+
+    const moveToChangePassword = () => {
+        SetPanel(false);
+        SetPassword('blue');
+        SetInfo('black');
+    }
+
+    const moveToLogOut = () => {
+    }
+
+    const moveToRules = () => {
     }
 
     return(
         <div className={style.main}>
             <h1 className={style.h1}> My Profile</h1>
             <div className={style.left}>
-                <h2 className={style.h2}>Add work / My work</h2>
-                <h2 className={style.h2}>Personal Information</h2>
-                <h2 className={style.h2}>Change password</h2>
-                <h2 className={style.h2}>Log out</h2>
-                <h2 className={style.h2}>Rules</h2>
+                <h2 className={style.h2} onClick={moveToWork}>Add work / My work</h2>
+                <h2 className={style.h2} onClick={moveToPersonalInformation} style={{color : info}}>Personal Information</h2>
+                <h2 className={style.h2} onClick={moveToChangePassword} style={{color : password}}>Change password</h2>
+                <h2 className={style.h2} onClick={moveToLogOut}>Log out</h2>
+                <h2 className={style.h2} onClick={moveToRules}>Rules</h2>
             </div>
             <div className={style.right}>
-                {/* <SignUpForm
-                  firstName = {myProfil.firstName}
-                  lastName = {myProfil.lastName}
-                  email = {myProfil.email}
-                  academicTitle = {myProfil.academicTitle}
-                  university = {myProfil.university}
-                  specialization = {myProfil.specialization}
-                /> */}
-                <ChangePassword></ChangePassword>
+                {panel ?
+                    <PersonalInformation
+                    firstName = {myProfil.firstName}
+                    lastName = {myProfil.lastName}
+                    email = {myProfil.email}
+                    academicTitle = {myProfil.academicTitle}
+                    university = {myProfil.university}
+                    specialization = {myProfil.specialization}
+                    participant = {myProfil.participant}
+                    /> :
+                    <ChangePassword/>
+                }
             </div>
         </div>
     )
