@@ -22,7 +22,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-function AddingWork(props) {
+function AddingWork() {
   const styles = makeStyles({
     main: {
       width: "80%",
@@ -153,6 +153,17 @@ function AddingWork(props) {
 
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
+    setError(false);
+  };
+
+  // based on:
+  // https://codesandbox.io/s/425lm2479?file=/demo.js:1708-1772
+  const [hasError, setError] = useState(false);
+
+  const ClickSubmit = () => {
+    setError(false);
+    if (specialization === "") setError(true);
+    if (file === null) ShowAlert();
   };
 
   // based on:
@@ -255,12 +266,11 @@ function AddingWork(props) {
             noValidate
             onSubmit={handleSubmit((data) => {
               data.specialization = specialization;
-              console.log(file);
-              if(file !== null) {
+              
+              // if everything is OK, form can be send
+              if (file !== null && specialization !== "") {
+                console.log(file);
                 alert(JSON.stringify(data));
-              }
-              else {
-                ShowAlert();
               }
             })}
           >
@@ -322,7 +332,7 @@ function AddingWork(props) {
               name="specialization"
               className={style.formControl}
               required
-              error={!!errors.specialization}
+              error={hasError}
             >
               <InputLabel
                 shrink
@@ -335,7 +345,6 @@ function AddingWork(props) {
                 displayEmpty
                 name="specialization"
                 value={specialization}
-                required
                 onChange={handleChangeSelect}
                 input={
                   <OutlinedInput
@@ -347,7 +356,7 @@ function AddingWork(props) {
                 }
               >
                 <MenuItem className={style.MenuItem} value="">
-                  Select
+                  <em>Select</em>
                 </MenuItem>
                 <MenuItem className={style.MenuItem} value={"Computer Science"}>
                   Computer Science
@@ -368,6 +377,7 @@ function AddingWork(props) {
                   Geography
                 </MenuItem>
               </Select>
+              {hasError && <FormHelperText>Required field</FormHelperText>}
             </FormControl>
 
             {/* Authors */}
@@ -412,7 +422,7 @@ function AddingWork(props) {
               color="primary"
               type="submit"
               variant="contained"
-              // onClick={buttonClick}
+              onClick={ClickSubmit}
             >
               Add work
             </Button>
