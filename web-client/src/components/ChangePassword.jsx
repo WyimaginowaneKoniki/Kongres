@@ -15,7 +15,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-function ChangePassword(props) 
+function ChangePassword() 
 {
     const styles = makeStyles({
         main: 
@@ -23,10 +23,10 @@ function ChangePassword(props)
             padding: "2%",
             display: "flex",
         },
-        columns: 
-        {
-            display: "flex",
-        },
+        // columns: 
+        // {
+        //     display: "flex",
+        // },
         form: 
         {
             display: "flex",
@@ -63,39 +63,59 @@ function ChangePassword(props)
         },
     });
 
-    const [valuesCurrent, setValuesCurrent] = React.useState({
+    {/* Current Password */}
+    const [valuesCurrent, SetValuesCurrent] = React.useState({
         password: "",
         showPassword: false,
     });
 
-    const [valuesNew, setValuesNew] = React.useState({
+    const handleChangeCurrentPassword = (prop) => (event) => {
+        SetValuesCurrent({ ...valuesCurrent, [prop]: event.target.value });
+    };
+    
+    const handleClickShowCurrentPassword = () => {
+        SetValuesCurrent({ ...valuesCurrent, showCurrentPassword: !valuesCurrent.showCurrentPassword });
+    };
+    
+    const handleMouseDownCurrentPassword = (event) => {
+        event.preventDefault();
+    };
+
+    {/* New Password */}
+    const [valuesNew, SetValuesNew] = React.useState({
         password: "",
         showPassword: false,
     });
 
     const handleChangeNewPassword = (prop) => (event) => {
-        setValuesNew({ ...valuesNew, [prop]: event.target.value });
+        SetValuesNew({ ...valuesNew, [prop]: event.target.value });
     };
     
     const handleClickShowNewPassword = () => {
-        setValuesNew({ ...valuesNew, showNewPassword: !valuesNew.showNewPassword });
+        SetValuesNew({ ...valuesNew, showNewPassword: !valuesNew.showNewPassword });
     };
     
     const handleMouseDownNewPassword = (event) => {
         event.preventDefault();
     };
 
-    const handleChangeCurrentPassword = (prop) => (event) => {
-        setValuesCurrent({ ...valuesCurrent, [prop]: event.target.value });
-    };
+        {/* Confirm Password */}
+        const [valuesConfirm, SetValuesConfirm] = React.useState({
+            password: "",
+            showPassword: false,
+        });
     
-    const handleClickShowCurrentPassword = () => {
-        setValuesCurrent({ ...valuesCurrent, showCurrentPassword: !valuesCurrent.showCurrentPassword });
-    };
-    
-    const handleMouseDownCurrentPassword = (event) => {
-        event.preventDefault();
-    };
+        const handleChangeConfirmPassword = (prop) => (event) => {
+            SetValuesConfirm({ ...valuesConfirm, [prop]: event.target.value });
+        };
+        
+        const handleClickShowConfirmPassword = () => {
+            SetValuesConfirm({ ...valuesConfirm, showConfirmPassword: !valuesConfirm.showConfirmPassword });
+        };
+        
+        const handleMouseDownConfirmPassword = (event) => {
+            event.preventDefault();
+        };
 
     const style = styles();
 
@@ -115,13 +135,18 @@ function ChangePassword(props)
         .matches(
             /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
             "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
+        ),
+        confirmpassword: yup
+        .string()
+        .required("Required field")
+        .min(12, "Password must be at least 12 characters long")
+        .matches(
+            /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+            "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
         )
     })
 
     const { register, handleSubmit, errors } = useForm({
-        defaultValues: {
-          email: "",
-        },
         mode: "onBlur",
         resolver: yupResolver(schema),
       });    
@@ -129,7 +154,7 @@ function ChangePassword(props)
     return(
         <Container component="main">
             <div className={style.main}>
-                <div classname={style.columns}>
+                <div> {/*className={style.columns}*/}
                     <form
                         className={style.form}
                         noValidate
@@ -149,7 +174,7 @@ function ChangePassword(props)
                             </InputLabel>
                             <OutlinedInput
                                 inputRef={register}
-                                id="password-myprofile"
+                                id="current-password"
                                 name="currentpassword"
                                 type={valuesCurrent.showCurrentPassword ? "text" : "password"}
                                 value={valuesCurrent.currentPassword}
@@ -168,11 +193,11 @@ function ChangePassword(props)
                                     </InputAdornment>
                                 }
                             />
-                            {/*  to do: add helper text and/or strength bar */}
-                            <FormHelperText error={true} id="helper-text-password-myprofile">
+                            <FormHelperText error={true} id="helper-text-current-password">
                             {errors?.currentpassword?.message}
                             </FormHelperText>
                         </FormControl>
+
                         {/* New password */}
                         <FormControl
                             className={style.textField}
@@ -186,7 +211,7 @@ function ChangePassword(props)
                             </InputLabel>
                             <OutlinedInput
                                 inputRef={register}
-                                id="password-myprofile"
+                                id="new-password"
                                 name="newpassword"
                                 type={valuesNew.showNewPassword ? "text" : "password"}
                                 value={valuesNew.newPassword}
@@ -205,9 +230,45 @@ function ChangePassword(props)
                                     </InputAdornment>
                                 }
                             />
-                            {/*  to do: add helper text and/or strength bar */}
-                            <FormHelperText error={true} id="helper-text-password-myprofile">
+                            <FormHelperText error={true} id="helper-text-new-password">
                             {errors?.newpassword?.message}
+                            </FormHelperText>
+                        </FormControl>
+
+                         {/* Confirm password */}
+                         <FormControl
+                            className={style.textField}
+                            required
+                            name="confirmpassword"
+                            variant="outlined"
+                            error={!!errors.confirmpassword}
+                        >
+                            <InputLabel shrink className={style.inputLabel}>
+                                Confirm Password
+                            </InputLabel>
+                            <OutlinedInput
+                                inputRef={register}
+                                id="confirm-password"
+                                name="confirmpassword"
+                                type={valuesConfirm.showConfirmPassword ? "text" : "password"}
+                                value={valuesConfirm.confirmPassword}
+                                autoComplete="new-password"
+                                onChange={handleChangeConfirmPassword("password")}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowConfirmPassword}
+                                            onMouseDown={handleMouseDownConfirmPassword}
+                                            edge="end"
+                                        >
+                                            {valuesConfirm.showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                            <FormHelperText error={true} id="helper-text-confirm-password">
+                            {errors?.confirmpassword?.message}
                             </FormHelperText>
                         </FormControl>
                         <Button

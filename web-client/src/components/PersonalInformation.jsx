@@ -116,7 +116,7 @@ export default function PersonalInformation(props) {
   return (
     <Container component="main">
       <div className={style.main}>
-        <div classname={style.columns}>
+        <div className={style.columns}>
           <form
             className={style.form}
             noValidate
