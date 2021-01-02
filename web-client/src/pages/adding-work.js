@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../App.css";
 import DropZone from "../components/DropZone";
 import Button from "@material-ui/core/Button";
@@ -19,7 +19,8 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-const { useState } = React;
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 function AddingWork(props) {
   const styles = makeStyles({
@@ -71,6 +72,14 @@ function AddingWork(props) {
   });
 
   const style = styles();
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} {...props} />;
+  }
+  
+  const duration = 4000;
+
+  const [openAlertError, SetOpenAlertError] = React.useState(false);
 
   const [file, SetFile] = useState(null);
   const passFile = (f) => {
@@ -179,6 +188,17 @@ function AddingWork(props) {
     }
   };
 
+  // Show alert
+  const ShowAlert = () => {
+    SetOpenAlertError(true);
+  };
+
+  // Close alert
+  const CloseAlert = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    SetOpenAlertError(false);
+  };
   // create authors' list
   const authorList = authors.map((_, index) => {
     const fieldName = `authors[${index}]`;
@@ -240,7 +260,7 @@ function AddingWork(props) {
                 alert(JSON.stringify(data));
               }
               else {
-                console.log("File is null");
+                ShowAlert();
               }
             })}
           >
@@ -402,6 +422,15 @@ function AddingWork(props) {
       <div className={style.right}>
         <DropZone SetFile={passFile} />
       </div>
+      <Snackbar
+        open={openAlertError}
+        autoHideDuration={duration}
+        onClose={CloseAlert}
+      >
+        <Alert onClose={CloseAlert} severity={"error"}>
+          {"You did not choose a work!"}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
