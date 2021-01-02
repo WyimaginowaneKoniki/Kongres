@@ -29,6 +29,11 @@ function Search(props)
         textAlign: 'left',
         float: 'left',
       },
+      inputSearch:
+      {
+        width: '130%',
+        margin: 'auto',
+      }
     });
 
     const style = styles();
@@ -41,6 +46,7 @@ function Search(props)
           <div className={style.search}>
             <InputBase
               placeholder="Search…"
+              className={style.inputSearch}
             />
           </div>
         </div>
