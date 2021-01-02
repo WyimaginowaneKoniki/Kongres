@@ -163,6 +163,7 @@ export default function SignUpForm(props) {
             className={style.form}
             noValidate
             onSubmit={handleSubmit(onSubmit)}
+            method="post"
           >
             {/* FirstName Input */}
             <TextField
