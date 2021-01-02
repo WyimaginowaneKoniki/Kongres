@@ -27,7 +27,7 @@ const styles = makeStyles({
     marginLeft: "8%",
   },
   img: {
-    width: "35%",
+    width: "130px",
     float: "left",
   },
 });
