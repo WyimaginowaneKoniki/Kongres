@@ -19,7 +19,7 @@ function MyProfile(props)
         left:
         {
             float: 'left',
-            width: '40%',
+            width: '400px',
             margin: 'auto',
             border: '1px solid black',
         },
