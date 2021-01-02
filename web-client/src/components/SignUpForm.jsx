@@ -123,7 +123,7 @@ export default function SignUpForm(props) {
       .required("Required field"),
   });
 
-  const { register, errors } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     defaultValues: {
       email: "",
     },
@@ -152,7 +152,7 @@ export default function SignUpForm(props) {
   // store reference/data of form
   const formRef = React.useRef(null);
 
-  const handleSubmit = () => props.GetFormData(new FormData(formRef.current));
+  const onSubmit = () => props.GetFormData(new FormData(formRef.current));
 
   return (
     <Container component="main">
@@ -162,7 +162,7 @@ export default function SignUpForm(props) {
             ref={formRef}
             className={style.form}
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* FirstName Input */}
             <TextField
