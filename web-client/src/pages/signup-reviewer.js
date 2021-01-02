@@ -2,6 +2,7 @@ import React from "react";
 import "../App.css";
 import SignInUpInfo from "../components/SignInUpInfo";
 import SignUpForm from "../components/SignUpForm";
+import axios from "axios";
 
 function SignUpReviewer() {
   const signUpReviewerInfo = {
@@ -14,12 +15,29 @@ function SignUpReviewer() {
     content: "If you have already an account, sign in here",
     btn: "Sign in",
   };
+
+  const Register = (data) => {
+    axios
+      .post("https://localhost:5001/api/Reviewer/Register", data)
+      .then((response) => {
+        // OK
+        if (response.status === 200) {
+          window.location.href = "https://localhost:5001";
+        }
+        // User conflict/user already exists in db
+        else if (response.status === 409) {
+          // show error or smth
+        }
+      });
+  };
+
   return (
     <div>
       <h1>Sign up as Reviewer</h1>
       <SignInUpInfo content={signUpReviewerInfo.content} />
       <div>
         <SignUpForm
+          GetFormData={Register}
           heading={signInReviewer.heading}
           content={signInReviewer.content}
           btn={signInReviewer.btn}

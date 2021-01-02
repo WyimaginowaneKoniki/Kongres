@@ -111,11 +111,16 @@ export default function SignUpForm(props) {
         /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
       ),
-    university: yup.string().max(255, "University should be 255 character long or less"),
+    university: yup
+      .string()
+      .max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
-    acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
+    acceptance: yup
+      .boolean()
+      .oneOf([true], "Required field")
+      .required("Required field"),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -141,17 +146,24 @@ export default function SignUpForm(props) {
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
   };
+
   const style = styles();
+
+  // store reference/data of form
+  const formRef = React.useRef(null);
+
+  const onSubmit = () => props.GetFormData(new FormData(formRef.current));
 
   return (
     <Container component="main">
       <div className={style.main}>
-        <div classname={style.columns}>
+        <div className={style.columns}>
           <form
+            ref={formRef}
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => 
-            alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit(onSubmit)}
+            method="post"
           >
             {/* FirstName Input */}
             <TextField
@@ -330,7 +342,7 @@ export default function SignUpForm(props) {
             </FormControl>
 
             {/* Avatar */}
-            {props.participant ? <Avatar name='avatar'/> : null}
+            {props.participant ? <Avatar name="avatar" /> : null}
 
             {/* Acceptance - Rules of Conference */}
             <FormControlLabel
@@ -367,7 +379,11 @@ export default function SignUpForm(props) {
           <div className={style.signInUpOther}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Button variant="outlined" color="primary" className={style.btnSignIn}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={style.btnSignIn}
+            >
               {props.btn}
             </Button>
           </div>

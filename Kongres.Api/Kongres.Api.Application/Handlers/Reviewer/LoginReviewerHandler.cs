@@ -1,13 +1,13 @@
 ﻿using System;
-using Kongres.Api.Application.Commands.Users;
+using System.Threading;
+using System.Threading.Tasks;
+using Kongres.Api.Application.Commands.Reviewer;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Kongres.Api.Application.Handlers.Users
+namespace Kongres.Api.Application.Handlers.Reviewer
 {
     public class LoginReviewerHandler : AsyncRequestHandler<LoginReviewerCommand>
     {
@@ -24,7 +24,7 @@ namespace Kongres.Api.Application.Handlers.Users
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var userName = $"{nameof(UserTypeEnum.Reviewer)}:{request.UserName}";
+            var userName = $"{nameof(UserTypeEnum.Reviewer)}:{request.Email}";
 
             var user = await _userManager.FindByNameAsync(userName);
 
