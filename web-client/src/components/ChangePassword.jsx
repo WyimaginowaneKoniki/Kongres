@@ -64,13 +64,13 @@ function ChangePassword(props)
     });
 
     const [valuesCurrent, setValuesCurrent] = React.useState({
-        currentPassword: "",
-        showCurrentPassword: false,
+        password: "",
+        showPassword: false,
     });
 
     const [valuesNew, setValuesNew] = React.useState({
-        newPassword: "",
-        showNewPassword: false,
+        password: "",
+        showPassword: false,
     });
 
     const handleChangeNewPassword = (prop) => (event) => {
@@ -142,7 +142,7 @@ function ChangePassword(props)
                             required
                             name="currentpassword"
                             variant="outlined"
-                            error={!!errors.currentPassword}
+                            error={!!errors.currentpassword}
                         >
                             <InputLabel shrink className={style.inputLabel}>
                                 Current Password
@@ -154,7 +154,7 @@ function ChangePassword(props)
                                 type={valuesCurrent.showCurrentPassword ? "text" : "password"}
                                 value={valuesCurrent.currentPassword}
                                 autoComplete="current-password"
-                                onChange={handleChangeCurrentPassword("currentpassword")}
+                                onChange={handleChangeCurrentPassword("password")}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
@@ -179,7 +179,7 @@ function ChangePassword(props)
                             required
                             name="newpassword"
                             variant="outlined"
-                            error={!!errors.newPassword}
+                            error={!!errors.newpassword}
                         >
                             <InputLabel shrink className={style.inputLabel}>
                                 New Password
@@ -191,7 +191,7 @@ function ChangePassword(props)
                                 type={valuesNew.showNewPassword ? "text" : "password"}
                                 value={valuesNew.newPassword}
                                 autoComplete="new-password"
-                                onChange={handleChangeNewPassword("newpassword")}
+                                onChange={handleChangeNewPassword("password")}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
