@@ -9,6 +9,7 @@ import Speakers from './pages/speakers';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/signin-reviewer" component={SignInReviewer} />
             <Route path="/signin-participant" component={SignInParticipant} />
           </Switch>
+          <Footer/>
         </div>
       </Router>
     );
