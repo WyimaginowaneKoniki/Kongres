@@ -78,6 +78,11 @@ const styles = makeStyles({
 
 export default function PersonalInformation(props) {
   const [specialization, setSpecialization] = React.useState(props.specialization);
+  const [firstName, setFirstName] = React.useState(props.firstName);
+  const [lastName, setLastName] = React.useState(props.lastName);
+  const [email, setEmail] = React.useState(props.email);
+  const [university, setUniversity] = React.useState(props.university);
+  const [academicTitle, setAcademicTitle] = React.useState(props.academicTitle);
 
   const schema = yup.object().shape({
     firstName: yup
@@ -111,6 +116,27 @@ export default function PersonalInformation(props) {
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
   };
+
+  const handleChangeFirstName = (event) => {
+    setFirstName(event.target.value);
+  };
+
+  const handleChangeLastName = (event) => {
+    setLastName(event.target.value);
+  };
+
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleChangeUniversity = (event) => {
+    setUniversity(event.target.value);
+  };
+
+  const handleChangeAcademicTitle = (event) => {
+    setAcademicTitle(event.target.value);
+  };
+
   const style = styles();
 
   return (
@@ -132,7 +158,8 @@ export default function PersonalInformation(props) {
               name="firstName"
               label="First name"
               autoComplete="first-name"
-              value={props.firstName}
+              value={firstName}
+              onChange={handleChangeFirstName}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -150,7 +177,8 @@ export default function PersonalInformation(props) {
               name="lastName"
               label="Last name"
               autoComplete="family-name"
-              value={props.lastName}
+              value={lastName}
+              onChange={handleChangeLastName}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -170,7 +198,8 @@ export default function PersonalInformation(props) {
               type="email"
               placeholder="email@example.com"
               autoComplete="email"
-              value={props.email}
+              value={email}
+              onChange={handleChangeEmail}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -187,7 +216,8 @@ export default function PersonalInformation(props) {
               name="university"
               label="University"
               autoComplete="organization"
-              value={props.university}
+              value={university}
+              onChange={handleChangeUniversity}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -204,7 +234,8 @@ export default function PersonalInformation(props) {
               name="academicTitle"
               label="Academic title"
               autoComplete="job-title"
-              value={props.academicTitle}
+              value={academicTitle}
+              onChange={handleChangeAcademicTitle}
               InputLabelProps={{
                 shrink: true,
               }}
