@@ -73,6 +73,8 @@ function AddingWork() {
 
   const style = styles();
 
+  const formRef = React.useRef(null);
+
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
   }
@@ -141,7 +143,7 @@ function AddingWork() {
       acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
   });
 
-  const { register, handleSubmit, errors, getValues, setValue } = useForm({
+  const { register, errors, handleSubmit, getValues, setValue } = useForm({
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
@@ -257,22 +259,29 @@ function AddingWork() {
     );
   });
 
+  const onSubmit = () => {
+    // if everything is OK, form can be send
+    if (file !== null && specialization !== "") {
+      const formData = new FormData(formRef.current);
+      // only for test
+      console.log(formData);
+      alert(JSON.stringify(data));
+
+    //   for (var pair of formData.entries()) {
+    //     console.log(pair[0]+ ', ' + pair[1]); 
+    // }
+    }
+  };
+
   return (
     <div className={style.main}>
       <h1>Adding scientific work</h1>
       <div className={style.left}>
         <div className={style.container}>
           <form
+            ref={formRef}
             noValidate
-            onSubmit={handleSubmit((data) => {
-              data.specialization = specialization;
-              
-              // if everything is OK, form can be send
-              if (file !== null && specialization !== "") {
-                console.log(file);
-                alert(JSON.stringify(data));
-              }
-            })}
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* Title */}
             <TextField
@@ -416,7 +425,7 @@ function AddingWork() {
             <FormHelperText error className={style.formHelperText}>
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
-
+            <DropZone SetFile={passFile} />
             <Button
               className={style.addButton}
               color="primary"
@@ -430,7 +439,7 @@ function AddingWork() {
         </div>
       </div>
       <div className={style.right}>
-        <DropZone SetFile={passFile} />
+        {/* <DropZone SetFile={passFile} /> */}
       </div>
       <Snackbar
         open={openAlertError}

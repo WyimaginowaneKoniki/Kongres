@@ -188,7 +188,7 @@ function DropZone(props) {
                 <div className={style.top}>
                     <div className={style.dropMessage}>
                     
-                        <input ref={fileInputRef} className={style.dialog}
+                        <input name="fileInput" ref={fileInputRef} className={style.dialog}
                         type="file" onChange={FileSelected}/>
 
                         <div className={style.uploadIcon}></div>
