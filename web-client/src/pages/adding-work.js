@@ -108,7 +108,7 @@ function AddingWork() {
     title: yup
       .string()
       .matches(
-        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/,
+        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑[‐-]*$/,
         "Title should only contain letters, digits, spaces and hyphens"
       )
       .max(maxTitleSize, `Title should be ${maxTitleSize} characters or less`)
@@ -116,7 +116,7 @@ function AddingWork() {
     description: yup
       .string()
       .matches(
-        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/,
+        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑[‐-]*$/,
         "Description should only contain letters, digits, spaces and hyphens"
       )
       .max(
