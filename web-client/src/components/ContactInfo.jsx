@@ -6,8 +6,10 @@ function ContactInfo(props) {
     const styles = makeStyles({
         main:
         {
-            padding: '5%',
-            width: '60%',
+            paddingTop: '3%',
+            paddingLeft: '5%',
+            width: '50%',
+            float: 'left',
         },
         left:
         {
@@ -22,7 +24,7 @@ function ContactInfo(props) {
         photo:
         {
             display: 'block',
-            width: '60%',
+            width: '70%',
             borderRadius: '50%',
         },
         text:
@@ -42,36 +44,19 @@ function ContactInfo(props) {
     });
 
     const style = styles();
+    const showLink = <a href={props.link} className={style.a}><h3 className={style.text}>{props.name}</h3></a>;
+    const showAddress = <h3 className={style.text}>{props.name}</h3>;
 
-    
-    if(props.link)
-    {
         return (
         <div className={style.main}>
             <div className={style.left}>
                 <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
             </div>
             <div className={style.right}>
-                <a href={props.link} className={style.a}>
-                <h3 className={style.text}>{props.name}</h3>
-                </a>
+                {props.link ? showLink : showAddress}
             </div>
         </div>
         )
-    }
-    else
-    {
-        return (
-        <div className={style.main}>
-            <div className={style.left}>
-                <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
-            </div>
-            <div className={style.right}>
-                <h3 className={style.text}>{props.name}</h3>
-            </div>
-        </div>
-        )
-    }
 }
 
 export default ContactInfo; 

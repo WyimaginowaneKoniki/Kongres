@@ -2,7 +2,7 @@ using System;
 
 namespace Kongres.Api.Domain.Entities
 {
-    public class ScienceWorkInfo
+    public class ScienceWorkFile
     {
         public uint Id { get; set; }
         public string FileName { get; set; }
