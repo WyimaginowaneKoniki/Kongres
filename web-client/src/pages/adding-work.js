@@ -79,7 +79,7 @@ function AddingWork() {
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
   }
-  
+
   const duration = 4000;
 
   const [openAlertError, SetOpenAlertError] = React.useState(false);
@@ -141,7 +141,10 @@ function AddingWork() {
         })
       )
       .max(maxAuthors, "You cannot add more authors"),
-      acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
+    acceptance: yup
+      .boolean()
+      .oneOf([true], "Required field")
+      .required("Required field"),
   });
 
   const { register, errors, handleSubmit, getValues, setValue } = useForm({
@@ -260,30 +263,45 @@ function AddingWork() {
     );
   });
 
-  const onSubmit = (data) => {
+  // get main author from API
+  let mainAuthor = "John Doe";
+
+  const createFormData = () => {
+    const formData = new FormData(formRef.current);
+
+    let otherAuthors = "";
+
+    // add authors to string
+    for (let i = 0; i < authors.length; i++) {
+      const author = formData.get(`authors[${i}].name`);
+      if (author !== "") otherAuthors += "," + author;
+      formData.delete(`authors[${i}].name`);
+    }
+
+    const allAuthors = `${mainAuthor}` + otherAuthors;
+
+    formData.delete(`authors`);
+
+    formData.append("authors", allAuthors);
+
+    return formData;
+  };
+
+  const onSubmit = () => {
     // if everything is OK, form can be send
     if (file !== null && specialization !== "") {
-      const formData = new FormData(formRef.current);
-      // only for test
-      console.log(formData);
-      alert(JSON.stringify(data));
-
-    //   for (var pair of formData.entries()) {
-    //     console.log(pair[0]+ ', ' + pair[1]); 
-    // }
+      const formData = createFormData();
+      for (var pair of formData.entries())
+        console.log(pair[0] + ", " + pair[1]);
     }
   };
 
   return (
     <div className={style.main}>
       <h1>Adding scientific work</h1>
-      
-        <div className={style.container}>
-          <form
-            ref={formRef}
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-          >
+
+      <div className={style.container}>
+        <form ref={formRef} noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className={style.left}>
             {/* Title */}
             <TextField
@@ -402,7 +420,7 @@ function AddingWork() {
               InputLabelProps={{
                 shrink: true,
               }}
-              value="John Doe"
+              value={mainAuthor}
               variant="outlined"
             />
 
@@ -427,7 +445,7 @@ function AddingWork() {
             <FormHelperText error className={style.formHelperText}>
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
-            
+
             <Button
               className={style.addButton}
               color="primary"
@@ -437,12 +455,11 @@ function AddingWork() {
             >
               Add work
             </Button>
-            </div>
-            <div className={style.right}>
-              <DropZone SetFile={passFile} />
-            </div>
-          </form>
-        
+          </div>
+          <div className={style.right}>
+            <DropZone SetFile={passFile} />
+          </div>
+        </form>
       </div>
       <Snackbar
         open={openAlertError}
