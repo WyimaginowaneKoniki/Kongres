@@ -29,15 +29,16 @@ function AddingWork() {
       margin: "auto",
     },
     left: {
-      width: "50%",
+      width: "45%",
       height: "50vh",
       float: "left",
       textAlign: "left",
     },
     right: {
-      width: "50%",
+      width: "45%",
       height: "50vh",
       float: "left",
+      marginLeft: "10%",
     },
     container: {
       width: "90%",
@@ -259,7 +260,7 @@ function AddingWork() {
     );
   });
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     // if everything is OK, form can be send
     if (file !== null && specialization !== "") {
       const formData = new FormData(formRef.current);
@@ -276,13 +277,14 @@ function AddingWork() {
   return (
     <div className={style.main}>
       <h1>Adding scientific work</h1>
-      <div className={style.left}>
+      
         <div className={style.container}>
           <form
             ref={formRef}
             noValidate
             onSubmit={handleSubmit(onSubmit)}
           >
+          <div className={style.left}>
             {/* Title */}
             <TextField
               className={style.textField}
@@ -425,7 +427,7 @@ function AddingWork() {
             <FormHelperText error className={style.formHelperText}>
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
-            <DropZone SetFile={passFile} />
+            
             <Button
               className={style.addButton}
               color="primary"
@@ -435,11 +437,12 @@ function AddingWork() {
             >
               Add work
             </Button>
+            </div>
+            <div className={style.right}>
+              <DropZone SetFile={passFile} />
+            </div>
           </form>
-        </div>
-      </div>
-      <div className={style.right}>
-        {/* <DropZone SetFile={passFile} /> */}
+        
       </div>
       <Snackbar
         open={openAlertError}
