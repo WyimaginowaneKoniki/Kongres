@@ -74,6 +74,7 @@ function DropZone(props) {
       height: "30px",
       margin: "3% 2%",
       float: "right",
+      cursor: "pointer",
     },
     dialog: {
       display: "none",
