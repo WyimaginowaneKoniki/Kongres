@@ -52,7 +52,7 @@ function WorkView(props){
 
     const style = styles();
 
-    const user = "participant";  //reviewer //participant
+    const user = "reviewer";  //reviewer //participant
 
     const work = {
         status: 'Status',
@@ -199,10 +199,10 @@ function WorkView(props){
     const [open, setOpen] = useState([true, ...(new Array(versions.length - 1).fill(false))]);
 
     function handleOnClick(item) {
-        if (!open[item])
-            open[item] = true;
-        else
+        if (open[item])
             open[item] = false;
+        else
+            open[item] = true;
 
         setOpen([...open]);
     }
