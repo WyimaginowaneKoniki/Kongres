@@ -375,7 +375,7 @@ function WorkForReviewComponent(props)
                         />
                         </DialogContent>
                         <DialogContent className={style.drag}>
-                            <DropZone SET_FILE={passFile}
+                            <DropZone SetFile={passFile}
                                 inputRef={register}
                                 required
                             />
