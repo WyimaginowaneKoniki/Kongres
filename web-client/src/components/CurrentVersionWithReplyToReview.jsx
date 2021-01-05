@@ -224,7 +224,7 @@ function CurrentVersionWithReplyToReview(props)
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            {counts.comment}/{maxCommentSize}
+                                            {counts.comment > 0 ? counts.comment: counts.description}/{maxCommentSize}
                                         </InputAdornment>
                                     ),
                                 }}
