@@ -130,9 +130,6 @@ function CurrentVersionWithReplyToReview(props)
     });
 
     const style = styles();
-    
-    const [value] = useState(props.stars);  
-    const [hover] = useState(3);
 
     let d = new Date();
     let hours = `${d.getHours()}:${d.getMinutes()}`;
@@ -186,9 +183,9 @@ function CurrentVersionWithReplyToReview(props)
                         <span className={style.me}> {props.name} </span>
                     </div>
                     <div className={style.rightReview}>
-                        <Tooltip title={labels[hover !== -1 ? hover : value]} placement='top-start'>
+                        <Tooltip title={labels[props.stars]} placement='top-start'>
                             <Box component="fieldset" borderColor="transparent">
-                                <Rating name="read-only" max={3} value={value} readOnly />
+                                <Rating name="read-only" max={3} value={props.stars} readOnly />
                                 <span className={style.rightDate}>{props.date} {hours}</span>
                             </Box>
                         </Tooltip>
