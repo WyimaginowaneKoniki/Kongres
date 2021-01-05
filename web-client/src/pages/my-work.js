@@ -139,15 +139,15 @@ function MyWork(props){
     const [open, setOpen] = useState([true, ...(new Array(versions.length - 1).fill(false))]);
 
     function handleOnClick(item) {
-    if (!open[item])
-      open[item] = true;
-    else
-      open[item] = false;
+        if (!open[item])
+        open[item] = true;
+        else
+        open[item] = false;
 
-    setOpen([...open]);
-  }
+        setOpen([...open]);
+     }
 
-  const versionList = versions.map((version, i) => {
+    const versionList = versions.map((version, i) => {
     let reviewsList = [];
     for(let j = 0; j < versions[i].reviews.length; j++)
     {
@@ -179,7 +179,7 @@ function MyWork(props){
 
     return(
         <div className={style.main}>
-            <p className={style.path}>My profile / My Work</p>
+            <p className={style.path}>My profile / <span className={style.title}>My Work</span></p>
             <MyWorkComponent
                 status = {myWork.status}
                 currentDate = {myWork.currentDate}
