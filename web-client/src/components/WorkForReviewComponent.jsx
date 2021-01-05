@@ -181,7 +181,7 @@ function WorkForReviewComponent(props) {
   const [value, setValue] = React.useState(1);
   const [hover, setHover] = React.useState(1);
 
-  const [file, SetFile] = React.useState(null);
+  const [fileWork, SetFile] = React.useState(null);
   const passFile = (f) => {
     SetFile(f);
   };
@@ -226,7 +226,7 @@ function WorkForReviewComponent(props) {
         `Comment should be ${maxCommentSize} characters or less`
       )
       .when("file", (file, schema) => {
-        if (file === null)
+        if (fileWork === null)
           return yup
             .string()
             .required("Review must contain comment or/and file");
