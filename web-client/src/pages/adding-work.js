@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../App.css";
 import DropZone from "../components/DropZone";
 import Button from "@material-ui/core/Button";
@@ -74,7 +74,7 @@ function AddingWork() {
 
   const style = styles();
 
-  const formRef = React.useRef(null);
+  const formRef = useRef(null);
 
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
@@ -82,18 +82,18 @@ function AddingWork() {
 
   const duration = 4000;
 
-  const [openAlertError, SetOpenAlertError] = React.useState(false);
+  const [openAlertError, SetOpenAlertError] = useState(false);
 
   const [file, SetFile] = useState(null);
   const passFile = (f) => {
     SetFile(f);
   };
 
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     title: "",
     description: "",
   });
-  const [counts, setCounts] = React.useState({
+  const [counts, setCounts] = useState({
     title: 0,
     description: 0,
   });
@@ -103,7 +103,7 @@ function AddingWork() {
   const maxAuthors = 9;
   const maxAuthorName = 53;
 
-  const [specialization, setSpecialization] = React.useState("");
+  const [specialization, setSpecialization] = useState("");
   const schema = yup.object().shape({
     title: yup
       .string()
