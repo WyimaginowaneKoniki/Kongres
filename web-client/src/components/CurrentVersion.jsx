@@ -72,7 +72,6 @@ function CurrentVersion(props){
     let hours = `${d.getHours()}:${d.getMinutes()}`;
     let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
 
-    const [hover] = React.useState(1);
     const labels = {
         1: 'rejected',
         2: 'correct',
@@ -87,7 +86,7 @@ function CurrentVersion(props){
                     <span className={style.me}> Me </span>
                 </div>
                 <div className={style.rightReview}>
-                    <Tooltip title={labels[hover !== -1 ? hover : props.stars]} placement='top-start'>
+                    <Tooltip title={labels[props.stars]} placement='top-start'>
                         <Box component="fieldset" borderColor="transparent">
                             <Rating name="read-only" max={3} value={props.stars} readOnly />
                             <span className={style.rightDate}>{date} {hours}</span>
