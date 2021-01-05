@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kongres.Api.Domain\Kongres.Api.Domain.csproj" />
+    <ProjectReference Include="..\Kongres.Api.Infrastructure\Kongres.Api.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

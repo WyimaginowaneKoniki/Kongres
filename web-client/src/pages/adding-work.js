@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../App.css";
 import DropZone from "../components/DropZone";
 import Button from "@material-ui/core/Button";
@@ -29,15 +29,16 @@ function AddingWork() {
       margin: "auto",
     },
     left: {
-      width: "50%",
+      width: "45%",
       height: "50vh",
       float: "left",
       textAlign: "left",
     },
     right: {
-      width: "50%",
+      width: "45%",
       height: "50vh",
       float: "left",
+      marginLeft: "10%",
     },
     container: {
       width: "90%",
@@ -73,26 +74,26 @@ function AddingWork() {
 
   const style = styles();
 
-  const formRef = React.useRef(null);
+  const formRef = useRef(null);
 
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
   }
-  
+
   const duration = 4000;
 
-  const [openAlertError, SetOpenAlertError] = React.useState(false);
+  const [openAlertError, SetOpenAlertError] = useState(false);
 
   const [file, SetFile] = useState(null);
   const passFile = (f) => {
     SetFile(f);
   };
 
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     title: "",
     description: "",
   });
-  const [counts, setCounts] = React.useState({
+  const [counts, setCounts] = useState({
     title: 0,
     description: 0,
   });
@@ -102,12 +103,12 @@ function AddingWork() {
   const maxAuthors = 9;
   const maxAuthorName = 53;
 
-  const [specialization, setSpecialization] = React.useState("");
+  const [specialization, setSpecialization] = useState("");
   const schema = yup.object().shape({
     title: yup
       .string()
       .matches(
-        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/,
+        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑[‐-]*$/,
         "Title should only contain letters, digits, spaces and hyphens"
       )
       .max(maxTitleSize, `Title should be ${maxTitleSize} characters or less`)
@@ -115,7 +116,7 @@ function AddingWork() {
     description: yup
       .string()
       .matches(
-        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑\[‐-]*$/,
+        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑[‐-]*$/,
         "Description should only contain letters, digits, spaces and hyphens"
       )
       .max(
@@ -140,7 +141,10 @@ function AddingWork() {
         })
       )
       .max(maxAuthors, "You cannot add more authors"),
-      acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
+    acceptance: yup
+      .boolean()
+      .oneOf([true], "Required field")
+      .required("Required field"),
   });
 
   const { register, errors, handleSubmit, getValues, setValue } = useForm({
@@ -259,30 +263,46 @@ function AddingWork() {
     );
   });
 
+  // get main author from API
+  let mainAuthor = "John Doe";
+
+  const createFormData = () => {
+    const formData = new FormData(formRef.current);
+
+    let otherAuthors = "";
+
+    // add authors to string
+    for (let i = 0; i < authors.length; i++) {
+      const author = formData.get(`authors[${i}].name`);
+      if (author !== "") otherAuthors += "," + author;
+      formData.delete(`authors[${i}].name`);
+    }
+
+    const allAuthors = `${mainAuthor}` + otherAuthors;
+
+    formData.delete(`authors`);
+
+    formData.append("authors", allAuthors);
+
+    return formData;
+  };
+
   const onSubmit = () => {
     // if everything is OK, form can be send
     if (file !== null && specialization !== "") {
-      const formData = new FormData(formRef.current);
-      // only for test
-      console.log(formData);
-      alert(JSON.stringify(data));
-
-    //   for (var pair of formData.entries()) {
-    //     console.log(pair[0]+ ', ' + pair[1]); 
-    // }
+      const formData = createFormData();
+      for (var pair of formData.entries())
+        console.log(pair[0] + ", " + pair[1]);
     }
   };
 
   return (
     <div className={style.main}>
       <h1>Adding scientific work</h1>
-      <div className={style.left}>
-        <div className={style.container}>
-          <form
-            ref={formRef}
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-          >
+
+      <div className={style.container}>
+        <form ref={formRef} noValidate onSubmit={handleSubmit(onSubmit)}>
+          <div className={style.left}>
             {/* Title */}
             <TextField
               className={style.textField}
@@ -400,7 +420,7 @@ function AddingWork() {
               InputLabelProps={{
                 shrink: true,
               }}
-              value="John Doe"
+              value={mainAuthor}
               variant="outlined"
             />
 
@@ -425,7 +445,7 @@ function AddingWork() {
             <FormHelperText error className={style.formHelperText}>
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
-            <DropZone SetFile={passFile} />
+
             <Button
               className={style.addButton}
               color="primary"
@@ -435,11 +455,11 @@ function AddingWork() {
             >
               Add work
             </Button>
-          </form>
-        </div>
-      </div>
-      <div className={style.right}>
-        {/* <DropZone SetFile={passFile} /> */}
+          </div>
+          <div className={style.right}>
+            <DropZone SetFile={passFile} />
+          </div>
+        </form>
       </div>
       <Snackbar
         open={openAlertError}
