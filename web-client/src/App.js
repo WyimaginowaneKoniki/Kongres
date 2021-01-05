@@ -20,8 +20,6 @@ import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
 import SignInReviewer from './pages/signin-reviewer';
 import SignInParticipant from './pages/signin-participant';
-import WorkForReview from './pages/work-for-review';
-import MyWork from './pages/my-work';
 import WorkView from './pages/work-view';
 
 function App() {
@@ -46,8 +44,6 @@ function App() {
             <Route path="/my-reviews" component={MyReviews} />
             <Route path="/signin-reviewer" component={SignInReviewer} />
             <Route path="/signin-participant" component={SignInParticipant} />
-            <Route path="/work-for-review" component={WorkForReview} />
-            <Route path="/my-work" component={MyWork} />
             <Route path="/work-view" component={WorkView} />
           </Switch>
         </div>
