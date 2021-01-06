@@ -76,6 +76,8 @@ namespace Kongres.Api.WebApi
                     ValidAudience = _configuration["Jwt:Audience"]
                 };
             });
+
+            services.AddMemoryCache();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
