@@ -91,9 +91,10 @@ function DropZone(props) {
   const [message, SetMessage] = useState(null);
   const [fileName, SetFileName] = useState(null);
   const [fileSize, SetFileSize] = useState(null);
+
+  // Changes style of area with added file (pdf icon, name, size). Changes display none → block, block → none.
   const [divStyle, SetDivStyle] = useState({
     display: "none",
-    textAlign: "left",
   });
 
   const DragOver = (e) => {
@@ -132,7 +133,7 @@ function DropZone(props) {
       file = f;
       SetFileName(file.name);
       SetFileSize(FileSize(file.size));
-      SetDivStyle({ display: "block", textAlign: "left" });
+      SetDivStyle({ display: "block" });
       props.SetFile(file);
     }
   };
@@ -144,19 +145,12 @@ function DropZone(props) {
     }, 4000);
   };
 
-  const ValidateFile = (f) => {
-    const validTypes = ["application/pdf"];
-    if (validTypes.indexOf(f.type) === -1) {
-      return false;
-    }
-    return true;
-  };
+  // Checks if the selected file type is PDF 
+  const ValidateFile = (f) => "application/pdf" === f.type;
 
-  const ValidateSize = (f) => {
-    const size = f.size;
-    return maxFileSize >= size;
-  };
+  const ValidateSize = (f) => maxFileSize >= f.size;
 
+  // It returns the size of the file with the unit.
   const FileSize = (size) => {
     if (size === 0) return "0 Bytes";
     const k = 1024;
@@ -166,7 +160,7 @@ function DropZone(props) {
   };
 
   const Delete = () => {
-    SetDivStyle({ display: "none", textAlign: "left" });
+    SetDivStyle({ display: "none" });
     SetFileName(null);
     SetFileSize(null);
     file = null;

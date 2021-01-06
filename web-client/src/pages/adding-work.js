@@ -80,7 +80,7 @@ function AddingWork() {
     return <MuiAlert elevation={6} {...props} />;
   }
 
-  const duration = 4000;
+  const durationOfAlert = 4000;
 
   const [openAlertError, SetOpenAlertError] = useState(false);
 
@@ -108,7 +108,7 @@ function AddingWork() {
     title: yup
       .string()
       .matches(
-        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑[‐-]*$/,
+        /^[A-Za-z0-9,.\s-+―\];—'–)(‒"‑[‐-]*$/,
         "Title should only contain letters, digits, spaces and hyphens"
       )
       .max(maxTitleSize, `Title should be ${maxTitleSize} characters or less`)
@@ -116,7 +116,7 @@ function AddingWork() {
     description: yup
       .string()
       .matches(
-        /^[A-Za-z0-9,. -+―\];—'–)(‒"‑[‐-]*$/,
+        /^[A-Za-z0-9,.\s-+―\];—'–)(‒"‑[‐-]*$/,
         "Description should only contain letters, digits, spaces and hyphens"
       )
       .max(
@@ -131,7 +131,7 @@ function AddingWork() {
           name: yup
             .string()
             .matches(
-              /^[A-Za-z ]*$/,
+              /^[A-Za-z\s]*$/,
               "Author's name should only contain letters and spaces"
             )
             .max(
@@ -289,11 +289,7 @@ function AddingWork() {
 
   const onSubmit = () => {
     // if everything is OK, form can be send
-    if (file !== null && specialization !== "") {
-      const formData = createFormData();
-      for (var pair of formData.entries())
-        console.log(pair[0] + ", " + pair[1]);
-    }
+    if (file !== null && specialization !== "") createFormData();
   };
 
   return (
@@ -463,7 +459,7 @@ function AddingWork() {
       </div>
       <Snackbar
         open={openAlertError}
-        autoHideDuration={duration}
+        autoHideDuration={durationOfAlert}
         onClose={CloseAlert}
       >
         <Alert onClose={CloseAlert} severity={"error"}>
