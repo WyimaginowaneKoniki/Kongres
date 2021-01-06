@@ -132,7 +132,7 @@ function CurrentVersionWithReplyToReview(props)
     const style = styles();
 
     let d = new Date();
-    let hours = `${d.getHours()}:${d.getMinutes()}`;
+    let hours = `${d.getHours()}:${(d.getMinutes()<10?'0':'')+d.getMinutes()}`;
 
     const labels = {
         1: 'rejected',
