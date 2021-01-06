@@ -50,6 +50,7 @@ function CurrentVersion(props){
             width: '100%',
             float: 'left',
             textAlign: 'center',
+            paddingLeft: '10px',
         },
         rightDate:
         {
@@ -64,13 +65,44 @@ function CurrentVersion(props){
             fontSize: '16px',
             paddingBottom: '2%',
         },
+        answerParticipant:
+        {
+            width: '80%',
+            float: 'left',
+            marginLeft: '20%',
+            marginTop: '5%',
+        },
+        leftAnswer:
+        {
+            width: '18%',
+            float: 'left',
+            marginTop: '2.5%',
+        },
+        rightAnswer:
+        {
+            width: '80%',
+            float: 'right',
+            marginTop: '2.5%',
+        },
+        dateAnswer:
+        {
+            width: '100%',
+            float: 'left',
+            textAlign: 'right',
+        },
+        answer:
+        {
+            width: '100%',
+            float: 'left',
+            marginTop: '2.5%',
+        },
     });
 
     const style = styles();
 
     let d = new Date();
-    let hours = `${d.getHours()}:${d.getMinutes()}`;
-    let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+    let hours = `${d.getHours()}:${(d.getMinutes()<10?'0':'')+d.getMinutes()}`;
+    let date = `${(d.getDate()<10?'0':'')+d.getDate()}/${(d.getMonth()+1<10?'':'')+d.getMonth()+1}/${d.getFullYear()}`;
 
     const labels = {
         1: 'rejected',
@@ -96,6 +128,18 @@ function CurrentVersion(props){
                     <Button variant='outlined' color="primary" 
                         className={style.btn}>Download review</Button>
                 </div>
+                {props.dateAnswer !== null && props.answer !== null ?
+                <div className={style.answerParticipant}>
+                    <div className={style.leftAnswer}>
+                        <img src={props.pathParticipant} className={style.image} alt={props.alternativeTextParticipant}></img>
+                        <span className={style.me}> {props.author} </span>
+                    </div>
+                    <div className={style.rightAnswer}>
+                    <span className={style.dateAnswer}>{props.dateAnswer} {hours}</span>
+                    <span className={style.answer}>{props.answer}</span>
+                    </div>
+                </div>
+                : null}
             </div>
         </div>
     )

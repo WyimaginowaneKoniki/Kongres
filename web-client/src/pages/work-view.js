@@ -109,6 +109,10 @@ function WorkView(props){
                 date: "30/12/2020",
                 stars: 3,
                 textReview: "Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.",
+                pathParticipant: picture,
+                alternativeTextParticipant: "Photo John Doe",
+                dateAnswer: null,
+                answer: null,
             }
         },
         {
@@ -150,6 +154,10 @@ function WorkView(props){
                 date: "07/12/2020",
                 stars: 2,
                 textReview: "Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.",
+                pathParticipant: picture,
+                alternativeTextParticipant: "Photo John Doe",
+                dateAnswer: "20/12/2020",
+                answer: "Thank you for your feedback!"
             }
         },
         {
@@ -191,6 +199,10 @@ function WorkView(props){
                 date: "28/11/2020",
                 stars: 2,
                 textReview: "Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.",
+                pathParticipant: picture,
+                alternativeTextParticipant: "Photo John Doe",
+                dateAnswer: "20/12/2020",
+                answer: "Thank you for your feedback!"
             }
         }
     ]
@@ -230,9 +242,14 @@ function WorkView(props){
         {
             reviewsList.push(
                 <CurrentVersion
+                    author = {work.author}
                     path={version.reviewer.path}
                     stars={version.reviewer.stars}
                     review={version.reviewer.textReview}
+                    pathParticipant={version.reviewer.pathParticipant}
+                    alternativeTextParticipant={version.reviewer.alternativeTextParticipant}
+                    dateAnswer={version.reviewer.dateAnswer}
+                    answer={version.reviewer.answer}
                 /> 
             )
         }
