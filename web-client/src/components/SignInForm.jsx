@@ -60,7 +60,7 @@ const styles = makeStyles({
   bottomMessage: {
     marginTop: "300px",
     display: "block",
-  }
+  },
 });
 
 const correctStyle = {
@@ -71,11 +71,6 @@ const incorrectStyle = {
 };
 
 export default function SignInForm(props) {
-  // This is response received from API
-  const response = {
-    status: 200,
-  };
-
   const [messageStyle, SetMessageStyle] = useState(correctStyle);
 
   const [values, setValues] = React.useState({
@@ -111,12 +106,8 @@ export default function SignInForm(props) {
   const formRef = React.useRef(null);
 
   const onSubmit = (data) => {
-    props.GetFormData(data);
-    if (response.status === 200) {
-      SetMessageStyle(correctStyle);
-    } else {
-      SetMessageStyle(incorrectStyle);
-    }
+    // show error about logging
+    if (!props.Login(data)) SetMessageStyle(incorrectStyle);
   };
 
   return (

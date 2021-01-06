@@ -13,7 +13,7 @@ function SignInParticipant() {
     signInAsOtherLink: "/signin-reviewer",
   };
 
-  const Register = (data) => {
+  const Login = (data) => {
     axios
       .post("https://localhost:5001/api/Participant/Login", data)
       .then((response) => {
@@ -21,9 +21,9 @@ function SignInParticipant() {
           localStorage.setItem("jwt", response.data);
 
           window.location.href = "https://localhost:5001";
-        } else if (response.status === 404) {
-          // invalid credentials
         }
+      }).catch((error) => {
+        return false;
       });
   };
 
@@ -32,7 +32,7 @@ function SignInParticipant() {
       <h1>Sign in as Participant</h1>
 
       <SignInForm
-        GetFormData={Register}
+        Login={Login}
         heading={signUpRParticipant.heading}
         content={signUpRParticipant.content}
         btn={signUpRParticipant.btn}

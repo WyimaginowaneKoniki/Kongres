@@ -13,7 +13,7 @@ function SignInReviewer() {
     signInAsOtherLink: "/signin-participant",
   };
 
-  const Register = (data) => {
+  const Login = (data) => {
     axios
       .post("https://localhost:5001/api/Reviewer/Login", data)
       .then((response) => {
@@ -21,11 +21,11 @@ function SignInReviewer() {
           localStorage.setItem("jwt", response.data);
 
           window.location.href = "https://localhost:5001";
-        } else if (response.status === 404) {
-          // invalid credentials
         }
       })
-      .catch(() => console.log("errr"));
+      .catch((error) => {
+        return false;
+      });
   };
 
   return (
@@ -33,7 +33,7 @@ function SignInReviewer() {
       <h1>Sign in as Reviewer</h1>
 
       <SignInForm
-        GetFormData={Register}
+        Login={Login}
         heading={signUpReviewer.heading}
         content={signUpReviewer.content}
         btn={signUpReviewer.btn}
