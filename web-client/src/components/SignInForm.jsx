@@ -108,19 +108,26 @@ export default function SignInForm(props) {
 
   const style = styles();
 
+  const formRef = React.useRef(null);
+
+  const onSubmit = (data) => {
+    props.GetFormData(data);
+    if (response.status === 200) {
+      SetMessageStyle(correctStyle);
+    } else {
+      SetMessageStyle(incorrectStyle);
+    }
+  };
+
   return (
     <Container component="main">
       <div className={style.main}>
         <div className={style.columns}>
           <form
+            ref={formRef}
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => {
-              if (response.status === 200) {
-                SetMessageStyle(correctStyle);
-                alert(JSON.stringify(data));
-              } else SetMessageStyle(incorrectStyle);
-            })}
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* Login/Email Input */}
             <TextField

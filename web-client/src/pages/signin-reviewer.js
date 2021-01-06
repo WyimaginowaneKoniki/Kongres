@@ -1,6 +1,7 @@
 import React from "react";
 import "../App.css";
 import SignInForm from "../components/SignInForm";
+import axios from "axios";
 
 function SignInReviewer() {
   const signUpReviewer = {
@@ -11,11 +12,27 @@ function SignInReviewer() {
     signInAs: "participant",
     signInAsOtherLink: "/signin-participant",
   };
+
+  const Register = (data) => {
+    axios
+      .post("https://localhost:5001/api/Reviewer/Login", data)
+      .then((response) => {
+        if (response.status === 200) {
+          // move to home page
+          window.location.href = "https://localhost:5001";
+        } else if (response.status === 404) {
+          // invalid credentials
+        }
+      })
+      .catch(() => console.log("errr"));
+  };
+
   return (
     <div>
       <h1>Sign in as Reviewer</h1>
 
       <SignInForm
+        GetFormData={Register}
         heading={signUpReviewer.heading}
         content={signUpReviewer.content}
         btn={signUpReviewer.btn}
