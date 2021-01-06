@@ -39,7 +39,7 @@ namespace Kongres.Api.Application.Handlers.Reviewer
 
             if (createUserResult.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, nameof(userType));
+                await _userManager.AddToRoleAsync(user, userType.ToString());
             }
         }
     }

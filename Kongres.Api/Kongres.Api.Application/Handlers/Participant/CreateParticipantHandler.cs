@@ -44,7 +44,7 @@ namespace Kongres.Api.Application.Handlers.Participant
             var createUserResult = await _userManager.CreateAsync(user, request.Password);
 
             if (createUserResult.Succeeded)
-                await _userManager.AddToRoleAsync(user, nameof(userType));
+                await _userManager.AddToRoleAsync(user, userType.ToString());
         }
     }
 }
