@@ -18,7 +18,8 @@ function SignInReviewer() {
       .post("https://localhost:5001/api/Reviewer/Login", data)
       .then((response) => {
         if (response.status === 200) {
-          // move to home page
+          localStorage.setItem("jwt", response.data);
+
           window.location.href = "https://localhost:5001";
         } else if (response.status === 404) {
           // invalid credentials

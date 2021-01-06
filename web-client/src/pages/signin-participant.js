@@ -14,17 +14,18 @@ function SignInParticipant() {
   };
 
   const Register = (data) => {
-    axios.post("https://localhost:5001/api/Participant/Login", data)
-    .then((response)=>{
-      if(response.status === 200){
-        // move to home page
-        window.location.href = "https://localhost:5001";
-      }
-      else if (response.status === 404){
-        // invalid credentials
-      }
-    })
-  }
+    axios
+      .post("https://localhost:5001/api/Participant/Login", data)
+      .then((response) => {
+        if (response.status === 200) {
+          localStorage.setItem("jwt", response.data);
+
+          window.location.href = "https://localhost:5001";
+        } else if (response.status === 404) {
+          // invalid credentials
+        }
+      });
+  };
 
   return (
     <div>
