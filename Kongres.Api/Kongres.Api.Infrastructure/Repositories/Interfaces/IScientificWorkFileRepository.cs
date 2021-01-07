@@ -3,8 +3,8 @@ using Kongres.Api.Domain.Entities;
 
 namespace Kongres.Api.Infrastructure.Repositories.Interfaces
 {
-    public interface IScientificWorkRepository : IRepository
+    public interface IScientificWorkFileRepository : IRepository
     {
-        Task AddAsync(ScienceWork scienceWork);
+        Task AddAsync(ScienceWorkFile scientificWorkFile);
     }
 }

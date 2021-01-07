@@ -9,6 +9,6 @@ namespace Kongres.Api.Application.Commands.Work
         public string Title { get; set; }
         public string Description { get; set; }
         public string Authors { get; set; }
-        public IFormFile ScientificWork { get; set; }
+        public IFormFile Work { get; set; }
     }
 }

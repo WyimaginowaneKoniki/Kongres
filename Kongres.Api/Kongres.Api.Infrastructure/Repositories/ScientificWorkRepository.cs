@@ -14,7 +14,7 @@ namespace Kongres.Api.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddWork(ScienceWork scienceWork)
+        public async Task AddAsync(ScienceWork scienceWork)
         {
             await _context.ScienceWorks.AddAsync(scienceWork);
             await _context.SaveChangesAsync();

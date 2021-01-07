@@ -265,7 +265,7 @@ function AddingWork() {
   });
 
   // get main author from API
-  let mainAuthor = "John Doe";
+  const mainAuthor = "John Doe";
 
   const createFormData = () => {
     const formData = new FormData(formRef.current);
@@ -283,9 +283,11 @@ function AddingWork() {
 
     const allAuthors = `${mainAuthor}` + otherAuthors;
 
-    formData.delete(`authors`);
-
+    formData.delete("authors");
     formData.append("authors", allAuthors);
+
+    formData.delete("fileInput");
+    formData.append("Work", file);
 
     return formData;
   };
@@ -295,10 +297,13 @@ function AddingWork() {
     if (file !== null && specialization !== "") {
       var formData = createFormData();
       var token = localStorage.getItem("jwt");
-      axios
-        .post("https://localhost:5001/api/ScientificWork/AddWork", formData, {
+      axios.post(
+        "https://localhost:5001/api/ScientificWork/AddWork",
+        formData,
+        {
           headers: { Authorization: `Bearer ${token}` },
-        });
+        }
+      );
     }
   };
 

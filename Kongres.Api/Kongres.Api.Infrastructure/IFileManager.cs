@@ -5,6 +5,6 @@ namespace Kongres.Api.Infrastructure
 {
     public interface IFileManager
     {
-        Task<string> SaveFile(IFormFile file);
+        Task<string> SaveFileAsync(IFormFile file);
     }
 }
