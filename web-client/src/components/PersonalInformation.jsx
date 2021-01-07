@@ -300,30 +300,6 @@ export default function PersonalInformation(props) {
             {/* Avatar */}
             {props.participant ? <Avatar name='avatar'/> : null}
 
-            {/* Acceptance - Rules of Conference */}
-            {!props.firstName && !props.lastName && !props.email ? 
-              <FormControlLabel
-                className={style.formControlLabel}
-                control={
-                  <Checkbox
-                    inputRef={register}
-                    required
-                    id="acceptance-signup"
-                    name="acceptance"
-                    color="primary"
-                  />
-                }
-                label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
-                inputRef={register}
-                name="acceptance"
-              />
-            :null}
-            {!props.firstName && !props.lastName && !props.email ? 
-            <FormHelperText error className={style.formHelperText}>
-              {errors.acceptance ? errors.acceptance.message : " "}
-            </FormHelperText>
-            : null}
-
             {/* Button Submit */}
             <Button
               className={style.btnSignup}
