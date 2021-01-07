@@ -21,6 +21,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import axios from "axios";
 
 function AddingWork() {
   const styles = makeStyles({
@@ -274,7 +275,9 @@ function AddingWork() {
     // add authors to string
     for (let i = 0; i < authors.length; i++) {
       const author = formData.get(`authors[${i}].name`);
+
       if (author !== "") otherAuthors += ", " + author;
+
       formData.delete(`authors[${i}].name`);
     }
 
@@ -289,7 +292,14 @@ function AddingWork() {
 
   const onSubmit = () => {
     // if everything is OK, form can be send
-    if (file !== null && specialization !== "") createFormData();
+    if (file !== null && specialization !== "") {
+      var formData = createFormData();
+      var token = localStorage.getItem("jwt");
+      axios
+        .post("https://localhost:5001/api/ScientificWork/AddWork", formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+    }
   };
 
   return (
