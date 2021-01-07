@@ -334,16 +334,6 @@ export default function PersonalInformation(props) {
               {!props.firstName && !props.lastName && !props.email ? "Sign up" : "Save changes"}
             </Button>
           </form>
-
-          {/* Info about signing in */}
-          {props.btn ? 
-          <div className={style.signInUpOther}>
-            <h2 className={style.heading}>{props.heading}</h2>
-            <p className={style.content}>{props.content}</p>
-            <Button variant="outlined" color="primary" className={style.btnSignIn}>
-              {props.btn}
-            </Button>
-          </div> : null }
         </div>
       </div>
     </Container>
