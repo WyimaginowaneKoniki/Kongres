@@ -2,10 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Kongres.Api.Application.Commands.Reviewer;
+using Kongres.Api.Application.Services;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
+using Kongres.Api.Domain.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Kongres.Api.Application.Handlers.Reviewer
 {
@@ -13,11 +16,18 @@ namespace Kongres.Api.Application.Handlers.Reviewer
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IJwtHandler _jwtHandler;
+        private readonly IMemoryCache _cache;
 
-        public LoginReviewerHandler(UserManager<User> userManager, SignInManager<User> signInManager)
+        public LoginReviewerHandler(UserManager<User> userManager,
+                                    SignInManager<User> signInManager,
+                                    IJwtHandler jwtHandler,
+                                    IMemoryCache cache)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _jwtHandler = jwtHandler;
+            _cache = cache;
         }
 
         protected override async Task Handle(LoginReviewerCommand request, CancellationToken cancellationToken)
@@ -37,6 +47,8 @@ namespace Kongres.Api.Application.Handlers.Reviewer
             if (result.Succeeded)
             {
                 // return login/JWT token
+                var jwtToken = _jwtHandler.CreateToken(user.Id, UserTypeEnum.Participant.ToString());
+                _cache.SetJwt(request.TokenId, jwtToken);
             }
         }
     }

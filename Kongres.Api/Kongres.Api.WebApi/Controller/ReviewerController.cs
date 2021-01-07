@@ -3,12 +3,18 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Kongres.Api.Domain.Extensions;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Kongres.Api.WebApi.Controller
 {
     public class ReviewerController : ApiControllerBase
     {
-        public ReviewerController(IMediator mediator) : base(mediator) { }
+        private readonly IMemoryCache _cache;
+        public ReviewerController(IMediator mediator, IMemoryCache cache) : base(mediator)
+        {
+            _cache = cache;
+        }
 
         // api/Reviewer/Register
         [HttpPost("Register")]
@@ -22,6 +28,7 @@ namespace Kongres.Api.WebApi.Controller
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginReviewerCommand command)
         {
+            command.TokenId = Guid.NewGuid();
             try
             {
                 await CommandAsync(command);
@@ -31,7 +38,8 @@ namespace Kongres.Api.WebApi.Controller
                 return NotFound(e.Message);
             }
 
-            return Ok();
+            var token = _cache.GetJwt(command.TokenId);
+            return Ok(token);
         }
     }
 }
