@@ -274,7 +274,7 @@ function AddingWork() {
     // add authors to string
     for (let i = 0; i < authors.length; i++) {
       const author = formData.get(`authors[${i}].name`);
-      if (author !== "") otherAuthors += "," + author;
+      if (author !== "") otherAuthors += ", " + author;
       formData.delete(`authors[${i}].name`);
     }
 
