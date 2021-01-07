@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
+import AddingWork from './pages/adding-work';
 import SignUpReviewer from './pages/signup-reviewer';
 import SignUpParticipant from './pages/signup-participant';
 import ScientificWorks from './pages/scientific-works';
@@ -35,6 +36,7 @@ function App() {
             <Route path="/regulations" component={Regulations} />
             <Route path="/cookies-policy" component={CookiesPolicy} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
+            <Route path="/adding-work" component={AddingWork} />
             <Route path="/signup-reviewer" component={SignUpReviewer} />
             <Route path="/signup-participant" component={SignUpParticipant} />
             <Route path="/scientific-works" component={ScientificWorks} />
