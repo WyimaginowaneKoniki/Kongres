@@ -17,7 +17,6 @@ namespace Kongres.Api.Application.Handlers.Work
 
         protected override async Task Handle(AddWorkCommand request, CancellationToken cancellationToken)
         {
-
             await _scientificWorkService.AddBasicInfoAsync(request.AuthorId,
                                                             request.Title,
                                                             request.Description,
