@@ -15,7 +15,7 @@ function SignInParticipant() {
   };
 
   const Login = (data) => {
-    axios
+    return axios
       .post(`${URL_API}/Participant/Login`, data)
       .then((response) => {
         if (response.status === 200) {
@@ -23,9 +23,10 @@ function SignInParticipant() {
 
           window.location.href = URL;
         }
-      }).catch((error) => {
-        return false;
-      });
+
+        return response.status;
+      })
+      .catch((_) => 500);
   };
 
   return (

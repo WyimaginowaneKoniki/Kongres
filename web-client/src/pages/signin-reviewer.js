@@ -15,7 +15,7 @@ function SignInReviewer() {
   };
 
   const Login = (data) => {
-    axios
+    return axios
       .post(`${URL_API}/Reviewer/Login`, data)
       .then((response) => {
         if (response.status === 200) {
@@ -23,10 +23,10 @@ function SignInReviewer() {
 
           window.location.href = URL;
         }
+
+        return response.status;
       })
-      .catch((error) => {
-        return false;
-      });
+      .catch((_) => 500);
   };
 
   return (

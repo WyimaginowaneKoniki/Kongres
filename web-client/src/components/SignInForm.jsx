@@ -105,9 +105,12 @@ export default function SignInForm(props) {
 
   const formRef = React.useRef(null);
 
-  const onSubmit = (data) => {
+  async function onSubmit(data){
+    // when response status is not "OK"
     // show error about logging
-    if (!props.Login(data)) SetMessageStyle(incorrectStyle);
+    const responseStatus = await props.Login(data);
+    if (responseStatus === 200) SetMessageStyle(correctStyle);
+    else SetMessageStyle(incorrectStyle);
   };
 
   return (
