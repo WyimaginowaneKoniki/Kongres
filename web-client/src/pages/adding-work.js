@@ -270,21 +270,24 @@ function AddingWork() {
   const createFormData = () => {
     const formData = new FormData(formRef.current);
 
-    let otherAuthors = "";
+    let otherAuthors = formData.get('authors[0].name');
 
     // add authors to string
-    for (let i = 0; i < authors.length; i++) {
+    for (let i = 1; i < authors.length; i++) {
       const author = formData.get(`authors[${i}].name`);
-
-      if (author !== "") otherAuthors += ", " + author;
-
+      // add author to string if he exists
+      if (author !== "") {
+        // add coma to string if string is not empty
+        if(otherAuthors !== "") otherAuthors += ", ";
+        otherAuthors += author;
+      }
       formData.delete(`authors[${i}].name`);
     }
 
-    const allAuthors = `${mainAuthor}` + otherAuthors;
+    if(otherAuthors === "") otherAuthors = null;
 
     formData.delete("authors");
-    formData.append("authors", allAuthors);
+    formData.append("authors", otherAuthors);
 
     formData.delete("fileInput");
     formData.append("Work", file);

@@ -2,6 +2,7 @@ import React from "react";
 import "../App.css";
 import SignInForm from "../components/SignInForm";
 import axios from "axios";
+import { URL, URL_API } from "../Constants";
 
 function SignInReviewer() {
   const signUpReviewer = {
@@ -14,18 +15,18 @@ function SignInReviewer() {
   };
 
   const Login = (data) => {
-    axios
-      .post("https://localhost:5001/api/Reviewer/Login", data)
+    return axios
+      .post(`${URL_API}/Reviewer/Login`, data)
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("jwt", response.data);
 
-          window.location.href = "https://localhost:5001";
+          window.location.href = URL;
         }
+
+        return response.status;
       })
-      .catch((error) => {
-        return false;
-      });
+      .catch((_) => 500);
   };
 
   return (

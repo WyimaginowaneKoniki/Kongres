@@ -3,6 +3,7 @@ import "../App.css";
 import SignInUpInfo from "../components/SignInUpInfo";
 import SignUpForm from "../components/SignUpForm";
 import axios from "axios";
+import { URL, URL_API } from "../Constants";
 
 function SignUpReviewer() {
   const signUpReviewerInfo = {
@@ -18,11 +19,11 @@ function SignUpReviewer() {
 
   const Register = (data) => {
     axios
-      .post("https://localhost:5001/api/Reviewer/Register", data)
+      .post(`${URL_API}/Reviewer/Register`, data)
       .then((response) => {
         // OK
         if (response.status === 200) {
-          window.location.href = "https://localhost:5001";
+          window.location.href = URL;
         }
         // User conflict/user already exists in db
         else if (response.status === 409) {
