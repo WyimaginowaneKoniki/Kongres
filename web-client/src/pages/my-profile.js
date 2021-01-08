@@ -3,8 +3,9 @@ import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import PersonalInformation from '../components/PersonalInformation';
 import ChangePassword from '../components/ChangePassword';
+import {NavLink} from 'react-router-dom';
 
-function MyProfile(props)
+function MyProfile()
 {
     const styles = makeStyles({
         main:
@@ -39,11 +40,19 @@ function MyProfile(props)
                 cursor: 'pointer',
             }
         },
+        link: {
+            color: 'black',
+            textDecoration: 'none',
+            '&:active':
+            {
+                color: 'blue',
+            }
+        },
     })
 
     const style = styles();
 
-    const myProfil = {
+    const myProfile = {
         firstName: 'John',
         lastName: 'Doe',
         email: 'John.doe@gmail.com',
@@ -86,18 +95,20 @@ function MyProfile(props)
                 <h2 className={style.h2} onClick={moveToPersonalInformation} style={{color : info}}>Personal Information</h2>
                 <h2 className={style.h2} onClick={moveToChangePassword} style={{color : password}}>Change password</h2>
                 <h2 className={style.h2} onClick={moveToLogOut}>Log out</h2>
-                <h2 className={style.h2} onClick={moveToRules}>Rules</h2>
+                <NavLink exact to = '/regulations' className={style.link}>
+                    <h2 className={style.h2}>Rules</h2>
+                </NavLink>
             </div>
             <div className={style.right}>
                 {panel ?
                     <PersonalInformation
-                    firstName = {myProfil.firstName}
-                    lastName = {myProfil.lastName}
-                    email = {myProfil.email}
-                    academicTitle = {myProfil.academicTitle}
-                    university = {myProfil.university}
-                    specialization = {myProfil.specialization}
-                    participant = {myProfil.participant}
+                    firstName = {myProfile.firstName}
+                    lastName = {myProfile.lastName}
+                    email = {myProfile.email}
+                    academicTitle = {myProfile.academicTitle}
+                    university = {myProfile.university}
+                    specialization = {myProfile.specialization}
+                    participant = {myProfile.participant}
                     /> :
                     <ChangePassword/>
                 }
