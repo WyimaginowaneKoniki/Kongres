@@ -304,7 +304,7 @@ export default function PersonalInformation(props) {
               type="submit"
               variant="contained"
             >
-              {!props.firstName && !props.lastName && !props.email ? "Sign up" : "Save changes"}
+              Save changes
             </Button>
           </form>
         </div>
