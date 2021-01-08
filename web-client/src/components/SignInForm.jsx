@@ -60,7 +60,7 @@ const styles = makeStyles({
   bottomMessage: {
     marginTop: "300px",
     display: "block",
-  }
+  },
 });
 
 const correctStyle = {
@@ -71,11 +71,6 @@ const incorrectStyle = {
 };
 
 export default function SignInForm(props) {
-  // This is response received from API
-  const response = {
-    status: 200,
-  };
-
   const [messageStyle, SetMessageStyle] = useState(correctStyle);
 
   const [values, setValues] = React.useState({
@@ -108,19 +103,25 @@ export default function SignInForm(props) {
 
   const style = styles();
 
+  const formRef = React.useRef(null);
+
+  async function onSubmit(data){
+    // when response status is not "OK"
+    // show error about logging
+    const responseStatus = await props.Login(data);
+    if (responseStatus === 200) SetMessageStyle(correctStyle);
+    else SetMessageStyle(incorrectStyle);
+  };
+
   return (
     <Container component="main">
       <div className={style.main}>
         <div className={style.columns}>
           <form
+            ref={formRef}
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => {
-              if (response.status === 200) {
-                SetMessageStyle(correctStyle);
-                alert(JSON.stringify(data));
-              } else SetMessageStyle(incorrectStyle);
-            })}
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* Login/Email Input */}
             <TextField
