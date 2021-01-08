@@ -218,7 +218,7 @@ function WorkForReviewComponent(props) {
     comment: yup
       .string()
       .matches(
-        /^[A-Za-z0-9]*$/,
+        /^[A-Za-z0-9,.?\s-+―\];—'–)(‒"‑[‐-]*$/,
         "Comment should only contain letters and digits"
       )
       .max(

@@ -161,7 +161,7 @@ function CurrentVersionWithReplyToReview(props)
         comment: yup
         .string()
         .matches(
-            /^[A-Za-z0-9]*$/,
+            /^[A-Za-z0-9,.?\s-+―\];—'–)(‒"‑[‐-]*$/,
             "Comment should only contain letters and digits"    
         )
         .max(
@@ -233,7 +233,7 @@ function CurrentVersionWithReplyToReview(props)
                                 error={!!errors.comment}
                                 helperText={errors?.comment?.message}
                             />
-                            <span className={style.info}>Remember: you can't edit or delete this commen</span>
+                            <span className={style.info}>Remember: you can't edit or delete this comment</span>
                             <Button variant='contained' color="primary"
                                 className={style.btn2} type='submit'>Send</Button>
                         </form>
