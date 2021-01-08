@@ -84,9 +84,6 @@ function MyProfile()
     const moveToLogOut = () => {
     }
 
-    const moveToRules = () => {
-    }
-
     return(
         <div className={style.main}>
             <h1 className={style.h1}> My Profile</h1>
