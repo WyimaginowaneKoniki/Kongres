@@ -23,10 +23,6 @@ function ChangePassword() {
       padding: "2%",
       display: "flex",
     },
-    // columns:
-    // {
-    //     display: "flex",
-    // },
     form: {
       display: "flex",
       flexDirection: "column",
@@ -79,7 +75,7 @@ function ChangePassword() {
     return <MuiAlert elevation={6} {...props} />;
   }
 
-  const duration = 4000;
+  const durationOfAlert = 4000;
 
   const [openAlertSuccess, SetOpenAlertSuccess] = React.useState(false);
   const [openAlertError, SetOpenAlertError] = React.useState(false);
@@ -256,7 +252,7 @@ function ChangePassword() {
       {/* Successfully send email */}
       <Snackbar
         open={openAlertSuccess}
-        autoHideDuration={duration}
+        autoHideDuration={durationOfAlert }
         onClose={CloseAlert}
       >
         <Alert onClose={CloseAlert} severity={"success"}>
@@ -266,7 +262,7 @@ function ChangePassword() {
       {/* Unsuccessfully send email */}
       <Snackbar
         open={openAlertError}
-        autoHideDuration={duration}
+        autoHideDuration={durationOfAlert }
         onClose={CloseAlert}
       >
         <Alert onClose={CloseAlert} severity={"error"}>
