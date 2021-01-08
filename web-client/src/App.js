@@ -19,7 +19,6 @@ import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
 import SignInReviewer from './pages/signin-reviewer';
 import SignInParticipant from './pages/signin-participant';
-
 import MyProfile from './pages/my-profile';
 
 function App() {
@@ -43,7 +42,6 @@ function App() {
             <Route path="/my-reviews" component={MyReviews} />
             <Route path="/signin-reviewer" component={SignInReviewer} />
             <Route path="/signin-participant" component={SignInParticipant} />
-            
             <Route path="/my-profile" component={MyProfile} />
           </Switch>
         </div>
