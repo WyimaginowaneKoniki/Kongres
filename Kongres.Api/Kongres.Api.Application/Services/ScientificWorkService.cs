@@ -28,7 +28,8 @@ namespace Kongres.Api.Application.Services
             _fileManager = fileManager;
         }
 
-        public async Task AddBasicInfoAsync(string userId, string title, string description, string authors)
+        public async Task AddBasicInfoAsync(string userId, string title, string description, string authors,
+            string specialization)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -39,7 +40,8 @@ namespace Kongres.Api.Application.Services
                 MainAuthor = user,
                 OtherAuthors = authors,
                 CreationDate = DateTime.UtcNow,
-                Status = StatusEnum.WaitingForReview
+                Status = StatusEnum.WaitingForReview,
+                Specialization = specialization
             };
 
             await _scientificWorkRepository.AddAsync(scientificWork);

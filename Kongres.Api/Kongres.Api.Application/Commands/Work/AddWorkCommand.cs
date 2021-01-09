@@ -10,5 +10,6 @@ namespace Kongres.Api.Application.Commands.Work
         public string Description { get; set; }
         public string Authors { get; set; }
         public IFormFile Work { get; set; }
+        public string Specialization { get; set; }
     }
 }

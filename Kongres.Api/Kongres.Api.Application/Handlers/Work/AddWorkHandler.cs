@@ -20,7 +20,8 @@ namespace Kongres.Api.Application.Handlers.Work
             await _scientificWorkService.AddBasicInfoAsync(request.AuthorId,
                                                             request.Title,
                                                             request.Description,
-                                                            request.Authors);
+                                                            request.Authors,
+                                                            request.Specialization);
 
             var userId = uint.Parse(request.AuthorId);
 
