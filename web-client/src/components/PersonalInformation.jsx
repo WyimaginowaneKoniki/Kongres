@@ -2,11 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -74,7 +70,9 @@ const styles = makeStyles({
 });
 
 export default function PersonalInformation(props) {
-  const [specialization, setSpecialization] = React.useState(props.specialization);
+  const [specialization, setSpecialization] = React.useState(
+    props.specialization
+  );
   const [firstName, setFirstName] = React.useState(props.firstName);
   const [lastName, setLastName] = React.useState(props.lastName);
   const [email, setEmail] = React.useState(props.email);
@@ -96,10 +94,16 @@ export default function PersonalInformation(props) {
       .string()
       .email("Email should have correct format")
       .required("Required field"),
-    university: yup.string().max(255, "University should be 255 character long or less"),
+    university: yup
+      .string()
+      .max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
+    specialization: yup.string().when("specializations", {
+      is: (specializations) => specialization === "Select",
+      then: yup.string().required("Required field"),
+    }),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -143,8 +147,7 @@ export default function PersonalInformation(props) {
           <form
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => 
-            alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
           >
             {/* FirstName Input */}
             <TextField
@@ -242,60 +245,48 @@ export default function PersonalInformation(props) {
             />
 
             {/* Specialization Input - Select*/}
-            <FormControl
-              variant="outlined"
+            <TextField
+              select
+              className={style.textField}
+              inputRef={register}
+              required
+              id="academic-title-signup"
               name="specialization"
-              className={style.formControl}
+              label="Specialization"
+              autoComplete="job-title"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              onChange={handleChangeSelect}
+              error={!!errors.specialization}
+              helperText={errors?.specialization?.message}
+              value={specialization}
             >
-              <InputLabel
-                shrink
-                htmlFor="specialization-signup"
-                className={style.inputLabel}
-              >
-                Specialization
-              </InputLabel>
-              <Select
-                displayEmpty
-                name="specialization"
-                value={specialization} 
-                onChange={handleChangeSelect}
-                input={
-                  <OutlinedInput
-                    notched
-                    name="specialization"
-                    id="specialization-signup"
-                  />
-                }
-                inputRef={register}
-                error={!!errors.specialization}
-                helperText={errors?.specialization?.message}
-              >
-                <MenuItem className={style.MenuItem} value="">
-                  Select
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                  Computer Science
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                  Mathematics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Biology"}>
-                  Biology
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                  Chemistry
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Psychics"}>
-                  Psychics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Geography"}>
-                  Geography
-                </MenuItem>
-              </Select>
-            </FormControl>
-
+              <MenuItem className={style.MenuItem} value={"Select"}>
+                Select               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Computer Science"}>
+                Computer Science               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Mathematics"}>
+                Mathematics               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Biology"}>
+                Biology               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Chemistry"}>
+                Chemistry               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Psychics"}>
+                Psychics               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Geography"}>
+                Geography               
+              </MenuItem>
+            </TextField>
             {/* Avatar */}
-            {props.participant ? <Avatar name='avatar'/> : null}
+            {props.participant ? <Avatar name="avatar" /> : null}
 
             {/* Button Submit */}
             <Button
