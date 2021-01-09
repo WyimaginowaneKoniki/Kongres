@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Kongres.Api.Application.Queries.Work;
 
 namespace Kongres.Api.WebApi.Controller
 {
@@ -20,5 +21,10 @@ namespace Kongres.Api.WebApi.Controller
             await CommandAsync(command);
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+            => Ok(await CommandAsync(new GetApprovedWorksQuery()));
     }
 }

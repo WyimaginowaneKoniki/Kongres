@@ -1,4 +1,5 @@
 ﻿using Kongres.Api.Application.Services.Interfaces;
+using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
 using Kongres.Api.Infrastructure;
@@ -6,6 +7,8 @@ using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Application.Services
@@ -62,6 +65,39 @@ namespace Kongres.Api.Application.Services
             };
 
             await _scientificWorkFileRepository.AddAsync(versionOfWork);
+        }
+
+        public async Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync()
+        {
+            var listOfScientificWorks = await _scientificWorkRepository.GetApprovedWorksAsync();
+
+            var listOfScientificWorksDto = new List<ScientificWorkDto>();
+
+            foreach (var scientificWork in listOfScientificWorks)
+            {
+                var authors = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}";
+
+                // Sometimes the work doesn't include other authors except main one
+                if (!(scientificWork.OtherAuthors is null))
+                    authors += $", {scientificWork.OtherAuthors}";
+
+
+                var scientificWorkDto = new ScientificWorkDto()
+                {
+                    Id = scientificWork.Id,
+                    Authors = authors,
+                    Title = scientificWork.Name,
+                    Description = scientificWork.Description,
+                    CreationDate = scientificWork.CreationDate,
+                    // Get date of latest update of work
+                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd,
+                    Specialization = scientificWork.Specialization
+                };
+
+                listOfScientificWorksDto.Add(scientificWorkDto);
+            }
+
+            return listOfScientificWorksDto;
         }
     }
 }

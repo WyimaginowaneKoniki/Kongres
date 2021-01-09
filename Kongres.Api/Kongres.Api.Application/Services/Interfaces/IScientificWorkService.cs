@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Kongres.Api.Domain.DTOs;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Application.Services.Interfaces
@@ -7,5 +9,6 @@ namespace Kongres.Api.Application.Services.Interfaces
     {
         Task AddBasicInfoAsync(string userId, string title, string description, string authors, string specialization);
         Task AddVersionAsync(uint userId, IFormFile workFile, byte versionNumber = 0);
+        Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync();
     }
 }
