@@ -17,6 +17,10 @@ namespace Kongres.Api.Application.Handlers.Work
 
         protected override async Task Handle(AddWorkCommand request, CancellationToken cancellationToken)
         {
+            // JSON doesn't know what is null :C
+            if (request.Authors == "null")
+                request.Authors = null;
+
             await _scientificWorkService.AddBasicInfoAsync(request.AuthorId,
                                                             request.Title,
                                                             request.Description,
