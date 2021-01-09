@@ -1,10 +1,10 @@
 ﻿using Kongres.Api.Application.Commands.Work;
+using Kongres.Api.Application.Queries.Work;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Kongres.Api.Application.Queries.Work;
 
 namespace Kongres.Api.WebApi.Controller
 {
@@ -26,5 +26,16 @@ namespace Kongres.Api.WebApi.Controller
         [HttpGet]
         public async Task<IActionResult> GetAll()
             => Ok(await CommandAsync(new GetApprovedWorksQuery()));
+
+        [HttpGet("Download")]
+        public async Task<IActionResult> Download([FromBody] DownloadScientificWorkQuery query)
+        {
+            var fileStream = await CommandAsync(query);
+
+            if (fileStream is null)
+                return NotFound("Could not find scientific work with given Id.");
+
+            return File(fileStream, "application/pdf");
+        }
     }
 }

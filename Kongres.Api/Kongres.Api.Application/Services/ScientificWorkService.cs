@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -98,6 +99,15 @@ namespace Kongres.Api.Application.Services
             }
 
             return listOfScientificWorksDto;
+        }
+
+        public async Task<Stream> GetStreamOfScientificWorkAsync(uint workId)
+        {
+            var scientificWork = await _scientificWorkFileRepository.GetNewestVersionAsync(workId);
+            if (scientificWork is null)
+                return null;
+
+            return await Task.FromResult(_fileManager.ReadFile(scientificWork.FileName));
         }
     }
 }

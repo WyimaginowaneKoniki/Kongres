@@ -1,17 +1,17 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure
 {
     public class FileManager : IFileManager
     {
-        private readonly string _filePath;
+        private readonly string _directoryPath;
 
         public FileManager(IWebHostEnvironment env)
         {
-            _filePath = $"{env.ContentRootPath}/Files";
+            _directoryPath = $"{env.ContentRootPath}/Files";
         }
 
         public async Task<string> SaveFileAsync(IFormFile file)
@@ -23,12 +23,18 @@ namespace Kongres.Api.Infrastructure
             var mime = file.FileName.Split(".")[^1];
             // randomize fileName
             var fileName = $"{Path.GetRandomFileName()}.{mime}";
-            var savePath = Path.Combine(_filePath, fileName);
+            var savePath = Path.Combine(_directoryPath, fileName);
 
             await using var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write);
             await file.CopyToAsync(fileStream);
 
             return fileName;
+        }
+
+        public Stream ReadFile(string fileName)
+        {
+            var filePath = Path.Combine(_directoryPath, fileName);
+            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
         }
     }
 }
