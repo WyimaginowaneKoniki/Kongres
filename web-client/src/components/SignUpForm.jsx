@@ -8,7 +8,6 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -87,7 +86,7 @@ export default function SignUpForm(props) {
     showPassword: false,
   });
 
-  const [specialization, setSpecialization] = React.useState("");
+  const [specialization, setSpecialization] = React.useState("Select");
   const schema = yup.object().shape({
     firstName: yup
       .string()
@@ -117,6 +116,10 @@ export default function SignUpForm(props) {
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
+    specialization: yup.string().when("specializations", {
+      is: (specializations) => specialization === "Select",
+      then: yup.string().required("Required field"),
+    }),
     acceptance: yup
       .boolean()
       .oneOf([true], "Required field")
@@ -289,57 +292,46 @@ export default function SignUpForm(props) {
             />
 
             {/* Specialization Input - Select*/}
-            <FormControl
-              variant="outlined"
+            <TextField
+              select
+              className={style.textField}
+              inputRef={register}
+              required
+              id="academic-title-signup"
               name="specialization"
-              className={style.formControl}
+              label="Specialization"
+              autoComplete="job-title"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              onChange={handleChangeSelect}
+              error={!!errors.specialization}
+              helperText={errors?.specialization?.message}
+              value={specialization}
             >
-              <InputLabel
-                shrink
-                htmlFor="specialization-signup"
-                className={style.inputLabel}
-              >
-                Specialization
-              </InputLabel>
-              <Select
-                displayEmpty
-                name="specialization"
-                value={specialization}
-                onChange={handleChangeSelect}
-                input={
-                  <OutlinedInput
-                    notched
-                    name="specialization"
-                    id="specialization-signup"
-                  />
-                }
-                inputRef={register}
-                error={!!errors.specialization}
-                helperText={errors?.specialization?.message}
-              >
-                <MenuItem className={style.MenuItem} value="">
-                  Select
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                  Computer Science
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                  Mathematics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Biology"}>
-                  Biology
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                  Chemistry
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Psychics"}>
-                  Psychics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Geography"}>
-                  Geography
-                </MenuItem>
-              </Select>
-            </FormControl>
+              <MenuItem className={style.MenuItem} value={"Select"}>
+                Select               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Computer Science"}>
+                Computer Science               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Mathematics"}>
+                Mathematics               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Biology"}>
+                Biology               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Chemistry"}>
+                Chemistry               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Psychics"}>
+                Psychics               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Geography"}>
+                Geography               
+              </MenuItem>
+            </TextField>
 
             {/* Avatar */}
             {props.participant ? <Avatar name="avatar" /> : null}
