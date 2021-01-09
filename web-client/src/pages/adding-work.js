@@ -4,11 +4,7 @@ import DropZone from "../components/DropZone";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -29,8 +25,7 @@ function AddingWork() {
       margin: "auto",
     },
     left: {
-      width: "45%",
-      height: "50vh",
+      width: "44%",
       float: "left",
       textAlign: "left",
     },
@@ -65,10 +60,16 @@ function AddingWork() {
     },
     textFieldAuthor: {
       marginBottom: "10px",
+      float: 'left',
       width: "100%",
     },
     formControlLabel: {
       marginBottom: "8px",
+      float: 'left',
+    },
+    button:
+    {
+        float: 'right',
     },
   });
 
@@ -103,7 +104,7 @@ function AddingWork() {
   const maxAuthors = 9;
   const maxAuthorName = 53;
 
-  const [specialization, setSpecialization] = useState("");
+  const [specialization, setSpecialization] = useState("Select");
   const schema = yup.object().shape({
     title: yup
       .string()
@@ -141,6 +142,10 @@ function AddingWork() {
         })
       )
       .max(maxAuthors, "You cannot add more authors"),
+    specialization: yup.string().when("specializations", {
+      is: (specializations) => specialization === "Select",
+      then: yup.string().required("Time field is required"),
+    }),
     acceptance: yup
       .boolean()
       .oneOf([true], "Required field")
@@ -159,16 +164,11 @@ function AddingWork() {
 
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
-    setError(false);
   };
 
   // based on:
   // https://codesandbox.io/s/425lm2479?file=/demo.js:1708-1772
-  const [hasError, setError] = useState(false);
-
   const ClickSubmit = () => {
-    setError(false);
-    if (specialization === "") setError(true);
     if (file === null) ShowAlert();
   };
 
@@ -357,58 +357,46 @@ function AddingWork() {
             />
 
             {/* Specialization Input - Select*/}
-            <FormControl
-              variant="outlined"
-              name="specialization"
-              className={style.formControl}
+            <TextField
+              select
+              className={style.textField}
+              inputRef={register}
               required
-              error={hasError}
+              id="academic-title-signup"
+              name="specialization"
+              label="Specialization"
+              autoComplete="job-title"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              onChange={handleChangeSelect}
+              error={!!errors.specialization}
+              helperText={errors?.specialization?.message}
+              value={specialization}
             >
-              <InputLabel
-                shrink
-                htmlFor="specialization-signup"
-                className={style.inputLabel}
-              >
-                Specialization
-              </InputLabel>
-              <Select
-                displayEmpty
-                name="specialization"
-                value={specialization}
-                onChange={handleChangeSelect}
-                input={
-                  <OutlinedInput
-                    notched
-                    inputRef={register}
-                    name="specialization"
-                    id="specialization-signup"
-                  />
-                }
-              >
-                <MenuItem className={style.MenuItem} value="">
-                  <em>Select</em>
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                  Computer Science
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                  Mathematics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Biology"}>
-                  Biology
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                  Chemistry
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Psychics"}>
-                  Psychics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Geography"}>
-                  Geography
-                </MenuItem>
-              </Select>
-              {hasError && <FormHelperText>Required field</FormHelperText>}
-            </FormControl>
+              <MenuItem className={style.MenuItem} value={"Select"}>
+                Select               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Computer Science"}>
+                Computer Science               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Mathematics"}>
+                Mathematics               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Biology"}>
+                Biology               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Chemistry"}>
+                Chemistry               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Psychics"}>
+                Psychics               
+              </MenuItem>
+              <MenuItem className={style.MenuItem} value={"Geography"}>
+                Geography               
+              </MenuItem>
+            </TextField>
 
             {/* Authors */}
             <TextField
@@ -447,15 +435,17 @@ function AddingWork() {
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
 
-            <Button
-              className={style.addButton}
-              color="primary"
-              type="submit"
-              variant="contained"
-              onClick={ClickSubmit}
-            >
-              Add work
-            </Button>
+            <div className={style.button}>
+              <Button
+                className={style.addButton}
+                color="primary"
+                type="submit"
+                variant="contained"
+                onClick={ClickSubmit}
+              >
+                Add work
+              </Button>
+            </div>
           </div>
           <div className={style.right}>
             <DropZone SetFile={passFile} />
