@@ -375,7 +375,7 @@ function AddingWork() {
               helperText={errors?.specialization?.message}
               value={specialization}
             >
-              <MenuItem className={style.MenuItem} value={"Select"}>
+              <MenuItem className={style.MenuItem} value={""}>
                 Select               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Computer Science"}>
