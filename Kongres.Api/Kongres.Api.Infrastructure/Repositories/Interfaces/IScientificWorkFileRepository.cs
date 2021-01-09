@@ -5,6 +5,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
 {
     public interface IScientificWorkFileRepository : IRepository
     {
-        Task AddAsync(ScienceWorkFile scientificWorkFile);
+        Task AddAsync(ScientificWorkFile scientificWorkFile);
     }
 }

@@ -15,13 +15,13 @@ namespace Kongres.Api.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(ScienceWork scienceWork)
+        public async Task AddAsync(ScientificWork scienceWork)
         {
-            await _context.ScienceWorks.AddAsync(scienceWork);
+            await _context.ScientificWorks.AddAsync(scienceWork);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ScienceWork> GetByUserIdAsync(uint userId)
-            => await _context.ScienceWorks.FirstAsync(x => x.MainAuthor.Id == userId);
+        public async Task<ScientificWork> GetByUserIdAsync(uint userId)
+            => await _context.ScientificWorks.FirstAsync(x => x.MainAuthor.Id == userId);
     }
 }

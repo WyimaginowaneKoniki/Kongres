@@ -91,7 +91,7 @@ namespace Kongres.Api.WebApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context,
             RoleManager<Role> roleManager)
         {
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
 
             if (env.IsDevelopment())
             {

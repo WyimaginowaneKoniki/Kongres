@@ -14,9 +14,9 @@ namespace Kongres.Api.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(ScienceWorkFile scientificWorkFile)
+        public async Task AddAsync(ScientificWorkFile scientificWorkFile)
         {
-            await _context.ScienceWorkFiles.AddAsync(scientificWorkFile);
+            await _context.ScientificWorkFiles.AddAsync(scientificWorkFile);
             await _context.SaveChangesAsync();
         }
     }

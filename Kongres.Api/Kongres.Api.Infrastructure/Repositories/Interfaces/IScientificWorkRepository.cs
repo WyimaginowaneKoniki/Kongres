@@ -5,7 +5,7 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
 {
     public interface IScientificWorkRepository : IRepository
     {
-        Task AddAsync(ScienceWork scienceWork);
-        Task<ScienceWork> GetByUserIdAsync(uint userId);
+        Task AddAsync(ScientificWork scienceWork);
+        Task<ScientificWork> GetByUserIdAsync(uint userId);
     }
 }

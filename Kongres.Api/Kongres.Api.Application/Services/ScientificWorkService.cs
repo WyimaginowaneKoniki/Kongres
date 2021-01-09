@@ -32,7 +32,7 @@ namespace Kongres.Api.Application.Services
         {
             var user = await _userManager.FindByIdAsync(userId);
 
-            var scientificWork = new ScienceWork()
+            var scientificWork = new ScientificWork()
             {
                 Name = title,
                 Description = description,
@@ -51,12 +51,12 @@ namespace Kongres.Api.Application.Services
 
             var workName = await _fileManager.SaveFileAsync(workFile);
 
-            var versionOfWork = new ScienceWorkFile()
+            var versionOfWork = new ScientificWorkFile()
             {
                 Version = versionNumber,
                 FileName = workName,
                 DateAdd = DateTime.UtcNow,
-                ScienceWork = scientificWork
+                ScientificWork = scientificWork
             };
 
             await _scientificWorkFileRepository.AddAsync(versionOfWork);

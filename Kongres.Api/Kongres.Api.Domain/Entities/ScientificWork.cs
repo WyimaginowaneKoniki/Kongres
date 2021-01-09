@@ -3,7 +3,7 @@ using Kongres.Api.Domain.Enums;
 
 namespace Kongres.Api.Domain.Entities
 {
-    public class ScienceWork
+    public class ScientificWork
     {
         public uint Id { get; set; }
         public string Name { get; set; }
