@@ -3,14 +3,16 @@ using System;
 using Kongres.Api.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kongres.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(KongresDbContext))]
-    partial class KongresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210109170231_ScienceWork to ScientificWork")]
+    partial class ScienceWorktoScientificWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,9 +139,6 @@ namespace Kongres.Api.Infrastructure.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("OtherAuthors")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Specialization")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<byte>("Status")

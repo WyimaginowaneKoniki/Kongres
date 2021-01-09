@@ -85,12 +85,13 @@ namespace Kongres.Api.WebApi
             builder.RegisterModule<MediatRModule>();
             builder.RegisterModule(new SettingsModule(_configuration));
             builder.RegisterModule<ServiceModule>();
+            builder.RegisterModule<RepositoryModule>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context,
             RoleManager<Role> roleManager)
         {
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
 
             if (env.IsDevelopment())
             {

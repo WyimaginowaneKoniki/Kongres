@@ -14,7 +14,7 @@ namespace Kongres.Api.Infrastructure
             _filePath = $"{env.ContentRootPath}/Files";
         }
 
-        public async Task<string> SaveFile(IFormFile file)
+        public async Task<string> SaveFileAsync(IFormFile file)
         {
             if (file == null)
                 return null;
