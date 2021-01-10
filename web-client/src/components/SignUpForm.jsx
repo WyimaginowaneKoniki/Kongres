@@ -297,13 +297,14 @@ export default function SignUpForm(props) {
               className={style.textField}
               inputRef={register}
               required
-              id="academic-title-signup"
+              id="specialization-signup"
               name="specialization"
               label="Specialization"
-              autoComplete="job-title"
+              autoComplete="specialization"
               InputLabelProps={{
                 shrink: true,
               }}
+              placeholder="Select"
               variant="outlined"
               onChange={handleChangeSelect}
               error={!!errors.specialization}
@@ -326,7 +327,7 @@ export default function SignUpForm(props) {
                 Chemistry               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Psychics"}>
-                Psychics               
+                Physics               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Geography"}>
                 Geography               

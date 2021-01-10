@@ -250,13 +250,14 @@ export default function PersonalInformation(props) {
               className={style.textField}
               inputRef={register}
               required
-              id="academic-title-signup"
+              id="specialization-personal-information"
               name="specialization"
               label="Specialization"
-              autoComplete="job-title"
+              autoComplete="specialization"
               InputLabelProps={{
                 shrink: true,
               }}
+              placeholder="Select"
               variant="outlined"
               onChange={handleChangeSelect}
               error={!!errors.specialization}
@@ -279,7 +280,7 @@ export default function PersonalInformation(props) {
                 Chemistry               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Psychics"}>
-                Psychics               
+                Physics               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Geography"}>
                 Geography               

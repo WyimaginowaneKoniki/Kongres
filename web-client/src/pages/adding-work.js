@@ -144,7 +144,7 @@ function AddingWork() {
       .max(maxAuthors, "You cannot add more authors"),
     specialization: yup.string().when("specializations", {
       is: (specializations) => specialization === "Select",
-      then: yup.string().required("Time field is required"),
+      then: yup.string().required("Required field"),
     }),
     acceptance: yup
       .boolean()
@@ -362,13 +362,14 @@ function AddingWork() {
               className={style.textField}
               inputRef={register}
               required
-              id="academic-title-signup"
+              id="specialization-adding-work"
               name="specialization"
               label="Specialization"
-              autoComplete="job-title"
+              autoComplete="specialization"
               InputLabelProps={{
                 shrink: true,
               }}
+              placeholder="Select"
               variant="outlined"
               onChange={handleChangeSelect}
               error={!!errors.specialization}
@@ -391,7 +392,7 @@ function AddingWork() {
                 Chemistry               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Psychics"}>
-                Psychics               
+                Physics               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Geography"}>
                 Geography               
