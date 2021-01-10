@@ -18,16 +18,19 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
+                                    IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
                                     IFileManager fileManager)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
+            _reviewRepository = reviewRepository;
             _userManager = userManager;
             _fileManager = fileManager;
         }
@@ -110,13 +113,22 @@ namespace Kongres.Api.Application.Services
             return await Task.FromResult(_fileManager.GetStreamOfFile(scientificWork.FileName));
         }
 
-        public async Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint scientificWorkId)
+        public async Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint userId, uint scientificWorkId)
         {
             // TODO: If science work is approved
 
             var scientificWork = await _scientificWorkRepository.GetWorkByIdAsync(scientificWorkId);
             if (scientificWork is null)
                 return null;
+
+            var mode = "";
+
+            if (scientificWork.MainAuthor.Id == userId)
+                mode = "Author";
+            else if (await _reviewRepository.IsReviewerAsync(scientificWorkId, userId))
+                mode = "Reviewer";
+            else
+                mode = "Participant";
 
             var scientificWorkDto = new ScientificWorkDto()
             {
@@ -143,7 +155,8 @@ namespace Kongres.Api.Application.Services
             var scientificWorkWithReviewDto = new ScientificWorkWithReviewDto()
             {
                 ScientificWork = scientificWorkDto,
-                MainAuthor = mainAuthor
+                MainAuthor = mainAuthor,
+                Mode = mode
             };
 
             return await Task.FromResult(scientificWorkWithReviewDto);

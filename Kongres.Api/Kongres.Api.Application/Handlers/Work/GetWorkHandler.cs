@@ -17,6 +17,6 @@ namespace Kongres.Api.Application.Handlers.Work
         }
 
         public async Task<ScientificWorkWithReviewDto> Handle(GetWorkQuery request, CancellationToken cancellationToken)
-            => await _scientificWorkService.GetWorkByIdAsync(request.ScientificWorkId);
+            => await _scientificWorkService.GetWorkByIdAsync(request.UserId, request.ScientificWorkId);
     }
 }

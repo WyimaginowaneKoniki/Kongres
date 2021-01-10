@@ -30,7 +30,10 @@ namespace Kongres.Api.WebApi.Controller
         [Authorize]
         [HttpGet("{ScientificWorkId}")]
         public async Task<IActionResult> GetById([FromHeader] GetWorkQuery query)
-            => Ok(await CommandAsync(query));
+        {
+            query.UserId = uint.Parse(HttpContext.User.Identity.Name ?? "0");
+            return Ok(await CommandAsync(query));
+        }
 
         [HttpGet("Download")]
         public async Task<IActionResult> Download([FromBody] DownloadScientificWorkQuery query)
