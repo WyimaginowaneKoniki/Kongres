@@ -41,11 +41,11 @@ function ScientificWorks(props) {
 
     // Stores works
     const [works, SetWorks] = useState([{
-        title: "",
-        categories: "",
-        date: "",
-        authors: "",
-        description: ""
+        title: null,
+        categories: null,
+        date: null,
+        authors: null,
+        description: null
     }]);
 
     // base on:
@@ -133,7 +133,8 @@ function ScientificWorks(props) {
           <h1>Scientific works</h1>
 
           <div className={style.left}>
-            {workList}
+          {/* If list of works is null, then nothing is displayed */}
+            {works[0].title ? workList : null}
           </div>
 
           <div className={style.right}>
