@@ -7,6 +7,7 @@ import ScientificWorksRecentAuthors from '../components/ScientificWorksRecentAut
 import Search from '../components/Search'
 import picture from '../images/empty-image.png'
 import axios from "axios";
+import { URL_API } from "../Constants";
 
 function ScientificWorks(props) {
     const styles = makeStyles({
@@ -58,7 +59,7 @@ function ScientificWorks(props) {
       const fetchData = async () => {
         var token = localStorage.getItem("jwt");
         await axios
-          .get("https://localhost:5001/api/ScientificWork", {
+          .get(`${URL_API}/ScientificWork`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((resp) => {
@@ -85,7 +86,7 @@ function ScientificWorks(props) {
         date={convertDate(work.creationDate)}
         authors={work.authors}
         text={work.description}
-        link={work.link}
+        id={work.id}
       />
     ));
 

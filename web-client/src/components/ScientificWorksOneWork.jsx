@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { useHistory } from "react-router-dom";
 import '../App.css';
 
 function ScientificWorksOneWork(props)
@@ -80,6 +81,13 @@ function ScientificWorksOneWork(props)
 
     const style = styles();
 
+    const history = useHistory();
+
+    const readMore = () => {
+        const path = `work-view/${props.id}`;
+        history.push(path);
+    };
+
     //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download
     return(
         <div className={style.main}>
@@ -96,7 +104,7 @@ function ScientificWorksOneWork(props)
                 <Button variant='outlined' color="primary" 
                             className={style.btn1}>Download full work</Button>
                 <Button variant='contained' color="primary" 
-                            className={style.btn2}>Read more</Button>
+                            className={style.btn2} onClick={readMore}>Read more</Button>
             </div>
         </div>
     )

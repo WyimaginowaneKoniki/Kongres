@@ -22,6 +22,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { URL_API } from "../Constants";
 
 function AddingWork() {
   const styles = makeStyles({
@@ -301,7 +302,7 @@ function AddingWork() {
       var formData = createFormData();
       var token = localStorage.getItem("jwt");
       axios.post(
-        "https://localhost:5001/api/ScientificWork/AddWork",
+        `${URL_API}/ScientificWork/AddWork`,
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },
