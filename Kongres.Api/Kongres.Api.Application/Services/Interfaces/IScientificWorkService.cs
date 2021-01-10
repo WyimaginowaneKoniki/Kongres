@@ -12,5 +12,6 @@ namespace Kongres.Api.Application.Services.Interfaces
         Task AddVersionAsync(uint userId, IFormFile workFile, byte versionNumber = 0);
         Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync();
         Task<Stream> GetStreamOfScientificWorkAsync(uint workId);
+        Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint scientificWorkId);
     }
 }

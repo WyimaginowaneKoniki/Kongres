@@ -107,7 +107,46 @@ namespace Kongres.Api.Application.Services
             if (scientificWork is null)
                 return null;
 
-            return await Task.FromResult(_fileManager.ReadFile(scientificWork.FileName));
+            return await Task.FromResult(_fileManager.GetStreamOfFile(scientificWork.FileName));
+        }
+
+        public async Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint scientificWorkId)
+        {
+            // TODO: If science work is approved
+
+            var scientificWork = await _scientificWorkRepository.GetWorkByIdAsync(scientificWorkId);
+            if (scientificWork is null)
+                return null;
+
+            var scientificWorkDto = new ScientificWorkDto()
+            {
+                Id = scientificWork.Id,
+                Title = scientificWork.Name,
+                Description = scientificWork.Description,
+                Specialization = scientificWork.Specialization,
+                CreationDate = scientificWork.CreationDate,
+                UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd,
+                Authors = scientificWork.OtherAuthors,
+            };
+
+            var authorPhoto = await _fileManager.GetBase64FileAsync(scientificWork.MainAuthor.Photo);
+            var photoExtension = scientificWork.MainAuthor.Photo.Split(".")[^1];
+
+            var mainAuthor = new UserDto()
+            {
+                Name = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}",
+                Specialization = scientificWork.MainAuthor.Specialization,
+                University = scientificWork.MainAuthor.University,
+                Photo = $"data:image/{photoExtension};base64,{authorPhoto}"
+            };
+
+            var scientificWorkWithReviewDto = new ScientificWorkWithReviewDto()
+            {
+                ScientificWork = scientificWorkDto,
+                MainAuthor = mainAuthor
+            };
+
+            return await Task.FromResult(scientificWorkWithReviewDto);
         }
     }
 }

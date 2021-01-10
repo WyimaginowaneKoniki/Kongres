@@ -27,6 +27,11 @@ namespace Kongres.Api.WebApi.Controller
         public async Task<IActionResult> GetAll()
             => Ok(await CommandAsync(new GetApprovedWorksQuery()));
 
+        [Authorize]
+        [HttpGet("{ScientificWorkId}")]
+        public async Task<IActionResult> GetById([FromHeader] GetWorkQuery query)
+            => Ok(await CommandAsync(query));
+
         [HttpGet("Download")]
         public async Task<IActionResult> Download([FromBody] DownloadScientificWorkQuery query)
         {

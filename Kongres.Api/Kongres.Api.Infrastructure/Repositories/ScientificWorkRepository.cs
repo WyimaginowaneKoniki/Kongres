@@ -29,5 +29,10 @@ namespace Kongres.Api.Infrastructure.Repositories
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Include(x => x.Versions)
                                              .ToListAsync();
+
+        public async Task<ScientificWork> GetWorkByIdAsync(uint scientificWorkId)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Include(x => x.Versions)
+                                             .SingleOrDefaultAsync(x => x.Id == scientificWorkId);
     }
 }

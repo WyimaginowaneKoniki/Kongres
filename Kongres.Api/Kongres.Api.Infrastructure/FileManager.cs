@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
@@ -31,10 +32,17 @@ namespace Kongres.Api.Infrastructure
             return fileName;
         }
 
-        public Stream ReadFile(string fileName)
+        public Stream GetStreamOfFile(string fileName)
         {
             var filePath = Path.Combine(_directoryPath, fileName);
             return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        }
+
+        public async Task<string> GetBase64FileAsync(string fileName)
+        {
+            var filePath = Path.Combine(_directoryPath, fileName);
+            var file = await File.ReadAllBytesAsync(filePath);
+            return await Task.FromResult(Convert.ToBase64String(file));
         }
     }
 }

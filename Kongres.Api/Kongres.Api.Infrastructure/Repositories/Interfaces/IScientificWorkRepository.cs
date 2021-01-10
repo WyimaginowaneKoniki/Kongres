@@ -9,5 +9,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task AddAsync(ScientificWork scienceWork);
         Task<ScientificWork> GetByUserIdAsync(uint userId);
         Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync();
+        Task<ScientificWork> GetWorkByIdAsync(uint scientificWorkId);
     }
 }
