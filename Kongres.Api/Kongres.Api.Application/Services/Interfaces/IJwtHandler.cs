@@ -1,4 +1,4 @@
-﻿namespace Kongres.Api.Application.Services
+﻿namespace Kongres.Api.Application.Services.Interfaces
 {
     public interface IJwtHandler
     {

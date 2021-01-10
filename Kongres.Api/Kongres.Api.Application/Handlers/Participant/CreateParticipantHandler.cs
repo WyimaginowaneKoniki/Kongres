@@ -24,7 +24,7 @@ namespace Kongres.Api.Application.Handlers.Participant
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var fileName = await _fileManager.SaveFile(request.Avatar);
+            var fileName = await _fileManager.SaveFileAsync(request.Avatar);
 
             const UserTypeEnum userType = UserTypeEnum.Participant;
             var userName = $"{userType}:{request.Email}";

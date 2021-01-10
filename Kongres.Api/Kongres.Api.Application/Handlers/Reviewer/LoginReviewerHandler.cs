@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Kongres.Api.Application.Commands.Reviewer;
 using Kongres.Api.Application.Services;
+using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
 using Kongres.Api.Domain.Extensions;
