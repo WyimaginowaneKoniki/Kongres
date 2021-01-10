@@ -9,6 +9,8 @@ import Rating from "@material-ui/lab/Rating";
 import CurrentVersionWithReplyToReview from '../components/CurrentVersionWithReplyToReview';
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 function WorkView(props){
     const styles = makeStyles ({
@@ -51,6 +53,15 @@ function WorkView(props){
     });
 
     const style = styles();
+
+    const location = useLocation();
+
+    useEffect(() => {
+        let id = window.location.pathname.split("/").slice(-1)[0];
+        if(isNaN(id))
+            id = null;
+        console.log(location.state?.detail ? location.state?.detail : id);
+     }, [location]);
 
     const user = "reviewer";  //reviewer //participant
 

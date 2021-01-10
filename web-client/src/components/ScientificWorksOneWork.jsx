@@ -85,7 +85,10 @@ function ScientificWorksOneWork(props)
 
     const readMore = () => {
         const path = `work-view/${props.id}`;
-        history.push(path);
+        history.push({
+            pathname: path,
+            state: {detail: props.id}
+        });
     };
 
     //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download

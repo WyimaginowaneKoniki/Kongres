@@ -299,8 +299,8 @@ function AddingWork() {
   const onSubmit = () => {
     // if everything is OK, form can be send
     if (file !== null && specialization !== "") {
-      var formData = createFormData();
-      var token = localStorage.getItem("jwt");
+      const formData = createFormData();
+      const token = localStorage.getItem("jwt");
       axios.post(
         `${URL_API}/ScientificWork/AddWork`,
         formData,
