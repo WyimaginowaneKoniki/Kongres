@@ -1,4 +1,6 @@
-﻿using Kongres.Api.Domain.Entities;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Kongres.Api.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure.Repositories.Interfaces
@@ -7,5 +9,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
     {
         Task AddAsync(ScientificWorkFile scientificWorkFile);
         Task<ScientificWorkFile> GetNewestVersionAsync(uint workId);
+        Task<IEnumerable<ScientificWorkFile>> GetVersionsWithReviews(uint workId);
     }
 }

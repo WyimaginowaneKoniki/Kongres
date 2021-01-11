@@ -152,11 +152,50 @@ namespace Kongres.Api.Application.Services
                 Photo = $"data:image/{photoExtension};base64,{authorPhoto}"
             };
 
+            List<VersionDto> versionsDto = null;
+
+            if (mode != "Participant")
+            {
+                var versions = await _scientificWorkFileRepository.GetVersionsWithReviews(scientificWorkId);
+
+                versionsDto = new List<VersionDto>();
+
+                foreach (var version in versions)
+                {
+                    var reviewsDto = new List<ReviewDto>();
+
+                    foreach (var review in version.Reviews)
+                    {
+                        if (mode == "Reviewer" && review.Reviewer.Id != userId)
+                            continue;
+                        
+                        reviewsDto.Add(new ReviewDto()
+                        {
+                            Id = review.Id,
+                            ReviewDate = review.DateReview,
+                            ReviewMsg = review.Comment,
+                            Rating = review.Rating,
+                            AnswerDate = review?.Answer?.AnswerDate,
+                            AnswerMsg = review?.Answer?.Comment
+                        });
+                    }
+
+                    versionsDto.Add(new VersionDto()
+                    {
+                        Date = version.DateAdd,
+                        VersionNumber = version.Version,
+                        Reviews = reviewsDto
+                    });
+                }
+            }
+
+
             var scientificWorkWithReviewDto = new ScientificWorkWithReviewDto()
             {
                 ScientificWork = scientificWorkDto,
                 MainAuthor = mainAuthor,
-                Mode = mode
+                Mode = mode,
+                Versions = versionsDto,
             };
 
             return await Task.FromResult(scientificWorkWithReviewDto);

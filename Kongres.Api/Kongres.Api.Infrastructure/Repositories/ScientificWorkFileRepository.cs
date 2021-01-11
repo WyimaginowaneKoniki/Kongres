@@ -1,4 +1,5 @@
-﻿using Kongres.Api.Domain.Entities;
+﻿using System.Collections.Generic;
+using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure.Context;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -26,5 +27,14 @@ namespace Kongres.Api.Infrastructure.Repositories
             => await _context.ScientificWorkFiles.Where(x => x.ScientificWork.Id == workId)
                                                  .OrderByDescending(x => x.Version)
                                                  .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<ScientificWorkFile>> GetVersionsWithReviews(uint workId)
+            => await _context.ScientificWorkFiles.Include(x => x.ScientificWork)
+                                                 .Include(x => x.Reviews)
+                                                    .ThenInclude(x => x.Answer)
+                                                 .Include(x => x.Reviews)
+                                                    .ThenInclude(x => x.Reviewer)
+                                                 .Where(x => x.ScientificWork.Id == workId)
+                                                 .ToListAsync();
     }
 }
