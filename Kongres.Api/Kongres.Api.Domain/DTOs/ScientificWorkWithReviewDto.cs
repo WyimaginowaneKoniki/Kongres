@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Kongres.Api.Domain.Enums;
 
 namespace Kongres.Api.Domain.DTOs
 {
@@ -8,5 +9,6 @@ namespace Kongres.Api.Domain.DTOs
         public UserDto MainAuthor { get; set; }
         public string Mode { get; set; }
         public IEnumerable<VersionDto> Versions { get; set; }
+        public string Status { get; set; }
     }
 }

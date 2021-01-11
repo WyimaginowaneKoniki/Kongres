@@ -168,7 +168,7 @@ namespace Kongres.Api.Application.Services
                     {
                         if (mode == "Reviewer" && review.Reviewer.Id != userId)
                             continue;
-                        
+
                         reviewsDto.Add(new ReviewDto()
                         {
                             Id = review.Id,
@@ -196,6 +196,7 @@ namespace Kongres.Api.Application.Services
                 MainAuthor = mainAuthor,
                 Mode = mode,
                 Versions = versionsDto,
+                Status = scientificWork.Status.ToString()
             };
 
             return await Task.FromResult(scientificWorkWithReviewDto);
