@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
-import '../App.css';
-import { makeStyles } from '@material-ui/core/styles';
-import picture from '../images/empty-image.png';
-import MyWorkComponent from '../components/MyWorkComponent';
+import React, { useState, useEffect } from "react";
+import "../App.css";
+import { makeStyles } from "@material-ui/core/styles";
+import picture from "../images/empty-image.png";
+import MyWorkComponent from "../components/MyWorkComponent";
 import WorkForReviewComponent from "../components/WorkForReviewComponent";
 import CurrentVersion from "../components/CurrentVersion";
 import Rating from "@material-ui/lab/Rating";
 import CurrentVersionWithReplyToReview from '../components/CurrentVersionWithReplyToReview';
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { URL_API } from "../Constants";
 
 function WorkView(props){
     const styles = makeStyles ({
@@ -56,14 +57,33 @@ function WorkView(props){
 
     const location = useLocation();
 
+    const [workPDF, SetWorkPDF] = useState(null);
+
     useEffect(() => {
         let id = window.location.pathname.split("/").slice(-1)[0];
         if(isNaN(id))
             id = null;
         console.log(location.state?.detail ? location.state?.detail : id);
+
+        const fetchData = async () => {
+            var token = localStorage.getItem("jwt");
+            
+            await axios
+              .get(`${URL_API}/ScientificWork/Download/${Number(id)}`, {
+                headers: { Authorization: `Bearer ${token}` },
+                responseType: "blob"
+
+              })
+              .then((resp) => {
+                const pdf = window.URL.createObjectURL(new Blob([resp.data], {type: "application/pdf"}));
+                SetWorkPDF(pdf);
+              });
+          };
+          fetchData();
+        
      }, [location]);
 
-    const user = "reviewer";  //reviewer //participant
+    const user = "participant";  //reviewer //participant
 
     const work = {
         status: 'Status',
@@ -301,6 +321,7 @@ function WorkView(props){
                 university = {work.university}
                 authors = {work.authors}
                 text = {work.text}
+                workPDF = {workPDF}
             />
             :
             <WorkForReviewComponent 
