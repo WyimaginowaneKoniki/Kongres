@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 
-function MyWorkComponent(props) {
+export default function ScienceWorkInformation(props) {
   const styles = makeStyles({
     main: {
       width: "80%",
@@ -126,47 +126,52 @@ function MyWorkComponent(props) {
         <Tooltip title="Status" placement="top-start">
           <span className={style.status}>{props.status}</span>
         </Tooltip>
+
+        {/* Panel includes status, date add work, date modification and category  */}
         <span className={style.date}>
-          <span>{props.currentDate}</span>
-          <span>&nbsp; (Edited: {props.modificationDate}) &nbsp;</span>
+          <span>{props.scientificWork.createDate}</span>
+          <span>&nbsp; (Edited: {props.scientificWork.updateDate}) &nbsp;</span>
           <span>
             {" "}
             <Button variant="contained" color="primary" className={style.btn}>
-              {props.name}
+              {props.scientificWork.specialization}
             </Button>{" "}
           </span>
         </span>
-        <h1 className={style.h1}>{props.title}</h1>
+        <h1 className={style.h1}>{props.scientificWork.title}</h1>
+
+        {/* Panel includes photo, name author, degree, univeristy */}
         <div className={style.author}>
           <span className={style.shared}>Shared by</span>
           <p className={style.leftTitle}>
             <img
-              src={props.authorPhoto}
+              src={props.author.photo}
               className={style.photo}
-              alt={props.authorName}
+              alt={props.author.name}
             ></img>
           </p>
           <p className={style.rightTitle}>
-            <span className={style.authorName}>{props.authorName}</span>
-            <span className={style.degree}>{props.degree}</span>
-            <span className={style.university}>{props.university}</span>
+            <span className={style.authorName}>{props.author.name}</span>
+            <span className={style.degree}>{props.author.university}</span>
+            <span className={style.university}>{props.author.university}</span>
           </p>
         </div>
         <div className={style.authors}>
           <span className={style.other}>Other authors</span>
-          <span className={style.otherName}>{props.authors}</span>
+          <span className={style.otherName}>
+            {props.scientificWork.authors}
+          </span>
         </div>
-        <p className={style.text}>{props.text}</p>
+        <p className={style.text}>{props.scientificWork.description}</p>
 
         <Button variant="outlined" color="primary" className={style.btn1}>
           Download full work
         </Button>
-        <Button variant="contained" color="primary" className={style.btn1}>
-          Add new version
-        </Button>
+        {props.mode === "Author" && 
+          <Button variant="contained" color="primary" className={style.btn1}>
+            Add new version
+          </Button>}
       </div>
     </div>
   );
 }
-
-export default MyWorkComponent;

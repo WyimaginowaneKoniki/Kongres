@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import picture from "../images/empty-image.png";
-import MyWorkComponent from "../components/MyWorkComponent";
-import WorkForReviewComponent from "../components/WorkForReviewComponent";
+import ScienceWorkInformation from "../components/ScienceWorkInformation";
 import CurrentVersion from "../components/CurrentVersion";
 import Rating from "@material-ui/lab/Rating";
 import CurrentVersionWithReplyToReview from '../components/CurrentVersionWithReplyToReview';
@@ -13,7 +12,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { URL_API } from "../Constants";
 
-function WorkView(props){
+function WorkView(){
     const styles = makeStyles ({
         path:
         {
@@ -58,19 +57,11 @@ function WorkView(props){
     const location = useLocation();
 
     const [workPDF, SetWorkPDF] = useState(null);
-    const [data, setData] = useState();
-    const [work, setWork] = useState({
-        status: "",
-        currentDate: "",
-        modificationDate: "",
-        specialization: "",
-        title: "",
-        authorPhoto: "",
-        authorName: "",
-        degree: "",
-        university: "",
-        authors: "",
-        description: "",
+    const [data, setData] = useState({
+      scientificWork: "",
+      mainAuthor: "",
+      versions: [],
+      status: "",
     });
 
     useEffect(() => {
@@ -101,19 +92,6 @@ function WorkView(props){
           })
           .then((resp) => {
             setData(resp.data);
-            setWork({
-              title: resp.data.scientificWork.title,
-              description: resp.data.scientificWork.description,
-              currentDate: resp.data.scientificWork.creationDate,
-              modificationDate: resp.data.scientificWork.updateDate,
-              specialization: resp.data.scientificWork.specialization,
-              authors: resp.data.scientificWork.authors,
-              authorName: resp.data.mainAuthor.name,
-              degree: resp.data.mainAuthor.university,
-              authorPhoto: resp.data.mainAuthor.photo,
-              university: resp.data.mainAuthor.university,
-              status: resp.data.status,
-            });
           });
       })();
     }, [location]);
@@ -258,7 +236,7 @@ function WorkView(props){
         }
     ]
 
-    // by default every version should be closed (exept first one)
+    // by default every version should be closed (except first one)
     const [open, setOpen] = useState([true, ...(new Array(versions.length - 1).fill(false))]);
 
     function handleOnClick(item) {
@@ -293,7 +271,7 @@ function WorkView(props){
         {
             reviewsList.push(
                 <CurrentVersion
-                    author = {work.author}
+                    author = {"Joe Doe"}
                     path={version.reviewer.path}
                     stars={version.reviewer.stars}
                     review={version.reviewer.textReview}
@@ -319,48 +297,30 @@ function WorkView(props){
       )
     });
 
-    return(
-        <div className={style.main}>
-            {user === "participant" ? 
-            <p className={style.path}>My profile / <span className={style.title}>My Work</span></p>
-            :
-            <p className={style.path}>Scientific works / <span className={style.title}>{work.title}</span></p>
-            }
-            
-        {user === "participant" ?
-          <MyWorkComponent
-            status={work.status}
-            currentDate={work.currentDate}
-            modificationDate={work.modificationDate}
-            name={work.specialization}
-            title={work.title}
-            authorPhoto={work.authorPhoto}
-            authorName={work.authorName}
-            degree={work.degree}
-            university={work.university}
-            authors={work.authors}
-            text={work.description}
+    return (
+      <div className={style.main}>
+        {user === "participant" ? (
+          <p className={style.path}>
+            My profile / <span className={style.title}>My Work</span>
+          </p>
+        ) : (
+          <p className={style.path}>
+            Scientific works /{" "}
+            <span className={style.title}>{data.scientificWork.title}</span>
+          </p>
+        )}
+
+        <ScienceWorkInformation
+            scientificWork={data.scientificWork}
+            author={data.mainAuthor}
+            status={data.status}
+            mode={data.mode}
             workPDF={workPDF}
-          />
-          :
-          <WorkForReviewComponent
-                status = {work.status}
-                currentDate = {work.currentDate}
-                modificationDate = {work.modificationDate}
-                name = {work.name}
-                title = {work.title}
-                path = {work.path}
-                alternativeText = {work.alternativeText}
-                author = {work.author}
-                degree = {work.degree}
-                university = {work.university}
-                authors = {work.authors}
-                text = {work.text}
-            />
-            }
-            <div className={style.menu}>{versionList}</div>
-        </div>
-    )
+        />
+
+        <div className={style.menu}>{versionList}</div>
+      </div>
+    );
 }
 
 export default WorkView;
