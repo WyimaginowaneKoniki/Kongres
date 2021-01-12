@@ -120,10 +120,7 @@ function MyWorkComponent(props) {
 
   return (
     <div className={style.main}>
-      <embed
-        src={props.workPDF}
-        className={style.left}
-      />
+      <embed src={props.workPDF} className={style.left} />
 
       <div className={style.right}>
         <Tooltip title="Status" placement="top-start">
@@ -144,13 +141,13 @@ function MyWorkComponent(props) {
           <span className={style.shared}>Shared by</span>
           <p className={style.leftTitle}>
             <img
-              src={props.path}
+              src={props.authorPhoto}
               className={style.photo}
-              alt={props.alternativeText}
+              alt={props.authorName}
             ></img>
           </p>
           <p className={style.rightTitle}>
-            <span className={style.authorName}>{props.author}</span>
+            <span className={style.authorName}>{props.authorName}</span>
             <span className={style.degree}>{props.degree}</span>
             <span className={style.university}>{props.university}</span>
           </p>

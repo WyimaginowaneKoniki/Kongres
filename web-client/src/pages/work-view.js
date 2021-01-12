@@ -58,47 +58,67 @@ function WorkView(props){
     const location = useLocation();
 
     const [workPDF, SetWorkPDF] = useState(null);
+    const [data, setData] = useState();
+    const [work, setWork] = useState({
+        status: "",
+        currentDate: "",
+        modificationDate: "",
+        specialization: "",
+        title: "",
+        authorPhoto: "",
+        authorName: "",
+        degree: "",
+        university: "",
+        authors: "",
+        description: "",
+    });
 
     useEffect(() => {
-        let id = window.location.pathname.split("/").slice(-1)[0];
-        if(isNaN(id))
-            id = null;
-        console.log(location.state?.detail ? location.state?.detail : id);
+      let id = window.location.pathname.split("/").slice(-1)[0];
+      if (isNaN(id)) id = null;
+      console.log(location.state?.detail ? location.state?.detail : id);
 
-        const fetchData = async () => {
-            var token = localStorage.getItem("jwt");
-            
-            await axios
-              .get(`${URL_API}/ScientificWork/Download/${Number(id)}`, {
-                headers: { Authorization: `Bearer ${token}` },
-                responseType: "blob"
+      const token = localStorage.getItem("jwt");
 
-              })
-              .then((resp) => {
-                const pdf = window.URL.createObjectURL(new Blob([resp.data], {type: "application/pdf"}));
-                SetWorkPDF(pdf);
-              });
-          };
-          fetchData();
-        
-     }, [location]);
+      (async () => {
+        await axios
+          .get(`${URL_API}/ScientificWork/Download/${Number(id)}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            responseType: "blob",
+          })
+          .then((resp) => {
+            const pdf = window.URL.createObjectURL(
+              new Blob([resp.data], { type: "application/pdf" })
+            );
+            SetWorkPDF(pdf);
+          });
+      })();
+
+      (async () => {
+        await axios
+          .get(`${URL_API}/ScientificWork/${Number(id)}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then((resp) => {
+            setData(resp.data);
+            setWork({
+              title: resp.data.scientificWork.title,
+              description: resp.data.scientificWork.description,
+              currentDate: resp.data.scientificWork.creationDate,
+              modificationDate: resp.data.scientificWork.updateDate,
+              specialization: resp.data.scientificWork.specialization,
+              authors: resp.data.scientificWork.authors,
+              authorName: resp.data.mainAuthor.name,
+              degree: resp.data.mainAuthor.university,
+              authorPhoto: resp.data.mainAuthor.photo,
+              university: resp.data.mainAuthor.university,
+              status: resp.data.status,
+            });
+          });
+      })();
+    }, [location]);
 
     const user = "participant";  //reviewer //participant
-
-    const work = {
-        status: 'Status',
-        currentDate: '30/11/2020',
-        modificationDate: '15/11/2020',
-        name: 'Mathematics',
-        title: 'Importance of Golden Ratio in Mathematics',
-        path: picture,
-        alternativeText: 'Photo John Doe',
-        author: 'John Doe',
-        degree: 'PhD in Computer Science',
-        university: 'Silesian University of Technology',
-        authors: 'Sam Smith, Ashley Blue',
-        text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ',
-    };
 
     const versions = [
         {
@@ -307,24 +327,23 @@ function WorkView(props){
             <p className={style.path}>Scientific works / <span className={style.title}>{work.title}</span></p>
             }
             
-            {user === "participant" ?
-            <MyWorkComponent 
-                status = {work.status}
-                currentDate = {work.currentDate}
-                modificationDate = {work.modificationDate}
-                name = {work.name}
-                title = {work.title}
-                path = {work.path}
-                alternativeText = {work.alternativeText}
-                author = {work.author}
-                degree = {work.degree}
-                university = {work.university}
-                authors = {work.authors}
-                text = {work.text}
-                workPDF = {workPDF}
-            />
-            :
-            <WorkForReviewComponent 
+        {user === "participant" ?
+          <MyWorkComponent
+            status={work.status}
+            currentDate={work.currentDate}
+            modificationDate={work.modificationDate}
+            name={work.specialization}
+            title={work.title}
+            authorPhoto={work.authorPhoto}
+            authorName={work.authorName}
+            degree={work.degree}
+            university={work.university}
+            authors={work.authors}
+            text={work.description}
+            workPDF={workPDF}
+          />
+          :
+          <WorkForReviewComponent
                 status = {work.status}
                 currentDate = {work.currentDate}
                 modificationDate = {work.modificationDate}
