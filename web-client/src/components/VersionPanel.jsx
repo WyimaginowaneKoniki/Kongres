@@ -64,6 +64,7 @@ export default function VersionPanel(props) {
                 key={j++}
                 name={props.authorName}
                 photo={props.authorPhoto}
+                reviewId={reviews[i].id}
               />
             );
           }

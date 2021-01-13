@@ -7,6 +7,8 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import axios from "axios";
+import { URL_API } from "../Constants";
 
 function ScientificWorkAuthorAnswerInput(props) {
   const style = makeStyles({
@@ -68,6 +70,7 @@ function ScientificWorkAuthorAnswerInput(props) {
   const schema = yup.object().shape({
     answer: yup
       .string()
+      .required("Answer cannot be empty")
       .matches(
         /^[A-Za-z0-9,.?\s-+―\];—'–)(‒"‑[‐-]*$/,
         "Answer should only contain letters and digits"
@@ -83,19 +86,32 @@ function ScientificWorkAuthorAnswerInput(props) {
     resolver: yupResolver(schema),
   });
 
+  const onSubmit = (data) => {
+    var formData = new FormData();
+
+    formData.append("Answer", data.answer);
+    formData.append("ReviewId", props.reviewId);
+
+    const token = localStorage.getItem("jwt");
+    
+    axios.post(`${URL_API}/Review/AddAnswer`, formData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    window.location.reload();
+  };
+
   return (
     <div className={style.answerInput}>
       <p className={style.replyToReview}>Reply to review</p>
       <div className={style.userInfo}>
-        <img src={props.photo} className={style.image} alt=""></img>
+        <img src={props.photo} className={style.image} alt="" />
         <p className={style.userName}>{props.name}</p>
       </div>
       <form
         className={style.inputForm}
         noValidate
-        onSubmit={handleSubmit((data) => {
-          alert(JSON.stringify(data));
-        })}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <TextField
           className={style.input}
@@ -123,7 +139,7 @@ function ScientificWorkAuthorAnswerInput(props) {
           helperText={errors?.answer?.message}
         />
         <p className={style.info}>
-          Remember: you can't edit or delete this comment
+          Remember: you can't edit or delete this answer
         </p>
         <Button
           variant="contained"
