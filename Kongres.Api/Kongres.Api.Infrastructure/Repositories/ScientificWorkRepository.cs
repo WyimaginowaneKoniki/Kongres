@@ -3,6 +3,7 @@ using Kongres.Api.Infrastructure.Context;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure.Repositories
@@ -34,5 +35,12 @@ namespace Kongres.Api.Infrastructure.Repositories
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Include(x => x.Versions)
                                              .SingleOrDefaultAsync(x => x.Id == scientificWorkId);
+
+        public async Task<bool> IsAuthorOfScientificWorkAsync(uint userId, uint reviewOfWorkId)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Include(x => x.Versions)
+                                                .ThenInclude(x => x.Reviews)
+                                             .AnyAsync(x => x.MainAuthor.Id == userId &&
+                                                            x.Versions.Any(y => y.Reviews.Any(k => k.Id == reviewOfWorkId)));
     }
 }
