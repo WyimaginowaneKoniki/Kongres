@@ -147,7 +147,7 @@ namespace Kongres.Api.Application.Services
             var mainAuthor = new UserDto()
             {
                 Name = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}",
-                Specialization = scientificWork.MainAuthor.Specialization,
+                Degree = scientificWork.MainAuthor.Degree,
                 University = scientificWork.MainAuthor.University,
                 Photo = $"data:image/{photoExtension};base64,{authorPhoto}"
             };

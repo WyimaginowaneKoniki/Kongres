@@ -152,7 +152,7 @@ export default function ScienceWorkInformation(props) {
           </p>
           <p className={style.rightTitle}>
             <span className={style.authorName}>{props.author.name}</span>
-            <span className={style.degree}>{props.author.university}</span>
+            <span className={style.degree}>{props.author.degree}</span>
             <span className={style.university}>{props.author.university}</span>
           </p>
         </div>
