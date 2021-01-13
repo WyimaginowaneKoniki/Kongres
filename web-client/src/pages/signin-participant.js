@@ -20,7 +20,6 @@ function SignInParticipant() {
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("jwt", response.data);
-
           window.location.href = URL;
         }
 
