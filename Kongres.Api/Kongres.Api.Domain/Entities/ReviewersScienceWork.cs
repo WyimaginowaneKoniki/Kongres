@@ -4,6 +4,6 @@ namespace Kongres.Api.Domain.Entities
     {
         public uint Id { get; set; }
         public User User { get; set; }
-        public ScienceWork ScienceWork { get; set; }
+        public ScientificWork ScientificWork { get; set; }
     }
 }

@@ -145,7 +145,7 @@ namespace Kongres.Api.Infrastructure.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (int.TryParse(userId, out int id))
+            if (uint.TryParse(userId, out uint id))
             {
                 return await _context.Users.FindAsync(id);
             }

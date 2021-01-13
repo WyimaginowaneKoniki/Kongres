@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Settings;
 using Microsoft.IdentityModel.Tokens;
 

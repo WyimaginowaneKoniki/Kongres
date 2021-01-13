@@ -17,6 +17,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import axios from "axios";
 
 function AddingWork() {
   const styles = makeStyles({
@@ -264,7 +265,7 @@ function AddingWork() {
   });
 
   // get main author from API
-  let mainAuthor = "John Doe";
+  const mainAuthor = "John Doe";
 
   const createFormData = () => {
     const formData = new FormData(formRef.current);
@@ -285,16 +286,28 @@ function AddingWork() {
 
     if(otherAuthors === "") otherAuthors = null;
 
-    formData.delete(`authors`);
-
+    formData.delete("authors");
     formData.append("authors", otherAuthors);
+
+    formData.delete("fileInput");
+    formData.append("Work", file);
 
     return formData;
   };
 
   const onSubmit = () => {
     // if everything is OK, form can be send
-    if (file !== null && specialization !== "Select") createFormData();
+    if (file !== null && specialization !== "Select") {
+      var formData = createFormData();
+      var token = localStorage.getItem("jwt");
+      axios.post(
+        "https://localhost:5001/api/ScientificWork/AddWork",
+        formData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    }
   };
 
   return (
