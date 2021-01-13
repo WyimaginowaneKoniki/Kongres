@@ -36,7 +36,7 @@ namespace Kongres.Api.Infrastructure.Repositories
                                              .Include(x => x.Versions)
                                              .SingleOrDefaultAsync(x => x.Id == scientificWorkId);
 
-        public async Task<bool> IsAuthorOfScientificWorkAsync(uint userId, uint reviewOfWorkId)
+        public async Task<bool> IsAuthorOfScientificWorkByReviewIdAsync(uint userId, uint reviewOfWorkId)
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Include(x => x.Versions)
                                                 .ThenInclude(x => x.Reviews)

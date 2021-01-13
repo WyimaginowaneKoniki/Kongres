@@ -1,13 +1,13 @@
 ﻿using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
+using Kongres.Api.Infrastructure;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Kongres.Api.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Kongres.Api.Application.Services
 {
@@ -35,7 +35,7 @@ namespace Kongres.Api.Application.Services
         public async Task AddAnswerToReviewAsync(uint userId, uint reviewId, string answerMsg)
         {
             // can user add answer to this review?
-            var isAuthorOfWork = await _scientificWorkRepository.IsAuthorOfScientificWorkAsync(userId, reviewId);
+            var isAuthorOfWork = await _scientificWorkRepository.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId);
 
             if (!isAuthorOfWork)
                 return;
@@ -92,6 +92,27 @@ namespace Kongres.Api.Application.Services
                 review.Comment = reviewMsg;
 
             await _reviewRepository.AddReviewAsync(review);
+        }
+
+        public async Task<Stream> GetStreamOfReviewFileAsync(uint userId, uint reviewId)
+        {
+            // check if user can see this file
+            var isAuthorOfWork = await _scientificWorkRepository.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId);
+            if (!isAuthorOfWork)
+            {
+                var isAuthorOfReview = await _reviewRepository.IsAuthorOfReview(userId, reviewId);
+
+                if (!isAuthorOfReview)
+                    return null;
+            }
+
+            // check if file exists
+            var review = await _reviewRepository.GetReviewByIdAsync(reviewId);
+
+            // when review doesn't contains file,
+            // return null
+            // otherwise return file stream
+            return review.File is null ? null : _fileManager.GetStreamOfFile(review.File);
         }
     }
 }

@@ -19,8 +19,8 @@ namespace Kongres.Api.Infrastructure.Repositories
         public async Task<bool> IsReviewerAsync(uint scientificWorkId, uint userId)
             => await _context.ReviewersScienceWorks.Include(x => x.User)
                                                    .Include(x => x.ScientificWork)
-                                                   .AnyAsync(x => x.ScientificWork.Id == scientificWorkId
-                                                                  && x.User.Id == userId);
+                                                   .AnyAsync(x => x.ScientificWork.Id == scientificWorkId &&
+                                                                  x.User.Id == userId);
 
         public async Task<Review> GetReviewByIdAsync(uint reviewId)
             => await _context.Reviews.Include(x => x.Answer)
@@ -37,5 +37,10 @@ namespace Kongres.Api.Infrastructure.Repositories
             await _context.Reviews.AddAsync(review);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> IsAuthorOfReview(uint userId, uint reviewId)
+            => await _context.Reviews.Include(x => x.Reviewer)
+                                     .AnyAsync(x => x.Id == reviewId &&
+                                                    x.Reviewer.Id == userId);
     }
 }
