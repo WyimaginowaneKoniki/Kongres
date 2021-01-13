@@ -3,8 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import Rating from "@material-ui/lab/Rating";
-import ScientificWorkReviewerComment from "../components/ScientificWorkReviewerComment";
-import ScientificWorkAuthorAnswer from "../components/ScientificWorkAuthorAnswer";
+import ScientificWorkReviewerComment from "./ScientificWorkReviewerComment";
+import ScientificWorkReviewerCommentInput from "./ScientificWorkReviewerCommentInput";
+import ScientificWorkAuthorAnswer from "./ScientificWorkAuthorAnswer";
 import ScientificWorkAuthorAnswerInput from "./ScientificWorkAuthorAnswerInput";
 import "../App.css";
 
@@ -32,10 +33,10 @@ export default function VersionPanel(props) {
 
   React.useEffect(() => {
     function GeneratePanelContent(reviews) {
-      var reviewsView = [];
-
+      let reviewsView = [];
+      let j = 0;
       if (reviews && reviews.length > 0) {
-        for (let i = 0, j = 0; i < reviews.length; i++) {
+        for (let i = 0; i < reviews.length; i++) {
           reviewsView.push(
             <ScientificWorkReviewerComment
               key={j++}
@@ -67,8 +68,8 @@ export default function VersionPanel(props) {
             );
           }
         }
-      } else {
-        // if mode == reviewer => add new review component
+      } else if (props.mode === "Reviewer") {
+        reviewsView.push(<ScientificWorkReviewerCommentInput key={j++} />);
       }
 
       return reviewsView;
