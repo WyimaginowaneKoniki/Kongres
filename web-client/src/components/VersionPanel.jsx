@@ -43,6 +43,7 @@ export default function VersionPanel(props) {
               rating={reviews[i].rating}
               reviewText={reviews[i].reviewMsg}
               date={reviews[i].reviewDate}
+              reviewId={reviews[i].id}
             />
           );
 

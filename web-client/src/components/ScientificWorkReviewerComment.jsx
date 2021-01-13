@@ -5,6 +5,8 @@ import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import defaultPicture from "../images/empty-image.png";
+import axios from "axios";
+import { URL_API } from "../Constants";
 
 export default function ScientificWorkReviewerComment(props) {
   const style = makeStyles({
@@ -59,8 +61,21 @@ export default function ScientificWorkReviewerComment(props) {
     3: "accepted",
   };
 
-  const DownloadReview = () => {
-    // Download review file :)
+  const downloadReview = () => {
+    const token = localStorage.getItem("jwt");
+    axios
+      .get(`${URL_API}/Review/Download/${props.reviewId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob",
+      })
+      .then((resp) => {
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(
+          new Blob([resp.data], { type: "application/pdf" })
+        );
+        link.download = "Review.pdf";
+        link.click();
+      });
   };
 
   const review = (() =>
@@ -71,7 +86,7 @@ export default function ScientificWorkReviewerComment(props) {
         variant="contained"
         color="primary"
         className={style.btn}
-        onClick={DownloadReview}
+        onClick={downloadReview}
       >
         Download review
       </Button>
