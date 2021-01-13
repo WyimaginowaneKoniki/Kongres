@@ -41,7 +41,7 @@ export default function VersionPanel(props) {
             <ScientificWorkReviewerComment
               key={j++}
               rating={reviews[i].rating}
-              review={reviews[i].reviewMsg}
+              reviewText={reviews[i].reviewMsg}
               date={reviews[i].reviewDate}
             />
           );

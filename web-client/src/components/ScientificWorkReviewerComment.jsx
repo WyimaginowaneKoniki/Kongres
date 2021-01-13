@@ -3,6 +3,7 @@ import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import defaultPicture from "../images/empty-image.png";
 
 export default function ScientificWorkReviewerComment(props) {
@@ -40,9 +41,15 @@ export default function ScientificWorkReviewerComment(props) {
       width: "50%",
       color: "grey",
     },
-    answerText: {
+    reviewText: {
       textAlign: "left",
       fontSize: "16px",
+    },
+    btn: {
+      textTransform: "none",
+      width: "150px",
+      height: "45px",
+      margin: "5px",
     },
   })();
 
@@ -51,6 +58,24 @@ export default function ScientificWorkReviewerComment(props) {
     2: "correct",
     3: "accepted",
   };
+
+  const DownloadReview = () => {
+    // Download review file :)
+  };
+
+  const review = (() =>
+    props.reviewText ? (
+      <p className={style.textReview}>{props.reviewText}</p>
+    ) : (
+      <Button
+        variant="contained"
+        color="primary"
+        className={style.btn}
+        onClick={DownloadReview}
+      >
+        Download review
+      </Button>
+    ))();
 
   return (
     <div className={style.review}>
@@ -64,7 +89,7 @@ export default function ScientificWorkReviewerComment(props) {
           <Box ml={2}>{ratingLabels[props.rating]}</Box>
         </div>
         <p className={style.date}>{props.date}</p>
-        <p className={style.textReview}>{props.review}</p>
+        {review}
       </div>
     </div>
   );
