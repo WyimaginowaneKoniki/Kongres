@@ -311,7 +311,7 @@ export default function SignUpForm(props) {
               helperText={errors?.specialization?.message}
               value={specialization}
             >
-              <MenuItem className={style.MenuItem} value={""}>
+              <MenuItem className={style.MenuItem} value={"Select"}>
                 Select               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Computer Science"}>

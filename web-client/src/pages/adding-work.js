@@ -294,7 +294,7 @@ function AddingWork() {
 
   const onSubmit = () => {
     // if everything is OK, form can be send
-    if (file !== null && specialization !== "") createFormData();
+    if (file !== null && specialization !== "Select") createFormData();
   };
 
   return (
@@ -376,7 +376,7 @@ function AddingWork() {
               helperText={errors?.specialization?.message}
               value={specialization}
             >
-              <MenuItem className={style.MenuItem} value={""}>
+              <MenuItem className={style.MenuItem} value={"Select"}>
                 Select               
               </MenuItem>
               <MenuItem className={style.MenuItem} value={"Computer Science"}>
