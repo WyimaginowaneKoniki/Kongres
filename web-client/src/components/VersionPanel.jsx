@@ -25,47 +25,48 @@ export default function VersionPanel(props) {
     },
   })();
 
-  const [isOpenPanel, setIsOpenPanel] = React.useState(true);
+  const [isPanelOpen, setIsPanelOpen] = React.useState(true);
   const [reviewsList, setReviewsList] = React.useState([]);
 
-  const togglePanel = () => setIsOpenPanel(!isOpenPanel);
+  const togglePanel = () => setIsPanelOpen(!isPanelOpen);
 
   React.useEffect(() => {
-    function foo(reviews) {
+    function GeneratePanelContent(reviews) {
       var reviewsView = [];
 
-      if (reviews) {
-        let i = 1;
-        reviews.map((review) => {
+      if (reviews && reviews.length > 0) {
+        for (let i = 0, j = 0; i < reviews.length; i++) {
           reviewsView.push(
             <ScientificWorkReviewerComment
-              key={i++}
-              rating={review.rating}
-              review={review.reviewMsg}
-              date={review.reviewDate}
+              key={j++}
+              rating={reviews[i].rating}
+              review={reviews[i].reviewMsg}
+              date={reviews[i].reviewDate}
             />
           );
 
-          if (props.mode === "Author" && !review.answerMsg) {
-            reviewsView.push(
-              <ScientificWorkAuthorAnswerInput
-                key={i++}
-                name={props.authorName}
-                photo={props.authorPhoto}
-              />
-            );
-          } else if (review.answerMsg) {
+          if (reviews[i].answerMsg) {
             reviewsView.push(
               <ScientificWorkAuthorAnswer
-                key={i++}
-                answer={review.answerMsg}
-                date={review.answerDate}
+                key={j++}
+                answer={reviews[i].answerMsg}
+                date={reviews[i].answerDate}
                 authorName={props.authorName}
                 authorPhoto={props.authorPhoto}
               />
             );
           }
-        });
+          // when author is on the page and didn't answer yet
+          else if (props.mode === "Author") {
+            reviewsView.push(
+              <ScientificWorkAuthorAnswerInput
+                key={j++}
+                name={props.authorName}
+                photo={props.authorPhoto}
+              />
+            );
+          }
+        }
       } else {
         // if mode == reviewer => add new review component
       }
@@ -73,7 +74,8 @@ export default function VersionPanel(props) {
       return reviewsView;
     }
 
-    if (props.version) setReviewsList(foo(props.version.reviews));
+    if (props.version)
+      setReviewsList(GeneratePanelContent(props.version.reviews));
   }, [props.version, props.mode, props.authorPhoto, props.authorName]);
 
   return (
@@ -84,13 +86,13 @@ export default function VersionPanel(props) {
         </span>
         <p className={style.date}>{props.version.date}</p>
         <Rating value={2} max={3} readOnly />
-        {isOpenPanel ? (
+        {isPanelOpen ? (
           <ArrowDropDownIcon className={style.arrow} />
         ) : (
           <ArrowDropUpIcon className={style.arrow} />
         )}
       </div>
-      {isOpenPanel && reviewsList}
+      {isPanelOpen && reviewsList}
     </div>
   );
 }
