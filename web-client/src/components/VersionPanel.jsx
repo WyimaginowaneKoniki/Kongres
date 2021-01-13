@@ -5,7 +5,7 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import Rating from "@material-ui/lab/Rating";
 import ScientificWorkReviewerComment from "../components/ScientificWorkReviewerComment";
 import ScientificWorkAuthorAnswer from "../components/ScientificWorkAuthorAnswer";
-import CurrentVersionWithReplyToReview from "../components/CurrentVersionWithReplyToReview";
+import ScientificWorkAuthorAnswerInput from "./ScientificWorkAuthorAnswerInput";
 import "../App.css";
 
 export default function VersionPanel(props) {
@@ -48,10 +48,10 @@ export default function VersionPanel(props) {
 
           if (props.mode === "Author" && !review.answerMsg) {
             reviewsView.push(
-              <CurrentVersionWithReplyToReview
+              <ScientificWorkAuthorAnswerInput
                 key={i++}
                 name={props.authorName}
-                path={props.authorPhoto}
+                photo={props.authorPhoto}
               />
             );
           } else if (review.answerMsg) {
