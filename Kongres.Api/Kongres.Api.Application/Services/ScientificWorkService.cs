@@ -56,7 +56,7 @@ namespace Kongres.Api.Application.Services
 
         public async Task AddVersionAsync(uint userId, IFormFile workFile, byte versionNumber = 0)
         {
-            var scientificWork = await _scientificWorkRepository.GetByUserIdAsync(userId);
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(userId);
 
             var workName = await _fileManager.SaveFileAsync(workFile);
 
@@ -154,12 +154,14 @@ namespace Kongres.Api.Application.Services
 
             List<VersionDto> versionsDto = null;
 
+            // normal user should not see reviews
             if (mode != "Participant")
             {
                 var versions = await _scientificWorkFileRepository.GetVersionsWithReviews(scientificWorkId);
 
                 versionsDto = new List<VersionDto>();
 
+                // every version of work includes reviews
                 foreach (var version in versions)
                 {
                     var reviewsDto = new List<ReviewDto>();

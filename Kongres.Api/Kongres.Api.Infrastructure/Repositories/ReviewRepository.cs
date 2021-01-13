@@ -16,6 +16,7 @@ namespace Kongres.Api.Infrastructure.Repositories
             _context = context;
         }
 
+        // check if reviewer is assign to given scientific work
         public async Task<bool> IsReviewerAsync(uint scientificWorkId, uint userId)
             => await _context.ReviewersScienceWorks.Include(x => x.User)
                                                    .Include(x => x.ScientificWork)
