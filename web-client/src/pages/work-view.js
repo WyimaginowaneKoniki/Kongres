@@ -66,7 +66,7 @@ function WorkView(props){
         console.log(location.state?.detail ? location.state?.detail : id);
 
         const fetchData = async () => {
-            var token = localStorage.getItem("jwt");
+            const token = localStorage.getItem("jwt");
             
             await axios
               .get(`${URL_API}/ScientificWork/Download/${Number(id)}`, {
