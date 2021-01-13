@@ -70,7 +70,12 @@ export default function VersionPanel(props) {
           }
         }
       } else if (props.mode === "Reviewer") {
-        reviewsView.push(<ScientificWorkReviewerCommentInput key={j++} />);
+        reviewsView.push(
+          <ScientificWorkReviewerCommentInput
+            key={j++}
+            scientificWorkId={props.scientificWorkId}
+          />
+        );
       }
 
       return reviewsView;
@@ -78,7 +83,13 @@ export default function VersionPanel(props) {
 
     if (props.version)
       setReviewsList(GeneratePanelContent(props.version.reviews));
-  }, [props.version, props.mode, props.authorPhoto, props.authorName]);
+  }, [
+    props.version,
+    props.mode,
+    props.authorPhoto,
+    props.authorName,
+    props.scientificWorkId,
+  ]);
 
   return (
     <div>

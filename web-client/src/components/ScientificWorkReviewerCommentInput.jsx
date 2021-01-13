@@ -17,8 +17,10 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import defaultPhoto from "../images/empty-image.png";
+import axios from "axios";
+import { URL_API } from "../Constants";
 
-export default function ScientificWorkReviewerCommentInput() {
+export default function ScientificWorkReviewerCommentInput(props) {
   const style = makeStyles({
     contentOnPage: {
       width: "600px",
@@ -123,9 +125,7 @@ export default function ScientificWorkReviewerCommentInput() {
   };
 
   const handleChangeRating = (_, newRating) => {
-    if (newRating) {
-      setRating(newRating);
-    }
+    if (newRating) setRating(newRating);
     setRatingHover(-1);
   };
 
@@ -134,8 +134,20 @@ export default function ScientificWorkReviewerCommentInput() {
   };
 
   const onSubmit = (data) => {
-    data.stars = ratingValue;
-    alert(JSON.stringify(data));
+    var formData = new FormData();
+
+    formData.append("ReviewMsg", data.reviewInput);
+    formData.append("ReviewFile", workFile);
+    formData.append("Rating", ratingValue);
+    formData.append("ScientificWorkId", props.scientificWorkId);
+
+    const token = localStorage.getItem("jwt");
+
+    axios.post(`${URL_API}/Review/AddReview`, formData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    window.location.reload();
   };
 
   return (

@@ -102,6 +102,7 @@ function WorkView() {
               mode={data.mode}
               authorPhoto={data.mainAuthor.photo}
               authorName={data.mainAuthor.name}
+              scientificWorkId={data.scientificWork.id}
             />
           </div>
         ))}
