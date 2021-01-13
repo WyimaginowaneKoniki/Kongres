@@ -3,6 +3,7 @@ import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
+import PreviewPDF from "../components/PreviewPDF";
 
 function MyWorkComponent(props) {
   const styles = makeStyles({
@@ -11,9 +12,9 @@ function MyWorkComponent(props) {
       margin: "auto",
     },
     left: {
-      width: "29%",
+      width: 320,
       float: "left",
-      height: 600,
+      height: 450,
       border: "2px solid black",
     },
     right: {
@@ -127,10 +128,9 @@ function MyWorkComponent(props) {
 
   return (
     <div className={style.main}>
-      <embed
-        src={props.workPDF}
-        className={style.left}
-      />
+    <div className={style.left}>
+    <PreviewPDF pdf={props.workPDF}  />
+    </div>
 
       <div className={style.right}>
         <Tooltip title="Status" placement="top-start">
