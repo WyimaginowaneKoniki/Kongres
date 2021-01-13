@@ -31,5 +31,11 @@ namespace Kongres.Api.Infrastructure.Repositories
             _context.Reviews.Update(review);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddReviewAsync(Review review)
+        {
+            await _context.Reviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+        }
     }
 }

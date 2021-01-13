@@ -9,6 +9,7 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
     {
         Task AddAsync(ScientificWorkFile scientificWorkFile);
         Task<ScientificWorkFile> GetNewestVersionAsync(uint workId);
+        Task<ScientificWorkFile> GetNewestVersionWithReviewsAsync(uint workId);
         Task<IEnumerable<ScientificWorkFile>> GetVersionsWithReviews(uint workId);
     }
 }

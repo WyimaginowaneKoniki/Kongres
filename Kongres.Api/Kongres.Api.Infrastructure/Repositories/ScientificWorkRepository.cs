@@ -42,5 +42,11 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                 .ThenInclude(x => x.Reviews)
                                              .AnyAsync(x => x.MainAuthor.Id == userId &&
                                                             x.Versions.Any(y => y.Reviews.Any(k => k.Id == reviewOfWorkId)));
+
+        public async Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId)
+            => await _context.ReviewersScienceWorks.Include(x => x.ScientificWork)
+                                                   .Include(x => x.User)
+                                                   .AnyAsync(x => x.User.Id == userId &&
+                                                                  x.ScientificWork.Id == scientificWorkId);
     }
 }

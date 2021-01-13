@@ -3,22 +3,32 @@ using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Kongres.Api.Infrastructure;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Kongres.Api.Application.Services
 {
     public class ReviewService : IReviewService
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
+        private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
         private readonly IReviewRepository _reviewRepository;
+        private readonly IFileManager _fileManager;
         private readonly UserManager<User> _userManager;
 
         public ReviewService(IScientificWorkRepository scientificWorkRepository,
+                            IScientificWorkFileRepository scientificWorkFileRepository,
                             IReviewRepository reviewRepository,
+                            IFileManager fileManager,
                             UserManager<User> userManager)
         {
             _scientificWorkRepository = scientificWorkRepository;
+            _scientificWorkFileRepository = scientificWorkFileRepository;
             _reviewRepository = reviewRepository;
+            _fileManager = fileManager;
             _userManager = userManager;
         }
 
@@ -29,7 +39,7 @@ namespace Kongres.Api.Application.Services
 
             if (!isAuthorOfWork)
                 return;
-            
+
             var review = await _reviewRepository.GetReviewByIdAsync(reviewId);
 
             // check if review have already answer
@@ -47,6 +57,41 @@ namespace Kongres.Api.Application.Services
             };
 
             await _reviewRepository.AddAnswerToReviewAsync(review);
+        }
+
+        public async Task AddReviewAsync(uint userId, string reviewMsg, IFormFile reviewFile, byte rating, uint scientificWorkId)
+        {
+            // check if user is a reviewer for given ScientificWork
+            var isReviewerOfScientificWork = await _scientificWorkRepository.IsReviewerOfScientificWorkAsync(userId, scientificWorkId);
+
+            if (!isReviewerOfScientificWork)
+                return;
+
+            // check if review exists
+            var newestVersion = await _scientificWorkFileRepository.GetNewestVersionWithReviewsAsync(scientificWorkId);
+            var isReviewAdded = newestVersion.Reviews.Any(x => x.Reviewer.Id == userId);
+
+            if (isReviewAdded)
+                return;
+
+            var reviewer = await _userManager.FindByIdAsync(userId.ToString());
+
+            var review = new Review()
+            {
+                VersionOfScientificWork = newestVersion,
+                Reviewer = reviewer,
+                DateReview = DateTime.UtcNow,
+                Rating = rating,
+            };
+
+            // reviewer can add review only one way (string or file, not both!)
+            if (reviewMsg is null)
+                review.File = await _fileManager.SaveFileAsync(reviewFile);
+
+            else if (reviewFile is null)
+                review.Comment = reviewMsg;
+
+            await _reviewRepository.AddReviewAsync(review);
         }
     }
 }

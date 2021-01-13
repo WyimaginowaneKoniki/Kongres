@@ -8,5 +8,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task<bool> IsReviewerAsync(uint scientificWorkId, uint userId);
         Task<Review> GetReviewByIdAsync(uint reviewId);
         Task AddAnswerToReviewAsync(Review review);
+        Task AddReviewAsync(Review review);
     }
 }

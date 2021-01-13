@@ -11,5 +11,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync();
         Task<ScientificWork> GetWorkByIdAsync(uint scientificWorkId);
         Task<bool> IsAuthorOfScientificWorkAsync(uint userId, uint reviewOfWorkId);
+        Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId);
     }
 }

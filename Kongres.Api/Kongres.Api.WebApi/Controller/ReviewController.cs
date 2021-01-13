@@ -20,5 +20,14 @@ namespace Kongres.Api.WebApi.Controller
             await CommandAsync(command);
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost("AddReview")]
+        public async Task<IActionResult> AddReview([FromForm] AddReviewCommand command)
+        {
+            command.UserId = HttpContext.User.Identity.Name;
+            await CommandAsync(command);
+            return Ok();
+        }
     }
 }
