@@ -118,6 +118,13 @@ function MyWorkComponent(props) {
 
   const style = styles();
 
+  const downloadFile = () => {
+    const link = document.createElement('a');
+    link.href = props.workPDF;
+    link.download = `${props.title.replaceAll(" ", "-")}.pdf`;
+    link.click();
+};
+
   return (
     <div className={style.main}>
       <embed
@@ -161,7 +168,7 @@ function MyWorkComponent(props) {
         </div>
         <p className={style.text}>{props.text}</p>
 
-        <Button variant="outlined" color="primary" className={style.btn1}>
+        <Button variant="outlined" color="primary" className={style.btn1} onClick={downloadFile}>
           Download full work
         </Button>
         <Button variant="contained" color="primary" className={style.btn1}>
