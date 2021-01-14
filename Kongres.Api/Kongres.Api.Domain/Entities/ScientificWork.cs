@@ -1,5 +1,6 @@
-using System;
 using Kongres.Api.Domain.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace Kongres.Api.Domain.Entities
 {
@@ -13,5 +14,6 @@ namespace Kongres.Api.Domain.Entities
         public DateTime CreationDate { get; set; }
         public string Specialization { get; set; }
         public StatusEnum Status { get; set; }
+        public IEnumerable<ScientificWorkFile> Versions { get; set; }
     }
 }

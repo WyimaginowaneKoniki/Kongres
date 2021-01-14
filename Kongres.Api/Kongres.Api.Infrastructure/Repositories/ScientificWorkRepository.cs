@@ -2,6 +2,7 @@
 using Kongres.Api.Infrastructure.Context;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure.Repositories
@@ -23,5 +24,10 @@ namespace Kongres.Api.Infrastructure.Repositories
 
         public async Task<ScientificWork> GetByUserIdAsync(uint userId)
             => await _context.ScientificWorks.FirstAsync(x => x.MainAuthor.Id == userId);
+
+        public async Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync()
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Include(x => x.Versions)
+                                             .ToListAsync();
     }
 }
