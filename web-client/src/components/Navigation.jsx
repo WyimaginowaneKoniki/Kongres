@@ -38,12 +38,16 @@ function Navigation(props) {
   });
 
   const style = styles();
+  const user = "Reviewer";
+  const list = 1;
 
   return (
     <div className={style.main}>
       <Box>
-      <NavLink exact to="/"><img className={style.logo} src={Logo} alt="Logo" /> </NavLink>
-        </Box>
+        <NavLink exact to="/">
+          <img className={style.logo} src={Logo} alt="Logo" />{" "}
+        </NavLink>
+      </Box>
       <Box className={style.box}>
         <Box>
           <NavLink
@@ -106,21 +110,58 @@ function Navigation(props) {
           </NavLink>
         </Box>
 
+        {user === "Participant" && list === 1 ? (
+          <Box>
+            <NavLink exact to="/work-view" className={style.link}>
+              <Button
+                className={style.addButton}
+                color="primary"
+                type="submit"
+                variant="contained"
+              >
+                My work
+              </Button>
+            </NavLink>
+          </Box>
+        ) : null}
+
+        {user === "Participant" && list === 0 ? (
+          <Box>
+            <NavLink exact to="/adding-work" className={style.link}>
+              <Button
+                className={style.addButton}
+                color="primary"
+                type="submit"
+                variant="contained"
+              >
+                Add work
+              </Button>
+            </NavLink>
+          </Box>
+        ) : null}
+
+        {user === "Reviewer" ? (
+          <Box>
+            <NavLink exact to="/my-reviews" className={style.link}>
+              <Button
+                className={style.addButton}
+                color="primary"
+                type="submit"
+                variant="contained"
+              >
+                My reviews
+              </Button>
+            </NavLink>
+          </Box>
+        ) : null}
+
         <Box>
-          <Button
-            className={style.addButton}
-            color="primary"
-            type="submit"
-            variant="contained"
-          >
-            Add your work
-          </Button>
+          <NavLink exact to="/my-profile" className={style.link}>
+            <img className={style.logo} src={Logo} alt="Avatar" />
+          </NavLink>
         </Box>
         <Box>
-            <img className={style.logo} src={Logo} alt="Avatar" /> 
-        </Box>
-        <Box>
-            <span>John Smith</span>
+          <span>John Smith</span>
         </Box>
       </Box>
     </div>
