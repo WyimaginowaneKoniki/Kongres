@@ -190,7 +190,6 @@ namespace Kongres.Api.Application.Services
                 }
             }
 
-
             var scientificWorkWithReviewDto = new ScientificWorkWithReviewDto()
             {
                 ScientificWork = scientificWorkDto,

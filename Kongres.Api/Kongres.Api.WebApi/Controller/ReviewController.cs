@@ -12,7 +12,6 @@ namespace Kongres.Api.WebApi.Controller
         public ReviewController(IMediator mediator) : base(mediator)
         { }
 
-
         [Authorize]
         [HttpPost("AddAnswer")]
         public async Task<IActionResult> AddAnswerToReview([FromForm] AddAnswerToReviewCommand command)

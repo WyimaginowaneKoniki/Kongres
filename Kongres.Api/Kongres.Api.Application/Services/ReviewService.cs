@@ -87,7 +87,6 @@ namespace Kongres.Api.Application.Services
             // reviewer can add review only one way (string or file, not both!)
             if (reviewMsg is null)
                 review.File = await _fileManager.SaveFileAsync(reviewFile);
-
             else if (reviewFile is null)
                 review.Comment = reviewMsg;
 
