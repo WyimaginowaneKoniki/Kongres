@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import ScientificWorksOneWork from '../components/ScientificWorksOneWork'
@@ -6,6 +6,8 @@ import ScientificWorksCategories from '../components/ScientificWorksCategories'
 import ScientificWorksRecentAuthors from '../components/ScientificWorksRecentAuthors'
 import Search from '../components/Search'
 import picture from '../images/empty-image.png'
+import axios from "axios";
+import { URL_API } from "../Constants";
 
 function ScientificWorks(props) {
     const styles = makeStyles({
@@ -38,40 +40,55 @@ function ScientificWorks(props) {
 
     const style = styles();
 
-    const works = [
-        {
-            title: 'Importance of Golden Ratio in Mathematics',
-            categories: 'Mathematics',
-            data: '30/11/2020',
-            authors: 'John Doe, Sam Smith, Ashley Blue',
-            text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ',
-        },
-        {
-            title: 'Importance of Golden Ratio in Mathematics',
-            categories: 'Mathematics',
-            data: '30/11/2020',
-            authors: 'John Doe, Sam Smith, Ashley Blue',
-            text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ',
-        },
-        {
-            title: 'Importance of Golden Ratio in Mathematics',
-            categories: 'Mathematics',
-            data: '30/11/2020',
-            authors: 'John Doe, Sam Smith, Ashley Blue',
-            text: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ',
-        }
-    ];
+    // Stores works
+    const [works, SetWorks] = useState([{
+        title: null,
+        categories: null,
+        date: null,
+        authors: null,
+        description: null
+    }]);
 
-    const workList = works.map(work =>
-        <ScientificWorksOneWork
-            title = {work.title}
-            categories = {work.categories}
-            data = {work.data}
-            authors = {work.authors}
-            text = {work.text}
-            link = {work.link}
-        />
-    )
+    // base on:
+    // https://www.robinwieruch.de/react-hooks-fetch-data
+
+    // GET request
+    useEffect(() => {
+        // without fetchData function, the console returns error
+        // because it must be async
+      const fetchData = async () => {
+        var token = localStorage.getItem("jwt");
+        await axios
+          .get(`${URL_API}/ScientificWork`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then((resp) => {
+            SetWorks(resp.data);
+          });
+      };
+      fetchData();
+    }, []);
+
+    // convert date from ISO [YYYY-MM-DDTHH:mm:ss.sssZ] to DD/MM/YYYY
+    const convertDate = (date) => {
+        date = date?.substring(0,10);
+        if(!date)
+            return null;
+        return date.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function(match,y,m,d) { 
+            return d + '/' + m + '/' + y;  
+        })
+    };
+
+    const workList = works.map((work) => (
+      <ScientificWorksOneWork
+        title={work.title}
+        categories={work.specialization}
+        date={convertDate(work.creationDate)}
+        authors={work.authors}
+        text={work.description}
+        id={work.id}
+      />
+    ));
 
     const categories = ['Mathematics', 'Technology', 'Computer Science'];
     const categoryList = categories.map(name => <ScientificWorksCategories name = {name}/>)
@@ -117,7 +134,8 @@ function ScientificWorks(props) {
           <h1>Scientific works</h1>
 
           <div className={style.left}>
-            {workList}
+          {/* If list of works is null, then nothing is displayed */}
+            {works[0]?.title ? workList : null}
           </div>
 
           <div className={style.right}>
