@@ -96,7 +96,7 @@ export default function ScientificWorkReviewerComment(props) {
     <div className={style.review}>
       <div className={style.userInfo}>
         <img src={defaultPicture} className={style.image} alt="" />
-        <p className={style.userName}>Me</p>
+        <p className={style.userName}>{props.reviewerName}</p>
       </div>
       <div className={style.reviewContent}>
         <div className={style.ratingDiv}>

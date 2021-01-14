@@ -35,8 +35,12 @@ export default function VersionPanel(props) {
     function GeneratePanelContent(reviews) {
       let reviewsView = [];
       let j = 0;
+      let reviewerName = "Me";
+
       if (reviews && reviews.length > 0) {
         for (let i = 0; i < reviews.length; i++) {
+          if (props.mode === "Author") reviewerName = `Reviewer ${i + 1}`;
+
           reviewsView.push(
             <ScientificWorkReviewerComment
               key={j++}
@@ -44,6 +48,7 @@ export default function VersionPanel(props) {
               reviewText={reviews[i].reviewMsg}
               date={reviews[i].reviewDate}
               reviewId={reviews[i].id}
+              reviewerName={reviewerName}
             />
           );
 
