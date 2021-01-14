@@ -51,7 +51,7 @@ namespace Kongres.Api.Application.Services
             // add answer to review
             review.Answer = new Answer()
             {
-                AnswerDate = DateTime.UtcNow,
+                AnswerDate = DateTime.Now,
                 Comment = answerMsg,
                 User = user,
             };
@@ -80,7 +80,7 @@ namespace Kongres.Api.Application.Services
             {
                 VersionOfScientificWork = newestVersion,
                 Reviewer = reviewer,
-                DateReview = DateTime.UtcNow,
+                DateReview = DateTime.Now,
                 Rating = rating,
             };
 

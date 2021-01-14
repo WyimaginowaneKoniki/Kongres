@@ -46,7 +46,7 @@ namespace Kongres.Api.Application.Services
                 Description = description,
                 MainAuthor = user,
                 OtherAuthors = authors,
-                CreationDate = DateTime.UtcNow,
+                CreationDate = DateTime.Now,
                 Status = StatusEnum.WaitingForReview,
                 Specialization = specialization
             };
@@ -64,7 +64,7 @@ namespace Kongres.Api.Application.Services
             {
                 Version = versionNumber,
                 FileName = workName,
-                DateAdd = DateTime.UtcNow,
+                DateAdd = DateTime.Now,
                 ScientificWork = scientificWork
             };
 
