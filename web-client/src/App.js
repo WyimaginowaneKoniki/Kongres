@@ -40,7 +40,7 @@ function SecuredRoute(props){
   return(
     <Route path={props.path} render={data=>authentication.getLogInStatus()? (
       <props.component {...data}></props.component>):
-      (<Redirect to={{pathname:'/'}}></Redirect>)}></Route>
+      (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
   )
 }
 
@@ -70,7 +70,6 @@ function App() {
             <Route path="/signup-participant" component={SignUpParticipant} />
             <Route path="/signin-reviewer" component={SignInReviewer} />
             <Route path="/signin-participant" component={SignInParticipant} />
-            {/* <Route path="*" component={Error404} /> */}
             <SecuredRoute path="/my-profile" component={MyProfile} />
             <SecuredRoute path="/scientific-works" component={ScientificWorks} />
             <SecuredRoute path="/work-view" component={WorkView} />
@@ -80,6 +79,7 @@ function App() {
             <SecuredRoute path="/my-reviews" component={MyReviews} />
             {/* Do usuniecia potem */}
             <SecuredRoute path="/accepted-scientific-work" component={AcceptedScientificWork} />
+            <Route path="*" component={Error404} />
           </Switch>
           <Footer/>
         </div>
