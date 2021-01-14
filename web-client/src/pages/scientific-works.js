@@ -135,7 +135,7 @@ function ScientificWorks(props) {
 
           <div className={style.left}>
           {/* If list of works is null, then nothing is displayed */}
-            {works[0].title ? workList : null}
+            {works[0]?.title ? workList : null}
           </div>
 
           <div className={style.right}>

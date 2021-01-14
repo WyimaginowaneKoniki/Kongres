@@ -85,7 +85,6 @@ namespace Kongres.Api.Application.Services
                 if (!(scientificWork.OtherAuthors is null))
                     authors += $", {scientificWork.OtherAuthors}";
 
-
                 var scientificWorkDto = new ScientificWorkDto()
                 {
                     Id = scientificWork.Id,
