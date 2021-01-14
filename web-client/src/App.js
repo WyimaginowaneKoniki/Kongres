@@ -36,9 +36,27 @@ const authentication = {
   }
 }
 
+const user = "Participant"
+
 function SecuredRoute(props){
   return(
     <Route path={props.path} render={data=>authentication.getLogInStatus()? (
+      <props.component {...data}></props.component>):
+      (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
+  )
+}
+
+function SecuredRouteParticipant(props){
+  return(
+    <Route path={props.path} render={data=>authentication.getLogInStatus() && user === "Participant"? (
+      <props.component {...data}></props.component>):
+      (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
+  )
+}
+
+function SecuredRouteReviewer(props){
+  return(
+    <Route path={props.path} render={data=>authentication.getLogInStatus() && user === "Reviewer"? (
       <props.component {...data}></props.component>):
       (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
   )
@@ -74,9 +92,9 @@ function App() {
             <SecuredRoute path="/scientific-works" component={ScientificWorks} />
             <SecuredRoute path="/work-view" component={WorkView} />
             {/* Participant */}
-            <SecuredRoute path="/adding-work" component={AddingWork} />
+            <SecuredRouteParticipant path="/adding-work" component={AddingWork} />
             {/* Reviewer */}
-            <SecuredRoute path="/my-reviews" component={MyReviews} />
+            <SecuredRouteReviewer path="/my-reviews" component={MyReviews} />
             {/* Do usuniecia potem */}
             <SecuredRoute path="/accepted-scientific-work" component={AcceptedScientificWork} />
             <Route path="*" component={Error404} />
