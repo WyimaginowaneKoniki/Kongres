@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "../components/Avatar";
+import { categories } from "../Constants";
 
 const styles = makeStyles({
   main: {
@@ -74,7 +75,9 @@ const styles = makeStyles({
 });
 
 export default function PersonalInformation(props) {
-  const [specialization, setSpecialization] = React.useState(props.specialization);
+  const [specialization, setSpecialization] = React.useState(
+    props.specialization
+  );
   const [firstName, setFirstName] = React.useState(props.firstName);
   const [lastName, setLastName] = React.useState(props.lastName);
   const [email, setEmail] = React.useState(props.email);
@@ -96,7 +99,9 @@ export default function PersonalInformation(props) {
       .string()
       .email("Email should have correct format")
       .required("Required field"),
-    university: yup.string().max(255, "University should be 255 character long or less"),
+    university: yup
+      .string()
+      .max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
@@ -143,8 +148,7 @@ export default function PersonalInformation(props) {
           <form
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => 
-            alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
           >
             {/* FirstName Input */}
             <TextField
@@ -257,7 +261,7 @@ export default function PersonalInformation(props) {
               <Select
                 displayEmpty
                 name="specialization"
-                value={specialization} 
+                value={specialization}
                 onChange={handleChangeSelect}
                 input={
                   <OutlinedInput
@@ -270,32 +274,16 @@ export default function PersonalInformation(props) {
                 error={!!errors.specialization}
                 helperText={errors?.specialization?.message}
               >
-                <MenuItem className={style.MenuItem} value="">
-                  Select
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                  Computer Science
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                  Mathematics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Biology"}>
-                  Biology
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                  Chemistry
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Psychics"}>
-                  Psychics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Geography"}>
-                  Geography
-                </MenuItem>
+                {categories.map((category) => (
+                  <MenuItem className={style.MenuItem} value={category.value}>
+                    {category.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
 
             {/* Avatar */}
-            {props.participant ? <Avatar name='avatar'/> : null}
+            {props.participant ? <Avatar name="avatar" /> : null}
 
             {/* Button Submit */}
             <Button

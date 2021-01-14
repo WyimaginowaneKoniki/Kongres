@@ -19,6 +19,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "../components/Avatar";
+import { categories } from "../Constants";
 
 const styles = makeStyles({
   main: {
@@ -87,7 +88,7 @@ export default function SignUpForm(props) {
     showPassword: false,
   });
 
-  const [specialization, setSpecialization] = React.useState("");
+  const [specialization, setSpecialization] = React.useState("Select");
   const schema = yup.object().shape({
     firstName: yup
       .string()
@@ -317,27 +318,11 @@ export default function SignUpForm(props) {
                 error={!!errors.specialization}
                 helperText={errors?.specialization?.message}
               >
-                <MenuItem className={style.MenuItem} value="">
-                  Select
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                  Computer Science
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                  Mathematics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Biology"}>
-                  Biology
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                  Chemistry
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Psychics"}>
-                  Psychics
-                </MenuItem>
-                <MenuItem className={style.MenuItem} value={"Geography"}>
-                  Geography
-                </MenuItem>
+                {categories.map(category => 
+                  <MenuItem className={style.MenuItem} value={category.value}>
+                    {category.label}
+                  </MenuItem>
+                )}
               </Select>
             </FormControl>
 
