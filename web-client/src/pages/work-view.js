@@ -6,6 +6,7 @@ import ScienceWorkInformation from "../components/ScienceWorkInformation";
 import VersionPanel from "../components/VersionPanel";
 import axios from "axios";
 import { URL_API } from "../Constants";
+import defaultPhoto from "../images/empty-image.png"
 
 function WorkView() {
   const styles = makeStyles({
@@ -68,6 +69,9 @@ function WorkView() {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {
+          if(!resp.data.mainAuthor.photo)
+            resp.data.mainAuthor.photo = defaultPhoto; 
+
           setData(resp.data);
         });
     })();

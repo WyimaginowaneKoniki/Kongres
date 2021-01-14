@@ -140,15 +140,21 @@ namespace Kongres.Api.Application.Services
                 Authors = scientificWork.OtherAuthors,
             };
 
-            var authorPhoto = await _fileManager.GetBase64FileAsync(scientificWork.MainAuthor.Photo);
-            var photoExtension = scientificWork.MainAuthor.Photo.Split(".")[^1];
+            string base64Photo = null;
+
+            if (scientificWork.MainAuthor.Photo != null)
+            {
+                var authorPhoto = await _fileManager.GetBase64FileAsync(scientificWork.MainAuthor.Photo);
+                var photoExtension = scientificWork.MainAuthor.Photo.Split(".")[^1];
+                base64Photo = $"data:image/{photoExtension};base64,{authorPhoto}";
+            }
 
             var mainAuthor = new UserDto()
             {
                 Name = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}",
                 Degree = scientificWork.MainAuthor.Degree,
                 University = scientificWork.MainAuthor.University,
-                Photo = $"data:image/{photoExtension};base64,{authorPhoto}"
+                Photo = base64Photo
             };
 
             List<VersionDto> versionsDto = null;
