@@ -103,7 +103,7 @@ function Navigation(props) {
       marginLeft: "64px",
     },
     activeLink: {
-      color: "blue",
+      color: "#6069A9",
     },
   });
 
