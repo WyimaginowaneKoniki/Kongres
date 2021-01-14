@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "../components/Avatar";
+import { categories } from "../Constants";
 
 const styles = makeStyles({
   main: {
@@ -100,9 +101,9 @@ export default function PersonalInformation(props) {
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
-    specialization: yup.string().when("specializations", {
-      is: (specializations) => specialization === "Select",
-      then: yup.string().required("Required field"),
+    specialization: yup.string().when("specializations", {
+      is: (specializations) => specialization === "Select",
+      then: yup.string().required("Required field"),
     }),
   });
 
@@ -264,28 +265,37 @@ export default function PersonalInformation(props) {
               helperText={errors?.specialization?.message}
               value={specialization}
             >
-              <MenuItem className={style.MenuItem} value={"Select"}>
-                Select               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                Computer Science               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                Mathematics               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Biology"}>
-                Biology               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                Chemistry               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Psychics"}>
-                Physics               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Geography"}>
-                Geography               
-              </MenuItem>
+              <InputLabel
+                shrink
+                htmlFor="specialization-signup"
+                className={style.inputLabel}
+              >
+                Specialization
+              </InputLabel>
+              <Select
+                displayEmpty
+                name="specialization"
+                value={specialization}
+                onChange={handleChangeSelect}
+                input={
+                  <OutlinedInput
+                    notched
+                    name="specialization"
+                    id="specialization-signup"
+                  />
+                }
+                inputRef={register}
+                error={!!errors.specialization}
+                helperText={errors?.specialization?.message}
+              >
+                {categories.map((category) => (
+                  <MenuItem className={style.MenuItem} value={category.value}>
+                    {category.label}
+                  </MenuItem>
+                ))}
+              </Select>
             </TextField>
+
             {/* Avatar */}
             {props.participant ? <Avatar name="avatar" /> : null}
 

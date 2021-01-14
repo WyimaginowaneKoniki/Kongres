@@ -18,6 +18,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { URL_API, categories } from "../Constants";
 
 function AddingWork() {
   const styles = makeStyles({
@@ -270,7 +271,7 @@ function AddingWork() {
   const createFormData = () => {
     const formData = new FormData(formRef.current);
 
-    let otherAuthors = formData.get('authors[0].name');
+    let otherAuthors = formData.get("authors[0].name");
 
     // add authors to string
     for (let i = 1; i < authors.length; i++) {
@@ -278,13 +279,13 @@ function AddingWork() {
       // add author to string if he exists
       if (author !== "") {
         // add coma to string if string is not empty
-        if(otherAuthors !== "") otherAuthors += ", ";
+        if (otherAuthors !== "") otherAuthors += ", ";
         otherAuthors += author;
       }
       formData.delete(`authors[${i}].name`);
     }
 
-    if(otherAuthors === "") otherAuthors = null;
+    if (otherAuthors === "") otherAuthors = null;
 
     formData.delete("authors");
     formData.append("authors", otherAuthors);
@@ -298,15 +299,11 @@ function AddingWork() {
   const onSubmit = () => {
     // if everything is OK, form can be send
     if (file !== null && specialization !== "Select") {
-      var formData = createFormData();
-      var token = localStorage.getItem("jwt");
-      axios.post(
-        "https://localhost:5001/api/ScientificWork/AddWork",
-        formData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const formData = createFormData();
+      const token = localStorage.getItem("jwt");
+      axios.post(`${URL_API}/ScientificWork/AddWork`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     }
   };
 
@@ -389,27 +386,34 @@ function AddingWork() {
               helperText={errors?.specialization?.message}
               value={specialization}
             >
-              <MenuItem className={style.MenuItem} value={"Select"}>
-                Select               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Computer Science"}>
-                Computer Science               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Mathematics"}>
-                Mathematics               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Biology"}>
-                Biology               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Chemistry"}>
-                Chemistry               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Psychics"}>
-                Physics               
-              </MenuItem>
-              <MenuItem className={style.MenuItem} value={"Geography"}>
-                Geography               
-              </MenuItem>
+              <InputLabel
+                shrink
+                htmlFor="specialization-signup"
+                className={style.inputLabel}
+              >
+                Specialization
+              </InputLabel>
+              <Select
+                displayEmpty
+                name="specialization"
+                value={specialization}
+                onChange={handleChangeSelect}
+                input={
+                  <OutlinedInput
+                    notched
+                    inputRef={register}
+                    name="specialization"
+                    id="specialization-signup"
+                  />
+                }
+              >
+                {categories.map((category) => (
+                  <MenuItem className={style.MenuItem} value={category.value}>
+                    {category.label}
+                  </MenuItem>
+                ))}
+              </Select>
+              {hasError && <FormHelperText>Required field</FormHelperText>}
             </TextField>
 
             {/* Authors */}
