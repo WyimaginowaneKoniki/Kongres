@@ -92,9 +92,9 @@ namespace Kongres.Api.Application.Services
                     Authors = authors,
                     Title = scientificWork.Name,
                     Description = scientificWork.Description,
-                    CreationDate = scientificWork.CreationDate,
+                    CreationDate = scientificWork.CreationDate.ToString("g"),
                     // Get date of latest update of work
-                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd,
+                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
                     Specialization = scientificWork.Specialization
                 };
 
@@ -136,8 +136,8 @@ namespace Kongres.Api.Application.Services
                 Title = scientificWork.Name,
                 Description = scientificWork.Description,
                 Specialization = scientificWork.Specialization,
-                CreationDate = scientificWork.CreationDate,
-                UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd,
+                CreationDate = scientificWork.CreationDate.ToString("g"),
+                UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
                 Authors = scientificWork.OtherAuthors,
             };
 
@@ -174,17 +174,17 @@ namespace Kongres.Api.Application.Services
                         reviewsDto.Add(new ReviewDto()
                         {
                             Id = review.Id,
-                            ReviewDate = review.DateReview,
+                            ReviewDate = review.DateReview.ToString("g"),
                             ReviewMsg = review.Comment,
                             Rating = review.Rating,
-                            AnswerDate = review?.Answer?.AnswerDate,
+                            AnswerDate = review?.Answer?.AnswerDate.ToString("g"),
                             AnswerMsg = review?.Answer?.Comment
                         });
                     }
 
                     versionsDto.Add(new VersionDto()
                     {
-                        Date = version.DateAdd,
+                        Date = version.DateAdd.ToString("g"),
                         VersionNumber = version.Version,
                         Reviews = reviewsDto
                     });
