@@ -6,7 +6,7 @@ export default function PreviewPDF(props) {
 
   return (
       <Document file={props.pdf}>
-        <Page pageNumber={1} width="310"/>
+        <Page pageNumber={1} width={310}/>
       </Document>
   );
 }
