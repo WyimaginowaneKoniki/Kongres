@@ -62,16 +62,15 @@ function AddingWork() {
     },
     textFieldAuthor: {
       marginBottom: "10px",
-      float: 'left',
+      float: "left",
       width: "100%",
     },
     formControlLabel: {
       marginBottom: "8px",
-      float: 'left',
+      float: "left",
     },
-    button:
-    {
-        float: 'right',
+    button: {
+      float: "right",
     },
   });
 
@@ -144,9 +143,9 @@ function AddingWork() {
         })
       )
       .max(maxAuthors, "You cannot add more authors"),
-    specialization: yup.string().when("specializations", {
-      is: (specializations) => specialization === "Select",
-      then: yup.string().required("Required field"),
+    specialization: yup.string().when("specializations", {
+      is: (specializations) => specialization === "Select",
+      then: yup.string().required("Required field"),
     }),
     acceptance: yup
       .boolean()
@@ -386,34 +385,11 @@ function AddingWork() {
               helperText={errors?.specialization?.message}
               value={specialization}
             >
-              <InputLabel
-                shrink
-                htmlFor="specialization-signup"
-                className={style.inputLabel}
-              >
-                Specialization
-              </InputLabel>
-              <Select
-                displayEmpty
-                name="specialization"
-                value={specialization}
-                onChange={handleChangeSelect}
-                input={
-                  <OutlinedInput
-                    notched
-                    inputRef={register}
-                    name="specialization"
-                    id="specialization-signup"
-                  />
-                }
-              >
-                {categories.map((category) => (
-                  <MenuItem className={style.MenuItem} value={category.value}>
-                    {category.label}
-                  </MenuItem>
-                ))}
-              </Select>
-              {hasError && <FormHelperText>Required field</FormHelperText>}
+              {categories.map((category) => (
+                <MenuItem className={style.MenuItem} value={category.value}>
+                  {category.label}
+                </MenuItem>
+              ))}
             </TextField>
 
             {/* Authors */}

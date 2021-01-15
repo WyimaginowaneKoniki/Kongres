@@ -1,4 +1,5 @@
 ﻿using Kongres.Api.Domain.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure.Repositories.Interfaces
@@ -7,5 +8,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
     {
         Task AddAsync(ScientificWork scienceWork);
         Task<ScientificWork> GetByUserIdAsync(uint userId);
+        Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync();
     }
 }

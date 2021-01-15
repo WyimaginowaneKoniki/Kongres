@@ -265,35 +265,11 @@ export default function PersonalInformation(props) {
               helperText={errors?.specialization?.message}
               value={specialization}
             >
-              <InputLabel
-                shrink
-                htmlFor="specialization-signup"
-                className={style.inputLabel}
-              >
-                Specialization
-              </InputLabel>
-              <Select
-                displayEmpty
-                name="specialization"
-                value={specialization}
-                onChange={handleChangeSelect}
-                input={
-                  <OutlinedInput
-                    notched
-                    name="specialization"
-                    id="specialization-signup"
-                  />
-                }
-                inputRef={register}
-                error={!!errors.specialization}
-                helperText={errors?.specialization?.message}
-              >
-                {categories.map((category) => (
-                  <MenuItem className={style.MenuItem} value={category.value}>
-                    {category.label}
-                  </MenuItem>
-                ))}
-              </Select>
+              {categories.map((category) => (
+                <MenuItem className={style.MenuItem} value={category.value}>
+                  {category.label}
+                </MenuItem>
+              ))}
             </TextField>
 
             {/* Avatar */}
