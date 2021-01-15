@@ -40,7 +40,7 @@ function Navigation(props) {
       float: "right",
       width: "56px",
       height: "56px",
-      borderRadius: "20px",
+      borderRadius: "50px",
       marginTop: "16px",
       marginLeft: "16px",
     },
@@ -113,8 +113,6 @@ function Navigation(props) {
   });
 
   const style = styles();
-  const user = "Participant";
-  const list = 1;
 
   const Logout = () => {
     localStorage.removeItem("jwt"); 
@@ -130,15 +128,15 @@ function Navigation(props) {
       </Box>
       <div className={style.boxTop}>
         <NavLink exact to="/my-profile">
-          <img className={style.avatar} src={Avatar} alt="Avatar" />
+          <img className={style.avatar} src={props.userInfo.photoBase64 ? props.userInfo.photoBase64: Avatar} alt="Avatar" />
         </NavLink>
         <div className={style.text}>
         <NavLink exact to="/my-profile">
-          <span className={style.name}>Stevie Barrett</span>
+          <span className={style.name}>{props.userInfo.name}</span>
         </NavLink>
           <span className={style.logout} onClick={Logout}>Log out</span>
         </div>
-        {user === "Participant" && list === 1 ? (
+        {props.userInfo.role === "Participant" && props.userInfo.scientificWorkId !== 0 && (
           <Box>
             <NavLink exact to="/work-view">
               <Button
@@ -151,9 +149,9 @@ function Navigation(props) {
               </Button>
             </NavLink>
           </Box>
-        ) : null}
+        )}
 
-        {user === "Participant" && list === 0 && (
+        {props.userInfo.role === "Participant" && props.userInfo.scientificWorkId === 0 && (
           <Box>
             <NavLink exact to="/adding-work">
               <Button
@@ -168,7 +166,7 @@ function Navigation(props) {
           </Box>
         )}
 
-        {user === "Reviewer" ? (
+        {props.userInfo.role === "Reviewer" && (
           <Box>
             <NavLink exact to="/my-reviews">
               <Button
@@ -181,7 +179,7 @@ function Navigation(props) {
               </Button>
             </NavLink>
           </Box>
-        ) : null}
+        )}
       </div>
       <Box className={style.boxBottom}>
         <Box>

@@ -28,49 +28,6 @@ import Error404 from './pages/error-404';
 import axios from "axios";
 import { URL } from "./Constants";
 
-const authentication = {
-  isLoggedIn:false,
-  onAuthentication(){
-    this.isLoggedIn= true;
-  },
-  getLogInStatus(){
-    return this.isLoggedIn;
-  }
-}
-
-const user = "Participant"
-
-function SecuredRoute(props){
-  return(
-    <Route path={props.path} render={data=>authentication.getLogInStatus()? (
-      <props.component {...data}></props.component>):
-      (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
-  )
-}
-
-function SecuredRouteParticipant(props){
-  return(
-    <Route path={props.path} render={data=>authentication.getLogInStatus() && user === "Participant"? (
-      <props.component {...data}></props.component>):
-      (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
-  )
-}
-
-function SecuredRouteReviewer(props){
-  return(
-    <Route path={props.path} render={data=>authentication.getLogInStatus() && user === "Reviewer"? (
-      <props.component {...data}></props.component>):
-      (<Redirect to={{pathname:'/signin-reviewer'}}></Redirect>)}></Route>
-  )
-}
-
-function log()
-{
-  console.log(localStorage.getItem("jwt"))
-  if(localStorage.getItem("jwt") !== null)
-    authentication.onAuthentication();
-}
-
 function App() {
   const [userInfo, setUserInfo] = React.useState(null);
 
@@ -90,11 +47,34 @@ function App() {
     }
   }, []);
 
-  log();
+  function SecuredRoute(props){
+    return(
+      <Route path={props.path} render={data=>userInfo? (
+        <props.component {...data}></props.component>):
+        (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
+    )
+  }
+  
+  function SecuredRouteParticipant(props){
+    return(
+      <Route path={props.path} render={data=>userInfo && userInfo.name === "Participant" ? (
+        <props.component {...data}></props.component>):
+        (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
+    )
+  }
+  
+  function SecuredRouteReviewer(props){
+    return(
+      <Route path={props.path} render={data=>userInfo && userInfo.name === "Reviewer"? (
+        <props.component {...data}></props.component>):
+        (<Redirect to={{pathname:'/signin-reviewer'}}></Redirect>)}></Route>
+    )
+  }
     return (
       <Router>
         <div className="App">
-        {localStorage.getItem("jwt") !== null ? <Navigation/> : <NavigationNotLogged /> }
+        {userInfo ? 
+        <Navigation userInfo = {userInfo} /> : <NavigationNotLogged /> }
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/agenda" component={Agenda} />
