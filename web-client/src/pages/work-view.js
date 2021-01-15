@@ -99,7 +99,7 @@ function WorkView() {
       />
 
       <div className={style.menu}>
-        {data.versions.map((version, i) => (
+        {data.mode !== "Participant" && data.versions.map((version, i) => (
           <div key={i}>
             <VersionPanel
               version={version}
