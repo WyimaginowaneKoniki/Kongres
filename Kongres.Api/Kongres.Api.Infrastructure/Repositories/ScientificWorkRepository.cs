@@ -24,7 +24,7 @@ namespace Kongres.Api.Infrastructure.Repositories
         }
 
         public async Task<ScientificWork> GetByUserIdAsync(uint userId)
-            => await _context.ScientificWorks.FirstAsync(x => x.MainAuthor.Id == userId);
+            => await _context.ScientificWorks.FirstOrDefaultAsync(x => x.MainAuthor.Id == userId);
 
         public async Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync()
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
