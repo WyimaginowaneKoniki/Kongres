@@ -23,6 +23,7 @@ import MyProfile from './pages/my-profile';
 import SignInReviewer from './pages/signin-reviewer';
 import SignInParticipant from './pages/signin-participant';
 import WorkView from './pages/work-view';
+import EmailConfirmationToken from './pages/email-confirmation-token';
 
 function App() {
     return (
@@ -48,6 +49,7 @@ function App() {
             <Route path="/signin-reviewer" component={SignInReviewer} />
             <Route path="/signin-participant" component={SignInParticipant} />
             <Route path="/work-view" component={WorkView} />
+            <Route path="/email-confirm-token" component={EmailConfirmationToken} />
           </Switch>
           <Footer/>
         </div>
