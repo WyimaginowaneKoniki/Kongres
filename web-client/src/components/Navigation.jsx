@@ -123,7 +123,7 @@ function Navigation(props) {
     <div className={style.main}>
       <Box>
         <NavLink exact to="/">
-          <img className={style.logo} src={Logo} alt="Logo" />{" "}
+          <img className={style.logo} src={Logo} alt="Logo" />
         </NavLink>
       </Box>
       <div className={style.boxTop}>

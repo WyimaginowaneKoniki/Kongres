@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import React, { useEffect } from 'react';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
@@ -18,7 +17,6 @@ import AddingWork from './pages/adding-work';
 import SignUpReviewer from './pages/signup-reviewer';
 import SignUpParticipant from './pages/signup-participant';
 import ScientificWorks from './pages/scientific-works';
-import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
 import MyProfile from './pages/my-profile';
 import SignInReviewer from './pages/signin-reviewer';
@@ -95,8 +93,6 @@ function App() {
             <SecuredRouteParticipant path="/adding-work" component={AddingWork} />
             {/* Reviewer */}
             <SecuredRouteReviewer path="/my-reviews" component={MyReviews} />
-            {/* Do usuniecia potem */}
-            <SecuredRoute path="/accepted-scientific-work" component={AcceptedScientificWork} />
             <Route path="*" component={Error404} />
           </Switch>
           <Footer/>
