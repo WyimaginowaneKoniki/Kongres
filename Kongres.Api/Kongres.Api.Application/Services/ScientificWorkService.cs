@@ -181,6 +181,7 @@ namespace Kongres.Api.Application.Services
                             Id = review.Id,
                             ReviewDate = review.DateReview.ToString("g"),
                             ReviewMsg = review.Comment,
+                            IsReviewFileExist = review.File != null,
                             Rating = review.Rating,
                             AnswerDate = review?.Answer?.AnswerDate.ToString("g"),
                             AnswerMsg = review?.Answer?.Comment

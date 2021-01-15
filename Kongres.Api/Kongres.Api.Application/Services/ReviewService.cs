@@ -84,11 +84,13 @@ namespace Kongres.Api.Application.Services
                 Rating = rating,
             };
 
-            // reviewer can add review only one way (string or file, not both!)
-            if (reviewMsg is null)
+            // add file only when it's not null
+            if (!(reviewFile is null))
                 review.File = await _fileManager.SaveFileAsync(reviewFile);
-            else if (reviewFile is null)
-                review.Comment = reviewMsg;
+
+            // when reviewer doesn't write message 
+            // it's just assign null (nothing change)
+            review.Comment = reviewMsg;
 
             await _reviewRepository.AddReviewAsync(review);
         }

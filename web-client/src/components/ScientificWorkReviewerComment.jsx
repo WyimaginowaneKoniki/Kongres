@@ -6,7 +6,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import defaultPicture from "../images/empty-image.png";
 import axios from "axios";
-import { URL_API } from "../Constants";
+import { URL_API, RATING } from "../Constants";
 
 export default function ScientificWorkReviewerComment(props) {
   const style = makeStyles({
@@ -55,12 +55,6 @@ export default function ScientificWorkReviewerComment(props) {
     },
   })();
 
-  const ratingLabels = {
-    1: "rejected",
-    2: "correct",
-    3: "accepted",
-  };
-
   const downloadReview = () => {
     const token = localStorage.getItem("jwt");
     axios
@@ -78,20 +72,6 @@ export default function ScientificWorkReviewerComment(props) {
       });
   };
 
-  const review = (() =>
-    props.reviewText ? (
-      <p className={style.textReview}>{props.reviewText}</p>
-    ) : (
-      <Button
-        variant="contained"
-        color="primary"
-        className={style.btn}
-        onClick={downloadReview}
-      >
-        Download review
-      </Button>
-    ))();
-
   return (
     <div className={style.review}>
       <div className={style.userInfo}>
@@ -101,10 +81,27 @@ export default function ScientificWorkReviewerComment(props) {
       <div className={style.reviewContent}>
         <div className={style.ratingDiv}>
           <Rating max={3} value={props.rating} readOnly />
-          <Box ml={2}>{ratingLabels[props.rating]}</Box>
+          <Box ml={2}>{RATING[props.rating]}</Box>
         </div>
         <p className={style.date}>{props.date}</p>
-        {review}
+        <div>
+          {/* review text */}
+          {props.reviewText && (
+            <p className={style.textReview}>{props.reviewText}</p>
+          )}
+
+          {/* review file (button to download) */}
+          {props.isReviewFileExist && (
+            <Button
+              variant="contained"
+              color="primary"
+              className={style.btn}
+              onClick={downloadReview}
+            >
+              Download review
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

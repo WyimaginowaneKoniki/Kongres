@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection.Metadata;
-
-namespace Kongres.Api.Domain.DTOs
+﻿namespace Kongres.Api.Domain.DTOs
 {
     public class ReviewDto
     {
@@ -9,6 +6,7 @@ namespace Kongres.Api.Domain.DTOs
         public string ReviewDate { get; set; }
         public uint Rating { get; set; }
         public string ReviewMsg { get; set; }
+        public bool IsReviewFileExist { get; set; }
 
         public string AnswerMsg { get; set; }
         public string AnswerDate { get; set; }

@@ -49,6 +49,7 @@ export default function VersionPanel(props) {
               date={reviews[i].reviewDate}
               reviewId={reviews[i].id}
               reviewerName={reviewerName}
+              isReviewFileExist={reviews[i].isReviewFileExist}
             />
           );
 

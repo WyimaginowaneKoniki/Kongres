@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import defaultPhoto from "../images/empty-image.png";
 import axios from "axios";
-import { URL_API } from "../Constants";
+import { URL_API, RATING } from "../Constants";
 
 export default function ScientificWorkReviewerCommentInput(props) {
   const style = makeStyles({
@@ -65,13 +65,6 @@ export default function ScientificWorkReviewerCommentInput(props) {
       margin: "15px",
     },
   })();
-
-  const ratingLabels = {
-    0: "",
-    1: "rejected",
-    2: "correct",
-    3: "accepted",
-  };
 
   const maxReviewLength = 255;
 
@@ -183,7 +176,7 @@ export default function ScientificWorkReviewerCommentInput(props) {
                 onChangeActive={handleHoverRating}
               />
               <Box ml={2}>
-                {ratingLabels[ratingHover !== -1 ? ratingHover : ratingValue]}
+                {RATING[ratingHover !== -1 ? ratingHover : ratingValue]}
               </Box>
               <FormHelperText error>
                 {errors?.rating && errors?.rating?.message}
