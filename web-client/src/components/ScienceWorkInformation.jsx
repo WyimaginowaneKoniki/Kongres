@@ -122,7 +122,7 @@ export default function ScienceWorkInformation(props) {
   const downloadFile = () => {
     const link = document.createElement("a");
     link.href = props.workPDF;
-    link.download = `${props.title.replaceAll(" ", "-")}.pdf`;
+    link.download = `${props.scientificWork.title.replaceAll(" ", "-")}.pdf`;
     link.click();
   };
 
