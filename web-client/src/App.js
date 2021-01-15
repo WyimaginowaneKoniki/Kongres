@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 
@@ -25,6 +25,8 @@ import SignInReviewer from './pages/signin-reviewer';
 import SignInParticipant from './pages/signin-participant';
 import WorkView from './pages/work-view';
 import Error404 from './pages/error-404';
+import axios from "axios";
+import { URL } from "./Constants";
 
 const authentication = {
   isLoggedIn:false,
@@ -70,6 +72,24 @@ function log()
 }
 
 function App() {
+  const [userInfo, setUserInfo] = React.useState(null);
+
+  useEffect(() => {
+    var token = localStorage.getItem("jwt");
+
+    if (!token) setUserInfo(null);
+    else {
+      axios
+        .get(`${URL}/api/User`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          console.log(resp.data);
+          setUserInfo(resp.data);
+        });
+    }
+  }, []);
+
   log();
     return (
       <Router>

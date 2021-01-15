@@ -8,5 +8,6 @@ namespace Kongres.Api.Infrastructure
     {
         Task<string> SaveFileAsync(IFormFile file);
         Stream ReadFile(string fileName);
+        Task<string> GetBase64FileAsync(string fileName);
     }
 }
