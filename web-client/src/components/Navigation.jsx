@@ -6,6 +6,7 @@ import Box from "@material-ui/core/Box";
 import Logo from "../images/logo.png";
 import Avatar from "../images/default-avatar.png";
 import Button from "@material-ui/core/Button";
+import { URL } from "../Constants";
 
 function Navigation(props) {
   const styles = makeStyles({
@@ -96,6 +97,10 @@ function Navigation(props) {
       float: "right",
       fontSize: "12px",
       color: '#767676',
+      '&:hover':
+      {
+        cursor: "pointer",
+      }
     },
     link: {
       color: "black",
@@ -110,6 +115,11 @@ function Navigation(props) {
   const style = styles();
   const user = "Participant";
   const list = 1;
+
+  const Logout = () => {
+    localStorage.removeItem("jwt"); 
+    window.location.href = URL; 
+  };
 
   return (
     <div className={style.main}>
@@ -126,9 +136,7 @@ function Navigation(props) {
         <NavLink exact to="/my-profile">
           <span className={style.name}>Stevie Barrett</span>
         </NavLink>
-        <NavLink exact to="/">
-          <span className={style.logout}>Log out</span>
-        </NavLink>
+          <span className={style.logout} onClick={Logout}>Log out</span>
         </div>
         {user === "Participant" && list === 1 ? (
           <Box>
@@ -145,7 +153,7 @@ function Navigation(props) {
           </Box>
         ) : null}
 
-        {user === "Participant" && list === 0 ? (
+        {user === "Participant" && list === 0 && (
           <Box>
             <NavLink exact to="/adding-work">
               <Button
@@ -158,7 +166,7 @@ function Navigation(props) {
               </Button>
             </NavLink>
           </Box>
-        ) : null}
+        )}
 
         {user === "Reviewer" ? (
           <Box>

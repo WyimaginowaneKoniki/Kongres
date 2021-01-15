@@ -58,7 +58,7 @@ function SecuredRouteReviewer(props){
   return(
     <Route path={props.path} render={data=>authentication.getLogInStatus() && user === "Reviewer"? (
       <props.component {...data}></props.component>):
-      (<Redirect to={{pathname:'/signin-participant'}}></Redirect>)}></Route>
+      (<Redirect to={{pathname:'/signin-reviewer'}}></Redirect>)}></Route>
   )
 }
 
