@@ -70,11 +70,7 @@ function ScientificWorkAuthorAnswerInput(props) {
   const schema = yup.object().shape({
     answer: yup
       .string()
-      .required("Answer cannot be empty")
-      .matches(
-        /^[A-Za-z0-9,.?\s-+―\];—'–)(‒"‑[‐-]*$/,
-        "Answer should only contain letters and digits"
-      )
+      .required("Required field")
       .max(
         maxAnswerLength,
         `Answer should be ${maxAnswerLength} characters or less`

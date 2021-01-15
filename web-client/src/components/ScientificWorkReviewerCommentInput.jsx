@@ -71,14 +71,10 @@ export default function ScientificWorkReviewerCommentInput(props) {
   const schema = yup.object().shape({
     rating: yup.string().when("ratingValue", () => {
       if (!ratingValue)
-        return yup.string().required("Rating should be choosed");
+        return yup.string().required("Rating should be chosen");
     }),
     reviewInput: yup
       .string()
-      .matches(
-        /^[A-Za-z0-9,.?\s-+―\];—'–)(‒"‑[‐-]*$/,
-        "Review should only contain letters and digits"
-      )
       .max(
         maxReviewLength,
         `Review should be ${maxReviewLength} characters or less`
