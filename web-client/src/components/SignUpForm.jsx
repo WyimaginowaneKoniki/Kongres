@@ -314,7 +314,7 @@ export default function SignUpForm(props) {
             >
               {categories.map((category) => (
                 <MenuItem className={style.MenuItem} value={category.value}>
-                  {category.label}
+                  {category.value}
                 </MenuItem>
               ))}
             </TextField>

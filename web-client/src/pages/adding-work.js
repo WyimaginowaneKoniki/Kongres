@@ -387,7 +387,7 @@ function AddingWork() {
             >
               {categories.map((category) => (
                 <MenuItem className={style.MenuItem} value={category.value}>
-                  {category.label}
+                  {category.value}
                 </MenuItem>
               ))}
             </TextField>
