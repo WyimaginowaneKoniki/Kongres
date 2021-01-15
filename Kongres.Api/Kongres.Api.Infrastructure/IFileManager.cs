@@ -7,6 +7,7 @@ namespace Kongres.Api.Infrastructure
     public interface IFileManager
     {
         Task<string> SaveFileAsync(IFormFile file);
-        Stream ReadFile(string fileName);
+        Stream GetStreamOfFile(string fileName);
+        Task<string> GetBase64FileAsync(string fileName);
     }
 }

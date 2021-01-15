@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
@@ -17,7 +16,6 @@ import AddingWork from './pages/adding-work';
 import SignUpReviewer from './pages/signup-reviewer';
 import SignUpParticipant from './pages/signup-participant';
 import ScientificWorks from './pages/scientific-works';
-import AcceptedScientificWork from './pages/accepted-scientific-work';
 import MyReviews from './pages/my-reviews';
 import MyProfile from './pages/my-profile';
 import SignInReviewer from './pages/signin-reviewer';
@@ -42,7 +40,6 @@ function App() {
             <Route path="/signup-reviewer" component={SignUpReviewer} />
             <Route path="/signup-participant" component={SignUpParticipant} />
             <Route path="/scientific-works" component={ScientificWorks} />
-            <Route path="/accepted-scientific-work" component={AcceptedScientificWork} />
             <Route path="/my-reviews" component={MyReviews} />
             <Route path="/my-profile" component={MyProfile} />
             <Route path="/signin-reviewer" component={SignInReviewer} />
