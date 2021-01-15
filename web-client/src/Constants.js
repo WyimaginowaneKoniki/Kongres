@@ -6,3 +6,26 @@ export const RATING = {
     2: "correct",
     3: "accepted",
   };
+export const categories = [
+  {
+    value: "Select",
+  },
+  {
+    value: "Computer Science",
+  },
+  {
+    value: "Mathematics",
+  },
+  {
+    value: "Biology",
+  },
+  {
+    value: "Chemistry",
+  },
+  {
+    value: "Psychics",
+  },
+  {
+    value: "Geography",
+  },
+];
