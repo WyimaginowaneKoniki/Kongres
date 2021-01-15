@@ -6,6 +6,7 @@ using Kongres.Api.Domain.Enums;
 using Kongres.Api.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using NETCore.MailKit.Core;
 
 namespace Kongres.Api.Application.Handlers.Participant
 {
@@ -13,11 +14,13 @@ namespace Kongres.Api.Application.Handlers.Participant
     {
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
+        private readonly IEmailService _emailService;
 
-        public CreateParticipantHandler(UserManager<User> userManager, IFileManager fileManager)
+        public CreateParticipantHandler(UserManager<User> userManager, IFileManager fileManager, IEmailService emailService)
         {
             _userManager = userManager;
             _fileManager = fileManager;
+            _emailService = emailService;
         }
 
         protected override async Task Handle(CreateParticipantCommand request, CancellationToken cancellationToken)
@@ -45,6 +48,11 @@ namespace Kongres.Api.Application.Handlers.Participant
 
             if (createUserResult.Succeeded)
                 await _userManager.AddToRoleAsync(user, userType.ToString());
+
+            var link = "https://localhost:5001";
+
+            var message = $"<a href='{link}'>Please confirm email</a>";
+            await _emailService.SendAsync(request.Email, "Verify account", message, true);
         }
     }
 }
