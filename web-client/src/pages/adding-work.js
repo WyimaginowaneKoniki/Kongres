@@ -4,11 +4,7 @@ import DropZone from "../components/DropZone";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -31,8 +27,7 @@ function AddingWork() {
       margin: "auto",
     },
     left: {
-      width: "45%",
-      height: "50vh",
+      width: "44%",
       float: "left",
       textAlign: "left",
     },
@@ -67,10 +62,15 @@ function AddingWork() {
     },
     textFieldAuthor: {
       marginBottom: "10px",
+      float: "left",
       width: "100%",
     },
     formControlLabel: {
       marginBottom: "8px",
+      float: "left",
+    },
+    button: {
+      float: "right",
     },
   });
 
@@ -143,6 +143,10 @@ function AddingWork() {
         })
       )
       .max(maxAuthors, "You cannot add more authors"),
+    specialization: yup.string().when("specializations", {
+      is: (specializations) => specialization === "Select",
+      then: yup.string().required("Required field"),
+    }),
     acceptance: yup
       .boolean()
       .oneOf([true], "Required field")
@@ -161,16 +165,11 @@ function AddingWork() {
 
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
-    setError(false);
   };
 
   // based on:
   // https://codesandbox.io/s/425lm2479?file=/demo.js:1708-1772
-  const [hasError, setError] = useState(false);
-
   const ClickSubmit = () => {
-    setError(false);
-    if (specialization === "") setError(true);
     if (file === null) ShowAlert();
   };
 
@@ -298,7 +297,7 @@ function AddingWork() {
 
   const onSubmit = () => {
     // if everything is OK, form can be send
-    if (file !== null && specialization !== "") {
+    if (file !== null && specialization !== "Select") {
       const formData = createFormData();
       const token = localStorage.getItem("jwt");
       axios.post(`${URL_API}/ScientificWork/AddWork`, formData, {
@@ -367,42 +366,31 @@ function AddingWork() {
             />
 
             {/* Specialization Input - Select*/}
-            <FormControl
-              variant="outlined"
-              name="specialization"
-              className={style.formControl}
+            <TextField
+              select
+              className={style.textField}
+              inputRef={register}
               required
-              error={hasError}
+              id="specialization-adding-work"
+              name="specialization"
+              label="Specialization"
+              autoComplete="specialization"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              placeholder="Select"
+              variant="outlined"
+              onChange={handleChangeSelect}
+              error={!!errors.specialization}
+              helperText={errors?.specialization?.message}
+              value={specialization}
             >
-              <InputLabel
-                shrink
-                htmlFor="specialization-signup"
-                className={style.inputLabel}
-              >
-                Specialization
-              </InputLabel>
-              <Select
-                displayEmpty
-                name="specialization"
-                value={specialization}
-                onChange={handleChangeSelect}
-                input={
-                  <OutlinedInput
-                    notched
-                    inputRef={register}
-                    name="specialization"
-                    id="specialization-signup"
-                  />
-                }
-              >
-                {categories.map((category) => (
-                  <MenuItem className={style.MenuItem} value={category.value}>
-                    {category.label}
-                  </MenuItem>
-                ))}
-              </Select>
-              {hasError && <FormHelperText>Required field</FormHelperText>}
-            </FormControl>
+              {categories.map((category) => (
+                <MenuItem className={style.MenuItem} value={category.value}>
+                  {category.value}
+                </MenuItem>
+              ))}
+            </TextField>
 
             {/* Authors */}
             <TextField
@@ -441,15 +429,17 @@ function AddingWork() {
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
 
-            <Button
-              className={style.addButton}
-              color="primary"
-              type="submit"
-              variant="contained"
-              onClick={ClickSubmit}
-            >
-              Add work
-            </Button>
+            <div className={style.button}>
+              <Button
+                className={style.addButton}
+                color="primary"
+                type="submit"
+                variant="contained"
+                onClick={ClickSubmit}
+              >
+                Add work
+              </Button>
+            </div>
           </div>
           <div className={style.right}>
             <DropZone SetFile={passFile} />

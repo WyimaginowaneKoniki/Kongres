@@ -8,7 +8,6 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -118,6 +117,10 @@ export default function SignUpForm(props) {
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
+    specialization: yup.string().when("specializations", {
+      is: (specializations) => specialization === "Select",
+      then: yup.string().required("Required field"),
+    }),
     acceptance: yup
       .boolean()
       .oneOf([true], "Required field")
@@ -290,41 +293,31 @@ export default function SignUpForm(props) {
             />
 
             {/* Specialization Input - Select*/}
-            <FormControl
-              variant="outlined"
+            <TextField
+              select
+              className={style.textField}
+              inputRef={register}
+              required
+              id="specialization-signup"
               name="specialization"
-              className={style.formControl}
+              label="Specialization"
+              autoComplete="specialization"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              placeholder="Select"
+              variant="outlined"
+              onChange={handleChangeSelect}
+              error={!!errors.specialization}
+              helperText={errors?.specialization?.message}
+              value={specialization}
             >
-              <InputLabel
-                shrink
-                htmlFor="specialization-signup"
-                className={style.inputLabel}
-              >
-                Specialization
-              </InputLabel>
-              <Select
-                displayEmpty
-                name="specialization"
-                value={specialization}
-                onChange={handleChangeSelect}
-                input={
-                  <OutlinedInput
-                    notched
-                    name="specialization"
-                    id="specialization-signup"
-                  />
-                }
-                inputRef={register}
-                error={!!errors.specialization}
-                helperText={errors?.specialization?.message}
-              >
-                {categories.map(category => 
-                  <MenuItem className={style.MenuItem} value={category.value}>
-                    {category.label}
-                  </MenuItem>
-                )}
-              </Select>
-            </FormControl>
+              {categories.map((category) => (
+                <MenuItem className={style.MenuItem} value={category.value}>
+                  {category.value}
+                </MenuItem>
+              ))}
+            </TextField>
 
             {/* Avatar */}
             {props.participant ? <Avatar name="avatar" /> : null}
