@@ -42,7 +42,7 @@ namespace Kongres.Api.WebApi
             services.AddIdentity<User, Role>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.User.AllowedUserNameCharacters = _configuration["Identity:AllowedUserNameCharacters"];
             }).AddDefaultTokenProviders();
