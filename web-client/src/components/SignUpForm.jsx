@@ -22,8 +22,8 @@ import { categories } from "../Constants";
 
 const styles = makeStyles({
   main: {
-    padding: "2%",
     display: "flex",
+    justifyContent: "center",
   },
   form: {
     display: "flex",
@@ -67,7 +67,7 @@ const styles = makeStyles({
     display: "block",
   },
   btnSignIn: {
-    margin: "8px 0px",
+    marginTop: "8px",
     textTransform: "none",
   },
   columns: {
@@ -75,7 +75,6 @@ const styles = makeStyles({
   },
   signInUpOther: {
     maxWidth: "400px",
-    float: "left",
     marginLeft: "144px",
   },
 });
@@ -111,9 +110,7 @@ export default function SignUpForm(props) {
         /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
       ),
-    university: yup
-      .string()
-      .max(255, "University should be 255 character long or less"),
+    university: yup.string().max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
@@ -121,10 +118,7 @@ export default function SignUpForm(props) {
       is: (specializations) => specialization === "Select",
       then: yup.string().required("Required field"),
     }),
-    acceptance: yup
-      .boolean()
-      .oneOf([true], "Required field")
-      .required("Required field"),
+    acceptance: yup.boolean().oneOf([true], "Required field").required("Required field"),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -357,11 +351,7 @@ export default function SignUpForm(props) {
           <div className={style.signInUpOther}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Button
-              variant="outlined"
-              color="primary"
-              className={style.btnSignIn}
-            >
+            <Button variant="outlined" color="primary" className={style.btnSignIn}>
               {props.btn}
             </Button>
           </div>

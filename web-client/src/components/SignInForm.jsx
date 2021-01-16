@@ -196,7 +196,7 @@ export default function SignInForm(props) {
         </div>
       </div>
       <p className={style.bottomMessage}>
-        If you want to log in as {props.signInAs}, go to {" "}
+        If you want to log in as {props.signInAs}, go to{" "}
         <Link to={props.signInAsOtherLink}>login page</Link>
       </p>
     </Container>

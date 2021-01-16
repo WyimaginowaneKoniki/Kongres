@@ -12,24 +12,22 @@ function SignUpReviewer() {
   };
 
   const signInReviewer = {
-    heading: "Sign in",
-    content: "If you have already an account, sign in here",
-    btn: "Sign in",
+    heading: "Already have an account?",
+    content: "",
+    btn: "Log in",
   };
 
   const Register = (data) => {
-    axios
-      .post(`${URL_API}/Reviewer/Register`, data)
-      .then((response) => {
-        // OK
-        if (response.status === 200) {
-          window.location.href = URL;
-        }
-        // User conflict/user already exists in db
-        else if (response.status === 409) {
-          // show error or smth
-        }
-      });
+    axios.post(`${URL_API}/Reviewer/Register`, data).then((response) => {
+      // OK
+      if (response.status === 200) {
+        window.location.href = URL;
+      }
+      // User conflict/user already exists in db
+      else if (response.status === 409) {
+        // show error or smth
+      }
+    });
   };
 
   return (
