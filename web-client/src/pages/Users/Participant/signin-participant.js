@@ -4,7 +4,7 @@ import "../../../App.css";
 import SignInForm from "../../../components/Account/SignInForm";
 import { URL, URL_API, LINKS } from "../../../Constants";
 
-function SignInParticipant() {
+export default function SignInParticipant() {
   const signUpRParticipant = {
     heading: "Don't have an account?",
     content: "If you want to review... or something... sign up",
@@ -45,5 +45,3 @@ function SignInParticipant() {
     </div>
   );
 }
-
-export default SignInParticipant;

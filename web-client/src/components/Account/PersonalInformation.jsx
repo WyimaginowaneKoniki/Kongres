@@ -10,67 +10,67 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "./Avatar";
 import { categories } from "../../Constants";
 
-const styles = makeStyles({
-  main: {
-    padding: "2%",
-    display: "flex",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    float: "left",
-    textAlign: "left",
-    maxWidth: "400px",
-    margin: "16px",
-  },
-  textField: {
-    marginBottom: "32px",
-    width: "300px",
-  },
-  formControl: {
-    marginBottom: "32px",
-    width: "300px",
-  },
-  formControlLabel: {
-    marginBottom: "8px",
-  },
-  btnSignup: {
-    width: "130px",
-    textTransform: "none",
-  },
-  menuItem: {
-    textAlign: "left",
-  },
-  inputLabel: {
-    backgroundColor: "white",
-    padding: "0px 4px",
-    marginLeft: "-4px",
-  },
-  formHelperText: {
-    marginBottom: "32px",
-  },
-  heading: {
-    textAlign: "left",
-  },
-  content: {
-    textAlign: "left",
-    display: "block",
-  },
-  btnSignIn: {
-    margin: "8px 0px",
-    textTransform: "none",
-  },
-  columns: {
-    display: "flex",
-  },
-  signInUpOther: {
-    maxWidth: "400px",
-    float: "left",
-    marginLeft: "144px",
-  },
-});
-
 export default function PersonalInformation(props) {
+  const style = makeStyles({
+    main: {
+      padding: "2%",
+      display: "flex",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      float: "left",
+      textAlign: "left",
+      maxWidth: "400px",
+      margin: "16px",
+    },
+    textField: {
+      marginBottom: "32px",
+      width: "300px",
+    },
+    formControl: {
+      marginBottom: "32px",
+      width: "300px",
+    },
+    formControlLabel: {
+      marginBottom: "8px",
+    },
+    btnSignup: {
+      width: "130px",
+      textTransform: "none",
+    },
+    menuItem: {
+      textAlign: "left",
+    },
+    inputLabel: {
+      backgroundColor: "white",
+      padding: "0px 4px",
+      marginLeft: "-4px",
+    },
+    formHelperText: {
+      marginBottom: "32px",
+    },
+    heading: {
+      textAlign: "left",
+    },
+    content: {
+      textAlign: "left",
+      display: "block",
+    },
+    btnSignIn: {
+      margin: "8px 0px",
+      textTransform: "none",
+    },
+    columns: {
+      display: "flex",
+    },
+    signInUpOther: {
+      maxWidth: "400px",
+      float: "left",
+      marginLeft: "144px",
+    },
+  })();
+
   const [specialization, setSpecialization] = React.useState(
     props.specialization
   );
@@ -138,8 +138,6 @@ export default function PersonalInformation(props) {
   const handleChangeAcademicTitle = (event) => {
     setAcademicTitle(event.target.value);
   };
-
-  const style = styles();
 
   return (
     <Container component="main">

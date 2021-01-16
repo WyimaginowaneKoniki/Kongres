@@ -5,8 +5,8 @@ import pdfIcon from "../images/pdf-icon.png";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 
-function DropZone(props) {
-  const styles = makeStyles({
+export default function DropZone(props) {
+  const style = makeStyles({
     container: {
       width: "550px",
     },
@@ -79,9 +79,7 @@ function DropZone(props) {
     dialog: {
       display: "none",
     },
-  });
-
-  const style = styles();
+  })();
 
   const fileInputRef = useRef();
 
@@ -145,7 +143,7 @@ function DropZone(props) {
     }, 4000);
   };
 
-  // Checks if the selected file type is PDF 
+  // Checks if the selected file type is PDF
   const ValidateFile = (f) => "application/pdf" === f.type;
 
   const ValidateSize = (f) => maxFileSize >= f.size;
@@ -230,4 +228,3 @@ function DropZone(props) {
     </div>
   );
 }
-export default DropZone;

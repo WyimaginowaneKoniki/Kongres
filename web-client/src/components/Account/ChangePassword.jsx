@@ -17,8 +17,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-function ChangePassword() {
-  const styles = makeStyles({
+export default function ChangePassword() {
+  const style = makeStyles({
     main: {
       padding: "2%",
       display: "flex",
@@ -54,9 +54,7 @@ function ChangePassword() {
       padding: "2%",
       marginLeft: "16px",
     },
-  });
-
-  const style = styles();
+  })();
 
   const schema = yup.object().shape({
     currentpassword: yup.string().required("Required field"),
@@ -252,7 +250,7 @@ function ChangePassword() {
       {/* Successfully send email */}
       <Snackbar
         open={openAlertSuccess}
-        autoHideDuration={durationOfAlert }
+        autoHideDuration={durationOfAlert}
         onClose={CloseAlert}
       >
         <Alert onClose={CloseAlert} severity={"success"}>
@@ -262,7 +260,7 @@ function ChangePassword() {
       {/* Unsuccessfully send email */}
       <Snackbar
         open={openAlertError}
-        autoHideDuration={durationOfAlert }
+        autoHideDuration={durationOfAlert}
         onClose={CloseAlert}
       >
         <Alert onClose={CloseAlert} severity={"error"}>
@@ -272,4 +270,3 @@ function ChangePassword() {
     </Container>
   );
 }
-export default ChangePassword;

@@ -6,8 +6,8 @@ import axios from "axios";
 import { URL_API, LINKS } from "../../Constants";
 import "../../App.css";
 
-function OneWork(props) {
-  const styles = makeStyles({
+export default function OneWork(props) {
+  const style = makeStyles({
     main: {
       width: "100%",
       paddingBottom: "300px",
@@ -66,9 +66,7 @@ function OneWork(props) {
       float: "left",
       textTransform: "none",
     },
-  });
-
-  const style = styles();
+  })();
 
   const history = useHistory();
 
@@ -134,5 +132,3 @@ function OneWork(props) {
     </div>
   );
 }
-
-export default OneWork;

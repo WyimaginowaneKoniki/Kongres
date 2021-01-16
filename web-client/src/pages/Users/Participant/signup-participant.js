@@ -5,7 +5,7 @@ import SignUpForm from "../../../components/Account/SignUpForm";
 import axios from "axios";
 import { URL, URL_API, LINKS } from "../../../Constants";
 
-function SignUpParticipant() {
+export default function SignUpParticipant() {
   const signUpParticipantInfo = {
     content:
       "As Participant you can see and add your work. Be reviewed by our Reviewers. If you want to be Reviewer... Sign up ",
@@ -53,5 +53,3 @@ function SignUpParticipant() {
     </div>
   );
 }
-
-export default SignUpParticipant;

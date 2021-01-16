@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import "../../App.css";
 import { Link } from "react-router-dom";
 
-function SignInUpInfo(props) {
-  const styles = makeStyles({
+export default function SignInUpInfo(props) {
+  const style = makeStyles({
     main: {
       padding: "2%",
       display: "flex",
@@ -17,9 +17,7 @@ function SignInUpInfo(props) {
       margin: "0 20%",
       width: "30%",
     },
-  });
-
-  const style = styles();
+  })();
 
   return (
     <div className={style.main}>
@@ -29,5 +27,3 @@ function SignInUpInfo(props) {
     </div>
   );
 }
-
-export default SignInUpInfo;

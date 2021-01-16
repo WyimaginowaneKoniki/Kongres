@@ -10,7 +10,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import axios from "axios";
 import { URL_API } from "../../Constants";
 
-function AuthorAnswerInput(props) {
+export default function AuthorAnswerInput(props) {
   const style = makeStyles({
     answerInput: {
       width: "600px",
@@ -149,5 +149,3 @@ function AuthorAnswerInput(props) {
     </div>
   );
 }
-
-export default AuthorAnswerInput;

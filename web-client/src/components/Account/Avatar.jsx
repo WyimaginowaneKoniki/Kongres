@@ -3,36 +3,35 @@ import defaultPicture from "../../images/blank-profile-picture.png";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 
-const styles = makeStyles({
-  main: {
-    width: "100%",
-    marginBottom: "5%",
-  },
-  btn: {
-    marginLeft: "8%",
-    marginTop: "6%",
-    float: "left",
-    textTransform: "none",
-  },
-  btn1: {
-    marginTop: "8%",
-    float: "left",
-    textTransform: "none",
-  },
-  photo: {
-    width: 100,
-    height: 100,
-    margin: "auto",
-    borderRadius: "50px",
-    marginLeft: "8%",
-  },
-  img: {
-    width: "130px",
-    float: "left",
-  },
-});
-
-function Avatar() {
+export default function Avatar() {
+  const style = makeStyles({
+    main: {
+      width: "100%",
+      marginBottom: "5%",
+    },
+    btn: {
+      marginLeft: "8%",
+      marginTop: "6%",
+      float: "left",
+      textTransform: "none",
+    },
+    btn1: {
+      marginTop: "8%",
+      float: "left",
+      textTransform: "none",
+    },
+    photo: {
+      width: 100,
+      height: 100,
+      margin: "auto",
+      borderRadius: "50px",
+      marginLeft: "8%",
+    },
+    img: {
+      width: "130px",
+      float: "left",
+    },
+  })();
   // Stores the source of the picture
   // File and ULR:
   // https://stackoverflow.com/a/61302835/14865551
@@ -50,8 +49,6 @@ function Avatar() {
   const onRemovePicture = () => {
     SetAvatarURL(defaultPicture);
   };
-
-  const style = styles();
 
   return (
     <div className={style.main}>
@@ -84,5 +81,3 @@ function Avatar() {
     </div>
   );
 }
-
-export default Avatar;

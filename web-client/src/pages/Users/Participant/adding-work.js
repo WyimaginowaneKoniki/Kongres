@@ -20,8 +20,8 @@ import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import { URL_API, categories } from "../../../Constants";
 
-function AddingWork() {
-  const styles = makeStyles({
+export default function AddingWork() {
+  const style = makeStyles({
     main: {
       width: "80%",
       margin: "auto",
@@ -72,9 +72,7 @@ function AddingWork() {
     button: {
       float: "right",
     },
-  });
-
-  const style = styles();
+  })();
 
   const formRef = useRef(null);
 
@@ -458,4 +456,3 @@ function AddingWork() {
     </div>
   );
 }
-export default AddingWork;

@@ -10,67 +10,67 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
 import PopUpForgotPassword from "../PopUpForgotPassword";
 
-const styles = makeStyles({
-  main: {
-    padding: "2%",
-    display: "flex",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    float: "left",
-    textAlign: "left",
-    maxWidth: "400px",
-    margin: "16px",
-  },
-  columns: {
-    display: "flex",
-  },
-  textField: {
-    marginBottom: "32px",
-    width: "300px",
-  },
-  heading: {
-    textAlign: "left",
-  },
-  content: {
-    textAlign: "left",
-    display: "block",
-  },
-  btnSignIn: {
-    width: "100px",
-    textTransform: "none",
-    float: "right",
-  },
-  btnSignUp: {
-    margin: "8px 0px",
-    textTransform: "none",
-  },
-  signUp: {
-    maxWidth: "400px",
-    float: "left",
-    marginLeft: "144px",
-  },
-  formHelperText: {
-    marginBottom: "32px",
-  },
-  textButton: {
-    textTransform: "none",
-  },
-  bottomMessage: {
-    marginTop: "300px",
-    display: "block",
-  },
-});
-
-const correctStyle = {
-  display: "none",
-};
-const incorrectStyle = {
-  display: "block",
-};
-
 export default function SignInForm(props) {
+  const style = makeStyles({
+    main: {
+      padding: "2%",
+      display: "flex",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      float: "left",
+      textAlign: "left",
+      maxWidth: "400px",
+      margin: "16px",
+    },
+    columns: {
+      display: "flex",
+    },
+    textField: {
+      marginBottom: "32px",
+      width: "300px",
+    },
+    heading: {
+      textAlign: "left",
+    },
+    content: {
+      textAlign: "left",
+      display: "block",
+    },
+    btnSignIn: {
+      width: "100px",
+      textTransform: "none",
+      float: "right",
+    },
+    btnSignUp: {
+      margin: "8px 0px",
+      textTransform: "none",
+    },
+    signUp: {
+      maxWidth: "400px",
+      float: "left",
+      marginLeft: "144px",
+    },
+    formHelperText: {
+      marginBottom: "32px",
+    },
+    textButton: {
+      textTransform: "none",
+    },
+    bottomMessage: {
+      marginTop: "300px",
+      display: "block",
+    },
+  })();
+
+  const correctStyle = {
+    display: "none",
+  };
+  const incorrectStyle = {
+    display: "block",
+  };
+
   const [messageStyle, SetMessageStyle] = useState(correctStyle);
 
   const [values, setValues] = React.useState({
@@ -101,17 +101,15 @@ export default function SignInForm(props) {
     SetForgotEmail(email);
   };
 
-  const style = styles();
-
   const formRef = React.useRef(null);
 
-  async function onSubmit(data){
+  async function onSubmit(data) {
     // when response status is not "OK"
     // show error about logging
     const responseStatus = await props.Login(data);
     if (responseStatus === 200) SetMessageStyle(correctStyle);
     else SetMessageStyle(incorrectStyle);
-  };
+  }
 
   return (
     <Container component="main">

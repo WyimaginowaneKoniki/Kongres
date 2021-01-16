@@ -5,11 +5,11 @@ import SignUpForm from "../../../components/Account/SignUpForm";
 import axios from "axios";
 import { URL, URL_API } from "../../../Constants";
 
-function SignUpReviewer() {
+export default function SignUpReviewer() {
   const signUpReviewerInfo = {
     content:
       "As Reviewer you can see and review other works. If you want to join us and rate scientific works... Sign up ",
-      signUpAsOtherLink: "/participant/sign-up",
+    signUpAsOtherLink: "/participant/sign-up",
   };
 
   const signInReviewer = {
@@ -20,24 +20,25 @@ function SignUpReviewer() {
   };
 
   const Register = (data) => {
-    axios
-      .post(`${URL_API}/Reviewer/Register`, data)
-      .then((response) => {
-        // OK
-        if (response.status === 200) {
-          window.location.href = URL;
-        }
-        // User conflict/user already exists in db
-        else if (response.status === 409) {
-          // show error or smth
-        }
-      });
+    axios.post(`${URL_API}/Reviewer/Register`, data).then((response) => {
+      // OK
+      if (response.status === 200) {
+        window.location.href = URL;
+      }
+      // User conflict/user already exists in db
+      else if (response.status === 409) {
+        // show error or smth
+      }
+    });
   };
 
   return (
     <div>
       <h1>Sign up as Reviewer</h1>
-      <SignInUpInfo content={signUpReviewerInfo.content} signUpAsOtherLink={signUpReviewerInfo.signUpAsOtherLink}/>
+      <SignInUpInfo
+        content={signUpReviewerInfo.content}
+        signUpAsOtherLink={signUpReviewerInfo.signUpAsOtherLink}
+      />
       <div>
         <SignUpForm
           GetFormData={Register}
@@ -50,5 +51,3 @@ function SignUpReviewer() {
     </div>
   );
 }
-
-export default SignUpReviewer;

@@ -6,7 +6,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import PreviewPDF from "./PreviewPDF";
 
 export default function Information(props) {
-  const styles = makeStyles({
+  const style = makeStyles({
     main: {
       width: "80%",
       margin: "auto",
@@ -115,9 +115,7 @@ export default function Information(props) {
       marginLeft: "5%",
       float: "left",
     },
-  });
-
-  const style = styles();
+  })();
 
   const downloadFile = () => {
     const link = document.createElement("a");

@@ -4,7 +4,7 @@ import SignInForm from "../../../components/Account/SignInForm";
 import axios from "axios";
 import { URL, URL_API } from "../../../Constants";
 
-function SignInReviewer() {
+export default function SignInReviewer() {
   const signUpReviewer = {
     heading: "Don't have an account?",
     content: "If you want to review... or something... sign up",
@@ -45,5 +45,3 @@ function SignInReviewer() {
     </div>
   );
 }
-
-export default SignInReviewer;

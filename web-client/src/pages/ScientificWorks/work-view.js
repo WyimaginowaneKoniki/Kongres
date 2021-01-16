@@ -8,8 +8,8 @@ import axios from "axios";
 import { URL_API } from "../../Constants";
 import defaultPhoto from "../../images/empty-image.png";
 
-function WorkView() {
-  const styles = makeStyles({
+export default function WorkView() {
+  const style = makeStyles({
     path: {
       width: "70%",
       padding: "2%",
@@ -25,9 +25,7 @@ function WorkView() {
     menu: {
       paddingTop: "800px",
     },
-  });
-
-  const style = styles();
+  })();
 
   const location = useLocation();
 
@@ -69,8 +67,8 @@ function WorkView() {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {
-          if(!resp.data.mainAuthor.photo)
-            resp.data.mainAuthor.photo = defaultPhoto; 
+          if (!resp.data.mainAuthor.photo)
+            resp.data.mainAuthor.photo = defaultPhoto;
 
           setData(resp.data);
         });
@@ -99,20 +97,19 @@ function WorkView() {
       />
 
       <div className={style.menu}>
-        {data.mode !== "Participant" && data.versions.map((version, i) => (
-          <div key={i}>
-            <VersionPanel
-              version={version}
-              mode={data.mode}
-              authorPhoto={data.mainAuthor.photo}
-              authorName={data.mainAuthor.name}
-              scientificWorkId={data.scientificWork.id}
-            />
-          </div>
-        ))}
+        {data.mode !== "Participant" &&
+          data.versions.map((version, i) => (
+            <div key={i}>
+              <VersionPanel
+                version={version}
+                mode={data.mode}
+                authorPhoto={data.mainAuthor.photo}
+                authorName={data.mainAuthor.name}
+                scientificWorkId={data.scientificWork.id}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );
 }
-
-export default WorkView;

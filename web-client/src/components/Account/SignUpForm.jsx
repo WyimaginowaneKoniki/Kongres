@@ -21,67 +21,67 @@ import Avatar from "./Avatar";
 import { categories } from "../../Constants";
 import { Link } from "react-router-dom";
 
-const styles = makeStyles({
-  main: {
-    padding: "2%",
-    display: "flex",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    float: "left",
-    textAlign: "left",
-    maxWidth: "400px",
-    margin: "16px",
-  },
-  textField: {
-    marginBottom: "32px",
-    width: "300px",
-  },
-  formControl: {
-    marginBottom: "32px",
-    width: "300px",
-  },
-  formControlLabel: {
-    marginBottom: "8px",
-  },
-  btnSignup: {
-    width: "100px",
-    textTransform: "none",
-  },
-  menuItem: {
-    textAlign: "left",
-  },
-  inputLabel: {
-    backgroundColor: "white",
-    padding: "0px 4px",
-    marginLeft: "-4px",
-  },
-  formHelperText: {
-    marginBottom: "32px",
-  },
-  heading: {
-    textAlign: "left",
-  },
-  content: {
-    textAlign: "left",
-    display: "block",
-  },
-  btnSignIn: {
-    margin: "8px 0px",
-    textTransform: "none",
-  },
-  columns: {
-    display: "flex",
-  },
-  signInUpOther: {
-    maxWidth: "400px",
-    float: "left",
-    marginLeft: "144px",
-  },
-});
-
 export default function SignUpForm(props) {
+  const style = makeStyles({
+    main: {
+      padding: "2%",
+      display: "flex",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      float: "left",
+      textAlign: "left",
+      maxWidth: "400px",
+      margin: "16px",
+    },
+    textField: {
+      marginBottom: "32px",
+      width: "300px",
+    },
+    formControl: {
+      marginBottom: "32px",
+      width: "300px",
+    },
+    formControlLabel: {
+      marginBottom: "8px",
+    },
+    btnSignup: {
+      width: "100px",
+      textTransform: "none",
+    },
+    menuItem: {
+      textAlign: "left",
+    },
+    inputLabel: {
+      backgroundColor: "white",
+      padding: "0px 4px",
+      marginLeft: "-4px",
+    },
+    formHelperText: {
+      marginBottom: "32px",
+    },
+    heading: {
+      textAlign: "left",
+    },
+    content: {
+      textAlign: "left",
+      display: "block",
+    },
+    btnSignIn: {
+      margin: "8px 0px",
+      textTransform: "none",
+    },
+    columns: {
+      display: "flex",
+    },
+    signInUpOther: {
+      maxWidth: "400px",
+      float: "left",
+      marginLeft: "144px",
+    },
+  })();
+
   const [values, setValues] = React.useState({
     specialization: "",
     password: "",
@@ -151,8 +151,6 @@ export default function SignUpForm(props) {
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
   };
-
-  const style = styles();
 
   // store reference/data of form
   const formRef = React.useRef(null);
