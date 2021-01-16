@@ -7,7 +7,7 @@ import ScientificWorkReviewerComment from "./ScientificWorkReviewerComment";
 import ScientificWorkReviewerCommentInput from "./ScientificWorkReviewerCommentInput";
 import ScientificWorkAuthorAnswer from "./ScientificWorkAuthorAnswer";
 import ScientificWorkAuthorAnswerInput from "./ScientificWorkAuthorAnswerInput";
-import "../App.css";
+import "../../App.css";
 
 export default function VersionPanel(props) {
   const style = makeStyles({

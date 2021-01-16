@@ -1,5 +1,5 @@
 import React from "react";
-import "../App.css";
+import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -10,15 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import Rating from "@material-ui/lab/Rating";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
-import DropZone from "./DropZone";
+import DropZone from "../DropZone";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import defaultPhoto from "../images/empty-image.png";
+import defaultPhoto from "../../images/empty-image.png";
 import axios from "axios";
-import { URL_API, RATING } from "../Constants";
+import { URL_API, RATING } from "../../Constants";
 
 export default function ScientificWorkReviewerCommentInput(props) {
   const style = makeStyles({

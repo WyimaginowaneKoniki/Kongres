@@ -1,9 +1,9 @@
 import React from "react";
-import "../App.css";
+import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import PreviewPDF from "../components/PreviewPDF";
+import PreviewPDF from "./PreviewPDF";
 
 export default function ScienceWorkInformation(props) {
   const styles = makeStyles({

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import "../../../App.css";
-import SignInForm from "../../../components/SignInForm";
+import SignInForm from "../../../components/Account/SignInForm";
 import { URL, URL_API, LINKS } from "../../../Constants";
 
 function SignInParticipant() {

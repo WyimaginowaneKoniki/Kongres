@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import "../../App.css";
 import { makeStyles } from '@material-ui/core/styles';
-import ScientificWorksOneWork from '../../components/ScientificWorksOneWork'
-import ScientificWorksCategories from '../../components/ScientificWorksCategories'
-import ScientificWorksRecentAuthors from '../../components/ScientificWorksRecentAuthors'
+import ScientificWorksOneWork from '../../components/ScientificWorkList/ScientificWorksOneWork'
+import ScientificWorksCategories from '../../components/ScientificWorkList/ScientificWorksCategories'
+import ScientificWorksRecentAuthors from '../../components/ScientificWorkList/ScientificWorksRecentAuthors'
 import Search from '../../components/Search'
 import picture from '../../images/empty-image.png';
 import axios from "axios";

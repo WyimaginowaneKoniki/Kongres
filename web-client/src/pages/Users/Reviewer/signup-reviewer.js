@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../App.css";
-import SignInUpInfo from "../../../components/SignInUpInfo";
-import SignUpForm from "../../../components/SignUpForm";
+import SignInUpInfo from "../../../components/Account/SignInUpInfo";
+import SignUpForm from "../../../components/Account/SignUpForm";
 import axios from "axios";
 import { URL, URL_API } from "../../../Constants";
 

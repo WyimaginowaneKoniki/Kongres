@@ -1,12 +1,12 @@
 import React from "react";
-import "../App.css";
+import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import defaultPicture from "../images/empty-image.png";
+import defaultPicture from "../../images/empty-image.png";
 import axios from "axios";
-import { URL_API, RATING } from "../Constants";
+import { URL_API, RATING } from "../../Constants";
 
 export default function ScientificWorkReviewerComment(props) {
   const style = makeStyles({

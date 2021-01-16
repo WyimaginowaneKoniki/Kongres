@@ -1,9 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import '../App.css';
+import '../../App.css';
 
-function ScientificWorksCategories(props)
+function MyReviewsCategories(props)
 {
     const styles = makeStyles({
         main:
@@ -21,10 +21,10 @@ function ScientificWorksCategories(props)
 
     return(
         <div className={style.main}>
-            <Button variant='contained' color="primary" 
+            <Button variant='outlined' color="primary" 
                             className={style.btn}>{props.name}</Button>
         </div>
     )   
 }
 
-export default ScientificWorksCategories; 
+export default MyReviewsCategories; 

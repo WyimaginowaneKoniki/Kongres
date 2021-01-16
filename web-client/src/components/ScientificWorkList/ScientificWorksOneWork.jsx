@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { URL_API, LINKS } from "../Constants";
-import "../App.css";
+import { URL_API, LINKS } from "../../Constants";
+import "../../App.css";
 
 function ScientificWorksOneWork(props) {
   const styles = makeStyles({

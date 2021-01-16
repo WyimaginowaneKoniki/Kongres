@@ -1,14 +1,25 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
 import Container from "@material-ui/core/Container";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Avatar from "../components/Avatar";
-import { categories } from "../Constants";
+import Avatar from "./Avatar";
+import { categories } from "../../Constants";
+import { Link } from "react-router-dom";
 
 const styles = makeStyles({
   main: {
@@ -35,7 +46,7 @@ const styles = makeStyles({
     marginBottom: "8px",
   },
   btnSignup: {
-    width: "130px",
+    width: "100px",
     textTransform: "none",
   },
   menuItem: {
@@ -70,16 +81,14 @@ const styles = makeStyles({
   },
 });
 
-export default function PersonalInformation(props) {
-  const [specialization, setSpecialization] = React.useState(
-    props.specialization
-  );
-  const [firstName, setFirstName] = React.useState(props.firstName);
-  const [lastName, setLastName] = React.useState(props.lastName);
-  const [email, setEmail] = React.useState(props.email);
-  const [university, setUniversity] = React.useState(props.university);
-  const [academicTitle, setAcademicTitle] = React.useState(props.academicTitle);
+export default function SignUpForm(props) {
+  const [values, setValues] = React.useState({
+    specialization: "",
+    password: "",
+    showPassword: false,
+  });
 
+  const [specialization, setSpecialization] = React.useState("Select");
   const schema = yup.object().shape({
     firstName: yup
       .string()
@@ -95,6 +104,14 @@ export default function PersonalInformation(props) {
       .string()
       .email("Email should have correct format")
       .required("Required field"),
+    password: yup
+      .string()
+      .required("Required field")
+      .min(12, "Password must be at least 12 characters long")
+      .matches(
+        /^.*(?=.{12,255})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "At least: 12 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
+      ),
     university: yup
       .string()
       .max(255, "University should be 255 character long or less"),
@@ -105,6 +122,10 @@ export default function PersonalInformation(props) {
       is: (specializations) => specialization === "Select",
       then: yup.string().required("Required field"),
     }),
+    acceptance: yup
+      .boolean()
+      .oneOf([true], "Required field")
+      .required("Required field"),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -115,40 +136,39 @@ export default function PersonalInformation(props) {
     resolver: yupResolver(schema),
   });
 
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   const handleChangeSelect = (event) => {
     setSpecialization(event.target.value);
   };
 
-  const handleChangeFirstName = (event) => {
-    setFirstName(event.target.value);
-  };
-
-  const handleChangeLastName = (event) => {
-    setLastName(event.target.value);
-  };
-
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleChangeUniversity = (event) => {
-    setUniversity(event.target.value);
-  };
-
-  const handleChangeAcademicTitle = (event) => {
-    setAcademicTitle(event.target.value);
-  };
-
   const style = styles();
+
+  // store reference/data of form
+  const formRef = React.useRef(null);
+
+  const onSubmit = () => props.GetFormData(new FormData(formRef.current));
 
   return (
     <Container component="main">
       <div className={style.main}>
         <div className={style.columns}>
           <form
+            ref={formRef}
             className={style.form}
             noValidate
-            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+            onSubmit={handleSubmit(onSubmit)}
+            method="post"
           >
             {/* FirstName Input */}
             <TextField
@@ -159,8 +179,6 @@ export default function PersonalInformation(props) {
               name="firstName"
               label="First name"
               autoComplete="first-name"
-              value={firstName}
-              onChange={handleChangeFirstName}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -178,8 +196,6 @@ export default function PersonalInformation(props) {
               name="lastName"
               label="Last name"
               autoComplete="family-name"
-              value={lastName}
-              onChange={handleChangeLastName}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -199,8 +215,6 @@ export default function PersonalInformation(props) {
               type="email"
               placeholder="email@example.com"
               autoComplete="email"
-              value={email}
-              onChange={handleChangeEmail}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -208,6 +222,44 @@ export default function PersonalInformation(props) {
               error={!!errors.email}
               helperText={errors?.email?.message}
             />
+
+            {/* Password Input */}
+            <FormControl
+              className={style.textField}
+              required
+              name="password"
+              variant="outlined"
+              error={!!errors.password}
+            >
+              <InputLabel shrink className={style.inputLabel}>
+                Password
+              </InputLabel>
+              <OutlinedInput
+                inputRef={register}
+                id="password-signup"
+                name="password"
+                type={values.showPassword ? "text" : "password"}
+                value={values.password}
+                autoComplete="new-password"
+                onChange={handleChange("password")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {/*  to do: add helper text and/or strength bar */}
+              <FormHelperText error={true} id="helper-text-password-signup">
+                {errors?.password?.message}
+              </FormHelperText>
+            </FormControl>
 
             {/* University Input */}
             <TextField
@@ -217,8 +269,6 @@ export default function PersonalInformation(props) {
               name="university"
               label="University"
               autoComplete="organization"
-              value={university}
-              onChange={handleChangeUniversity}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -235,8 +285,6 @@ export default function PersonalInformation(props) {
               name="academicTitle"
               label="Academic title"
               autoComplete="job-title"
-              value={academicTitle}
-              onChange={handleChangeAcademicTitle}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -251,7 +299,7 @@ export default function PersonalInformation(props) {
               className={style.textField}
               inputRef={register}
               required
-              id="specialization-personal-information"
+              id="specialization-signup"
               name="specialization"
               label="Specialization"
               autoComplete="specialization"
@@ -275,6 +323,26 @@ export default function PersonalInformation(props) {
             {/* Avatar */}
             {props.participant ? <Avatar name="avatar" /> : null}
 
+            {/* Acceptance - Rules of Conference */}
+            <FormControlLabel
+              className={style.formControlLabel}
+              control={
+                <Checkbox
+                  inputRef={register}
+                  required
+                  id="acceptance-signup"
+                  name="acceptance"
+                  color="primary"
+                />
+              }
+              label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
+              inputRef={register}
+              name="acceptance"
+            />
+            <FormHelperText error className={style.formHelperText}>
+              {errors.acceptance ? errors.acceptance.message : " "}
+            </FormHelperText>
+
             {/* Button Submit */}
             <Button
               className={style.btnSignup}
@@ -282,9 +350,24 @@ export default function PersonalInformation(props) {
               type="submit"
               variant="contained"
             >
-              Save changes
+              Sign up
             </Button>
           </form>
+
+          {/* Info about signing in */}
+          <div className={style.signInUpOther}>
+            <h2 className={style.heading}>{props.heading}</h2>
+            <p className={style.content}>{props.content}</p>
+            <Link to={props.signInLink} style={{ textDecoration: "none" }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={style.btnSignIn}
+              >
+                {props.btn}
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </Container>

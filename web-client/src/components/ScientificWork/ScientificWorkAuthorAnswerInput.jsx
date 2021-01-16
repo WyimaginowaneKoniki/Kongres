@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../App.css";
+import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { TextField } from "@material-ui/core";
@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import axios from "axios";
-import { URL_API } from "../Constants";
+import { URL_API } from "../../Constants";
 
 function ScientificWorkAuthorAnswerInput(props) {
   const style = makeStyles({

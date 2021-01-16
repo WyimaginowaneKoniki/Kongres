@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import defaultPicture from "../images/blank-profile-picture.png";
+import defaultPicture from "../../images/blank-profile-picture.png";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 

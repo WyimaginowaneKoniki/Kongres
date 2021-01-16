@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 import picture from '../images/empty-image.png'
 import AboutInfo from '../components/AboutInfo'
-import AboutProfil from '../components/AboutProfil';
+import AboutProfil from '../components/Account/AboutProfil';
 import { makeStyles } from '@material-ui/core/styles';
 
 function About(props) {

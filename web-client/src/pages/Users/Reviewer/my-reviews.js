@@ -1,8 +1,8 @@
 import React from 'react';
 import '../../../App.css';
 import { makeStyles } from '@material-ui/core/styles';
-import MyReviewsOneReview from '../../../components/MyReviewsOneReview';
-import MyReviewsCategories from '../../../components/MyReviewsCategories';
+import MyReviewsOneReview from '../../../components/Reviews/MyReviewsOneReview';
+import MyReviewsCategories from '../../../components/Reviews/MyReviewsCategories';
 import Search from '../../../components/Search';
 import picture from '../../../images/empty-image.png';
 
