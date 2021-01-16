@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-
 import Home from './pages/home';
 import Agenda from './pages/agenda';
 import Speakers from './pages/speakers';
@@ -12,15 +11,16 @@ import Footer from './components/Footer';
 import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
-import AddingWork from './pages/adding-work';
-import SignUpReviewer from './pages/signup-reviewer';
-import SignUpParticipant from './pages/signup-participant';
-import ScientificWorks from './pages/scientific-works';
-import MyReviews from './pages/my-reviews';
-import MyProfile from './pages/my-profile';
-import SignInReviewer from './pages/signin-reviewer';
-import SignInParticipant from './pages/signin-participant';
-import WorkView from './pages/work-view';
+import AddingWork from './pages/Users/Participant/adding-work';
+import SignUpReviewer from './pages/Users/Reviewer/signup-reviewer';
+import SignUpParticipant from './pages/Users/Participant/signup-participant';
+import ScientificWorks from './pages/ScientificWorks/scientific-works';
+import MyReviews from './pages/Users/Reviewer/my-reviews';
+import MyProfile from './pages/Users/my-profile';
+import SignInReviewer from './pages/Users/Reviewer/signin-reviewer';
+import SignInParticipant from './pages/Users/Participant/signin-participant';
+import WorkView from './pages/ScientificWorks/work-view';
+import { LINKS } from './Constants';
 
 function App() {
     return (
@@ -29,22 +29,29 @@ function App() {
           <Navigation/>
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/agenda" component={Agenda} />
-            <Route path="/speakers" component={Speakers} />
-            <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} />
-            <Route path="/regulations" component={Regulations} />
-            <Route path="/cookies-policy" component={CookiesPolicy} />
-            <Route path="/privacy-policy" component={PrivacyPolicy} />
-            <Route path="/adding-work" component={AddingWork} />
-            <Route path="/signup-reviewer" component={SignUpReviewer} />
-            <Route path="/signup-participant" component={SignUpParticipant} />
-            <Route path="/scientific-works" component={ScientificWorks} />
-            <Route path="/my-reviews" component={MyReviews} />
-            <Route path="/my-profile" component={MyProfile} />
-            <Route path="/signin-reviewer" component={SignInReviewer} />
-            <Route path="/signin-participant" component={SignInParticipant} />
-            <Route path="/work-view" component={WorkView} />
+            <Route path={LINKS.AGENDA} component={Agenda} />
+            <Route path={LINKS.SPEAKERS} component={Speakers} />
+            <Route path={LINKS.ABOUT} component={About} />
+            <Route path={LINKS.CONTACT} component={Contact} />
+            <Route path={LINKS.REGULATIONS} component={Regulations} />
+            <Route path={LINKS.COOKIES} component={CookiesPolicy} />
+            <Route path={LINKS.PRIVACY} component={PrivacyPolicy} />
+
+            <Route path={[LINKS.PROFILE, LINKS.PARTICIPANT, LINKS.REVIEWER]} exact component={MyProfile} />
+
+            {/* Participant */}
+            <Route path={`${LINKS.PARTICIPANT_SIGN_UP}`} component={SignUpParticipant} />
+            <Route path={`${LINKS.PARTICIPANT_LOGIN}`} component={SignInParticipant} />
+            <Route path={`${LINKS.ADDING_WORK}`} component={AddingWork} />
+            
+            {/* Reviewer */}
+            <Route path={`${LINKS.REVIEWER_SIGN_UP}`} component={SignUpReviewer} />
+            <Route path={`${LINKS.REVIEWER_LOGIN}`} component={SignInReviewer} />
+            <Route path={`${LINKS.REVIEWS}`} component={MyReviews} />
+            
+            {/* Scientific works */}
+            <Route path={LINKS.WORKS} exact component={ScientificWorks} />
+            <Route path={LINKS.WORKS} component={WorkView} />
           </Switch>
           <Footer/>
         </div>

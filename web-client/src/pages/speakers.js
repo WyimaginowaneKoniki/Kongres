@@ -1,10 +1,9 @@
-import React from 'react';
-import '../App.css';
-import KeynoteSpeaker from '../components/KeynoteSpeaker'
-import picture from '../images/empty-image.png'
+import React from "react";
+import "../App.css";
+import KeynoteSpeaker from "../components/KeynoteSpeaker";
+import picture from "../images/empty-image.png";
 
-function Speakers() {
-
+export default function Speakers() {
   const speakers = [
     {
       photo: picture,
@@ -12,7 +11,7 @@ function Speakers() {
       spec: "Team Leader & Backend Developer",
       university: "Silesian University of Technology",
       hobby: "Interested in chess, basketball and games",
-      desc: "Ambitious person with many different interests"
+      desc: "Ambitious person with many different interests",
     },
     {
       photo: picture,
@@ -20,7 +19,7 @@ function Speakers() {
       spec: "UX/UI Designer",
       university: "Silesian University of Technology",
       hobby: "Interested in chess, basketball and games",
-      desc: "a little description of yourself"
+      desc: "a little description of yourself",
     },
     {
       photo: picture,
@@ -28,7 +27,7 @@ function Speakers() {
       spec: "Mathematic",
       university: "Silesian University of Technology",
       hobby: "Interested in chess, basketball and games",
-      desc: "a little description of yourself"
+      desc: "a little description of yourself",
     },
     {
       photo: picture,
@@ -36,11 +35,11 @@ function Speakers() {
       spec: "Physic",
       university: "Silesian University of Technology",
       hobby: "Interested in chess, basketball and games",
-      desc: "a little description of yourself"
+      desc: "a little description of yourself",
     },
   ];
 
-  const speakerList = speakers.map(speaker =>
+  const speakerList = speakers.map((speaker) => (
     <KeynoteSpeaker
       photo={speaker.photo}
       name={speaker.name}
@@ -48,15 +47,13 @@ function Speakers() {
       university={speaker.university}
       hobby={speaker.hobby}
       desc={speaker.desc}
-    />  
-  )
+    />
+  ));
 
   return (
     <div>
-        <h1>Keynote speakers</h1>
-        {speakerList}
-    </div>  
+      <h1>Keynote speakers</h1>
+      {speakerList}
+    </div>
   );
 }
-
-export default Speakers;

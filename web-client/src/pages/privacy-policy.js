@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import ParagraphText from "../components/ParagraphText";
 
-function PrivacyPolicy() {
+export default function PrivacyPolicy() {
   const paragraphs = [
     {
       heading: "What information do we collect?",
@@ -30,7 +30,9 @@ function PrivacyPolicy() {
     },
   ];
 
-  const paragraphList = paragraphs.map(p => <ParagraphText heading={p.heading} content={p.content} />)
+  const paragraphList = paragraphs.map((p) => (
+    <ParagraphText heading={p.heading} content={p.content} />
+  ));
 
   return (
     <div>
@@ -39,5 +41,3 @@ function PrivacyPolicy() {
     </div>
   );
 }
-
-export default PrivacyPolicy;

@@ -3,8 +3,8 @@ import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Logo from "../images/empty-image.png";
 
-function Footer() {
-  const styles = makeStyles({
+export default function Footer() {
+  const style = makeStyles({
     main: {
       display: "flex",
       justifyContent: "space-between",
@@ -28,9 +28,7 @@ function Footer() {
         color: "#6069A9",
       },
     },
-  });
-
-  const style = styles();
+  })();
 
   return (
     <div className={style.main}>
@@ -63,5 +61,3 @@ function Footer() {
     </div>
   );
 }
-
-export default Footer;

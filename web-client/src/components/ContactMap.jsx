@@ -2,15 +2,13 @@ import React from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 
-function ContactMap(props) {
-  const styles = makeStyles({
+export default function ContactMap(props) {
+  const style = makeStyles({
     map: {
       width: "100%",
       marginLeft: "40px",
     },
-  });
-
-  const style = styles();
+  })();
 
   return (
     <iframe
@@ -20,5 +18,3 @@ function ContactMap(props) {
     ></iframe>
   );
 }
-
-export default ContactMap;

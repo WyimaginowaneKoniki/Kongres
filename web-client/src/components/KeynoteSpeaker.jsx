@@ -2,8 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "../App.css";
 
-function KeynoteSpeaker(props) {
-  const styles = makeStyles({
+export default function KeynoteSpeaker(props) {
+  const style = makeStyles({
     main: {
       display: "flex",
       justifyContent: "center",
@@ -19,9 +19,8 @@ function KeynoteSpeaker(props) {
       display: "flex",
       flexDirection: "column",
     },
-  });
+  })();
 
-  const style = styles();
 
   return (
     <div className={style.main}>
@@ -36,5 +35,3 @@ function KeynoteSpeaker(props) {
     </div>
   );
 }
-
-export default KeynoteSpeaker;

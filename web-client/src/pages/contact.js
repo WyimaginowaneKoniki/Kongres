@@ -5,15 +5,13 @@ import ContactMap from "../components/ContactMap";
 import picture from "../images/empty-image.png";
 import { makeStyles } from "@material-ui/core/styles";
 
-function Contact(props) {
-  const styles = makeStyles({
+export default function Contact() {
+  const style = makeStyles({
     main: {
       display: "flex",
       justifyContent: "center",
     },
-  });
-
-  const style = styles();
+  })();
 
   const inf1 = {
     path: picture,
@@ -85,5 +83,3 @@ function Contact(props) {
     </div>
   );
 }
-
-export default Contact;

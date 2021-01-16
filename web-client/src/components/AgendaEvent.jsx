@@ -2,8 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "../App.css";
 
-function AgendaEvent(props) {
-  const styles = makeStyles({
+export default function AgendaEvent(props) {
+  const style = makeStyles({
     main: {
       display: "flex",
       justifyContent: "flexStart",
@@ -21,9 +21,7 @@ function AgendaEvent(props) {
     desc: {
       textAlign: "left",
     },
-  });
-
-  const style = styles();
+  })();
 
   return (
     <div className={style.main}>
@@ -37,5 +35,3 @@ function AgendaEvent(props) {
     </div>
   );
 }
-
-export default AgendaEvent;

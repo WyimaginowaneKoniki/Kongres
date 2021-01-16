@@ -3,16 +3,14 @@ import "../App.css";
 import AgendaEvents from "../components/AgendaEvent";
 import { makeStyles } from "@material-ui/core/styles";
 
-function Agenda(props) {
-  const styles = makeStyles({
+export default function Agenda() {
+  const style = makeStyles({
     date: {
       textAlign: "center",
       width: "20%",
       margin: "0",
     },
-  });
-
-  const style = styles();
+  })();
 
   const events1 = [
     {
@@ -106,4 +104,3 @@ function Agenda(props) {
     </div>
   );
 }
-export default Agenda;

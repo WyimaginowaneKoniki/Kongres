@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import ParagraphText from "../components/ParagraphText";
 
-function Regulations() {
+export default function Regulations() {
   const paragraphs = [
     {
       heading: "Rules about conference",
@@ -30,7 +30,9 @@ function Regulations() {
     },
   ];
 
-  const paragraphList = paragraphs.map(p => <ParagraphText heading={p.heading} content={p.content} />)
+  const paragraphList = paragraphs.map((p) => (
+    <ParagraphText heading={p.heading} content={p.content} />
+  ));
 
   return (
     <div>
@@ -39,5 +41,3 @@ function Regulations() {
     </div>
   );
 }
-
-export default Regulations;

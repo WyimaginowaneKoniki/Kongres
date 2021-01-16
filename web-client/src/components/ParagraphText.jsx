@@ -2,8 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "../App.css";
 
-function ParagraphText(props) {
-  const styles = makeStyles({
+export default function ParagraphText(props) {
+  const style = makeStyles({
     main: {
       marginBottom: "1.2em",
     },
@@ -13,9 +13,7 @@ function ParagraphText(props) {
     content: {
       textAlign: "left",
     },
-  });
-
-  const style = styles();
+  })();
 
   return (
     <div className={style.main}>
@@ -24,5 +22,3 @@ function ParagraphText(props) {
     </div>
   );
 }
-
-export default ParagraphText;

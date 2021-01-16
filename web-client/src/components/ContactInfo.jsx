@@ -2,8 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "../App.css";
 
-function ContactInfo(props) {
-  const styles = makeStyles({
+export default function ContactInfo(props) {
+  const style = makeStyles({
     main: {
       display: "flex",
       justifyContent: "flex-start",
@@ -24,9 +24,8 @@ function ContactInfo(props) {
         color: "grey",
       },
     },
-  });
+  })();
 
-  const style = styles();
   const showLink = (
     <a href={props.link} className={style.a}>
       <h3 className={style.text}>{props.name}</h3>
@@ -41,5 +40,3 @@ function ContactInfo(props) {
     </div>
   );
 }
-
-export default ContactInfo;

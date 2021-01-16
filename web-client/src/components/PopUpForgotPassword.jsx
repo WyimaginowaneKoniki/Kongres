@@ -9,49 +9,49 @@ import Dialog from "@material-ui/core/Dialog";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const styles = makeStyles({
-  main: {
-    display: "inline-block",
-  },
-  content: {
-    padding: "30px 100px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    float: "left",
-    textAlign: "left",
-    maxWidth: "400px",
-    margin: "16px",
-  },
-  textField: {
-    marginBottom: "32px",
-    width: "300px",
-  },
-  send: {
-    width: "100px",
-    textTransform: "none",
-    float: "right",
-    marginLeft: "auto",
-    display: "block",
-  },
-  textButton: {
-    textTransform: "none",
-  },
-  message: {
-    textAlign: "center",
-    marginTop: "30px",
-    marginBottom: "30px",
-  },
-});
-
-function Alert(props) {
-  return <MuiAlert elevation={6} {...props} />;
-}
-
-const duration = 4000;
-
 export default function PopUpForgotPassword(props) {
+  const style = makeStyles({
+    main: {
+      display: "inline-block",
+    },
+    content: {
+      padding: "30px 100px",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      float: "left",
+      textAlign: "left",
+      maxWidth: "400px",
+      margin: "16px",
+    },
+    textField: {
+      marginBottom: "32px",
+      width: "300px",
+    },
+    send: {
+      width: "100px",
+      textTransform: "none",
+      float: "right",
+      marginLeft: "auto",
+      display: "block",
+    },
+    textButton: {
+      textTransform: "none",
+    },
+    message: {
+      textAlign: "center",
+      marginTop: "30px",
+      marginBottom: "30px",
+    },
+  })();
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} {...props} />;
+  }
+
+  const duration = 4000;
+
   const [email, setEmail] = useState("");
 
   const schema = yup.object().shape({
@@ -85,7 +85,7 @@ export default function PopUpForgotPassword(props) {
 
   // Show alert: successfully or unsuccessfully
   const ShowAlert = (bool) => {
-    if(bool) SetOpenAlertSuccess(true);
+    if (bool) SetOpenAlertSuccess(true);
     else SetOpenAlertError(true);
   };
 
@@ -96,8 +96,6 @@ export default function PopUpForgotPassword(props) {
     SetOpenAlertSuccess(false);
     SetOpenAlertError(false);
   };
-
-  const style = styles();
 
   let isSuccessfully = email !== "";
 

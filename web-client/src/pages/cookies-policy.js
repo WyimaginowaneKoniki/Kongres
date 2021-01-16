@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import ParagraphText from "../components/ParagraphText";
 
-function CookiesPolicy() {
+export default function CookiesPolicy() {
   const paragraphs = [
     {
       heading: "What information do we collect?",
@@ -30,7 +30,9 @@ function CookiesPolicy() {
     },
   ];
 
-  const paragraphList = paragraphs.map(p => <ParagraphText heading={p.heading} content={p.content} />)
+  const paragraphList = paragraphs.map((p) => (
+    <ParagraphText heading={p.heading} content={p.content} />
+  ));
 
   return (
     <div>
@@ -39,5 +41,3 @@ function CookiesPolicy() {
     </div>
   );
 }
-
-export default CookiesPolicy;
