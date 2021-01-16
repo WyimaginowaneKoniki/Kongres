@@ -3,13 +3,13 @@ import "../../../App.css";
 import SignInUpInfo from "../../../components/SignInUpInfo";
 import SignUpForm from "../../../components/SignUpForm";
 import axios from "axios";
-import { URL, URL_API } from "../../../Constants";
+import { URL, URL_API, LINKS } from "../../../Constants";
 
 function SignUpParticipant() {
   const signUpParticipantInfo = {
     content:
       "As Participant you can see and add your work. Be reviewed by our Reviewers. If you want to be Reviewer... Sign up ",
-    signUpAsOtherLink: "/reviewer/sign-up",
+    signUpAsOtherLink: `${LINKS.REVIEWER_SIGN_UP}`,
   };
 
   const signInParticipant = {
@@ -17,7 +17,7 @@ function SignUpParticipant() {
     content: "If you have already an account, sign in here",
     btn: "Sign in",
     participant: true,
-    signInLink: "/participant/login",
+    signInLink: `${LINKS.PARTICIPANT_LOGIN}`,
   };
 
   const Register = (data) => {

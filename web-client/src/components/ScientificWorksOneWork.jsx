@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { URL_API } from "../Constants";
+import { URL_API, LINKS } from "../Constants";
 import "../App.css";
 
 function ScientificWorksOneWork(props) {
@@ -73,7 +73,7 @@ function ScientificWorksOneWork(props) {
   const history = useHistory();
 
   const readMore = () => {
-    const path = `/scientific-works/${props.id}`;
+    const path = `${LINKS.WORKS}/${props.id}`;
     history.push({
       pathname: path,
       state: { detail: props.id },

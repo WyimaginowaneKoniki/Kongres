@@ -358,13 +358,15 @@ export default function SignUpForm(props) {
           <div className={style.signInUpOther}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Button
-              variant="outlined"
-              color="primary"
-              className={style.btnSignIn}
-            >
-              <Link to={props.signInLink} style={{ textDecoration: "none" }}>{props.btn}</Link>
-            </Button>
+            <Link to={props.signInLink} style={{ textDecoration: "none" }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={style.btnSignIn}
+              >
+                {props.btn}
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

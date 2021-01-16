@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-
 import Home from './pages/home';
 import Agenda from './pages/agenda';
 import Speakers from './pages/speakers';
@@ -21,6 +20,7 @@ import MyProfile from './pages/Users/my-profile';
 import SignInReviewer from './pages/Users/Reviewer/signin-reviewer';
 import SignInParticipant from './pages/Users/Participant/signin-participant';
 import WorkView from './pages/ScientificWorks/work-view';
+import { LINKS } from './Constants';
 
 function App() {
     return (
@@ -29,29 +29,29 @@ function App() {
           <Navigation/>
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/agenda" component={Agenda} />
-            <Route path="/speakers" component={Speakers} />
-            <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} />
-            <Route path="/regulations" component={Regulations} />
-            <Route path="/cookies-policy" component={CookiesPolicy} />
-            <Route path="/privacy-policy" component={PrivacyPolicy} />
+            <Route path={LINKS.AGENDA} component={Agenda} />
+            <Route path={LINKS.SPEAKERS} component={Speakers} />
+            <Route path={LINKS.ABOUT} component={About} />
+            <Route path={LINKS.CONTACT} component={Contact} />
+            <Route path={LINKS.REGULATIONS} component={Regulations} />
+            <Route path={LINKS.COOKIES} component={CookiesPolicy} />
+            <Route path={LINKS.PRIVACY} component={PrivacyPolicy} />
 
-            <Route path={["/my-profile", "/participant", "/reviewer"]} exact component={MyProfile} />
+            <Route path={[LINKS.PROFILE, LINKS.PARTICIPANT, LINKS.REVIEWER]} exact component={MyProfile} />
 
             {/* Participant */}
-            <Route path="/participant/sign-up" component={SignUpParticipant} />
-            <Route path="/participant/login" component={SignInParticipant} />
-            <Route path="/participant/adding-work" component={AddingWork} />
+            <Route path={`${LINKS.PARTICIPANT_SIGN_UP}`} component={SignUpParticipant} />
+            <Route path={`${LINKS.PARTICIPANT_LOGIN}`} component={SignInParticipant} />
+            <Route path={`${LINKS.ADDING_WORK}`} component={AddingWork} />
             
             {/* Reviewer */}
-            <Route path="/reviewer/sign-up" component={SignUpReviewer} />
-            <Route path="/reviewer/login" component={SignInReviewer} />
-            <Route path="/reviewer/my-reviews" component={MyReviews} />
+            <Route path={`${LINKS.REVIEWER_SIGN_UP}`} component={SignUpReviewer} />
+            <Route path={`${LINKS.REVIEWER_LOGIN}`} component={SignInReviewer} />
+            <Route path={`${LINKS.REVIEWS}`} component={MyReviews} />
             
             {/* Scientific works */}
-            <Route path="/scientific-works" exact component={ScientificWorks} />
-            <Route path="/scientific-works" component={WorkView} />
+            <Route path={LINKS.WORKS} exact component={ScientificWorks} />
+            <Route path={LINKS.WORKS} component={WorkView} />
           </Switch>
           <Footer/>
         </div>

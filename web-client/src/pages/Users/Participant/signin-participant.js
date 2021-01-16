@@ -2,16 +2,16 @@ import axios from "axios";
 import React from "react";
 import "../../../App.css";
 import SignInForm from "../../../components/SignInForm";
-import { URL, URL_API } from "../../../Constants";
+import { URL, URL_API, LINKS } from "../../../Constants";
 
 function SignInParticipant() {
   const signUpRParticipant = {
     heading: "Don't have an account?",
     content: "If you want to review... or something... sign up",
     btn: "Sign up",
-    signUpLink: "/participant/sign-up",
+    signUpLink: `${LINKS.PARTICIPANT_SIGN_UP}`,
     signInAs: "reviewer",
-    signInAsOtherLink: "/reviewer/login",
+    signInAsOtherLink: `${LINKS.REVIEWER_LOGIN}`,
   };
 
   const Login = (data) => {
