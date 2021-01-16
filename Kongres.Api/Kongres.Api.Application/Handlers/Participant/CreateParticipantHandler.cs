@@ -47,14 +47,16 @@ namespace Kongres.Api.Application.Handlers.Participant
             var createUserResult = await _userManager.CreateAsync(user, request.Password);
 
             if (createUserResult.Succeeded)
+            {
                 await _userManager.AddToRoleAsync(user, userType.ToString());
 
-            var verificationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var verificationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var link = $"https://localhost:5001/email-confirm-token?confirmToken={verificationToken}&userId={user.Id}";
+                var link = $"https://localhost:5001/email-confirm-token?confirmToken={verificationToken}&userId={user.Id}";
 
-            var message = $"<a href='{link}'>Please confirm email</a>";
-            await _emailService.SendAsync(request.Email, "Verify account", message, true);
+                var message = $"<a href='{link}'>Please confirm email</a>";
+                await _emailService.SendAsync(request.Email, "Verify account", message, true);
+            }
         }
     }
 }
