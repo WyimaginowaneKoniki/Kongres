@@ -10,8 +10,8 @@ namespace Kongres.Api.WebApi.Controller
         public UserController(IMediator mediator) : base(mediator)
         { }
 
-        [HttpGet("Confirm")]
-        public async Task<IActionResult> ConfirmAccount([FromQuery] ConfirmUserQuery query)
+        [HttpPost("Confirm")]
+        public async Task<IActionResult> ConfirmAccount([FromBody] ConfirmUserQuery query)
         {
             await CommandAsync(query);
             return Ok();

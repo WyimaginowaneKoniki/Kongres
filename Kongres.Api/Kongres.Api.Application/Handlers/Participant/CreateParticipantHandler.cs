@@ -51,7 +51,7 @@ namespace Kongres.Api.Application.Handlers.Participant
 
             var verificationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var link = $"https://localhost:5001/email-confirm-token?token={verificationToken}&userId={user.Id}";
+            var link = $"https://localhost:5001/email-confirm-token?confirmToken={verificationToken}&userId={user.Id}";
 
             var message = $"<a href='{link}'>Please confirm email</a>";
             await _emailService.SendAsync(request.Email, "Verify account", message, true);

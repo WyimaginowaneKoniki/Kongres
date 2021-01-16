@@ -12,27 +12,27 @@ export default function EmailConfirmationToken() {
 
   const durationOfAlert = 4000;
 
-
   useEffect(() => {
+    // get token and user it 
+    // in weird way, but it works!
+    // I don't use other ways e.g. send only window.location.search
+    // it causes token changes like '+' sign is replaced by space :C
+    var params = window.location.search.split("&userId=");
 
-    const url = new URL(window.location.href);
-    const token = url.searchParams.get("token");
-    const id = url.searchParams.get("userId");
-    console.log(`token: ${token}\nid: ${id}`);
-
-    
     axios
-    .get(`${URL_API}/User/Confirm`)
-    .then((response) => {
-      console.log(response);
-    });
-
+      .post(`${URL_API}/User/Confirm`, {
+        confirmToken: params[0].substr(14),
+        userId: params[1],
+      })
+      .then((response) => {
+        console.log(response);
+      });
   });
 
   const [openAlert, SetOpenAlert] = useState(false);
 
   // Close alert
-  const CloseAlert = (event, reason) => {
+  const CloseAlert = (_, reason) => {
     if (reason === "clickaway") return;
 
     SetOpenAlert(false);
