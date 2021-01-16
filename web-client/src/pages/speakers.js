@@ -8,16 +8,18 @@ function Speakers() {
   const speakers = [
     {
       photo: picture,
-      name: "John Doe",
-      spec: "Mathematic",
+      name: "Dominik Tyc",
+      spec: "Team Leader & Backend Developer",
       university: "Silesian University of Technology",
-      desc: "a little description of yourself"
+      hobby: "Interested in chess, basketball and games",
+      desc: "Ambitious person with many different interests"
     },
     {
       photo: picture,
-      name: "Ann Doe",
-      spec: "Physic",
+      name: "Sandra Uptas",
+      spec: "UX/UI Designer",
       university: "Silesian University of Technology",
+      hobby: "Interested in chess, basketball and games",
       desc: "a little description of yourself"
     },
     {
@@ -25,6 +27,7 @@ function Speakers() {
       name: "Peter Doe",
       spec: "Mathematic",
       university: "Silesian University of Technology",
+      hobby: "Interested in chess, basketball and games",
       desc: "a little description of yourself"
     },
     {
@@ -32,6 +35,7 @@ function Speakers() {
       name: "Josephine Doe",
       spec: "Physic",
       university: "Silesian University of Technology",
+      hobby: "Interested in chess, basketball and games",
       desc: "a little description of yourself"
     },
   ];
@@ -42,13 +46,14 @@ function Speakers() {
       name={speaker.name}
       spec={speaker.spec}
       university={speaker.university}
+      hobby={speaker.hobby}
       desc={speaker.desc}
     />  
   )
 
   return (
     <div>
-        <h1>Speakers</h1>
+        <h1>Keynote speakers</h1>
         {speakerList}
     </div>  
   );
