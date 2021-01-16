@@ -4,6 +4,9 @@ import "../App.css";
 
 function ParagraphText(props) {
   const styles = makeStyles({
+    main: {
+      marginBottom: "1.2em",
+    },
     heading: {
       textAlign: "left",
     },
