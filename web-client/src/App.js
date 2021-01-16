@@ -36,15 +36,22 @@ function App() {
             <Route path="/regulations" component={Regulations} />
             <Route path="/cookies-policy" component={CookiesPolicy} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
-            <Route path="/adding-work" component={AddingWork} />
-            <Route path="/signup-reviewer" component={SignUpReviewer} />
-            <Route path="/signup-participant" component={SignUpParticipant} />
-            <Route path="/scientific-works" component={ScientificWorks} />
-            <Route path="/my-reviews" component={MyReviews} />
-            <Route path="/my-profile" component={MyProfile} />
-            <Route path="/signin-reviewer" component={SignInReviewer} />
-            <Route path="/signin-participant" component={SignInParticipant} />
-            <Route path="/work-view" component={WorkView} />
+
+            <Route path={["/my-profile", "/participant", "/reviewer"]} exact component={MyProfile} />
+
+            {/* Participant */}
+            <Route path="/participant/sign-up" component={SignUpParticipant} />
+            <Route path="/participant/login" component={SignInParticipant} />
+            <Route path="/participant/adding-work" component={AddingWork} />
+            
+            {/* Reviewer */}
+            <Route path="/reviewer/sign-up" component={SignUpReviewer} />
+            <Route path="/reviewer/login" component={SignInReviewer} />
+            <Route path="/reviewer/my-reviews" component={MyReviews} />
+            
+            {/* Scientific works */}
+            <Route path="/scientific-works" exact component={ScientificWorks} />
+            <Route path="/scientific-works" component={WorkView} />
           </Switch>
           <Footer/>
         </div>

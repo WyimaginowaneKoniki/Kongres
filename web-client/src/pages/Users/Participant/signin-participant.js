@@ -9,9 +9,9 @@ function SignInParticipant() {
     heading: "Don't have an account?",
     content: "If you want to review... or something... sign up",
     btn: "Sign up",
-    signUpLink: "/signup-participant",
+    signUpLink: "/participant/sign-up",
     signInAs: "reviewer",
-    signInAsOtherLink: "/signin-reviewer",
+    signInAsOtherLink: "/reviewer/login",
   };
 
   const Login = (data) => {
