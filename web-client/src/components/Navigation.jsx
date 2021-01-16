@@ -17,7 +17,7 @@ function Navigation(props) {
     logo: {
       float: "left",
       marginLeft: "138px",
-      marginTop: "10.5px",
+      marginTop: "10px",
       width: "210px",
     },
     boxBottom: {
@@ -46,39 +46,36 @@ function Navigation(props) {
     },
     btn1: {
       float: "right",
-      marginTop: '27px',
+      marginTop: "27px",
       textTransform: "none",
-      width: '100px',
-      height: '35px',
-      backgroundColor: '#6069A9',
-      '&:hover':
-      {
-        backgroundColor: '#6069A9C4',
-      }
+      width: "100px",
+      height: "35px",
+      backgroundColor: "#6069A9",
+      "&:hover": {
+        backgroundColor: "#6069A9C4",
+      },
     },
     btn2: {
       float: "right",
-      marginTop: '27px',
+      marginTop: "27px",
       textTransform: "none",
-      width: '110px',
-      height: '35px',
-      backgroundColor: '#6069A9',
-      '&:hover':
-      {
-        backgroundColor: '#6069A9C4',
-      }
+      width: "110px",
+      height: "35px",
+      backgroundColor: "#6069A9",
+      "&:hover": {
+        backgroundColor: "#6069A9C4",
+      },
     },
     btn3: {
       float: "right",
-      marginTop: '27px',
+      marginTop: "27px",
       textTransform: "none",
-      width: '125px',
-      height: '35px',
-      backgroundColor: '#6069A9',
-      '&:hover':
-      {
-        backgroundColor: '#6069A9C4',
-      }
+      width: "125px",
+      height: "35px",
+      backgroundColor: "#6069A9",
+      "&:hover": {
+        backgroundColor: "#6069A9C4",
+      },
     },
     text: {
       float: "right",
@@ -91,16 +88,15 @@ function Navigation(props) {
     name: {
       float: "right",
       fontSize: "14px",
-      color: '#6069A9',
+      color: "#6069A9",
     },
     logout: {
       float: "right",
       fontSize: "12px",
-      color: '#767676',
-      '&:hover':
-      {
+      color: "#767676",
+      "&:hover": {
         cursor: "pointer",
-      }
+      },
     },
     link: {
       color: "black",
@@ -115,9 +111,11 @@ function Navigation(props) {
   const style = styles();
 
   const Logout = () => {
-    localStorage.removeItem("jwt"); 
-    window.location.href = URL; 
+    localStorage.removeItem("jwt");
+    window.location.href = URL;
   };
+
+  const path = `/work-view/${props.userInfo.scientificWorkId}`
 
   return (
     <div className={style.main}>
@@ -128,43 +126,55 @@ function Navigation(props) {
       </Box>
       <div className={style.boxTop}>
         <NavLink exact to="/my-profile">
-          <img className={style.avatar} src={props.userInfo.photoBase64 ? props.userInfo.photoBase64: Avatar} alt="Avatar" />
+          <img
+            className={style.avatar}
+            src={
+              props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
+            }
+            alt="Avatar"
+          />
         </NavLink>
         <div className={style.text}>
-        <NavLink exact to="/my-profile">
-          <span className={style.name}>{props.userInfo.name}</span>
-        </NavLink>
-          <span className={style.logout} onClick={Logout}>Log out</span>
+          <NavLink exact to="/my-profile">
+            <span className={style.name}>{props.userInfo.name}</span>
+          </NavLink>
+          <span className={style.logout} onClick={Logout}>
+            Log out
+          </span>
         </div>
-        {props.userInfo.role === "Participant" && props.userInfo.scientificWorkId !== 0 && (
-          <Box>
-            <NavLink exact to="/work-view">
-              <Button
-                className={style.btn1}
-                color="primary"
-                type="submit"
-                variant="contained"
-              >
-                My work
-              </Button>
-            </NavLink>
-          </Box>
-        )}
 
-        {props.userInfo.role === "Participant" && props.userInfo.scientificWorkId === 0 && (
-          <Box>
-            <NavLink exact to="/adding-work">
-              <Button
-                className={style.btn2}
-                color="primary"
-                type="submit"
-                variant="contained"
-              >
-                Add work
-              </Button>
-            </NavLink>
-          </Box>
-        )}
+        {props.userInfo.role === "Participant" &&
+          props.userInfo.scientificWorkId === 0 && (
+            <Box>
+              <NavLink exact to="/adding-work">
+                <Button
+                  className={style.btn2}
+                  color="primary"
+                  type="submit"
+                  variant="contained"
+                >
+                  Add work
+                </Button>
+              </NavLink>
+            </Box>
+          )}
+
+
+        {props.userInfo.role === "Participant" &&
+          props.userInfo.scientificWorkId !== 0 && (
+            <Box>
+              <NavLink exact to={path}>
+                <Button
+                  className={style.btn1}
+                  color="primary"
+                  type="submit"
+                  variant="contained"
+                >
+                  My work
+                </Button>
+              </NavLink>
+            </Box>
+          )}
 
         {props.userInfo.role === "Reviewer" && (
           <Box>
