@@ -20,7 +20,7 @@ import defaultPhoto from "../../images/empty-image.png";
 import axios from "axios";
 import { URL_API, RATING } from "../../Constants";
 
-export default function ScientificWorkReviewerCommentInput(props) {
+export default function ReviewerCommentInput(props) {
   const style = makeStyles({
     contentOnPage: {
       width: "600px",

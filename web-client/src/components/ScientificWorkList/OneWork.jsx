@@ -6,7 +6,7 @@ import axios from "axios";
 import { URL_API, LINKS } from "../../Constants";
 import "../../App.css";
 
-function ScientificWorksOneWork(props) {
+function OneWork(props) {
   const styles = makeStyles({
     main: {
       width: "100%",
@@ -135,4 +135,4 @@ function ScientificWorksOneWork(props) {
   );
 }
 
-export default ScientificWorksOneWork;
+export default OneWork;

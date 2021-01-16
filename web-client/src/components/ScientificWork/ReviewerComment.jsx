@@ -8,7 +8,7 @@ import defaultPicture from "../../images/empty-image.png";
 import axios from "axios";
 import { URL_API, RATING } from "../../Constants";
 
-export default function ScientificWorkReviewerComment(props) {
+export default function ReviewerComment(props) {
   const style = makeStyles({
     review: {
       width: "600px",

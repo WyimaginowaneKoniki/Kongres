@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
-import ScienceWorkInformation from "../../components/ScientificWork/ScienceWorkInformation";
+import Information from "../../components/ScientificWork/Information";
 import VersionPanel from "../../components/ScientificWork/VersionPanel";
 import axios from "axios";
 import { URL_API } from "../../Constants";
@@ -90,7 +90,7 @@ function WorkView() {
         </p>
       )}
 
-      <ScienceWorkInformation
+      <Information
         scientificWork={data.scientificWork}
         author={data.mainAuthor}
         status={data.status}

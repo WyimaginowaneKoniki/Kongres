@@ -3,10 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import Rating from "@material-ui/lab/Rating";
-import ScientificWorkReviewerComment from "./ScientificWorkReviewerComment";
-import ScientificWorkReviewerCommentInput from "./ScientificWorkReviewerCommentInput";
-import ScientificWorkAuthorAnswer from "./ScientificWorkAuthorAnswer";
-import ScientificWorkAuthorAnswerInput from "./ScientificWorkAuthorAnswerInput";
+import ReviewerComment from "./ReviewerComment";
+import ReviewerCommentInput from "./ReviewerCommentInput";
+import AuthorAnswer from "./AuthorAnswer";
+import AuthorAnswerInput from "./AuthorAnswerInput";
 import "../../App.css";
 
 export default function VersionPanel(props) {
@@ -42,7 +42,7 @@ export default function VersionPanel(props) {
           if (props.mode === "Author") reviewerName = `Reviewer ${i + 1}`;
 
           reviewsView.push(
-            <ScientificWorkReviewerComment
+            <ReviewerComment
               key={j++}
               rating={reviews[i].rating}
               reviewText={reviews[i].reviewMsg}
@@ -55,7 +55,7 @@ export default function VersionPanel(props) {
 
           if (reviews[i].answerMsg) {
             reviewsView.push(
-              <ScientificWorkAuthorAnswer
+              <AuthorAnswer
                 key={j++}
                 answer={reviews[i].answerMsg}
                 date={reviews[i].answerDate}
@@ -67,7 +67,7 @@ export default function VersionPanel(props) {
           // when author is on the page and didn't answer yet
           else if (props.mode === "Author") {
             reviewsView.push(
-              <ScientificWorkAuthorAnswerInput
+              <AuthorAnswerInput
                 key={j++}
                 name={props.authorName}
                 photo={props.authorPhoto}
@@ -78,7 +78,7 @@ export default function VersionPanel(props) {
         }
       } else if (props.mode === "Reviewer") {
         reviewsView.push(
-          <ScientificWorkReviewerCommentInput
+          <ReviewerCommentInput
             key={j++}
             scientificWorkId={props.scientificWorkId}
           />

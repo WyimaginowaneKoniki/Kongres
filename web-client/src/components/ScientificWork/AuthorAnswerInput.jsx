@@ -10,7 +10,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import axios from "axios";
 import { URL_API } from "../../Constants";
 
-function ScientificWorkAuthorAnswerInput(props) {
+function AuthorAnswerInput(props) {
   const style = makeStyles({
     answerInput: {
       width: "600px",
@@ -150,4 +150,4 @@ function ScientificWorkAuthorAnswerInput(props) {
   );
 }
 
-export default ScientificWorkAuthorAnswerInput;
+export default AuthorAnswerInput;

@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import PreviewPDF from "./PreviewPDF";
 
-export default function ScienceWorkInformation(props) {
+export default function Information(props) {
   const styles = makeStyles({
     main: {
       width: "80%",

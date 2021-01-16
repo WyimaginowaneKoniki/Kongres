@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../App.css';
 
-function ScientificWorksRecentAuthors(props)
+function RecentAuthors(props)
 {
     const styles = makeStyles({
         main:
@@ -42,4 +42,4 @@ function ScientificWorksRecentAuthors(props)
     )
 }
 
-export default ScientificWorksRecentAuthors; 
+export default RecentAuthors; 

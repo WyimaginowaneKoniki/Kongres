@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import "../../App.css";
 import { makeStyles } from '@material-ui/core/styles';
-import ScientificWorksOneWork from '../../components/ScientificWorkList/ScientificWorksOneWork'
-import ScientificWorksCategories from '../../components/ScientificWorkList/ScientificWorksCategories'
-import ScientificWorksRecentAuthors from '../../components/ScientificWorkList/ScientificWorksRecentAuthors'
+import OneWork from '../../components/ScientificWorkList/OneWork'
+import Categories from '../../components/ScientificWorkList/Categories'
+import RecentAuthors from '../../components/ScientificWorkList/RecentAuthors'
 import Search from '../../components/Search'
 import picture from '../../images/empty-image.png';
 import axios from "axios";
@@ -80,7 +80,7 @@ function ScientificWorks(props) {
     };
 
     const workList = works.map((work) => (
-      <ScientificWorksOneWork
+      <OneWork
         title={work.title}
         categories={work.specialization}
         date={convertDate(work.creationDate)}
@@ -91,7 +91,7 @@ function ScientificWorks(props) {
     ));
 
     const categories = ['Mathematics', 'Technology', 'Computer Science'];
-    const categoryList = categories.map(name => <ScientificWorksCategories name = {name}/>)
+    const categoryList = categories.map(name => <Categories name = {name}/>)
 
     const recents = [
         {
@@ -121,7 +121,7 @@ function ScientificWorks(props) {
     ];
     
     const recentList = recents.map(recent =>
-        <ScientificWorksRecentAuthors
+        <RecentAuthors
             path = {recent.path}
             alternativeText = {recent.alternativeText}
             name = {recent.name}
