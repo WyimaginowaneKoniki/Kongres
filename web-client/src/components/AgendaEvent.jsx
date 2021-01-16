@@ -5,23 +5,21 @@ import "../App.css";
 function AgendaEvent(props) {
   const styles = makeStyles({
     main: {
-      padding: "2%",
+      display: "flex",
+      justifyContent: "flexStart",
+      padding: "24px",
+      marginBottom: "24px",
+      backgroundColor: "#DFE2F8",
     },
     title: {
       textAlign: "left",
-      margin: "0 25%",
-      width: "60%",
     },
     time: {
-      textAlign: "center",
-      width: "20%",
-      margin: "0",
+      textAlign: "left",
+      width: "320px",
     },
     desc: {
       textAlign: "left",
-      margin: "0 20%",
-      display: "block",
-      width: "60%",
     },
   });
 
@@ -29,11 +27,13 @@ function AgendaEvent(props) {
 
   return (
     <div className={style.main}>
-      <h2 className={style.title}>{props.title}</h2>
       <h3 className={style.time}>
         {props.time1} - {props.time2}
       </h3>
-      <span className={style.desc}>{props.content}</span>
+      <div className={style.eventInfo}>
+        <h2 className={style.title}>{props.title}</h2>
+        <p className={style.desc}>{props.content}</p>
+      </div>
     </div>
   );
 }
