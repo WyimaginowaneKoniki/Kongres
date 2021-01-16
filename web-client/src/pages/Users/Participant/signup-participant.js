@@ -8,7 +8,8 @@ import { URL, URL_API } from "../../../Constants";
 function SignUpParticipant() {
   const signUpParticipantInfo = {
     content:
-      "As Participant you can see and add your work.Be reviewed by our Reviewers. If you want to be Reviewer... Sign up here...",
+      "As Participant you can see and add your work. Be reviewed by our Reviewers. If you want to be Reviewer... Sign up ",
+    signUpAsOtherLink: "/reviewer/sign-up",
   };
 
   const signInParticipant = {
@@ -16,27 +17,29 @@ function SignUpParticipant() {
     content: "If you have already an account, sign in here",
     btn: "Sign in",
     participant: true,
+    signInLink: "/participant/login",
   };
 
   const Register = (data) => {
-    axios
-      .post(`${URL_API}/Participant/Register`, data)
-      .then((response) => {
-        // OK
-        if (response.status === 200) {
-          window.location.href = URL;
-        }
-        // User conflict/user already exists in db
-        else if (response.status === 409) {
-          // show error or smth
-        }
-      });
+    axios.post(`${URL_API}/Participant/Register`, data).then((response) => {
+      // OK
+      if (response.status === 200) {
+        window.location.href = URL;
+      }
+      // User conflict/user already exists in db
+      else if (response.status === 409) {
+        // show error or smth
+      }
+    });
   };
 
   return (
     <div>
       <h1>Sign up as Participant</h1>
-      <SignInUpInfo content={signUpParticipantInfo.content} />
+      <SignInUpInfo
+        content={signUpParticipantInfo.content}
+        signUpAsOtherLink={signUpParticipantInfo.signUpAsOtherLink}
+      />
       <div>
         <SignUpForm
           GetFormData={Register}
@@ -44,6 +47,7 @@ function SignUpParticipant() {
           content={signInParticipant.content}
           btn={signInParticipant.btn}
           participant={signInParticipant.participant}
+          signInLink={signInParticipant.signInLink}
         />
       </div>
     </div>

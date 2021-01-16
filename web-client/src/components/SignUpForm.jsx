@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "../components/Avatar";
 import { categories } from "../Constants";
+import { Link } from "react-router-dom";
 
 const styles = makeStyles({
   main: {
@@ -362,7 +363,7 @@ export default function SignUpForm(props) {
               color="primary"
               className={style.btnSignIn}
             >
-              {props.btn}
+              <Link to={props.signInLink} style={{ textDecoration: "none" }}>{props.btn}</Link>
             </Button>
           </div>
         </div>
