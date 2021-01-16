@@ -6,8 +6,8 @@ import { URL, URL_API } from "../Constants";
 
 function SignInReviewer() {
   const signUpReviewer = {
-    heading: "Don't have an account?",
-    content: "If you want to review... or something... sign up",
+    heading: "Interested in reviewing works?",
+    content: "Sign up now and become our reviewer",
     btn: "Sign up",
     signUpLink: "/signup-reviewer",
     signInAs: "participant",
@@ -31,8 +31,7 @@ function SignInReviewer() {
 
   return (
     <div>
-      <h1>Sign in as Reviewer</h1>
-
+      <h1>Log in as Reviewer</h1>
       <SignInForm
         Login={Login}
         heading={signUpReviewer.heading}

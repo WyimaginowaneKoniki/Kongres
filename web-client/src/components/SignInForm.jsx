@@ -12,13 +12,12 @@ import PopUpForgotPassword from "../components/PopUpForgotPassword";
 
 const styles = makeStyles({
   main: {
-    padding: "2%",
     display: "flex",
+    justifyContent: "center",
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    float: "left",
     textAlign: "left",
     maxWidth: "400px",
     margin: "16px",
@@ -43,12 +42,11 @@ const styles = makeStyles({
     float: "right",
   },
   btnSignUp: {
-    margin: "8px 0px",
+    marginTop: "8px",
     textTransform: "none",
   },
   signUp: {
     maxWidth: "400px",
-    float: "left",
     marginLeft: "144px",
   },
   formHelperText: {
@@ -105,13 +103,13 @@ export default function SignInForm(props) {
 
   const formRef = React.useRef(null);
 
-  async function onSubmit(data){
+  async function onSubmit(data) {
     // when response status is not "OK"
     // show error about logging
     const responseStatus = await props.Login(data);
     if (responseStatus === 200) SetMessageStyle(correctStyle);
     else SetMessageStyle(incorrectStyle);
-  };
+  }
 
   return (
     <Container component="main">
@@ -191,20 +189,16 @@ export default function SignInForm(props) {
           <h2 className={style.heading}>{props.heading}</h2>
           <p className={style.content}>{props.content}</p>
           <Link to={props.signUpLink} style={{ textDecoration: "none" }}>
-            <Button
-              variant="outlined"
-              color="primary"
-              className={style.btnSignUp}
-            >
+            <Button variant="outlined" color="primary" className={style.btnSignUp}>
               {props.btn}
             </Button>
           </Link>
         </div>
       </div>
-      <span className={style.bottomMessage}>
-        If you want to sign in as {props.signInAs}, Sign in{" "}
-        <Link to={props.signInAsOtherLink}>here</Link>
-      </span>
+      <p className={style.bottomMessage}>
+        If you want to log in as {props.signInAs}, go to {" "}
+        <Link to={props.signInAsOtherLink}>login page</Link>
+      </p>
     </Container>
   );
 }

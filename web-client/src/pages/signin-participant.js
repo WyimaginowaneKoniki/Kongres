@@ -7,7 +7,7 @@ import { URL, URL_API } from "../Constants";
 function SignInParticipant() {
   const signUpRParticipant = {
     heading: "Don't have an account?",
-    content: "If you want to review... or something... sign up",
+    content: "If you want to take part in conference, join us now!",
     btn: "Sign up",
     signUpLink: "/signup-participant",
     signInAs: "reviewer",
