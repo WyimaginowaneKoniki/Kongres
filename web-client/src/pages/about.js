@@ -14,7 +14,6 @@ function About(props) {
     position:
       {
         width: '50%',
-        float: 'left',
         paddingBottom: '5%',
       },
   });

@@ -9,13 +9,11 @@ function ContactMap(props) {
         {
             padding: '2%',
             paddingRight: '5%',
-            float: 'right',
             marginTop: '5%',
             width: 480,
         },
         map:
         {
-            float: 'right',
             display: 'block',
             width: "100%",
             height: 480,
