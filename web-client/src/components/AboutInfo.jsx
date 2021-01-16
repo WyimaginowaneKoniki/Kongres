@@ -10,7 +10,6 @@ function AboutInfo(props) {
             marginBottom: '20%',
             width: '80%',
             margin: 'auto',
-            fontSize: '16px',
         },
         left:
         {
