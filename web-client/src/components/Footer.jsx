@@ -41,12 +41,12 @@ function Footer() {
       <div className={style.centrum}>
         <div className={style.text}>
           <a href="privacy-policy" className={style.link}>
-            Polityka prywatności
+            Privacy policy
           </a>
         </div>
         <div className={style.text}>
           <a href="cookies-policy" className={style.link}>
-            Polityka cokkies
+            Cookies policy
           </a>
         </div>
         <div className={style.text}>
