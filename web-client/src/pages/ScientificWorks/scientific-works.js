@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import '../App.css';
+import "../../App.css";
 import { makeStyles } from '@material-ui/core/styles';
-import ScientificWorksOneWork from '../components/ScientificWorksOneWork'
-import ScientificWorksCategories from '../components/ScientificWorksCategories'
-import ScientificWorksRecentAuthors from '../components/ScientificWorksRecentAuthors'
-import Search from '../components/Search'
-import picture from '../images/empty-image.png'
+import ScientificWorksOneWork from '../../components/ScientificWorksOneWork'
+import ScientificWorksCategories from '../../components/ScientificWorksCategories'
+import ScientificWorksRecentAuthors from '../../components/ScientificWorksRecentAuthors'
+import Search from '../../components/Search'
+import picture from '../../images/empty-image.png';
 import axios from "axios";
-import { URL_API } from "../Constants";
+import { URL_API } from "../../Constants";
 
 function ScientificWorks(props) {
     const styles = makeStyles({

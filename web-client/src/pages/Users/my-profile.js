@@ -1,8 +1,8 @@
 import React from 'react';
-import '../App.css';
+import '../../App.css';
 import { makeStyles } from '@material-ui/core/styles';
-import PersonalInformation from '../components/PersonalInformation';
-import ChangePassword from '../components/ChangePassword';
+import PersonalInformation from '../../components/PersonalInformation';
+import ChangePassword from '../../components/ChangePassword';
 import {NavLink} from 'react-router-dom';
 
 function MyProfile()

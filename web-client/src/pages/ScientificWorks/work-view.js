@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "../App.css";
+import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
-import ScienceWorkInformation from "../components/ScienceWorkInformation";
-import VersionPanel from "../components/VersionPanel";
+import ScienceWorkInformation from "../../components/ScienceWorkInformation";
+import VersionPanel from "../../components/VersionPanel";
 import axios from "axios";
-import { URL_API } from "../Constants";
-import defaultPhoto from "../images/empty-image.png"
+import { URL_API } from "../../Constants";
+import defaultPhoto from "../../images/empty-image.png";
 
 function WorkView() {
   const styles = makeStyles({

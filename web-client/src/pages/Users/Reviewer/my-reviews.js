@@ -1,10 +1,10 @@
 import React from 'react';
-import '../App.css';
+import '../../../App.css';
 import { makeStyles } from '@material-ui/core/styles';
-import MyReviewsOneReview from '../components/MyReviewsOneReview'
-import MyReviewsCategories from '../components/MyReviewsCategories'
-import Search from '../components/Search'
-import picture from '../images/empty-image.png'
+import MyReviewsOneReview from '../../../components/MyReviewsOneReview';
+import MyReviewsCategories from '../../../components/MyReviewsCategories';
+import Search from '../../../components/Search';
+import picture from '../../../images/empty-image.png';
 
 function MyReviews(props) {
     const styles = makeStyles({

@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from "react";
-import "../App.css";
-import SignInForm from "../components/SignInForm";
-import { URL, URL_API } from "../Constants";
+import "../../../App.css";
+import SignInForm from "../../../components/SignInForm";
+import { URL, URL_API } from "../../../Constants";
 
 function SignInParticipant() {
   const signUpRParticipant = {

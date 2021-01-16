@@ -1,9 +1,9 @@
 import React from "react";
-import "../App.css";
-import SignInUpInfo from "../components/SignInUpInfo";
-import SignUpForm from "../components/SignUpForm";
+import "../../../App.css";
+import SignInUpInfo from "../../../components/SignInUpInfo";
+import SignUpForm from "../../../components/SignUpForm";
 import axios from "axios";
-import { URL, URL_API } from "../Constants";
+import { URL, URL_API } from "../../../Constants";
 
 function SignUpParticipant() {
   const signUpParticipantInfo = {

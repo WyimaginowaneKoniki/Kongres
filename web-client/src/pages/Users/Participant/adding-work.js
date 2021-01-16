@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import "../App.css";
-import DropZone from "../components/DropZone";
+import "../../../App.css";
+import DropZone from "../../../components/DropZone";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -18,7 +18,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
-import { URL_API, categories } from "../Constants";
+import { URL_API, categories } from "../../../Constants";
 
 function AddingWork() {
   const styles = makeStyles({

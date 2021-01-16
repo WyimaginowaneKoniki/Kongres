@@ -12,15 +12,15 @@ import Footer from './components/Footer';
 import Regulations from './pages/regulations';
 import CookiesPolicy from './pages/cookies-policy';
 import PrivacyPolicy from './pages/privacy-policy';
-import AddingWork from './pages/adding-work';
-import SignUpReviewer from './pages/signup-reviewer';
-import SignUpParticipant from './pages/signup-participant';
-import ScientificWorks from './pages/scientific-works';
-import MyReviews from './pages/my-reviews';
-import MyProfile from './pages/my-profile';
-import SignInReviewer from './pages/signin-reviewer';
-import SignInParticipant from './pages/signin-participant';
-import WorkView from './pages/work-view';
+import AddingWork from './pages/Users/Participant/adding-work';
+import SignUpReviewer from './pages/Users/Reviewer/signup-reviewer';
+import SignUpParticipant from './pages/Users/Participant/signup-participant';
+import ScientificWorks from './pages/ScientificWorks/scientific-works';
+import MyReviews from './pages/Users/Reviewer/my-reviews';
+import MyProfile from './pages/Users/my-profile';
+import SignInReviewer from './pages/Users/Reviewer/signin-reviewer';
+import SignInParticipant from './pages/Users/Participant/signin-participant';
+import WorkView from './pages/ScientificWorks/work-view';
 
 function App() {
     return (
