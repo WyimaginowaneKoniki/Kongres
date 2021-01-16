@@ -1,21 +1,23 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import "../../../App.css";
 import DropZone from "../../../components/DropZone";
-import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import {
+  TextField,
+  Button,
+  MenuItem,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+  Checkbox,
+  FormControlLabel,
+  Snackbar,
+} from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IconButton } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import { URL_API, categories } from "../../../Constants";
@@ -82,18 +84,18 @@ export default function AddingWork() {
 
   const durationOfAlert = 4000;
 
-  const [openAlertError, SetOpenAlertError] = useState(false);
+  const [openAlertError, SetOpenAlertError] = React.useState(false);
 
-  const [file, SetFile] = useState(null);
+  const [file, SetFile] = React.useState(null);
   const passFile = (f) => {
     SetFile(f);
   };
 
-  const [values, setValues] = useState({
+  const [values, setValues] = React.useState({
     title: "",
     description: "",
   });
-  const [counts, setCounts] = useState({
+  const [counts, setCounts] = React.useState({
     title: 0,
     description: 0,
   });
@@ -103,7 +105,7 @@ export default function AddingWork() {
   const maxAuthors = 9;
   const maxAuthorName = 53;
 
-  const [specialization, setSpecialization] = useState("Select");
+  const [specialization, setSpecialization] = React.useState("Select");
   const schema = yup.object().shape({
     title: yup
       .string()
@@ -173,7 +175,7 @@ export default function AddingWork() {
 
   // based on:
   // https://codesandbox.io/s/field-array-validation-with-yup-vdfss?file=/src/friendsSchema.js
-  const [authors, setAuthors] = useState([{ name: "" }]);
+  const [authors, setAuthors] = React.useState([{ name: "" }]);
 
   const addAuthor = () => {
     // get id of last author
@@ -210,7 +212,7 @@ export default function AddingWork() {
   };
 
   // Close alert
-  const CloseAlert = (event, reason) => {
+  const CloseAlert = (_, reason) => {
     if (reason === "clickaway") return;
 
     SetOpenAlertError(false);

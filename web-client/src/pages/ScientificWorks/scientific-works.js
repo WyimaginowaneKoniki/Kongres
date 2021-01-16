@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import OneWork from "../../components/ScientificWorkList/OneWork";
@@ -35,7 +35,7 @@ export default function ScientificWorks() {
   })();
 
   // Stores works
-  const [works, SetWorks] = useState([
+  const [works, SetWorks] = React.useState([
     {
       title: null,
       categories: null,

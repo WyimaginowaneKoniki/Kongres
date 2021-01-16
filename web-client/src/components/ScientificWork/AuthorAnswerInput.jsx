@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import { TextField } from "@material-ui/core";
+import { TextField, Button, InputAdornment } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import axios from "axios";
 import { URL_API } from "../../Constants";
 
@@ -89,7 +87,7 @@ export default function AuthorAnswerInput(props) {
     formData.append("ReviewId", props.reviewId);
 
     const token = localStorage.getItem("jwt");
-    
+
     axios.post(`${URL_API}/Review/AddAnswer`, formData, {
       headers: { Authorization: `Bearer ${token}` },
     });

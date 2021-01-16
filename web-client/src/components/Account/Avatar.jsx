@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import defaultPicture from "../../images/blank-profile-picture.png";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,7 +35,7 @@ export default function Avatar() {
   // Stores the source of the picture
   // File and ULR:
   // https://stackoverflow.com/a/61302835/14865551
-  const [avatarURL, SetAvatarURL] = useState(defaultPicture);
+  const [avatarURL, SetAvatarURL] = React.useState(defaultPicture);
 
   const onChangePicture = (e) => {
     const file = e.target.files[0];

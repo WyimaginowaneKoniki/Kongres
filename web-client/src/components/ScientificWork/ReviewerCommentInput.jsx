@@ -1,18 +1,20 @@
 import React from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Box,
+  Typography,
+  TextField,
+  DialogActions,
+  InputAdornment,
+  FormHelperText,
+} from "@material-ui/core/";
 import Rating from "@material-ui/lab/Rating";
-import TextField from "@material-ui/core/TextField";
-import DialogActions from "@material-ui/core/DialogActions";
 import DropZone from "../DropZone";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -70,8 +72,7 @@ export default function ReviewerCommentInput(props) {
 
   const schema = yup.object().shape({
     rating: yup.string().when("ratingValue", () => {
-      if (!ratingValue)
-        return yup.string().required("Rating should be chosen");
+      if (!ratingValue) return yup.string().required("Rating should be chosen");
     }),
     reviewInput: yup
       .string()

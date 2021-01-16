@@ -2,8 +2,7 @@ import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import uploadIcon from "../images/upload.png";
 import pdfIcon from "../images/pdf-icon.png";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
+import { Button, Box } from "@material-ui/core/";
 
 export default function DropZone(props) {
   const style = makeStyles({
