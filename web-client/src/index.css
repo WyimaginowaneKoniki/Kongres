@@ -10,8 +10,6 @@ body {
   line-height: 1.8em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-left: 200px;
-  margin-right: 200px;
 }
 
 code {
@@ -27,29 +25,33 @@ h2 {
   margin-bottom: 0.2em;
 }
 
+.App {
+  margin-left: 200px;
+  margin-right: 200px;
+}
 @media only screen and (max-width: 1440px) {
-  body {
+  .App {
     margin-left: 160px;
     margin-right: 160px;
   }
 }
 
 @media only screen and (max-width: 1280px) {
-  body {
+  .App {
     margin-left: 120px;
     margin-right: 120px;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  body {
+  .App {
     margin-left: 64px;
     margin-right: 64px;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  body {
+  .App {
     margin-left: 24px;
     margin-right: 24px;
   }
