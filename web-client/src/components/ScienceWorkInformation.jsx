@@ -4,6 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import PreviewPDF from "../components/PreviewPDF";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DropZone from "./DropZone";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function ScienceWorkInformation(props) {
   const styles = makeStyles({
@@ -115,9 +122,22 @@ export default function ScienceWorkInformation(props) {
       marginLeft: "5%",
       float: "left",
     },
+    popup: {
+      width: '600px',
+    }
   });
 
   const style = styles();
+
+  const schema = yup.object().shape({
+
+  });
+
+  const { register, handleSubmit, errors } = useForm({
+    mode: "onBlur",
+    resolver: yupResolver(schema),
+  });
+
 
   const downloadFile = () => {
     const link = document.createElement("a");
@@ -125,6 +145,19 @@ export default function ScienceWorkInformation(props) {
     link.download = `${props.scientificWork.title.replaceAll(" ", "-")}.pdf`;
     link.click();
   };
+
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [workFile, setWorkFile] = React.useState(null);
+
+  const openDialog = () => {
+    setIsDialogOpen(true);
+    //  set default values
+    setWorkFile(null);
+  };
+
+  const closeDialog = () => setIsDialogOpen(false);
+  const onSubmit = (data) => {
+  }
 
   return (
     <div className={style.main}>
@@ -183,10 +216,30 @@ export default function ScienceWorkInformation(props) {
           Download full work
         </Button>
         {props.mode === "Author" && (
-          <Button variant="contained" color="primary" className={style.btn1}>
+        <Button variant="contained" color="primary" className={style.btn1} onClick={openDialog}>
             Add new version
-          </Button>
-        )}
+          </Button>)}
+          {props.mode === "Author" && (
+          <Dialog open={isDialogOpen} onClose={closeDialog}>
+            <form noValidate onSubmit={handleSubmit(onSubmit)}>
+            <div className={style.popup}>
+            <DialogTitle>Add new version of your work</DialogTitle>
+              <DropZone SetFile={setWorkFile} inputRef={register} required />
+              <DialogActions>
+            <Button
+              variant="contained"
+              color="primary"
+              className={style.btn}
+              type="submit"
+            >
+              Add review
+            </Button>
+          </DialogActions>
+          </div>
+            </form>
+          </Dialog>
+          )
+        }
       </div>
     </div>
   );
