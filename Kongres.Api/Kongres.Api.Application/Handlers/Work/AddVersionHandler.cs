@@ -1,17 +1,16 @@
 ﻿using Kongres.Api.Application.Commands.Work;
+using Kongres.Api.Application.Services.Interfaces;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Kongres.Api.Application.Services;
 
 namespace Kongres.Api.Application.Handlers.Work
 {
     public class AddVersionHandler : AsyncRequestHandler<AddVersionCommand>
     {
-        private readonly ScientificWorkService _scientificWorkService;
+        private readonly IScientificWorkService _scientificWorkService;
 
-        public AddVersionHandler(ScientificWorkService scientificWorkService)
+        public AddVersionHandler(IScientificWorkService scientificWorkService)
         {
             _scientificWorkService = scientificWorkService;
         }

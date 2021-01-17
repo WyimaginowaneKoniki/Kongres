@@ -51,10 +51,11 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                                   x.ScientificWork.Id == scientificWorkId);
 
         public async Task<byte> GetNumberOfVersionsByAuthorIdAsync(uint userId)
-            => await _context.ScientificWorks.Include(x => x.MainAuthor)
-                                             .Include(x => x.Versions)
-                                             .Where(x => x.MainAuthor.Id == userId)
-                                             .Select(x => x.Versions.Last().Version)
-                                             .SingleOrDefaultAsync();
+        {
+            var scientificWork = await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                                               .Include(x => x.Versions)
+                                                               .SingleAsync(x => x.MainAuthor.Id == userId);
+            return scientificWork.Versions.Last().Version;
+        }
     }
 }

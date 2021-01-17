@@ -23,7 +23,7 @@ namespace Kongres.Api.WebApi.Controller
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPost("AddVersion")]
         public async Task<IActionResult> AddVersion([FromForm] AddVersionCommand command)
         {
             command.UserId = HttpContext.User.Identity.Name;
