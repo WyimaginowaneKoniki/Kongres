@@ -71,7 +71,7 @@ export default function OneWork(props) {
   const history = useHistory();
 
   const readMore = () => {
-    const path = `${LINKS.WORKS}/${props.id}`;
+    const path = `/work-view/${props.id}`;
     history.push({
       pathname: path,
       state: { detail: props.id },
