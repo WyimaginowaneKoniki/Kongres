@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import Logo from "../images/empty-image.png";
+import Logo from "../images/logo.png";
 
 export default function Footer() {
   const style = makeStyles({
@@ -17,8 +17,7 @@ export default function Footer() {
       justifyContent: "flex-start",
     },
     logo: {
-      height: "80px",
-      width: "200px",
+      width: "210px",
     },
 
     link: {
