@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Kongres.Api.Domain.Entities
 {
@@ -9,5 +10,6 @@ namespace Kongres.Api.Domain.Entities
         public byte Version { get; set; }
         public DateTime DateAdd { get; set; }
         public ScientificWork ScientificWork { get; set; }
+        public IEnumerable<Review> Reviews { get; set; }
     }
 }

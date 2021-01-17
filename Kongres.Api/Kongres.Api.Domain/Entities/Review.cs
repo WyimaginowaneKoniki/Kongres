@@ -11,5 +11,6 @@ namespace Kongres.Api.Domain.Entities
         public string File { get; set; }
         public DateTime DateReview { get; set; }
         public byte Rating { get; set; }
+        public Answer Answer { get; set; }
     }
 }
