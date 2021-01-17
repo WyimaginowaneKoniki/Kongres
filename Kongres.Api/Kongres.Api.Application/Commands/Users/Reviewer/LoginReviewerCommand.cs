@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Kongres.Api.Application.Commands.Reviewer
+namespace Kongres.Api.Application.Commands.Users.Reviewer
 {
     public class LoginReviewerCommand : IRequest
     {

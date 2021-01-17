@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Kongres.Api.Application.Commands.Participant
+namespace Kongres.Api.Application.Commands.Users.Participant
 {
     public class LoginParticipantCommand : IRequest
     {

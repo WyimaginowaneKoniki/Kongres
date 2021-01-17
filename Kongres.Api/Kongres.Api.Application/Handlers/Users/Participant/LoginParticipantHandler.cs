@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Kongres.Api.Application.Commands.Reviewer;
-using Kongres.Api.Application.Services;
+using Kongres.Api.Application.Commands.Users.Participant;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
@@ -11,19 +10,19 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Kongres.Api.Application.Handlers.Reviewer
+namespace Kongres.Api.Application.Handlers.Users.Participant
 {
-    public class LoginReviewerHandler : AsyncRequestHandler<LoginReviewerCommand>
+    public class LoginParticipantHandler : AsyncRequestHandler<LoginParticipantCommand>
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtHandler _jwtHandler;
         private readonly IMemoryCache _cache;
 
-        public LoginReviewerHandler(UserManager<User> userManager,
-                                    SignInManager<User> signInManager,
-                                    IJwtHandler jwtHandler,
-                                    IMemoryCache cache)
+        public LoginParticipantHandler(UserManager<User> userManager,
+                                        SignInManager<User> signInManager,
+                                        IJwtHandler jwtHandler,
+                                        IMemoryCache cache)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -31,11 +30,10 @@ namespace Kongres.Api.Application.Handlers.Reviewer
             _cache = cache;
         }
 
-        protected override async Task Handle(LoginReviewerCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(LoginParticipantCommand request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var userName = $"{nameof(UserTypeEnum.Reviewer)}:{request.Email}";
+            var userName = $"{nameof(UserTypeEnum.Participant)}:{request.Email}";
 
             var user = await _userManager.FindByNameAsync(userName);
 
