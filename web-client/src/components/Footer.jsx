@@ -9,7 +9,6 @@ export default function Footer() {
       width: "96%",
       height: "100px",
       padding: "2%",
-      marginTop: "40px",
       float: "left",
       backgroundColor: "#e9e9e9",
     },
