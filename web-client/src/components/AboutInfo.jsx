@@ -5,23 +5,21 @@ import "../App.css";
 export default function AboutInfo(props) {
   const style = makeStyles({
     main: {
-      padding: "5%",
-      marginBottom: "20%",
-      width: "80%",
-      margin: "auto",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
     left: {
-      width: "48%",
-      float: "left",
+      width: "50%",
+      marginRight: "24px",
       textAlign: "left",
     },
     right: {
-      width: "48%",
-      float: "right",
+      width: "50%",
+      marginLeft: "24px",
       textAlign: "left",
     },
     photo: {
-      float: "left",
       width: "100%",
     },
   })();

@@ -7,12 +7,16 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export default function About() {
   const style = makeStyles({
-    main: {
-      padding: "10%",
+    aboutProfiles: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      marginTop: "80px",
+      marginBottom: "40px",
     },
-    position: {
-      width: "50%",
-      paddingBottom: "5%",
+    profileColumn: {
+      marginLeft: "16px",
+      marginRight: "16px",
     },
   })();
 
@@ -47,42 +51,29 @@ export default function About() {
     />
   ));
 
-  const profiles = [
-    {
-      path: picture,
-      name: "Dominik Tyc",
-      description:
-        "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
-    },
-    {
-      path: picture,
-      name: "Sandra Uptas",
-      description:
-        "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
-    },
-    {
-      path: picture,
-      name: "Kamil Donda",
-      description:
-        "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
-    },
-    {
-      path: picture,
-      name: "Robert Kwoll",
-      description:
-        "a little description of yourself i mean cos tam cos tam fffffffffffff zobacz to sam",
-    },
-  ];
+  const profile1 = {
+    path: picture,
+    name: "Dominik Tyc",
+    description: "a little description of yourself",
+  };
 
-  const profileList = profiles.map((profile) => (
-    <div className={style.position}>
-      <AboutProfil
-        path={profile.path}
-        name={profile.name}
-        description={profile.description}
-      />
-    </div>
-  ));
+  const profile2 = {
+    path: picture,
+    name: "Kamil Donda",
+    description: "a little description of yourself",
+  };
+
+  const profile3 = {
+    path: picture,
+    name: "Sandra Uptas",
+    description: "a little description of yourself",
+  };
+
+  const profile4 = {
+    path: picture,
+    name: "Robert Kwoll",
+    description: "a little description of yourself",
+  };
 
   return (
     <div>
@@ -90,7 +81,32 @@ export default function About() {
 
       <div>{aboutList}</div>
 
-      <div className={style.main}>{profileList}</div>
+      <div className={style.aboutProfiles}>
+        <div className={style.profileColumn}>
+          <AboutProfil
+            path={profile1.path}
+            name={profile1.name}
+            description={profile1.description}
+          />
+          <AboutProfil
+            path={profile2.path}
+            name={profile2.name}
+            description={profile2.description}
+          />
+        </div>
+        <div className={style.profileColumn}>
+          <AboutProfil
+            path={profile3.path}
+            name={profile3.name}
+            description={profile3.description}
+          />
+          <AboutProfil
+            path={profile4.path}
+            name={profile4.name}
+            description={profile4.description}
+          />
+        </div>
+      </div>
     </div>
   );
 }
