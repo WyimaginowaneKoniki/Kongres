@@ -15,7 +15,7 @@ function NavigationNotLogged(props) {
     logo: {
       float: "left",
       marginLeft: "138px",
-      marginTop: "10.5px",
+      marginTop: "10px",
       width: "210px",
     },
     boxBottom: {
