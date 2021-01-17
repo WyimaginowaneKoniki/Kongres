@@ -5,7 +5,7 @@ import PersonalInformation from "../../components/Account/PersonalInformation";
 import ChangePassword from "../../components/Account/ChangePassword";
 import { NavLink } from "react-router-dom";
 
-export default function MyProfile() {
+export default function MyProfile(props) {
   const style = makeStyles({
     main: {
       width: "80%",
@@ -49,7 +49,7 @@ export default function MyProfile() {
     academicTitle: "",
     university: "",
     specialization: "Biology",
-    participant: true,
+    participant: props?.userInfo?.role,
   };
 
   const [panel, SetPanel] = React.useState(true);
