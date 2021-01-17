@@ -22,13 +22,32 @@ namespace Kongres.Api.Infrastructure.Repositories
             await _context.ScientificWorks.AddAsync(scienceWork);
             await _context.SaveChangesAsync();
         }
-
-        public async Task<ScientificWork> GetByUserIdAsync(uint userId)
+        
+        public async Task<ScientificWork> GetByAuthorIdAsync(uint userId)
             => await _context.ScientificWorks.FirstOrDefaultAsync(x => x.MainAuthor.Id == userId);
 
         public async Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync()
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Include(x => x.Versions)
                                              .ToListAsync();
+
+        public async Task<ScientificWork> GetWorkByIdAsync(uint scientificWorkId)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Include(x => x.Versions)
+                                             .SingleOrDefaultAsync(x => x.Id == scientificWorkId);
+
+        // get information, if the user is a author of work which includes the reviewer
+        public async Task<bool> IsAuthorOfScientificWorkByReviewIdAsync(uint userId, uint reviewOfWorkId)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Include(x => x.Versions)
+                                                .ThenInclude(x => x.Reviews)
+                                             .AnyAsync(x => x.MainAuthor.Id == userId &&
+                                                            x.Versions.Any(y => y.Reviews.Any(k => k.Id == reviewOfWorkId)));
+
+        public async Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId)
+            => await _context.ReviewersScienceWorks.Include(x => x.ScientificWork)
+                                                   .Include(x => x.User)
+                                                   .AnyAsync(x => x.User.Id == userId &&
+                                                                  x.ScientificWork.Id == scientificWorkId);
     }
 }

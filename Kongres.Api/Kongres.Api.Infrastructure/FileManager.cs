@@ -32,7 +32,7 @@ namespace Kongres.Api.Infrastructure
             return fileName;
         }
 
-        public Stream ReadFile(string fileName)
+        public Stream GetStreamOfFile(string fileName)
         {
             var filePath = Path.Combine(_directoryPath, fileName);
             return new FileStream(filePath, FileMode.Open, FileAccess.Read);

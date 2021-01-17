@@ -26,7 +26,7 @@ namespace Kongres.Api.Application.Services
         public async Task<HeaderUserInfoDto> GetUserInfoForHeaderAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            var scientificWork = await _scientificWorkRepository.GetByUserIdAsync(user.Id);
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(user.Id);
 
             string base64Photo = null;
 

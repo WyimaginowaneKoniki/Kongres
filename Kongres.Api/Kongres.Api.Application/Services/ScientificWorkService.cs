@@ -18,16 +18,19 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
+                                    IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
                                     IFileManager fileManager)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
+            _reviewRepository = reviewRepository;
             _userManager = userManager;
             _fileManager = fileManager;
         }
@@ -43,7 +46,7 @@ namespace Kongres.Api.Application.Services
                 Description = description,
                 MainAuthor = user,
                 OtherAuthors = authors,
-                CreationDate = DateTime.UtcNow,
+                CreationDate = DateTime.Now,
                 Status = StatusEnum.WaitingForReview,
                 Specialization = specialization
             };
@@ -53,7 +56,7 @@ namespace Kongres.Api.Application.Services
 
         public async Task AddVersionAsync(uint userId, IFormFile workFile, byte versionNumber = 0)
         {
-            var scientificWork = await _scientificWorkRepository.GetByUserIdAsync(userId);
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(userId);
 
             var workName = await _fileManager.SaveFileAsync(workFile);
 
@@ -61,7 +64,7 @@ namespace Kongres.Api.Application.Services
             {
                 Version = versionNumber,
                 FileName = workName,
-                DateAdd = DateTime.UtcNow,
+                DateAdd = DateTime.Now,
                 ScientificWork = scientificWork
             };
 
@@ -88,9 +91,9 @@ namespace Kongres.Api.Application.Services
                     Authors = authors,
                     Title = scientificWork.Name,
                     Description = scientificWork.Description,
-                    CreationDate = scientificWork.CreationDate,
+                    CreationDate = scientificWork.CreationDate.ToString("g"),
                     // Get date of latest update of work
-                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd,
+                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
                     Specialization = scientificWork.Specialization
                 };
 
@@ -106,7 +109,104 @@ namespace Kongres.Api.Application.Services
             if (scientificWork is null)
                 return null;
 
-            return await Task.FromResult(_fileManager.ReadFile(scientificWork.FileName));
+            return await Task.FromResult(_fileManager.GetStreamOfFile(scientificWork.FileName));
+        }
+
+        public async Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint userId, uint scientificWorkId)
+        {
+            // TODO: If science work is approved
+
+            var scientificWork = await _scientificWorkRepository.GetWorkByIdAsync(scientificWorkId);
+            if (scientificWork is null)
+                return null;
+
+            var mode = "";
+
+            if (scientificWork.MainAuthor.Id == userId)
+                mode = "Author";
+            else if (await _reviewRepository.IsReviewerAsync(scientificWorkId, userId))
+                mode = "Reviewer";
+            else
+                mode = "Participant";
+
+            var scientificWorkDto = new ScientificWorkDto()
+            {
+                Id = scientificWork.Id,
+                Title = scientificWork.Name,
+                Description = scientificWork.Description,
+                Specialization = scientificWork.Specialization,
+                CreationDate = scientificWork.CreationDate.ToString("g"),
+                UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
+                Authors = scientificWork.OtherAuthors,
+            };
+
+            string base64Photo = null;
+
+            if (scientificWork.MainAuthor.Photo != null)
+            {
+                var authorPhoto = await _fileManager.GetBase64FileAsync(scientificWork.MainAuthor.Photo);
+                var photoExtension = scientificWork.MainAuthor.Photo.Split(".")[^1];
+                base64Photo = $"data:image/{photoExtension};base64,{authorPhoto}";
+            }
+
+            var mainAuthor = new UserDto()
+            {
+                Name = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}",
+                Degree = scientificWork.MainAuthor.Degree,
+                University = scientificWork.MainAuthor.University,
+                Photo = base64Photo
+            };
+
+            List<VersionDto> versionsDto = null;
+
+            // normal user should not see reviews
+            if (mode != "Participant")
+            {
+                var versions = await _scientificWorkFileRepository.GetVersionsWithReviews(scientificWorkId);
+
+                versionsDto = new List<VersionDto>();
+
+                // every version of work includes reviews
+                foreach (var version in versions)
+                {
+                    var reviewsDto = new List<ReviewDto>();
+
+                    foreach (var review in version.Reviews)
+                    {
+                        if (mode == "Reviewer" && review.Reviewer.Id != userId)
+                            continue;
+
+                        reviewsDto.Add(new ReviewDto()
+                        {
+                            Id = review.Id,
+                            ReviewDate = review.DateReview.ToString("g"),
+                            ReviewMsg = review.Comment,
+                            IsReviewFileExist = review.File != null,
+                            Rating = review.Rating,
+                            AnswerDate = review?.Answer?.AnswerDate.ToString("g"),
+                            AnswerMsg = review?.Answer?.Comment
+                        });
+                    }
+
+                    versionsDto.Add(new VersionDto()
+                    {
+                        Date = version.DateAdd.ToString("g"),
+                        VersionNumber = version.Version,
+                        Reviews = reviewsDto
+                    });
+                }
+            }
+
+            var scientificWorkWithReviewDto = new ScientificWorkWithReviewDto()
+            {
+                ScientificWork = scientificWorkDto,
+                MainAuthor = mainAuthor,
+                Mode = mode,
+                Versions = versionsDto,
+                Status = scientificWork.Status.ToString()
+            };
+
+            return await Task.FromResult(scientificWorkWithReviewDto);
         }
     }
 }
