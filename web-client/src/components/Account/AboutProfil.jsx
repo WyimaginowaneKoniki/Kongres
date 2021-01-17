@@ -11,7 +11,7 @@ export default function AboutProfil(props) {
       marginBottom: "40px",
     },
     photo: {
-      height: 150,
+      height: "150px",
       marginRight: "24px",
     },
     h3: {
