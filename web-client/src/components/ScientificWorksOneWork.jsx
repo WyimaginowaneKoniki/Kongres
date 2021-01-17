@@ -73,7 +73,7 @@ function ScientificWorksOneWork(props) {
   const history = useHistory();
 
   const readMore = () => {
-    const path = `work-view/${props.id}`;
+    const path = `/work-view/${props.id}`;
     history.push({
       pathname: path,
       state: { detail: props.id },
