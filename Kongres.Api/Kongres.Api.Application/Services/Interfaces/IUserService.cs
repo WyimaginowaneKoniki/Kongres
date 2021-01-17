@@ -1,7 +1,7 @@
 ﻿using Kongres.Api.Application.Commands.Users;
+using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Enums;
 using System.Threading.Tasks;
-using Kongres.Api.Domain.DTOs;
 
 namespace Kongres.Api.Application.Services.Interfaces
 {
@@ -10,5 +10,6 @@ namespace Kongres.Api.Application.Services.Interfaces
         Task<HeaderUserInfoDto> GetUserInfoForHeaderAsync(string userId);
 
         Task RegisterAsync(UserTypeEnum userType, CreateUserCommand command);
+        Task LoginAsync(UserTypeEnum userType, LoginUserCommand request);
     }
 }

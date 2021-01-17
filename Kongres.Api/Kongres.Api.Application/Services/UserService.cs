@@ -1,28 +1,40 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Kongres.Api.Application.Commands.Users;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
+using Kongres.Api.Domain.Extensions;
 using Kongres.Api.Infrastructure;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Kongres.Api.Application.Services
 {
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IFileManager _fileManager;
         private readonly IEmailSender _emailSender;
+        private readonly IJwtHandler _jwtHandler;
+        private readonly IMemoryCache _cache;
 
         public UserService(UserManager<User> userManager,
+                            SignInManager<User> signInManager,
+                            IJwtHandler jwtHandler,
+                            IMemoryCache cache,
                             IScientificWorkRepository scientificWorkRepository,
                             IFileManager fileManager,
                             IEmailSender emailSender)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
+            _jwtHandler = jwtHandler;
+            _cache = cache;
             _scientificWorkRepository = scientificWorkRepository;
             _fileManager = fileManager;
             _emailSender = emailSender;
@@ -75,6 +87,24 @@ namespace Kongres.Api.Application.Services
                 await _userManager.AddToRoleAsync(user, userType.ToString());
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _emailSender.SendConfirmationEmailAsync(user.Id, user.Email, token);
+            }
+        }
+
+        public async Task LoginAsync(UserTypeEnum userType, LoginUserCommand request)
+        {
+            var userName = $"{userType}:{request.Email}";
+
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user is null)
+                throw new Exception("Invalid credentials");
+
+            var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
+            if (result.Succeeded)
+            {
+                // return login/JWT token
+                var jwtToken = _jwtHandler.CreateToken(user.Id, userType.ToString());
+                _cache.SetJwt(request.TokenId, jwtToken);
             }
         }
     }
