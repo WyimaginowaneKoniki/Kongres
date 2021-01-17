@@ -17,6 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.2.3" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
