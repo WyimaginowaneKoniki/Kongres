@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import { URL_API } from "../Constants";
 
 export default function EmailConfirmationToken() {
@@ -12,8 +13,10 @@ export default function EmailConfirmationToken() {
 
   const durationOfAlert = 4000;
 
+  const history = useHistory();
+
   useEffect(() => {
-    // get token and user it 
+    // get token and user itd
     // in weird way, but it works!
     // I don't use other ways e.g. send only window.location.search
     // it causes token changes like '+' sign is replaced by space :C
@@ -25,17 +28,24 @@ export default function EmailConfirmationToken() {
         userId: params[1],
       })
       .then((response) => {
-        console.log(response);
+        if(response.status === 200) {
+          SetOpenAlert(true);
+        }
       });
-  });
+  },[]);
 
-  const [openAlert, SetOpenAlert] = useState(false);
+  const [openAlert, SetOpenAlert] = React.useState(false);
 
   // Close alert
   const CloseAlert = (_, reason) => {
     if (reason === "clickaway") return;
 
     SetOpenAlert(false);
+
+    const path = `signin-participant`;
+    history.push({
+      pathname: path,
+    });
   };
 
   return (
