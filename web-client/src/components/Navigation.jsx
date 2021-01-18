@@ -2,100 +2,72 @@ import React from "react";
 import "../App.css";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import { Box, Button } from "@material-ui/core/";
 import Logo from "../images/logo.png";
 import Avatar from "../images/default-avatar.png";
-import Button from "@material-ui/core/Button";
-import { URL } from "../Constants";
+import { URL, LINKS } from "../Constants";
 
-function Navigation(props) {
-  const styles = makeStyles({
+export default function Navigation(props) {
+  const style = makeStyles({
     main: {
-      width: "100vw",
-      height: "123px",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      height: "120px",
+      paddingTop: "24px",
+      paddingBottom: "12px",
+      paddingLeft: "140px",
+      paddingRight: "140px",
+      boxShadow: "0px 2px 10px #00000029",
     },
     logo: {
-      float: "left",
-      marginLeft: "138px",
-      marginTop: "10px",
       width: "210px",
     },
-    boxBottom: {
-      width: "56vw",
-      marginRight: "138px",
-      paddingBottom: "12px",
-      float: "right",
+    boxTop: {
       display: "flex",
       justifyContent: "flex-end",
-      alignItems: "flex-end",
-      fontWeight: 700,
+      alignItems: "center",
+      marginBottom: "24px",
     },
-    boxTop: {
-      width: "56vw",
-      marginRight: "138px",
-      float: "right",
-      height: "88px",
+    boxBottom: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+    elements: {
+      fontSize: "14px",
+    },
+    linkButton: {
+      textDecoration: "none",
     },
     avatar: {
-      float: "right",
       width: "56px",
       height: "56px",
       borderRadius: "50px",
-      marginTop: "16px",
       marginLeft: "16px",
     },
-    btn1: {
-      float: "right",
-      marginTop: "27px",
+    btn: {
+      textDecoration: "none",
       textTransform: "none",
-      width: "100px",
-      height: "35px",
-      backgroundColor: "#6069A9",
-      "&:hover": {
-        backgroundColor: "#6069A9C4",
-      },
     },
-    btn2: {
-      float: "right",
-      marginTop: "27px",
-      textTransform: "none",
-      width: "110px",
-      height: "35px",
-      backgroundColor: "#6069A9",
-      "&:hover": {
-        backgroundColor: "#6069A9C4",
-      },
-    },
-    btn3: {
-      float: "right",
-      marginTop: "27px",
-      textTransform: "none",
-      width: "125px",
-      height: "35px",
-      backgroundColor: "#6069A9",
-      "&:hover": {
-        backgroundColor: "#6069A9C4",
-      },
-    },
-    text: {
-      float: "right",
-      width: "84px",
-      textAlign: "right",
-      marginTop: "27px",
+    user: {
       marginLeft: "40px",
-      color: "#6069A9",
     },
     name: {
-      float: "right",
       fontSize: "14px",
+      textAlign: "right",
+      textDecoration: "none",
       color: "#6069A9",
+      lineHeight: "1em",
+      marginBottom: "8px",
     },
     logout: {
-      float: "right",
       fontSize: "12px",
+      textAlign: "right",
       color: "#767676",
+      lineHeight: "1em",
       "&:hover": {
         cursor: "pointer",
+        color: "#000000",
       },
     },
     link: {
@@ -106,155 +78,157 @@ function Navigation(props) {
     activeLink: {
       color: "#6069A9",
     },
-  });
-
-  const style = styles();
+  })();
 
   const Logout = () => {
     localStorage.removeItem("jwt");
     window.location.href = URL;
   };
 
-  const path = `/work-view/${props.userInfo.scientificWorkId}`
+  const path = `${LINKS.WORKS}/${props.userInfo.scientificWorkId}`;
 
   return (
     <div className={style.main}>
+      {/* Logo */}
       <Box>
         <NavLink exact to="/">
           <img className={style.logo} src={Logo} alt="Logo" />
         </NavLink>
       </Box>
-      <div className={style.boxTop}>
-        <NavLink exact to="/my-profile">
-          <img
-            className={style.avatar}
-            src={
-              props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
-            }
-            alt="Avatar"
-          />
-        </NavLink>
-        <div className={style.text}>
-          <NavLink exact to="/my-profile">
-            <span className={style.name}>{props.userInfo.name}</span>
+      <div className={style.navigation}>
+        <div className={style.boxTop}>
+          {/* Button My reviews */}
+          {props.userInfo.role === "Reviewer" && (
+            <Box>
+              <NavLink exact to={LINKS.REVIEWS} className={style.linkButton}>
+                <Button
+                  className={style.btn}
+                  color="primary"
+                  type="submit"
+                  variant="contained"
+                >
+                  My reviews
+                </Button>
+              </NavLink>
+            </Box>
+          )}
+
+          {/* Button My work */}
+          {props.userInfo.role === "Participant" &&
+            props.userInfo.scientificWorkId !== 0 && (
+              <Box>
+                <NavLink exact to={path} className={style.linkButton}>
+                  <Button
+                    className={style.btn}
+                    color="primary"
+                    type="submit"
+                    variant="contained"
+                  >
+                    My work
+                  </Button>
+                </NavLink>
+              </Box>
+            )}
+
+          {/* Button Add work */}
+          {props.userInfo.role === "Participant" &&
+            props.userInfo.scientificWorkId === 0 && (
+              <Box>
+                <NavLink exact to={LINKS.ADDING_WORK} className={style.linkButton}>
+                  <Button
+                    className={style.btn}
+                    color="primary"
+                    type="submit"
+                    variant="contained"
+                  >
+                    Add work
+                  </Button>
+                </NavLink>
+              </Box>
+            )}
+
+          {/* User */}
+          <div className={style.user}>
+            <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
+              <div className={style.name}>{props.userInfo.name}</div>
+            </NavLink>
+            <div className={style.logout} onClick={Logout}>
+              Log out
+            </div>
+          </div>
+
+          <NavLink exact to={LINKS.PROFILE}>
+            <img
+              className={style.avatar}
+              src={props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar}
+              alt="Avatar"
+            />
           </NavLink>
-          <span className={style.logout} onClick={Logout}>
-            Log out
-          </span>
         </div>
-
-        {props.userInfo.role === "Participant" &&
-          props.userInfo.scientificWorkId === 0 && (
-            <Box>
-              <NavLink exact to="/adding-work">
-                <Button
-                  className={style.btn2}
-                  color="primary"
-                  type="submit"
-                  variant="contained"
-                >
-                  Add work
-                </Button>
-              </NavLink>
-            </Box>
-          )}
-
-
-        {props.userInfo.role === "Participant" &&
-          props.userInfo.scientificWorkId !== 0 && (
-            <Box>
-              <NavLink exact to={path}>
-                <Button
-                  className={style.btn1}
-                  color="primary"
-                  type="submit"
-                  variant="contained"
-                >
-                  My work
-                </Button>
-              </NavLink>
-            </Box>
-          )}
-
-        {props.userInfo.role === "Reviewer" && (
+        {/* Categories */}
+        <Box className={style.boxBottom}>
           <Box>
-            <NavLink exact to="/my-reviews">
-              <Button
-                className={style.btn3}
-                color="primary"
-                type="submit"
-                variant="contained"
-              >
-                My reviews
-              </Button>
+            <NavLink
+              exact
+              to="/"
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Home
             </NavLink>
           </Box>
-        )}
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.AGENDA}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Agenda
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.SPEAKERS}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Keynote Speakers
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.WORKS}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Scientific works
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.ABOUT}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              About
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.CONTACT}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Contact
+            </NavLink>
+          </Box>
+        </Box>
       </div>
-      <Box className={style.boxBottom}>
-        <Box>
-          <NavLink
-            exact
-            to="/"
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Home
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to="/agenda"
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Agenda
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to="/speakers"
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Keynote Speakers
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to="/scientific-works"
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Scientific works
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to="/about"
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            About
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to="/contact"
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Contact
-          </NavLink>
-        </Box>
-      </Box>
     </div>
   );
 }
-
-export default Navigation;

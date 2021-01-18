@@ -18,6 +18,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
 using System.Text;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 
 namespace Kongres.Api.WebApi
 {
@@ -41,7 +43,7 @@ namespace Kongres.Api.WebApi
             services.AddIdentity<User, Role>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.User.AllowedUserNameCharacters = _configuration["Identity:AllowedUserNameCharacters"];
             }).AddDefaultTokenProviders();
@@ -75,6 +77,7 @@ namespace Kongres.Api.WebApi
             });
 
             services.AddMemoryCache();
+            services.AddMailKit(config => config.UseMailKit(_configuration.GetSection("Email").Get<MailKitOptions>()));
 
             services.AddTransient<IUserStore<User>, UserStore>();
             services.AddTransient<IRoleStore<Role>, RoleStore>();
