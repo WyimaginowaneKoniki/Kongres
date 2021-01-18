@@ -22,7 +22,7 @@ namespace Kongres.Api.Infrastructure.Repositories
             await _context.ScientificWorks.AddAsync(scienceWork);
             await _context.SaveChangesAsync();
         }
-        
+
         public async Task<ScientificWork> GetByAuthorIdAsync(uint userId)
             => await _context.ScientificWorks.FirstOrDefaultAsync(x => x.MainAuthor.Id == userId);
 
@@ -51,7 +51,8 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                                   x.ScientificWork.Id == scientificWorkId);
 
         public async Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization)
-            => await _context.ScientificWorks.Where(x => x.Specialization == specialization)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Where(x => x.Specialization == specialization)
                                              .ToListAsync();
     }
 }
