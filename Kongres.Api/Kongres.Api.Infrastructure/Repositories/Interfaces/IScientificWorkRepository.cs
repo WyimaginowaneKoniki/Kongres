@@ -13,5 +13,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task<bool> IsAuthorOfScientificWorkByReviewIdAsync(uint userId, uint reviewOfWorkId);
         Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId);
         Task<byte> GetNumberOfVersionsByAuthorIdAsync(uint userId);
+        Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization);
     }
 }

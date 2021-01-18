@@ -57,5 +57,9 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                                .SingleAsync(x => x.MainAuthor.Id == userId);
             return scientificWork.Versions.Last().Version;
         }
+        public async Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Where(x => x.Specialization == specialization)
+                                             .ToListAsync();
     }
 }
