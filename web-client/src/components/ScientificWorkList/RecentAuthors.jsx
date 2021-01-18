@@ -29,7 +29,7 @@ export default function RecentAuthors(props) {
         src={props.path}
         className={style.photo}
         alt={props.alternativeText}
-      ></img>
+      />
       <h2 className={style.h2}>{props.name}</h2>
       <p className={style.p}>{props.description}</p>
     </div>

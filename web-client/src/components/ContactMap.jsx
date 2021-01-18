@@ -25,7 +25,7 @@ export default function ContactMap(props) {
         className={style.map}
         src={props.path}
         title="Google Maps address Kaszubska 23"
-      ></iframe>
+      />
     </div>
   );
 }

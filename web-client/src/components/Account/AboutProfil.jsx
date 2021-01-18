@@ -27,7 +27,7 @@ export default function AboutProfil(props) {
 
   return (
     <div className={style.main}>
-      <img src={props.path} alt={props.name} className={style.photo}></img>
+      <img src={props.path} alt={props.name} className={style.photo}/>
       <h3 className={style.h3}>{props.name}</h3>
       <p className={style.p}>{props.description}</p>
     </div>

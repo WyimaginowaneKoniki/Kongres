@@ -37,7 +37,7 @@ export default function AboutInfo(props) {
       src={props.path}
       className={style.photo}
       alt={props.alternativeText}
-    ></img>
+    />
   );
 
   return (

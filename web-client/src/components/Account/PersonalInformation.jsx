@@ -268,7 +268,9 @@ export default function PersonalInformation(props) {
             </TextField>
 
             {/* Avatar */}
-            {props.participant === "Participant" ? <Avatar name="avatar" /> : null}
+            {props.participant === "Participant" ? (
+              <Avatar name="avatar" />
+            ) : null}
 
             {/* Button Submit */}
             <Button
