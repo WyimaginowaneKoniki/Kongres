@@ -66,6 +66,10 @@ export default function Navigation(props) {
       textAlign: "right",
       color: "#767676",
       lineHeight: "1em",
+      "&:hover": {
+        cursor: "pointer",
+        color: "#000000",
+      },
     },
     link: {
       color: "black",
