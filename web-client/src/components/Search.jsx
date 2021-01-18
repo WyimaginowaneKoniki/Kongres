@@ -7,38 +7,26 @@ import SearchIcon from "@material-ui/icons/Search";
 export default function Search(props) {
   const style = makeStyles({
     main: {
-      padding: "2%",
-      margin: "auto",
-      marginTop: "10px",
-      width: "95%",
-      height: "25px",
-      border: "2px solid grey",
-      borderRadius: "5px",
+      display: "flex",
+      alignItems: "center",
+      border: "1px solid #54457F4D",
+      borderRadius: "4px",
+      height: "40px",
+      width: "100%",
     },
     searchIcon: {
-      float: "left",
-      padding: "1%",
-      paddingLeft: "2%",
+      paddingLeft: "16px",
+      color: "#6069A9",
     },
-    search: {
-      width: "70%",
-      textAlign: "left",
-      float: "left",
-    },
-    inputSearch: {
-      width: "130%",
-      margin: "auto",
+    input: {
+      paddingLeft: "8px",
     },
   })();
 
   return (
     <div className={style.main}>
-      <div className={style.searchIcon}>
-        <SearchIcon />
-      </div>
-      <div className={style.search}>
-        <InputBase placeholder="Search…" className={style.inputSearch} />
-      </div>
+      <SearchIcon className={style.searchIcon} />
+      <InputBase className={style.input} placeholder="Search…" />
     </div>
   );
 }

@@ -32,6 +32,10 @@ h2 {
   margin-bottom: 0.2em;
 }
 
+h3 {
+  margin-bottom: 0.2em;
+}
+
 a:hover {
   cursor: pointer;
   color: #6069a9;
@@ -100,6 +104,14 @@ a:hover {
   }
   html {
     background-image: url("../src/images/background-tablet@2x.png");
+  }
+
+  /* for a moment */
+  .header-menu {
+    display: none;
+  }
+  .footer {
+    display: none;
   }
 }
 

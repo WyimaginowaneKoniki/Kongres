@@ -9,44 +9,35 @@ import "../../App.css";
 export default function OneWork(props) {
   const style = makeStyles({
     main: {
-      width: "100%",
-      paddingBottom: "300px",
+      marginBottom: "80px",
+      textAlign: "left",
     },
     h2: {
-      float: "left",
+      lineHeight: "1em",
     },
     panel: {
-      width: "100%",
-      float: "left",
-      marginTop: "-25px",
+      display: "flex",
+      flexWrap: "wrap",
+      fontSize: "16px",
     },
     category: {
-      float: "left",
-      fontSize: "12px",
-      color: "#3f51b5",
-      paddingRight: "2.5%",
+      color: "#6069A9",
+      marginRight: "16px",
     },
     dot: {
-      float: "left",
       fontSize: "28px",
-      color: "#DCDCDC",
-      paddingRight: "2.5%",
+      color: "#C0C4E2",
+      marginRight: "16px",
     },
     date: {
-      float: "left",
-      fontSize: "12px",
-      paddingRight: "2.5%",
+      marginRight: "16px",
+      color: "#767676",
     },
     author: {
-      float: "left",
-      fontSize: "12px",
+      color: "#767676",
     },
     text: {
-      width: "94%",
-      float: "left",
-      textAlign: "left",
-      fontSize: "14px",
-      paddingBottom: "2%",
+      marginBottom: "16px",
     },
     a: {
       textDecoration: "none",
@@ -54,17 +45,18 @@ export default function OneWork(props) {
       fontWeight: "bold",
     },
     buttons: {
-      float: "left",
-      width: "100%",
+      display: "flex",
+      flexWrap: "wrap",
     },
     btn1: {
-      float: "left",
-      marginRight: "5%",
-      textTransform: "none",
+      marginRight: "24px",
+      backgroundColor: "white",
+      "&:hover": {
+        backgroundColor: "#F1F3FF",
+      },
     },
     btn2: {
-      float: "left",
-      textTransform: "none",
+      marginTop: "8px",
     },
   })();
 
@@ -110,7 +102,7 @@ export default function OneWork(props) {
         <span className={style.dot}>&bull;</span>
         <p className={style.author}>{props.authors}</p>
       </div>
-      <span className={style.text}>{props.text}</span>
+      <p className={style.text}>{props.text}</p>
       <div className={style.buttons}>
         <Button
           variant="outlined"
