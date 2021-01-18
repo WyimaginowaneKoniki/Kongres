@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Kongres.Api.Application.Commands.Participant;
+using Kongres.Api.Application.Commands.Users.Participant;
 using Kongres.Api.Domain.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

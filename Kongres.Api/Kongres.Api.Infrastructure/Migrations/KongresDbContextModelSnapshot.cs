@@ -189,7 +189,13 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("NormalizedEmail")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("NormalizedUserName")

@@ -1,12 +1,11 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import uploadIcon from "../images/upload.png";
 import pdfIcon from "../images/pdf-icon.png";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
+import { Button, Box } from "@material-ui/core/";
 
-function DropZone(props) {
-  const styles = makeStyles({
+export default function DropZone(props) {
+  const style = makeStyles({
     container: {
       width: "550px",
     },
@@ -79,21 +78,19 @@ function DropZone(props) {
     dialog: {
       display: "none",
     },
-  });
+  })();
 
-  const style = styles();
-
-  const fileInputRef = useRef();
+  const fileInputRef = React.useRef();
 
   const maxFileSize = 20971520; // 1024 * 1024 * 20 = 20 MB
 
   let file = null;
-  const [message, SetMessage] = useState(null);
-  const [fileName, SetFileName] = useState(null);
-  const [fileSize, SetFileSize] = useState(null);
+  const [message, SetMessage] = React.useState(null);
+  const [fileName, SetFileName] = React.useState(null);
+  const [fileSize, SetFileSize] = React.useState(null);
 
   // Changes style of area with added file (pdf icon, name, size). Changes display none → block, block → none.
-  const [divStyle, SetDivStyle] = useState({
+  const [divStyle, SetDivStyle] = React.useState({
     display: "none",
   });
 
@@ -145,7 +142,7 @@ function DropZone(props) {
     }, 4000);
   };
 
-  // Checks if the selected file type is PDF 
+  // Checks if the selected file type is PDF
   const ValidateFile = (f) => "application/pdf" === f.type;
 
   const ValidateSize = (f) => maxFileSize >= f.size;
@@ -196,7 +193,7 @@ function DropZone(props) {
               onChange={FileSelected}
             />
 
-            <div className={style.uploadIcon}></div>
+            <div className={style.uploadIcon}/>
 
             <Box lineHeight={2} m={1}>
               Drag & Drop file here
@@ -230,4 +227,3 @@ function DropZone(props) {
     </div>
   );
 }
-export default DropZone;
