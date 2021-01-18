@@ -8,7 +8,6 @@ html {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100vw;
-  
 }
 
 body {
@@ -79,6 +78,9 @@ a:hover {
   .menu-category {
     margin-left: 40px;
   }
+  html {
+    background-image: url("../src/images/background-small-desktop.png");
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -86,11 +88,17 @@ a:hover {
     margin-left: 64px;
     margin-right: 64px;
   }
+  html {
+    background-image: url("../src/images/background-tablet@2x.png");
+  }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 600px) {
   .App {
     margin-left: 24px;
     margin-right: 24px;
+  }
+  html {
+    background-image: url("../src/images/background-mobile@2x.png");
   }
 }
