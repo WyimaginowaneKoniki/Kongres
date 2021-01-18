@@ -32,6 +32,7 @@ export default function Navigation(props) {
     boxBottom: {
       display: "flex",
       justifyContent: "flex-end",
+      fontWeight: "bold",
     },
     elements: {
       fontSize: "14px",
@@ -47,6 +48,14 @@ export default function Navigation(props) {
     },
     btn: {
       textDecoration: "none",
+      textTransform: "none",
+    },
+    btnLogin: {
+      marginLeft: "32px",
+      textTransform: "none",
+    },
+    btnSignup: {
+      marginLeft: "32px",
       textTransform: "none",
     },
     user: {
@@ -78,6 +87,9 @@ export default function Navigation(props) {
     activeLink: {
       color: "#6069A9",
     },
+    linkButton: {
+      textDecoration: "none",
+    },
   })();
 
   const Logout = () => {
@@ -85,17 +97,11 @@ export default function Navigation(props) {
     window.location.href = URL;
   };
 
-  const path = `${LINKS.WORKS}/${props.userInfo.scientificWorkId}`;
-
-  return (
-    <div className={style.main}>
-      {/* Logo */}
-      <Box>
-        <NavLink exact to="/">
-          <img className={style.logo} src={Logo} alt="Logo" />
-        </NavLink>
-      </Box>
-      <div className={style.navigation}>
+  const userPanel = () => {
+    // If user is logged
+    if (props.userInfo) {
+      const path = `${LINKS.WORKS}/${props.userInfo.scientificWorkId}`;
+      return (
         <div className={style.boxTop}>
           {/* Button My reviews */}
           {props.userInfo.role === "Reviewer" && (
@@ -165,6 +171,50 @@ export default function Navigation(props) {
             />
           </NavLink>
         </div>
+      );
+      // If user is not logged
+    } else {
+      return (
+        <div className={style.boxTop}>
+          <p className={style.elements}>
+            Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Log in</a> or
+            <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
+          </p>
+          <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.linkButton}>
+            <Button
+              className={style.btnSignup}
+              color="primary"
+              type="submit"
+              variant="outlined"
+            >
+              Sign up
+            </Button>
+          </NavLink>
+          <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
+            <Button
+              className={style.btnLogin}
+              color="primary"
+              type="submit"
+              variant="contained"
+            >
+              Log in
+            </Button>
+          </NavLink>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div className={style.main}>
+      {/* Logo */}
+      <Box>
+        <NavLink exact to="/">
+          <img className={style.logo} src={Logo} alt="Scienture conference logo" />
+        </NavLink>
+      </Box>
+      <div className={style.navigation}>
+        {userPanel()}
         {/* Categories */}
         <Box className={style.boxBottom}>
           <Box>
@@ -197,16 +247,18 @@ export default function Navigation(props) {
               Keynote Speakers
             </NavLink>
           </Box>
-          <Box>
-            <NavLink
-              exact
-              to={LINKS.WORKS}
-              className={style.link}
-              activeClassName={style.activeLink}
-            >
-              Scientific works
-            </NavLink>
-          </Box>
+          {props.userInfo && (
+            <Box>
+              <NavLink
+                exact
+                to={LINKS.WORKS}
+                className={style.link}
+                activeClassName={style.activeLink}
+              >
+                Scientific works
+              </NavLink>
+            </Box>
+          )}
           <Box>
             <NavLink
               exact

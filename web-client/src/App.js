@@ -22,7 +22,6 @@ import SignInParticipant from "./pages/Users/Participant/signin-participant";
 import WorkView from "./pages/ScientificWorks/work-view";
 import { LINKS, URL } from "./Constants";
 import Error404 from "./pages/error-404";
-import NavigationNotLogged from "./components/NavigationNotLogged";
 import axios from "axios";
 import EmailConfirmationToken from "./pages/email-confirmation-token";
 
@@ -46,7 +45,7 @@ export default function App() {
 
   return (
     <Router>
-      {userInfo ? <Navigation userInfo={userInfo} /> : <NavigationNotLogged />}
+      <Navigation userInfo={userInfo} />
       <div className="App">
         <Switch>
           <Route path="/" exact component={Home} />
