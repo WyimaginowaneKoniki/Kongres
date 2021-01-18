@@ -8,14 +8,23 @@ export default function KeynoteSpeaker(props) {
       display: "flex",
       justifyContent: "center",
       marginBottom: "88px",
+      "@media (max-width: 900px)": {
+        marginBottom: "32px",
+      },
     },
     photo: {
       width: "320px",
       height: "320px",
-      borderRadius: "160px",
+      "@media (max-width: 900px)": {
+        marginTop: "48px",
+        width: "120px",
+        height: "120px",
+      },
     },
     name: {
-      marginBottom: "16px",
+      "@media (min-width: 900px)": {
+        marginBottom: "16px",
+      },
     },
     speakerInfo: {
       width: "400px",
@@ -24,12 +33,18 @@ export default function KeynoteSpeaker(props) {
       display: "flex",
       flexDirection: "column",
       marginTop: "48px",
+      "@media (max-width: 900px)": {
+        fontSize: "12px",
+        marginTop: "16px",
+      },
     },
     spec: {
       fontWeight: "600",
     },
     info: {
-      marginBottom: "32px",
+      "@media (min-width: 900px)": {
+        marginBottom: "32px",
+      },
     },
   })();
 

@@ -2,7 +2,12 @@ import React from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import KeynoteSpeaker from "../components/KeynoteSpeaker";
-import picture from "../images/empty-image.png";
+import DominikTyc from "../images/dante.png";
+import KamilDonda from "../images/dondix.png";
+import SandraUptas from "../images/ups.png";
+import RobertKwoll from "../images/kwolik.png";
+import Jorge from "../images/jorge.png";
+import Katy from "../images/katy.png";
 
 export default function Speakers() {
   const style = makeStyles({
@@ -13,7 +18,7 @@ export default function Speakers() {
 
   const speakers = [
     {
-      photo: picture,
+      photo: DominikTyc,
       name: "Dominik Tyc",
       spec: "Team Leader & Backend Developer",
       university: "Silesian University of Technology",
@@ -21,7 +26,7 @@ export default function Speakers() {
       desc: "Ambitious person with many different interests",
     },
     {
-      photo: picture,
+      photo: SandraUptas,
       name: "Sandra Uptas",
       spec: "UX/UI Designer",
       university: "Silesian University of Technology",
@@ -29,7 +34,7 @@ export default function Speakers() {
       desc: "Detail-oriented and creative person",
     },
     {
-      photo: picture,
+      photo: KamilDonda,
       name: "Kamil Donda",
       spec: "Frontend Developer",
       university: "Silesian University of Technology",
@@ -37,7 +42,7 @@ export default function Speakers() {
       desc: "Determined to do something great",
     },
     {
-      photo: picture,
+      photo: RobertKwoll,
       name: "Robert Kwoll",
       spec: "Frontend Developer",
       university: "Silesian University of Technology",
@@ -45,7 +50,7 @@ export default function Speakers() {
       desc: "Positive personality with lots of ideas",
     },
     {
-      photo: picture,
+      photo: Jorge,
       name: "Jorge Patterson",
       spec: "Mathematics Massachusetts",
       university: "Institute of Technology ",
@@ -53,7 +58,7 @@ export default function Speakers() {
       desc: "Determined to solve problems and share his knowledge",
     },
     {
-      photo: picture,
+      photo: Katy,
       name: "Katy Murray",
       spec: "Geography ",
       university: "University of Washington ",
