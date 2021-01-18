@@ -8,8 +8,8 @@ export default function Agenda() {
     date: {
       display: "flex",
       justifyContent: "flexStart",
-      color: '#54457F',
-      marginBottom: '40px',
+      color: "#54457F",
+      marginBottom: "40px",
     },
   })();
 
@@ -36,25 +36,25 @@ export default function Agenda() {
       time1: "13:00",
       time2: "14:45",
       title: "Keynote speaker - Kamil Donda",
-      content:"First mobile app from scratch",
+      content: "First mobile app from scratch",
     },
     {
       time1: "14:45",
       time2: "15:00",
       title: "Coffee break",
-      content:"Warm, great coffee <3",
+      content: "Warm, great coffee <3",
     },
     {
       time1: "15:00",
       time2: "16:30",
       title: "Keynote speaker - Jorge Patterson",
-      content:"The Beauty of Mathematics",
+      content: "The Beauty of Mathematics",
     },
     {
       time1: "16:30",
       time2: "18:30",
       title: "Networking",
-      content:"Talk with us!",
+      content: "Talk with us!",
     },
   ];
 

@@ -5,8 +5,8 @@ import "../App.css";
 export default function AgendaEvent(props) {
   const style = makeStyles({
     main: {
-      width: '70%',
-      margin: 'auto',
+      width: "70%",
+      margin: "auto",
       display: "flex",
       justifyContent: "flexStart",
       marginBottom: "24px",
