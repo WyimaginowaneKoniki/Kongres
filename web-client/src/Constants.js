@@ -22,6 +22,7 @@ export const LINKS = {
   REGULATIONS: "/regulations",
   COOKIES: "/cookies-policy",
   PRIVACY: "/privacy-policy",
+  GALLERY: "/gallery",
 };
 export const RATING = {
     0: "",

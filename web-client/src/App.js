@@ -20,6 +20,7 @@ import MyProfile from './pages/Users/my-profile';
 import SignInReviewer from './pages/Users/Reviewer/signin-reviewer';
 import SignInParticipant from './pages/Users/Participant/signin-participant';
 import WorkView from './pages/ScientificWorks/work-view';
+import PhotoGallery from './pages/photo-gallery';
 import { LINKS } from './Constants';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path={LINKS.REGULATIONS} component={Regulations} />
             <Route path={LINKS.COOKIES} component={CookiesPolicy} />
             <Route path={LINKS.PRIVACY} component={PrivacyPolicy} />
+            <Route path={LINKS.GALLERY} component={PhotoGallery} />
 
             <Route path={[LINKS.PROFILE, LINKS.PARTICIPANT, LINKS.REVIEWER]} exact component={MyProfile} />
 
