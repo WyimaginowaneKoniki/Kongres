@@ -9,7 +9,7 @@ namespace Kongres.Api.Application.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assembly = typeof(TempJob)
+            var assembly = typeof(AssignReviewersToWorkJob)
                 .GetTypeInfo()
                 .Assembly;
 

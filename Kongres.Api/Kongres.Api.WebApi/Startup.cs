@@ -1,6 +1,7 @@
 using Autofac;
 using Kongres.Api.Application.Modules;
 using Kongres.Api.Application.Services;
+using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure;
 using Kongres.Api.Infrastructure.Context;
@@ -15,8 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Quartz;
+using System.Text;
 
 namespace Kongres.Api.WebApi
 {
@@ -89,8 +90,8 @@ namespace Kongres.Api.WebApi
             builder.RegisterModule<QuartzModule>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context,
-            RoleManager<Role> roleManager, IScheduler scheduler)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context,
+            RoleManager<Role> roleManager, IJobsInitializer jobsInitializer)
         {
             context.Database.Migrate();
 
@@ -126,7 +127,7 @@ namespace Kongres.Api.WebApi
                 }
             });
 
-            scheduler.Start();
+            await jobsInitializer.SeedJobsAsync();
         }
     }
 }
