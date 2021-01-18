@@ -25,10 +25,16 @@ h2 {
   margin-bottom: 0.2em;
 }
 
+a:hover {
+  cursor: pointer;
+  color: #6069A9;
+}
+
 .App {
   margin-left: 200px;
   margin-right: 200px;
 }
+
 @media only screen and (max-width: 1440px) {
   .App {
     margin-left: 160px;
