@@ -1,5 +1,6 @@
 import React from "react";
 import "../App.css";
+import "../index.css";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button } from "@material-ui/core/";
@@ -9,17 +10,6 @@ import { URL, LINKS } from "../Constants";
 
 export default function Navigation(props) {
   const style = makeStyles({
-    main: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      height: "120px",
-      paddingTop: "24px",
-      paddingBottom: "12px",
-      paddingLeft: "140px",
-      paddingRight: "140px",
-      boxShadow: "0px 2px 10px #00000029",
-    },
     logo: {
       width: "210px",
     },
@@ -27,18 +17,17 @@ export default function Navigation(props) {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
-      marginBottom: "24px",
     },
     boxBottom: {
       display: "flex",
       justifyContent: "flex-end",
+      fontSize: "16px",
       fontWeight: "bold",
+      paddingTop: "8px",
+      paddingBottom: "8px",
     },
     elements: {
       fontSize: "14px",
-    },
-    linkButton: {
-      textDecoration: "none",
     },
     avatar: {
       width: "56px",
@@ -76,7 +65,6 @@ export default function Navigation(props) {
     link: {
       color: "black",
       textDecoration: "none",
-      marginLeft: "64px",
     },
     activeLink: {
       color: "#6069A9",
@@ -200,7 +188,7 @@ export default function Navigation(props) {
   };
 
   return (
-    <div className={style.main}>
+    <div className="header-menu">
       {/* Logo */}
       <Box>
         <NavLink exact to="/">
@@ -215,7 +203,7 @@ export default function Navigation(props) {
             <NavLink
               exact
               to="/"
-              className={style.link}
+              className={`menu-category ${style.link}`}
               activeClassName={style.activeLink}
             >
               Home
@@ -225,7 +213,7 @@ export default function Navigation(props) {
             <NavLink
               exact
               to={LINKS.AGENDA}
-              className={style.link}
+              className={`menu-category ${style.link}`}
               activeClassName={style.activeLink}
             >
               Agenda
@@ -235,10 +223,10 @@ export default function Navigation(props) {
             <NavLink
               exact
               to={LINKS.SPEAKERS}
-              className={style.link}
+              className={`menu-category ${style.link}`}
               activeClassName={style.activeLink}
             >
-              Keynote Speakers
+              Keynote speakers
             </NavLink>
           </Box>
           {props.userInfo && (
@@ -246,7 +234,7 @@ export default function Navigation(props) {
               <NavLink
                 exact
                 to={LINKS.WORKS}
-                className={style.link}
+                className={`menu-category ${style.link}`}
                 activeClassName={style.activeLink}
               >
                 Scientific works
@@ -257,7 +245,7 @@ export default function Navigation(props) {
             <NavLink
               exact
               to={LINKS.ABOUT}
-              className={style.link}
+              className={`menu-category ${style.link}`}
               activeClassName={style.activeLink}
             >
               About
@@ -267,7 +255,7 @@ export default function Navigation(props) {
             <NavLink
               exact
               to={LINKS.CONTACT}
-              className={style.link}
+              className={`menu-category ${style.link}`}
               activeClassName={style.activeLink}
             >
               Contact
