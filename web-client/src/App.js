@@ -46,12 +46,8 @@ export default function App() {
 
   return (
     <Router>
+      {userInfo ? <Navigation userInfo={userInfo} /> : <NavigationNotLogged />}
       <div className="App">
-        {userInfo ? (
-          <Navigation userInfo={userInfo} />
-        ) : (
-          <NavigationNotLogged />
-        )}
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path={LINKS.AGENDA} component={Agenda} />

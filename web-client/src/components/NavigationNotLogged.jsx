@@ -10,62 +10,38 @@ import { LINKS } from "../Constants";
 export default function NavigationNotLogged() {
   const style = makeStyles({
     main: {
-      width: "100vw",
-      height: "123px",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      height: "120px",
+      paddingTop: "24px",
+      paddingBottom: "12px",
+      paddingLeft: "140px",
+      paddingRight: "140px",
+      boxShadow: "0px 2px 10px #00000029",
     },
     logo: {
-      float: "left",
-      marginLeft: "138px",
-      marginTop: "10px",
       width: "210px",
     },
-    boxBottom: {
-      width: "56vw",
-      marginRight: "138px",
-      paddingBottom: "12px",
-      float: "right",
+    boxTop: {
       display: "flex",
       justifyContent: "flex-end",
-      alignItems: "flex-end",
-      fontWeight: 700,
+      marginBottom: "24px",
     },
-    boxTop: {
-      width: "56vw",
-      marginRight: "138px",
-      float: "right",
-      height: "88px",
+    boxBottom: {
+      display: "flex",
+      justifyContent: "flex-end",
     },
     elements: {
-      float: "right",
-      marginTop: "34px",
-      marginRight: "40px",
       fontSize: "14px",
     },
-    btn1: {
-      float: "right",
-      marginTop: "25px",
+    btnLogin: {
       marginLeft: "32px",
-      width: "90px",
-      height: '35px',
       textTransform: "none",
-      backgroundColor: '#6069A9',
-      '&:hover':
-      {
-        backgroundColor: '#6069A9C4',
-      }
     },
-    btn2: {
-      float: "right",
-      marginTop: "25px",
-      width: "90px",
-      height: '35px',
+    btnSignup: {
+      marginLeft: "32px",
       textTransform: "none",
-      color: '#54457F',
-      borderColor: '#54457F4D',
-      '&:hover':
-      {
-        borderColor: '#54457F99',
-      }
     },
     link: {
       color: "black",
@@ -75,94 +51,112 @@ export default function NavigationNotLogged() {
     activeLink: {
       color: "#6069A9",
     },
+    linkButton: {
+      textDecoration: "none",
+    },
   })();
 
   return (
     <div className={style.main}>
+      {/* Logo */}
       <Box>
         <NavLink exact to="/">
           <img className={style.logo} src={Logo} alt="Logo" />
         </NavLink>
       </Box>
-      <div className={style.boxTop}>
-        <NavLink exact to={LINKS.PARTICIPANT_LOGIN}>
-          <Button
-            className={style.btn1}
-            color="primary"
-            type="submit"
-            variant="contained"
-          >
-            Sign in
-          </Button>
-        </NavLink>
-        <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP}>
-          <Button
-            className={style.btn2}
-            color="primary"
-            type="submit"
-            variant="outlined"
-          >
-            Sign up
-          </Button>
-        </NavLink>
-        <span className={style.elements}>
-          Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Sign in</a> or {" "}
-          <a href={LINKS.REVIEWER_SIGN_UP}>Sign up</a>
-        </span>
+      <div className={style.navigation}>
+        {/* Login and Signup */}
+        <div className={style.boxTop}>
+          <p className={style.elements}>
+            Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Sign in</a> or
+            <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
+          </p>
+          <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.linkButton}>
+            <Button
+              className={style.btnSignup}
+              color="primary"
+              type="submit"
+              variant="outlined"
+            >
+              Sign up
+            </Button>
+          </NavLink>
+          <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
+            <Button
+              className={style.btnLogin}
+              color="primary"
+              type="submit"
+              variant="contained"
+            >
+              Log in
+            </Button>
+          </NavLink>
+        </div>
+
+        {/* Categories */}
+        <Box className={style.boxBottom}>
+          <Box>
+            <NavLink
+              exact
+              to="/"
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Home
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.AGENDA}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Agenda
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.SPEAKERS}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Keynote Speakers
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.WORKS}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Scientific works
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.ABOUT}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              About
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.CONTACT}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Contact
+            </NavLink>
+          </Box>
+        </Box>
       </div>
-      <Box className={style.boxBottom}>
-        <Box>
-          <NavLink
-            exact
-            to="/"
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Home
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to={LINKS.AGENDA}
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Agenda
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to={LINKS.SPEAKERS}
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Keynote Speakers
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to={LINKS.ABOUT}
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            About
-          </NavLink>
-        </Box>
-        <Box>
-          <NavLink
-            exact
-            to={LINKS.CONTACT}
-            className={style.link}
-            activeClassName={style.activeLink}
-          >
-            Contact
-          </NavLink>
-        </Box>
-      </Box>
     </div>
   );
 }
-

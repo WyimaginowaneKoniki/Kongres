@@ -5,18 +5,13 @@ import "../App.css";
 export default function ParagraphText(props) {
   const style = makeStyles({
     main: {
-      padding: "2%",
+      marginBottom: "1.2em",
     },
     heading: {
       textAlign: "left",
-      margin: "0 20%",
-      width: "60%",
     },
     content: {
       textAlign: "left",
-      margin: "0 20%",
-      display: "block",
-      width: "60%",
     },
   })();
 
