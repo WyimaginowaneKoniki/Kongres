@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
@@ -29,8 +29,8 @@ export default function WorkView() {
 
   const location = useLocation();
 
-  const [workPDF, SetWorkPDF] = useState(null);
-  const [data, setData] = useState({
+  const [workPDF, SetWorkPDF] = React.useState(null);
+  const [data, setData] = React.useState({
     scientificWork: "",
     mainAuthor: "",
     versions: [],

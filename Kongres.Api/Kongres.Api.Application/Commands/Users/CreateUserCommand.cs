@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 
-namespace Kongres.Api.Application.Commands.Reviewer
+namespace Kongres.Api.Application.Commands.Users
 {
-    public class CreateReviewerCommand : IRequest
+    public class CreateUserCommand : IRequest
     {
         public string Email { get; set; }
         public string Password { get; set; }
@@ -11,5 +12,6 @@ namespace Kongres.Api.Application.Commands.Reviewer
         public string Specialization { get; set; }
         public string University { get; set; }
         public string AcademicTitle { get; set; }
+        public IFormFile Avatar { get; set; }
     }
 }

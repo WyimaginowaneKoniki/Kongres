@@ -5,9 +5,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Logo from "../images/logo.png";
 import Button from "@material-ui/core/Button";
+import { LINKS } from "../Constants";
 
-function NavigationNotLogged(props) {
-  const styles = makeStyles({
+export default function NavigationNotLogged() {
+  const style = makeStyles({
     main: {
       display: "flex",
       justifyContent: "space-between",
@@ -53,9 +54,7 @@ function NavigationNotLogged(props) {
     linkButton: {
       textDecoration: "none",
     },
-  });
-
-  const style = styles();
+  })();
 
   return (
     <div className={style.main}>
@@ -152,4 +151,3 @@ function NavigationNotLogged(props) {
   );
 }
 
-export default NavigationNotLogged;

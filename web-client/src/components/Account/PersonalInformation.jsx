@@ -1,9 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Container from "@material-ui/core/Container";
+import { TextField, Button, MenuItem, Container } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -271,7 +268,9 @@ export default function PersonalInformation(props) {
             </TextField>
 
             {/* Avatar */}
-            {props.participant === "Participant" ? <Avatar name="avatar" /> : null}
+            {props.participant === "Participant" ? (
+              <Avatar name="avatar" />
+            ) : null}
 
             {/* Button Submit */}
             <Button

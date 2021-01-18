@@ -1,8 +1,7 @@
 import React from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
+import { Button, Tooltip } from "@material-ui/core/";
 import PreviewPDF from "./PreviewPDF";
 
 export default function Information(props) {

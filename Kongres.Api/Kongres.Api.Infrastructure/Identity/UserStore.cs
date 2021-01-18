@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure.Identity
 {
-    public class UserStore : IUserRoleStore<User>, IUserPasswordStore<User>
+    public class UserStore : IUserRoleStore<User>, IUserPasswordStore<User>, IUserEmailStore<User>
     {
         private readonly KongresDbContext _context;
 
@@ -272,6 +272,86 @@ namespace Kongres.Api.Infrastructure.Identity
             return await _context.UserRoles.Where(x => x.Role.Name == roleName)
                                            .Select(x => x.User)
                                            .ToListAsync(cancellationToken);
+        }
+        #endregion
+
+        #region IUserEmailStore
+        // In application users can have same email: 
+        // for participant and reviewer 
+        // so there is no something like unique email :C
+        public Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+            => throw new NotImplementedException();
+
+        public Task<string> GetEmailAsync(User user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.Email);
+        }
+
+        public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.IsEmailConfirmed);
+        }
+
+        public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.NormalizedEmail);
+        }
+
+        public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            user.Email = email;
+
+            return Task.CompletedTask;
+        }
+
+        public Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            user.IsEmailConfirmed = confirmed;
+
+            return Task.CompletedTask;
+        }
+
+        public Task SetNormalizedEmailAsync(User user, string normalizedEmail, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            user.NormalizedEmail = normalizedEmail;
+
+            return Task.CompletedTask;
         }
         #endregion
     }

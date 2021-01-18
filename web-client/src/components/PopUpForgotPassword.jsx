@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import { TextField, Button, Dialog, Snackbar } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Dialog from "@material-ui/core/Dialog";
-import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
 export default function PopUpForgotPassword(props) {
@@ -52,7 +49,7 @@ export default function PopUpForgotPassword(props) {
 
   const duration = 4000;
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = React.useState("");
 
   const schema = yup.object().shape({
     email: yup
@@ -90,7 +87,7 @@ export default function PopUpForgotPassword(props) {
   };
 
   // Close alert
-  const CloseAlert = (event, reason) => {
+  const CloseAlert = (_, reason) => {
     if (reason === "clickaway") return;
 
     SetOpenAlertSuccess(false);

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import {
+  TextField,
+  Container,
+  Button,
+  FormHelperText,
+} from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -69,7 +71,7 @@ export default function SignInForm(props) {
     display: "block",
   };
 
-  const [messageStyle, SetMessageStyle] = useState(correctStyle);
+  const [messageStyle, SetMessageStyle] = React.useState(correctStyle);
 
   const [values, setValues] = React.useState({
     email: "",
@@ -94,7 +96,7 @@ export default function SignInForm(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const [forgotEmail, SetForgotEmail] = useState(null);
+  const [forgotEmail, SetForgotEmail] = React.useState(null);
   const passEmail = (email) => {
     SetForgotEmail(email);
   };
