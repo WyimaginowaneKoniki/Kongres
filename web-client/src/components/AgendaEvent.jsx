@@ -7,27 +7,42 @@ export default function AgendaEvent(props) {
     main: {
       width: "70%",
       margin: "auto",
-      display: "flex",
-      justifyContent: "flexStart",
       marginBottom: "24px",
-      padding: "1em",
       borderRadius: "4px",
+      padding: "1em",
       backgroundColor: "#DFE2F8",
       textAlign: "left",
+      "@media (min-width: 700px)": {
+        display: "flex",
+      },
     },
     title: {
       color: "#54457F",
+      "@media (max-width: 1000px)": {
+        fontSize: "16px",
+      },
     },
     time: {
       width: "130px",
       opacity: 0.8,
       color: "#54457F",
+      "@media (max-width: 1000px)": {
+        width: "88px",
+        fontSize: "14px",
+        marginLeft: "16px",
+      },
     },
     desc: {
       color: "#59546C",
+      "@media (max-width: 1000px)": {
+        fontSize: "14px",
+      },
     },
     info: {
       marginLeft: "40px",
+      "@media (max-width: 1000px)": {
+        marginLeft: "16px",
+      },
     },
   })();
 
