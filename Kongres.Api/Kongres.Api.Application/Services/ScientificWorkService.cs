@@ -54,8 +54,15 @@ namespace Kongres.Api.Application.Services
             await _scientificWorkRepository.AddAsync(scientificWork);
         }
 
-        public async Task AddVersionAsync(uint userId, IFormFile workFile, byte versionNumber = 0)
+        public async Task AddVersionAsync(uint userId, IFormFile workFile, bool isFirstVersion = false)
         {
+            byte versionNumber = 1;
+            if (!isFirstVersion)
+            {
+                versionNumber = await _scientificWorkRepository.GetNumberOfVersionsByAuthorIdAsync(userId);
+                versionNumber++;
+            }
+
             var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(userId);
 
             var workName = await _fileManager.SaveFileAsync(workFile);

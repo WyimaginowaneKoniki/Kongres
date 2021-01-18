@@ -29,7 +29,7 @@ namespace Kongres.Api.Application.Handlers.Work
 
             var userId = uint.Parse(request.AuthorId);
 
-            await _scientificWorkService.AddVersionAsync(userId, request.Work, 1);
+            await _scientificWorkService.AddVersionAsync(userId, request.Work, true);
         }
     }
 }
