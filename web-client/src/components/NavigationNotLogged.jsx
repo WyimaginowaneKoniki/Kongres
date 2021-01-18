@@ -5,9 +5,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Logo from "../images/logo.png";
 import Button from "@material-ui/core/Button";
+import { LINKS } from "../Constants";
 
-function NavigationNotLogged(props) {
-  const styles = makeStyles({
+export default function NavigationNotLogged() {
+  const style = makeStyles({
     main: {
       display: "flex",
       justifyContent: "space-between",
@@ -53,9 +54,7 @@ function NavigationNotLogged(props) {
     linkButton: {
       textDecoration: "none",
     },
-  });
-
-  const style = styles();
+  })();
 
   return (
     <div className={style.main}>
@@ -69,10 +68,10 @@ function NavigationNotLogged(props) {
         {/* Login and Signup */}
         <div className={style.boxTop}>
           <p className={style.elements}>
-            Reviewer? <a href="/reviewer/login">Sign in</a> or
-            <a href="/reviewer/sign-up"> Sign up</a>
+            Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Sign in</a> or
+            <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
           </p>
-          <NavLink exact to="/participant/sign-up" className={style.linkButton}>
+          <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.linkButton}>
             <Button
               className={style.btnSignup}
               color="primary"
@@ -82,7 +81,7 @@ function NavigationNotLogged(props) {
               Sign up
             </Button>
           </NavLink>
-          <NavLink exact to="/participant/login" className={style.linkButton}>
+          <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
             <Button
               className={style.btnLogin}
               color="primary"
@@ -109,7 +108,7 @@ function NavigationNotLogged(props) {
           <Box>
             <NavLink
               exact
-              to="/agenda"
+              to={LINKS.AGENDA}
               className={style.link}
               activeClassName={style.activeLink}
             >
@@ -119,7 +118,7 @@ function NavigationNotLogged(props) {
           <Box>
             <NavLink
               exact
-              to="/speakers"
+              to={LINKS.SPEAKERS}
               className={style.link}
               activeClassName={style.activeLink}
             >
@@ -129,7 +128,17 @@ function NavigationNotLogged(props) {
           <Box>
             <NavLink
               exact
-              to="/about"
+              to={LINKS.WORKS}
+              className={style.link}
+              activeClassName={style.activeLink}
+            >
+              Scientific works
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.ABOUT}
               className={style.link}
               activeClassName={style.activeLink}
             >
@@ -139,7 +148,7 @@ function NavigationNotLogged(props) {
           <Box>
             <NavLink
               exact
-              to="/contact"
+              to={LINKS.CONTACT}
               className={style.link}
               activeClassName={style.activeLink}
             >
@@ -151,5 +160,3 @@ function NavigationNotLogged(props) {
     </div>
   );
 }
-
-export default NavigationNotLogged;

@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import { Button } from "@material-ui/core/";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { URL_API, LINKS } from "../../Constants";

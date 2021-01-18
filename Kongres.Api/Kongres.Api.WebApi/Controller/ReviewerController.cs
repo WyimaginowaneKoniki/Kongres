@@ -1,8 +1,8 @@
-﻿using Kongres.Api.Application.Commands.Reviewer;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Kongres.Api.Application.Commands.Users.Reviewer;
 using Kongres.Api.Domain.Extensions;
 using Microsoft.Extensions.Caching.Memory;
 

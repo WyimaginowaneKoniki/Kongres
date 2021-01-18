@@ -2,16 +2,16 @@ import React from "react";
 import "../../../App.css";
 import SignInForm from "../../../components/Account/SignInForm";
 import axios from "axios";
-import { URL, URL_API } from "../../../Constants";
+import { URL, URL_API, LINKS } from "../../../Constants";
 
 export default function SignInReviewer() {
   const signUpReviewer = {
     heading: "Interested in reviewing works?",
     content: "Sign up now and become our reviewer",
     btn: "Sign up",
-    signUpLink: "/reviewer/sign-up",
+    signUpLink: LINKS.REVIEWER_SIGN_UP,
     signInAs: "participant",
-    signInAsOtherLink: "/participant/login",
+    signInAsOtherLink: LINKS.PARTICIPANT_LOGIN,
   };
 
   const Login = (data) => {

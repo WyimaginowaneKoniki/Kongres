@@ -24,6 +24,7 @@ import { LINKS, URL } from "./Constants";
 import Error404 from "./pages/error-404";
 import NavigationNotLogged from "./components/NavigationNotLogged";
 import axios from "axios";
+import EmailConfirmationToken from "./pages/email-confirmation-token";
 
 export default function App() {
   const [userInfo, setUserInfo] = React.useState(null);
@@ -56,7 +57,7 @@ export default function App() {
           <Route path={LINKS.REGULATIONS} component={Regulations} />
           <Route path={LINKS.COOKIES} component={CookiesPolicy} />
           <Route path={LINKS.PRIVACY} component={PrivacyPolicy} />
-
+          <Route path={LINKS.CONFIRM} component={EmailConfirmationToken} />
           {/* Scientific works */}
           <Route path={LINKS.WORKS} exact component={ScientificWorks} />
           <Route path={LINKS.WORKS} component={WorkView} />
@@ -64,11 +65,14 @@ export default function App() {
           <Route
             path={[LINKS.PROFILE, LINKS.PARTICIPANT, LINKS.REVIEWER]}
             exact
-            component={MyProfile}
+            render={() => <MyProfile userInfo={userInfo} />}
           />
 
           {/* Participant */}
-          <Route path={LINKS.PARTICIPANT_SIGN_UP} component={SignUpParticipant} />
+          <Route
+            path={LINKS.PARTICIPANT_SIGN_UP}
+            component={SignUpParticipant}
+          />
           <Route path={LINKS.PARTICIPANT_LOGIN} component={SignInParticipant} />
           <Route path={LINKS.ADDING_WORK} component={AddingWork} />
 

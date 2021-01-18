@@ -6,7 +6,7 @@ import MyReviewsCategories from "../../../components/Reviews/MyReviewsCategories
 import Search from "../../../components/Search";
 import picture from "../../../images/empty-image.png";
 
-export default function MyReviews(props) {
+export default function MyReviews() {
   const style = makeStyles({
     main: {
       width: "80%",

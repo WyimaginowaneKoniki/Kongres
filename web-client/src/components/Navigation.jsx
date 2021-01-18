@@ -2,10 +2,9 @@ import React from "react";
 import "../App.css";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import { Box, Button } from "@material-ui/core/";
 import Logo from "../images/logo.png";
 import Avatar from "../images/default-avatar.png";
-import Button from "@material-ui/core/Button";
 import { URL, LINKS } from "../Constants";
 
 export default function Navigation(props) {

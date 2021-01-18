@@ -30,7 +30,11 @@ export default function AboutInfo(props) {
     <a href={props.link}>{props.adnotation}</a>,
   ];
   const image = (
-    <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
+    <img
+      src={props.path}
+      className={style.photo}
+      alt={props.alternativeText}
+    />
   );
 
   return (
