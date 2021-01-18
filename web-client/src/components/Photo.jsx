@@ -21,7 +21,7 @@ const Photo = ({ photo, margin, direction, top, left }) => {
       width: "600px",
       height: "600px",
       margin: "25px",
-      transform: `rotate(${rotation}deg)`
+      transform: `rotate(${rotation}deg)`,
     },
   })();
 
@@ -56,7 +56,7 @@ const Photo = ({ photo, margin, direction, top, left }) => {
   const [isDialogOpen, SetIsDialogOpen] = React.useState(false);
   const closeDialog = () => {
     SetIsDialogOpen(false);
-    setTimeout(function(){
+    setTimeout(function () {
       SetRotation(0);
     }, 200);
   };
@@ -69,6 +69,7 @@ const Photo = ({ photo, margin, direction, top, left }) => {
         alt="img"
         onMouseMove={over}
         onMouseOut={leave}
+        onTouchStart={over}
       />
       <Dialog
         open={isDialogOpen}
