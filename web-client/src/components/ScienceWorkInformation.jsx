@@ -12,6 +12,8 @@ import DropZone from "./DropZone";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import { URL_API } from "../Constants";
 
@@ -132,12 +134,15 @@ export default function ScienceWorkInformation(props) {
 
   const style = styles();
 
-  const schema = yup.object().shape({});
+  function Alert(props) {
+    return <MuiAlert elevation={6} {...props} />;
+  }
 
-  const { register, handleSubmit, errors } = useForm({
-    mode: "onBlur",
-    resolver: yupResolver(schema),
-  });
+  const [openAlertError, SetOpenAlertError] = React.useState(false);
+  const [openAlertSuccess, SetOpenAlertSuccess] = React.useState(false);
+  const durationOfAlert = 4000;
+
+  const { register, handleSubmit } = useForm({});
 
   const downloadFile = () => {
     const link = document.createElement("a");
@@ -153,6 +158,33 @@ export default function ScienceWorkInformation(props) {
     setIsDialogOpen(true);
     //  set default values
     setVersionFile(null);
+  };
+
+  // Show alert
+  const ShowAlert = () => {
+    SetOpenAlertError(true);
+  };
+
+  const ShowAlertSuccess = () => {
+    SetOpenAlertSuccess(true);
+  };
+
+  // Close alert
+  const CloseAlert = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    SetOpenAlertError(false);
+  };
+
+  const CloseAlertSuccess = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    SetOpenAlertSuccess(false);
+  };
+
+  const ClickSubmit = () => {
+    if (versionFile === null) ShowAlert();
+    else ShowAlertSuccess();
   };
 
   const closeDialog = () => setIsDialogOpen(false);
@@ -239,7 +271,6 @@ export default function ScienceWorkInformation(props) {
         )}
         <Dialog open={isDialogOpen} onClose={closeDialog}>
           <form
-            noValidate
             onSubmit={handleSubmit(onSubmit)}
             className={style.popup}
           >
@@ -253,11 +284,31 @@ export default function ScienceWorkInformation(props) {
                 color="primary"
                 className={style.btn}
                 type="submit"
+                onClick={ClickSubmit}
               >
                 Upload new version
               </Button>
             </DialogActions>
           </form>
+          <Snackbar
+            open={openAlertError}
+            autoHideDuration={durationOfAlert}
+            onClose={CloseAlert}
+          >
+            <Alert onClose={CloseAlert} severity={"error"}>
+              {"You did not choose a work!"}
+            </Alert>
+          </Snackbar>
+
+          <Snackbar
+            open={openAlertSuccess}
+            autoHideDuration={durationOfAlert}
+            onClose={CloseAlertSuccess}
+          >
+            <Alert onClose={CloseAlertSuccess} severity={"success"}>
+              {"You have added a new version of your work!"}
+            </Alert>
+          </Snackbar>
         </Dialog>
       </div>
     </div>
