@@ -49,5 +49,9 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                    .Include(x => x.User)
                                                    .AnyAsync(x => x.User.Id == userId &&
                                                                   x.ScientificWork.Id == scientificWorkId);
+
+        public async Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization)
+            => await _context.ScientificWorks.Where(x => x.Specialization == specialization)
+                                             .ToListAsync();
     }
 }
