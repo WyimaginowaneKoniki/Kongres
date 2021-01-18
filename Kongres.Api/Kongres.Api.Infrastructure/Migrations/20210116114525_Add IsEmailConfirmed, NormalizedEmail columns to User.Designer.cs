@@ -3,14 +3,16 @@ using System;
 using Kongres.Api.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kongres.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(KongresDbContext))]
-    partial class KongresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210116114525_Add IsEmailConfirmed, NormalizedEmail columns to User")]
+    partial class AddIsEmailConfirmedNormalizedEmailcolumnstoUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,10 +34,15 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<string>("File")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<uint?>("ReviewId")
+                        .HasColumnType("int unsigned");
+
                     b.Property<uint?>("UserId")
                         .HasColumnType("int unsigned");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
 
                     b.HasIndex("UserId");
 
@@ -46,9 +53,6 @@ namespace Kongres.Api.Infrastructure.Migrations
                 {
                     b.Property<uint>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int unsigned");
-
-                    b.Property<uint?>("AnswerId")
                         .HasColumnType("int unsigned");
 
                     b.Property<string>("Comment")
@@ -70,8 +74,6 @@ namespace Kongres.Api.Infrastructure.Migrations
                         .HasColumnType("int unsigned");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnswerId");
 
                     b.HasIndex("ReviewerId");
 
@@ -247,6 +249,10 @@ namespace Kongres.Api.Infrastructure.Migrations
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.Answer", b =>
                 {
+                    b.HasOne("Kongres.Api.Domain.Entities.Review", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId");
+
                     b.HasOne("Kongres.Api.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -254,16 +260,12 @@ namespace Kongres.Api.Infrastructure.Migrations
 
             modelBuilder.Entity("Kongres.Api.Domain.Entities.Review", b =>
                 {
-                    b.HasOne("Kongres.Api.Domain.Entities.Answer", "Answer")
-                        .WithMany()
-                        .HasForeignKey("AnswerId");
-
                     b.HasOne("Kongres.Api.Domain.Entities.User", "Reviewer")
                         .WithMany()
                         .HasForeignKey("ReviewerId");
 
                     b.HasOne("Kongres.Api.Domain.Entities.ScientificWorkFile", "VersionOfScientificWork")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("VersionOfScientificWorkId");
                 });
 

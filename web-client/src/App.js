@@ -29,6 +29,7 @@ import SignInParticipant from "./pages/signin-participant";
 import WorkView from "./pages/work-view";
 import Error404 from "./pages/error-404";
 import axios from "axios";
+import EmailConfirmationToken from "./pages/email-confirmation-token";
 import { URL } from "./Constants";
 
 function App() {
@@ -46,54 +47,59 @@ function App() {
         .then((resp) => {
           setUserInfo(resp.data);
         });
-        
     }
   }, []);
 
   const SecuredRoute = ({ component: Component, ...rest }) => {
     return (
-      <Route {...rest} render={
-        props => {
+      <Route
+        {...rest}
+        render={(props) => {
           if (userInfo) {
-            return <Component {...rest} {...props} userInfo={userInfo}/>
-          } 
-          else if(!localStorage.getItem("jwt")) {
-            return <Redirect to='/signin-participant'/>
+            return <Component {...rest} {...props} userInfo={userInfo} />;
+          } else if (!localStorage.getItem("jwt")) {
+            return <Redirect to="/signin-participant" />;
           }
-        }
-      } />
-    )
-  }
+        }}
+      />
+    );
+  };
 
   const SecuredRouteReviewer = ({ component: Component, ...rest }) => {
     return (
-      <Route {...rest} render={
-        props => {
+      <Route
+        {...rest}
+        render={(props) => {
           if (userInfo && userInfo.role === "Reviewer") {
-            return <Component {...rest} {...props} />
-          } 
-          else if(!localStorage.getItem("jwt") || (userInfo && userInfo.role !== "Reviewer")) {
-            return <Redirect to='/signin-reviewer'/>
+            return <Component {...rest} {...props} />;
+          } else if (
+            !localStorage.getItem("jwt") ||
+            (userInfo && userInfo.role !== "Reviewer")
+          ) {
+            return <Redirect to="/signin-reviewer" />;
           }
-        }
-      } />
-    )
-  }
+        }}
+      />
+    );
+  };
 
   const SecuredRouteParticipant = ({ component: Component, ...rest }) => {
     return (
-      <Route {...rest} render={
-        props => {
+      <Route
+        {...rest}
+        render={(props) => {
           if (userInfo && userInfo.role === "Participant") {
-            return <Component {...rest} {...props} />
-          } 
-          else if(!localStorage.getItem("jwt") || (userInfo && userInfo.role !== "Participant")) {
-            return <Redirect to='/signin-participant'/>
+            return <Component {...rest} {...props} />;
+          } else if (
+            !localStorage.getItem("jwt") ||
+            (userInfo && userInfo.role !== "Participant")
+          ) {
+            return <Redirect to="/signin-participant" />;
           }
-        }
-      } />
-    )
-  }
+        }}
+      />
+    );
+  };
 
   return (
     <Router>
@@ -116,13 +122,21 @@ function App() {
           <Route path="/signup-participant" component={SignUpParticipant} />
           <Route path="/signin-reviewer" component={SignInReviewer} />
           <Route path="/signin-participant" component={SignInParticipant} />
-          <SecuredRoute path="/my-profile" component={MyProfile}/>
-          <SecuredRoute exact path="/scientific-works" component={ScientificWorks} />
+          <Route
+            path="/email-confirm-token"
+            component={EmailConfirmationToken}
+          />
+          <SecuredRoute path="/my-profile" component={MyProfile} />
+          <SecuredRoute
+            exact
+            path="/scientific-works"
+            component={ScientificWorks}
+          />
           <SecuredRoute path="/work-view" component={WorkView} />
           {/* Participant */}
           <SecuredRouteParticipant path="/adding-work" component={AddingWork} />
           {/* Reviewer */}
-          <SecuredRouteReviewer path="/my-reviews" component={MyReviews}/>
+          <SecuredRouteReviewer path="/my-reviews" component={MyReviews} />
           <Route component={Error404} />
         </Switch>
         <Footer />
