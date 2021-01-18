@@ -3,6 +3,13 @@
   padding: 0;
   text-transform: none;
 }
+html {
+  background-image: url("../src/images/background-desktop.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100vw;
+  
+}
 
 body {
   font-family: "Roboto", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
