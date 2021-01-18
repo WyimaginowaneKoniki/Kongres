@@ -6,15 +6,14 @@ import { Link } from "react-router-dom";
 export default function SignInUpInfo(props) {
   const style = makeStyles({
     main: {
-      padding: "2%",
       display: "flex",
       justifyContent: "center",
     },
     content: {
-      display: "block",
       justifyContent: "center",
-      textAlign: "left",
-      margin: "0 20%",
+      textAlign: "center",
+      fontSize: "14px",
+      marginBottom: "40px",
       width: "30%",
     },
   })();
@@ -22,7 +21,7 @@ export default function SignInUpInfo(props) {
   return (
     <div className={style.main}>
       <p className={style.content}>
-        {props.content} <Link to={props.signUpAsOtherLink}>here...</Link>
+        {props.content} <Link to={props.link}>{props.textLink}</Link>
       </p>
     </div>
   );

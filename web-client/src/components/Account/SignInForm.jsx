@@ -1,11 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  TextField,
-  Container,
-  Button,
-  FormHelperText,
-} from "@material-ui/core/";
+import { TextField, Container, Button, FormHelperText } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -128,7 +123,7 @@ export default function SignInForm(props) {
               required
               id="email-signin"
               name="email"
-              label="Login/Email"
+              label="Email"
               type="email"
               value={values.email}
               autoComplete="email"
@@ -182,9 +177,7 @@ export default function SignInForm(props) {
               </Button>
             </div>
           </form>
-        </div>
-
-        {/* Info about signing up */}
+            {/* Info about signing up */}
         <div className={style.signUp}>
           <h2 className={style.heading}>{props.heading}</h2>
           <p className={style.content}>{props.content}</p>
@@ -195,6 +188,9 @@ export default function SignInForm(props) {
           </Link>
         </div>
       </div>
+        </div>
+
+      
       <p className={style.bottomMessage}>
         If you want to log in as {props.signInAs}, go to{" "}
         <Link to={props.signInAsOtherLink}>login page</Link>
