@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import '../App.css';
 
-function AgendaEvent(props) {
-    const styles = makeStyles({
+export default function AgendaEvent(props) {
+    const style = makeStyles({
         main: {
             padding: '2%',
         },
@@ -23,9 +23,7 @@ function AgendaEvent(props) {
             display: 'block',
             width: '60%',
         },
-      });
-
-    const style = styles();
+      })();
 
     return (
         <div className={style.main}>
@@ -35,5 +33,3 @@ function AgendaEvent(props) {
         </div>
     )
 }
-
-export default AgendaEvent;

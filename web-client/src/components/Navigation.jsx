@@ -2,14 +2,13 @@ import React from "react";
 import "../App.css";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
+import { Box, Button } from "@material-ui/core/";
 import Logo from "../images/logo.png";
 import Avatar from "../images/default-avatar.png";
-import Button from "@material-ui/core/Button";
-import { URL } from "../Constants";
+import { URL, LINKS } from "../Constants";
 
-function Navigation(props) {
-  const styles = makeStyles({
+export default function Navigation(props) {
+  const style = makeStyles({
     main: {
       width: "100vw",
       height: "123px",
@@ -106,16 +105,14 @@ function Navigation(props) {
     activeLink: {
       color: "#6069A9",
     },
-  });
-
-  const style = styles();
+  })();
 
   const Logout = () => {
     localStorage.removeItem("jwt");
     window.location.href = URL;
   };
 
-  const path = `/work-view/${props.userInfo.scientificWorkId}`
+  const path = `${LINKS.WORKS}/${props.userInfo.scientificWorkId}`;
 
   return (
     <div className={style.main}>
@@ -125,7 +122,7 @@ function Navigation(props) {
         </NavLink>
       </Box>
       <div className={style.boxTop}>
-        <NavLink exact to="/my-profile">
+        <NavLink exact to={LINKS.PROFILE}>
           <img
             className={style.avatar}
             src={
@@ -135,7 +132,7 @@ function Navigation(props) {
           />
         </NavLink>
         <div className={style.text}>
-          <NavLink exact to="/my-profile">
+          <NavLink exact to={LINKS.PROFILE}>
             <span className={style.name}>{props.userInfo.name}</span>
           </NavLink>
           <span className={style.logout} onClick={Logout}>
@@ -146,7 +143,7 @@ function Navigation(props) {
         {props.userInfo.role === "Participant" &&
           props.userInfo.scientificWorkId === 0 && (
             <Box>
-              <NavLink exact to="/adding-work">
+              <NavLink exact to={LINKS.ADDING_WORK}>
                 <Button
                   className={style.btn2}
                   color="primary"
@@ -158,7 +155,6 @@ function Navigation(props) {
               </NavLink>
             </Box>
           )}
-
 
         {props.userInfo.role === "Participant" &&
           props.userInfo.scientificWorkId !== 0 && (
@@ -178,7 +174,7 @@ function Navigation(props) {
 
         {props.userInfo.role === "Reviewer" && (
           <Box>
-            <NavLink exact to="/my-reviews">
+            <NavLink exact to={LINKS.REVIEWS}>
               <Button
                 className={style.btn3}
                 color="primary"
@@ -205,7 +201,7 @@ function Navigation(props) {
         <Box>
           <NavLink
             exact
-            to="/agenda"
+            to={LINKS.AGENDA}
             className={style.link}
             activeClassName={style.activeLink}
           >
@@ -215,7 +211,7 @@ function Navigation(props) {
         <Box>
           <NavLink
             exact
-            to="/speakers"
+            to={LINKS.SPEAKERS}
             className={style.link}
             activeClassName={style.activeLink}
           >
@@ -225,7 +221,7 @@ function Navigation(props) {
         <Box>
           <NavLink
             exact
-            to="/scientific-works"
+            to={LINKS.WORKS}
             className={style.link}
             activeClassName={style.activeLink}
           >
@@ -235,7 +231,7 @@ function Navigation(props) {
         <Box>
           <NavLink
             exact
-            to="/about"
+            to={LINKS.ABOUT}
             className={style.link}
             activeClassName={style.activeLink}
           >
@@ -245,7 +241,7 @@ function Navigation(props) {
         <Box>
           <NavLink
             exact
-            to="/contact"
+            to={LINKS.CONTACT}
             className={style.link}
             activeClassName={style.activeLink}
           >
@@ -256,5 +252,3 @@ function Navigation(props) {
     </div>
   );
 }
-
-export default Navigation;

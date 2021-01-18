@@ -4,7 +4,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { URL_API } from "../Constants";
+import { URL_API, LINKS } from "../Constants";
 
 export default function EmailConfirmationToken() {
   function Alert(props) {
@@ -42,7 +42,7 @@ export default function EmailConfirmationToken() {
 
     SetOpenAlert(false);
 
-    const path = `signin-participant`;
+    const path = LINKS.PARTICIPANT_LOGIN;
     history.push({
       pathname: path,
     });
