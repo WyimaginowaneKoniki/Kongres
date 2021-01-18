@@ -8,33 +8,29 @@ export default function AboutInfo(props) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      textAlign: "left",
     },
     left: {
-      width: "50%",
       marginRight: "24px",
-      textAlign: "left",
     },
     right: {
-      width: "50%",
       marginLeft: "24px",
-      textAlign: "left",
     },
     photo: {
-      width: "100%",
+      width: "592px",
+      height: "374px",
     },
   })();
 
   const infos = [
     <h2>{props.head}</h2>,
     <p>{props.text}</p>,
-    <a href={props.link}>{props.adnotation}</a>,
+    <a className={style.link} href={props.link}>
+      {props.adnotation}
+    </a>,
   ];
   const image = (
-    <img
-      src={props.path}
-      className={style.photo}
-      alt={props.alternativeText}
-    />
+    <img src={props.path} className={style.photo} alt={props.alternativeText} />
   );
 
   return (

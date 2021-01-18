@@ -10,15 +10,17 @@ export default function AboutProfil(props) {
       alignItems: "center",
       marginBottom: "40px",
     },
+    personInfo: {
+      width: "384px",
+      textAlign: "left",
+    },
     photo: {
-      height: "150px",
+      height: "184px",
+      width: "184px",
       marginRight: "24px",
     },
-    h3: {
-      textAlign: "left",
-    },
-    p: {
-      textAlign: "left",
+    specialization: {
+      fontWeight: "600",
     },
   })();
 
@@ -26,8 +28,10 @@ export default function AboutProfil(props) {
     <div className={style.main}>
       <img src={props.path} alt={props.name} className={style.photo}></img>
       <div className={style.personInfo}>
-        <h3 className={style.h3}>{props.name}</h3>
-        <p className={style.p}>{props.description}</p>
+        <h3>{props.name}</h3>
+        <p className={style.specialization}>{props.specialization}</p>
+        <p>{props.hobby}</p>
+        <p>{props.description}</p>
       </div>
     </div>
   );
