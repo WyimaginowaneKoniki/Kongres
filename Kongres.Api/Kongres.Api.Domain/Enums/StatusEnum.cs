@@ -2,9 +2,10 @@ namespace Kongres.Api.Domain.Enums
 {
     public enum StatusEnum : byte
     {
-        WaitingForReview,
-        ToCorrect,
-        Accepted,
-        Rejected
+        WaitingForDrawOfReviewers,
+        UnderReview,
+        Correcting,
+        Rejected,
+        Accepted
     }
 }

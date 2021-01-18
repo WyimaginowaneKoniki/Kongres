@@ -47,7 +47,7 @@ namespace Kongres.Api.Application.Services
                 MainAuthor = user,
                 OtherAuthors = authors,
                 CreationDate = DateTime.Now,
-                Status = StatusEnum.WaitingForReview,
+                Status = StatusEnum.WaitingForDrawOfReviewers,
                 Specialization = specialization
             };
 
