@@ -2,16 +2,16 @@ import React from "react";
 import "../../../App.css";
 import SignInForm from "../../../components/Account/SignInForm";
 import axios from "axios";
-import { URL, URL_API } from "../../../Constants";
+import { URL, URL_API, LINKS } from "../../../Constants";
 
 export default function SignInReviewer() {
   const signUpReviewer = {
-    heading: "Don't have an account?",
-    content: "If you want to review... or something... sign up",
+    heading: "Interested in reviewing works?",
+    content: "Sign up now and become our reviewer",
     btn: "Sign up",
-    signUpLink: "/reviewer/sign-up",
+    signUpLink: LINKS.REVIEWER_SIGN_UP,
     signInAs: "participant",
-    signInAsOtherLink: "/participant/login",
+    signInAsOtherLink: LINKS.PARTICIPANT_LOGIN,
   };
 
   const Login = (data) => {
@@ -31,8 +31,7 @@ export default function SignInReviewer() {
 
   return (
     <div>
-      <h1>Sign in as Reviewer</h1>
-
+      <h1>Log in as Reviewer</h1>
       <SignInForm
         Login={Login}
         heading={signUpReviewer.heading}

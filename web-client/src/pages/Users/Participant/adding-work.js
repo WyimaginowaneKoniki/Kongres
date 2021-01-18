@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import "../../../App.css";
 import DropZone from "../../../components/DropZone";
 import { makeStyles } from "@material-ui/core/styles";
@@ -76,7 +76,7 @@ export default function AddingWork() {
     },
   })();
 
-  const formRef = useRef(null);
+  const formRef = React.useRef(null);
 
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;

@@ -3,8 +3,16 @@ import "../App.css";
 import ContactInfo from "../components/ContactInfo";
 import ContactMap from "../components/ContactMap";
 import picture from "../images/empty-image.png";
+import { makeStyles } from "@material-ui/core/styles";
 
 export default function Contact() {
+  const style = makeStyles({
+    main: {
+      display: "flex",
+      justifyContent: "center",
+    },
+  })();
+
   const inf1 = {
     path: picture,
     link: "mailto:conference@gmail.com",
@@ -41,34 +49,35 @@ export default function Contact() {
     <div>
       <h1>Contact</h1>
 
-      <div>
-        <ContactInfo
-          path={inf1.path}
-          link={inf1.link}
-          name={inf1.name}
-          alternativeText={inf1.alternativeText}
-        />
+      <div className={style.main}>
+        <div>
+          <ContactInfo
+            path={inf1.path}
+            link={inf1.link}
+            name={inf1.name}
+            alternativeText={inf1.alternativeText}
+          />
 
-        <ContactInfo
-          path={inf2.path}
-          link={inf2.link}
-          name={inf2.name}
-          alternativeText={inf2.alternativeText}
-        />
+          <ContactInfo
+            path={inf2.path}
+            link={inf2.link}
+            name={inf2.name}
+            alternativeText={inf2.alternativeText}
+          />
 
-        <ContactInfo
-          path={inf3.path}
-          name={inf3.name}
-          alternativeText={inf3.alternativeText}
-        />
+          <ContactInfo
+            path={inf3.path}
+            name={inf3.name}
+            alternativeText={inf3.alternativeText}
+          />
 
-        <ContactInfo
-          path={inf4.path}
-          link={inf4.link}
-          name={inf4.name}
-          alternativeText={inf4.alternativeText}
-        />
-
+          <ContactInfo
+            path={inf4.path}
+            link={inf4.link}
+            name={inf4.name}
+            alternativeText={inf4.alternativeText}
+          />
+        </div>
         <ContactMap path={map.path} />
       </div>
     </div>

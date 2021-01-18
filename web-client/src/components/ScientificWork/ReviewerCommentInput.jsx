@@ -144,7 +144,7 @@ export default function ReviewerCommentInput(props) {
     <div>
       <div className={style.contentOnPage}>
         <div className={style.userInfo}>
-          <img src={defaultPhoto} className={style.image} alt=""></img>
+          <img src={defaultPhoto} className={style.image} alt=""/>
           <p className={style.userName}>Me</p>
         </div>
         <Button

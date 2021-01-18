@@ -5,49 +5,32 @@ import "../App.css";
 export default function KeynoteSpeaker(props) {
   const style = makeStyles({
     main: {
-      width: "80%",
-      margin: "auto",
-      float: "right",
-    },
-    left: {
-      float: "left",
-      display: "block",
-      width: "25%",
-      margin: "5%",
-    },
-    right: {
-      float: "right",
-      display: "block",
-      width: "55%",
-      margin: "5%",
-      padding: "3% 0",
+      display: "flex",
+      justifyContent: "center",
+      marginBottom: "40px",
     },
     photo: {
-      width: "100%",
+      width: "400px",
     },
-    name: {
+    speakerInfo: {
+      width: "400px",
       textAlign: "left",
-      margin: "0",
-    },
-    info: {
-      display: "block",
-      textAlign: "left",
-    },
-    desc: {
-      marginTop: "5%",
+      marginLeft: "32px",
+      display: "flex",
+      flexDirection: "column",
     },
   })();
 
+
   return (
     <div className={style.main}>
-      <div className={style.left}>
-        <img className={style.photo} src={props.photo} alt="Speaker" />
-      </div>
-      <div className={style.right}>
-        <h4 className={style.name}>{props.name}</h4>
-        <span className={style.info}>{props.spec}</span>
-        <span className={style.info}>{props.university}</span>
-        <span className={`${style.info} ${style.desc}`}>{props.desc}</span>
+      <img className={style.photo} src={props.photo} alt="" />
+      <div className={style.speakerInfo}>
+        <h2 className={style.name}>{props.name}</h2>
+        <p className={style.info}>{props.spec}</p>
+        <p className={style.info}>{props.university}</p>
+        <p className={style.info}>{props.hobby}</p>
+        <p className={`${style.info} ${style.desc}`}>{props.desc}</p>
       </div>
     </div>
   );

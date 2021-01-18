@@ -71,7 +71,7 @@ export default function ScientificWorks() {
     if (!date) return null;
     return date.replace(
       /(\d{4})-(\d{1,2})-(\d{1,2})/,
-      function (match, y, m, d) {
+      function (_, y, m, d) {
         return d + "/" + m + "/" + y;
       }
     );

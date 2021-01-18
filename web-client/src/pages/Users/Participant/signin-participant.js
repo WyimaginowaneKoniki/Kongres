@@ -7,7 +7,7 @@ import { URL, URL_API, LINKS } from "../../../Constants";
 export default function SignInParticipant() {
   const signUpRParticipant = {
     heading: "Don't have an account?",
-    content: "If you want to review... or something... sign up",
+    content: "If you want to take part in conference, join us now!",
     btn: "Sign up",
     signUpLink: `${LINKS.PARTICIPANT_SIGN_UP}`,
     signInAs: "reviewer",
@@ -20,7 +20,6 @@ export default function SignInParticipant() {
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("jwt", response.data);
-
           window.location.href = URL;
         }
 

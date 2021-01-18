@@ -1,9 +1,9 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
+using System;
 
-namespace Kongres.Api.Application.Commands.Participant
+namespace Kongres.Api.Application.Commands.Users
 {
-    public class LoginParticipantCommand : IRequest
+    public class LoginUserCommand : IRequest
     {
         public string Email { get; set; }
         public string Password { get; set; }

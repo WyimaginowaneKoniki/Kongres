@@ -2,6 +2,7 @@ export const URL = "https://localhost:5001";
 export const URL_API = `${URL}/api`;
 export const LINKS = {
   PROFILE: "/my-profile",
+  CONFIRM: "/activation",
 
   PARTICIPANT: "/participant",
   PARTICIPANT_SIGN_UP: "/participant/sign-up",
