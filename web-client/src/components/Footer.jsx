@@ -5,14 +5,6 @@ import Logo from "../images/logo.png";
 
 export default function Footer() {
   const style = makeStyles({
-    main: {
-      display: "flex",
-      justifyContent: "space-between",
-      textAlign: "left",
-      marginTop: "80px",
-      paddingTop: "24px",
-      paddingBottom: "24px",
-    },
     left: {
       justifyContent: "flex-start",
     },
@@ -30,7 +22,7 @@ export default function Footer() {
   })();
 
   return (
-    <div className={style.main}>
+    <div className="footer">
       <div className={style.left}>
         <img className={style.logo} src={Logo} alt="Logo" />
         <div className={style.text}>Scienture conference &copy; 2021</div>

@@ -68,10 +68,7 @@ export default function App() {
           />
 
           {/* Participant */}
-          <Route
-            path={LINKS.PARTICIPANT_SIGN_UP}
-            component={SignUpParticipant}
-          />
+          <Route path={LINKS.PARTICIPANT_SIGN_UP} component={SignUpParticipant} />
           <Route path={LINKS.PARTICIPANT_LOGIN} component={SignInParticipant} />
           <Route path={LINKS.ADDING_WORK} component={AddingWork} />
 
