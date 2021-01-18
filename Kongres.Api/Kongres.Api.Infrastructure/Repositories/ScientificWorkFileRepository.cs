@@ -42,5 +42,10 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                     .ThenInclude(x => x.Reviewer)
                                                  .Where(x => x.ScientificWork.Id == workId)
                                                  .ToListAsync();
+
+        public int GetReviewsCountInNewestVersion(uint workId)
+            => _context.ScientificWorkFiles.Where(x => x.ScientificWork.Id == workId)
+                                           .OrderByDescending(x => x.Version)
+                                           .First().Reviews.Count();
     }
 }

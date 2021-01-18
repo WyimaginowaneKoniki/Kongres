@@ -7,5 +7,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
     public interface IReviewersScienceWorkRepository : IRepository
     {
         Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks);
+        int GetReviewersCount(uint scientificWorkId);
     }
 }

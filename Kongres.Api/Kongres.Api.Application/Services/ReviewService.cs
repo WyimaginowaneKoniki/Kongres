@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Kongres.Api.Domain.Enums;
 
 namespace Kongres.Api.Application.Services
 {
@@ -15,18 +16,21 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
+        private readonly IReviewersScienceWorkRepository _reviewersWorkRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly IFileManager _fileManager;
         private readonly UserManager<User> _userManager;
 
         public ReviewService(IScientificWorkRepository scientificWorkRepository,
                             IScientificWorkFileRepository scientificWorkFileRepository,
+                            IReviewersScienceWorkRepository reviewersWorkRepository,
                             IReviewRepository reviewRepository,
                             IFileManager fileManager,
                             UserManager<User> userManager)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
+            _reviewersWorkRepository = reviewersWorkRepository;
             _reviewRepository = reviewRepository;
             _fileManager = fileManager;
             _userManager = userManager;
@@ -93,6 +97,25 @@ namespace Kongres.Api.Application.Services
             review.Comment = reviewMsg;
 
             await _reviewRepository.AddReviewAsync(review);
+            
+            var reviewerCount = _reviewersWorkRepository.GetReviewersCount(scientificWorkId);
+            var reviewsCount = _scientificWorkFileRepository.GetReviewsCountInNewestVersion(scientificWorkId);
+
+            // all reviewers added their reviews
+            if (reviewsCount == reviewerCount)
+            {
+                var work = await _scientificWorkRepository.GetWorkByIdAsync(scientificWorkId);
+                work.Status = StatusEnum.Correcting;
+
+                await _scientificWorkRepository.ChangeStatusAsync(work);
+
+                // TODO: calculate rating and save it
+
+                // TODO: based on rating:
+                // < 1.5      reject
+                // 1.5 - 2.5  send back to review
+                // 2.5 <      approve
+            }
         }
 
         public async Task<Stream> GetStreamOfReviewFileAsync(uint userId, uint reviewId)

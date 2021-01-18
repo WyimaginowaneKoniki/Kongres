@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using System.Threading.Tasks;
@@ -18,7 +19,10 @@ namespace Kongres.Api.Infrastructure.Repositories
         public async Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks)
         {
             await _context.ReviewersScienceWorks.AddRangeAsync(reviewersScienceWorks);
-            var a = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
+
+        public int GetReviewersCount(uint scientificWorkId)
+            => _context.ReviewersScienceWorks.Count(x => x.ScientificWork.Id == scientificWorkId);
     }
 }
