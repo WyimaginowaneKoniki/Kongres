@@ -10,11 +10,18 @@ const Photo = ({ photo, margin, direction, top, left }) => {
     imgStyle.top = top;
   }
 
+  const [rotation, SetRotation] = React.useState(0);
+
+  const rotate = () => {
+    SetRotation(rotation + 90);
+  };
+
   const style = makeStyles({
     photo: {
-      maxWidth: "800px",
-      // height: "600px",
+      width: "600px",
+      height: "600px",
       margin: "25px",
+      transform: `rotate(${rotation}deg)`
     },
   })();
 
@@ -25,17 +32,15 @@ const Photo = ({ photo, margin, direction, top, left }) => {
   let timeout;
 
   const over = (e) => {
-    // closeDialog();
     clearTimeout(timeout);
     if (!isClick) {
       timeout = setTimeout(function () {
         SetCurrentPhoto(e.target.src);
-        setIsDialogOpen(true);
+        SetIsDialogOpen(true);
       }, 500);
     }
   };
   const leave = () => {
-    // closeDialog();
     clearTimeout(timeout);
   };
 
@@ -48,15 +53,9 @@ const Photo = ({ photo, margin, direction, top, left }) => {
     SetIsClick(false);
   });
 
-  const [rotation, SetRotation] = React.useState(0);
-
-  const rotate = () => {
-    SetRotation(rotation + 90);
-  };
-
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [isDialogOpen, SetIsDialogOpen] = React.useState(false);
   const closeDialog = () => {
-    setIsDialogOpen(false);
+    SetIsDialogOpen(false);
     setTimeout(function(){
       SetRotation(0);
     }, 200);
@@ -78,7 +77,6 @@ const Photo = ({ photo, margin, direction, top, left }) => {
         maxWidth={800}
       >
         <img
-          style={{ transform: `rotate(${rotation}deg)` }}
           className={style.photo}
           src={currentPhoto}
           alt="img"
