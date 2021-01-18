@@ -76,6 +76,13 @@ namespace Kongres.Api.Application.Services
             };
 
             await _scientificWorkFileRepository.AddAsync(versionOfWork);
+
+            // change status when the work reviewed before 
+            if (!isFirstVersion)
+            {
+                scientificWork.Status = StatusEnum.UnderReview;
+                await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
+            }
         }
 
         public async Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync()

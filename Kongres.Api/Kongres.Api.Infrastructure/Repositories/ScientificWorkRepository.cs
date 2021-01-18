@@ -61,5 +61,11 @@ namespace Kongres.Api.Infrastructure.Repositories
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Where(x => x.Specialization == specialization)
                                              .ToListAsync();
+
+        public async Task ChangeStatusAsync(ScientificWork scientificWork)
+        {
+            _context.ScientificWorks.Update(scientificWork);
+            await _context.SaveChangesAsync();
+        }
     }
 }
