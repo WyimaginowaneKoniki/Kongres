@@ -50,7 +50,6 @@ export default function AuthorAnswerInput(props) {
       width: "390px",
     },
     btn: {
-      textTransform: "none",
       width: "120px",
       height: "45px",
       margin: "5px",
@@ -69,10 +68,7 @@ export default function AuthorAnswerInput(props) {
     answer: yup
       .string()
       .required("Required field")
-      .max(
-        maxAnswerLength,
-        `Answer should be ${maxAnswerLength} characters or less`
-      ),
+      .max(maxAnswerLength, `Answer should be ${maxAnswerLength} characters or less`),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -102,11 +98,7 @@ export default function AuthorAnswerInput(props) {
         <img src={props.photo} className={style.image} alt="" />
         <p className={style.userName}>{props.name}</p>
       </div>
-      <form
-        className={style.inputForm}
-        noValidate
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className={style.inputForm} noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextField
           className={style.input}
           inputRef={register}
@@ -132,15 +124,8 @@ export default function AuthorAnswerInput(props) {
           error={!!errors.answer}
           helperText={errors?.answer?.message}
         />
-        <p className={style.info}>
-          Remember: you can't edit or delete this answer
-        </p>
-        <Button
-          variant="contained"
-          color="primary"
-          className={style.btn}
-          type="submit"
-        >
+        <p className={style.info}>Remember: you can't edit or delete this answer</p>
+        <Button variant="contained" color="primary" className={style.btn} type="submit">
           Send answer
         </Button>
       </form>

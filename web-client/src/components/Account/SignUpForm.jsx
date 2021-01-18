@@ -49,7 +49,6 @@ export default function SignUpForm(props) {
     },
     btnSignup: {
       width: "100px",
-      textTransform: "none",
     },
     menuItem: {
       textAlign: "left",
@@ -71,7 +70,6 @@ export default function SignUpForm(props) {
     },
     btnSignIn: {
       marginTop: "8px",
-      textTransform: "none",
     },
     columns: {
       display: "flex",

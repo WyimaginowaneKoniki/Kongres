@@ -43,7 +43,6 @@ export default function ReviewerCommentInput(props) {
       textAlign: "center",
     },
     btn: {
-      textTransform: "none",
       width: "120px",
       height: "45px",
       margin: "5px",

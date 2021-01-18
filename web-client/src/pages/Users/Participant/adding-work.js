@@ -60,7 +60,6 @@ export default function AddingWork() {
     },
     addButton: {
       float: "right",
-      textTransform: "none",
     },
     textFieldAuthor: {
       marginBottom: "10px",

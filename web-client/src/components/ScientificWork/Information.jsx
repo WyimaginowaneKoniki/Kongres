@@ -106,11 +106,7 @@ export default function Information(props) {
       textAlign: "left",
       paddingLeft: "5%",
     },
-    btn: {
-      textTransform: "none",
-    },
     btn1: {
-      textTransform: "none",
       marginLeft: "5%",
       float: "left",
     },
@@ -165,9 +161,7 @@ export default function Information(props) {
         </div>
         <div className={style.authors}>
           <span className={style.other}>Other authors</span>
-          <span className={style.otherName}>
-            {props.scientificWork.authors}
-          </span>
+          <span className={style.otherName}>{props.scientificWork.authors}</span>
         </div>
         <p className={style.text}>{props.scientificWork.description}</p>
 

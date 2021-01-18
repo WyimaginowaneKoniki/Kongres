@@ -9,14 +9,11 @@ export default function MyReviewsCategories(props) {
       padding: "1.5%",
       float: "left",
     },
-    btn: {
-      textTransform: "none",
-    },
   })();
 
   return (
     <div className={style.main}>
-      <Button variant="outlined" color="primary" className={style.btn}>
+      <Button variant="outlined" color="primary">
         {props.name}
       </Button>
     </div>

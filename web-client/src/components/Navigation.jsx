@@ -46,17 +46,11 @@ export default function Navigation(props) {
       borderRadius: "50px",
       marginLeft: "16px",
     },
-    btn: {
-      textDecoration: "none",
-      textTransform: "none",
-    },
     btnLogin: {
       marginLeft: "32px",
-      textTransform: "none",
     },
     btnSignup: {
       marginLeft: "32px",
-      textTransform: "none",
     },
     user: {
       marginLeft: "40px",

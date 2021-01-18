@@ -13,12 +13,10 @@ export default function Avatar() {
       marginLeft: "8%",
       marginTop: "6%",
       float: "left",
-      textTransform: "none",
     },
     btn1: {
       marginTop: "8%",
       float: "left",
-      textTransform: "none",
     },
     photo: {
       width: 100,

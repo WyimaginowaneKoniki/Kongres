@@ -73,11 +73,9 @@ export default function MyReviewsOneReview(props) {
     btn1: {
       float: "left",
       marginRight: "5%",
-      textTransform: "none",
     },
     btn2: {
       float: "left",
-      textTransform: "none",
     },
   })();
 

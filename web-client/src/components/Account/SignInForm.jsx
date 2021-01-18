@@ -36,12 +36,10 @@ export default function SignInForm(props) {
     },
     btnSignIn: {
       width: "100px",
-      textTransform: "none",
       float: "right",
     },
     btnSignUp: {
       marginTop: "8px",
-      textTransform: "none",
     },
     signUp: {
       maxWidth: "400px",
@@ -49,9 +47,6 @@ export default function SignInForm(props) {
     },
     formHelperText: {
       marginBottom: "32px",
-    },
-    textButton: {
-      textTransform: "none",
     },
     bottomMessage: {
       marginTop: "300px",
@@ -177,20 +172,19 @@ export default function SignInForm(props) {
               </Button>
             </div>
           </form>
-            {/* Info about signing up */}
-        <div className={style.signUp}>
-          <h2 className={style.heading}>{props.heading}</h2>
-          <p className={style.content}>{props.content}</p>
-          <Link to={props.signUpLink} style={{ textDecoration: "none" }}>
-            <Button variant="outlined" color="primary" className={style.btnSignUp}>
-              {props.btn}
-            </Button>
-          </Link>
+          {/* Info about signing up */}
+          <div className={style.signUp}>
+            <h2 className={style.heading}>{props.heading}</h2>
+            <p className={style.content}>{props.content}</p>
+            <Link to={props.signUpLink}>
+              <Button variant="outlined" color="primary" className={style.btnSignUp}>
+                {props.btn}
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
-        </div>
 
-      
       <p className={style.bottomMessage}>
         If you want to log in as {props.signInAs}, go to{" "}
         <Link to={props.signInAsOtherLink}>login page</Link>
