@@ -1,9 +1,16 @@
 import React from "react";
 import "../App.css";
+import { makeStyles } from "@material-ui/core/styles";
 import KeynoteSpeaker from "../components/KeynoteSpeaker";
 import picture from "../images/empty-image.png";
 
 export default function Speakers() {
+  const style = makeStyles({
+    title: {
+      marginBottom: "96px",
+    },
+  })();
+
   const speakers = [
     {
       photo: picture,
@@ -18,24 +25,41 @@ export default function Speakers() {
       name: "Sandra Uptas",
       spec: "UX/UI Designer",
       university: "Silesian University of Technology",
-      hobby: "Interested in chess, basketball and games",
-      desc: "a little description of yourself",
+      hobby: "Interested in sleeping, cooking and design",
+      desc: "Detail-oriented and creative person",
     },
     {
       photo: picture,
-      name: "Peter Doe",
-      spec: "Mathematic",
+      name: "Kamil Donda",
+      spec: "Frontend Developer",
       university: "Silesian University of Technology",
-      hobby: "Interested in chess, basketball and games",
-      desc: "a little description of yourself",
+      hobby: "Interested in mobile apps and chess ",
+      desc: "Determined to do something great",
     },
     {
       photo: picture,
-      name: "Josephine Doe",
-      spec: "Physic",
+      name: "Robert Kwoll",
+      spec: "Frontend Developer",
       university: "Silesian University of Technology",
-      hobby: "Interested in chess, basketball and games",
-      desc: "a little description of yourself",
+      hobby: "Interested in movies, TV series, chess and games ",
+      desc: "Positive personality with lots of ideas",
+    },
+    {
+      photo: picture,
+      name: "Jorge Patterson",
+      spec: "Mathematics Massachusetts",
+      university: "Institute of Technology ",
+      hobby: "Interested in differential equations and sudoku",
+      desc: "Determined to solve problems and share his knowledge",
+    },
+    {
+      photo: picture,
+      name: "Katy Murray",
+      spec: "Geography ",
+      university: "University of Washington ",
+      hobby: "Interested in climate change and ecology",
+      desc:
+        "Ready to fight for changes and teach others how to care for the environment",
     },
   ];
 
@@ -52,7 +76,7 @@ export default function Speakers() {
 
   return (
     <div>
-      <h1>Keynote speakers</h1>
+      <h1 className={style.title}>Keynote speakers</h1>
       {speakerList}
     </div>
   );
