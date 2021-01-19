@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Application.Services
@@ -18,29 +19,42 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
+        private readonly IReviewersScienceWorkRepository _reviewersWorkRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
+                                    IReviewersScienceWorkRepository reviewersWorkRepository,
                                     IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
                                     IFileManager fileManager)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
+            _reviewersWorkRepository = reviewersWorkRepository;
             _reviewRepository = reviewRepository;
             _userManager = userManager;
             _fileManager = fileManager;
         }
 
-        public async Task AddBasicInfoAsync(string userId, string title, string description, string authors,
+        public async Task<uint> AddBasicInfoAsync(uint authorId, string title, string description, string authors,
             string specialization)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(authorId.ToString());
 
-            var scientificWork = new ScientificWork()
+            var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
+
+            if (!isParticipant)
+                throw new AuthenticationException();
+
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(authorId);
+
+            if (!(scientificWork is null))
+                throw new InvalidOperationException();
+
+            scientificWork = new ScientificWork()
             {
                 Name = title,
                 Description = description,
@@ -52,6 +66,8 @@ namespace Kongres.Api.Application.Services
             };
 
             await _scientificWorkRepository.AddAsync(scientificWork);
+
+            return await _scientificWorkRepository.GetIdOfWorkByAuthorIdAsync(authorId);
         }
 
         public async Task AddVersionAsync(uint userId, IFormFile workFile, bool isFirstVersion = false)
@@ -136,6 +152,9 @@ namespace Kongres.Api.Application.Services
             else
                 mode = "Participant";
 
+            if (scientificWork.Status != StatusEnum.Accepted && mode == "Participant")
+                throw new AuthenticationException();
+
             var scientificWorkDto = new ScientificWorkDto()
             {
                 Id = scientificWork.Id,
@@ -214,6 +233,28 @@ namespace Kongres.Api.Application.Services
             };
 
             return await Task.FromResult(scientificWorkWithReviewDto);
+        }
+
+        public async Task<IEnumerable<ScientificWorkWithStatusDto>> GetListOfWorksForReviewer(uint reviewerId)
+        {
+            var user = await _userManager.FindByIdAsync(reviewerId.ToString());
+            var isReviewer = await _userManager.IsInRoleAsync(user, "Reviewer");
+
+            if (!isReviewer)
+                throw new AuthenticationException();
+
+            var scientificWorks = _reviewersWorkRepository.GetListOfWorksForReviewer(reviewerId);
+            return scientificWorks.Select(x => new ScientificWorkWithStatusDto()
+            {
+                Id = x.Id,
+                Title = x.Name,
+                Description = x.Description,
+                Specialization = x.Specialization,
+                CreationDate = x.CreationDate.ToString("g"),
+                UpdateDate = x.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
+                Authors = x.OtherAuthors,
+                Status = x.Status.ToString()
+            });
         }
     }
 }

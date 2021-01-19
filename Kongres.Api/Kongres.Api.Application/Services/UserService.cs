@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Kongres.Api.Application.Commands.Users;
 using Kongres.Api.Application.Services.Interfaces;
@@ -49,7 +50,7 @@ namespace Kongres.Api.Application.Services
 
             if (!(user.Photo is null))
             {
-                var photo =  await _fileManager.GetBase64FileAsync(user.Photo);
+                var photo = await _fileManager.GetBase64FileAsync(user.Photo);
                 var photoExtension = user.Photo.Split(".")[^1];
                 base64Photo = $"data:image/{photoExtension};base64,{photo}";
             }
@@ -106,6 +107,18 @@ namespace Kongres.Api.Application.Services
                 var jwtToken = _jwtHandler.CreateToken(user.Id, userType.ToString());
                 _cache.SetJwt(request.TokenId, jwtToken);
             }
+        }
+
+        public async Task<string> GetUserName(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
+
+            if (!isParticipant)
+                throw new AuthenticationException();
+
+            return $"{user.Name} {user.Surname}";
         }
     }
 }
