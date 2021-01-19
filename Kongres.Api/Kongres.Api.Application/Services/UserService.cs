@@ -114,9 +114,12 @@ namespace Kongres.Api.Application.Services
             var user = await _userManager.FindByIdAsync(userId);
 
             var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
-
             if (!isParticipant)
                 throw new AuthenticationException();
+            
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(uint.Parse(userId));
+            if (scientificWork != null)
+                throw new InvalidOperationException();
 
             return $"{user.Name} {user.Surname}";
         }

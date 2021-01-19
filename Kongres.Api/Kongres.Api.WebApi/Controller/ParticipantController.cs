@@ -64,6 +64,10 @@ namespace Kongres.Api.WebApi.Controller
             {
                 return Unauthorized();
             }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
+            }
 
             return Ok(userName);
         }
