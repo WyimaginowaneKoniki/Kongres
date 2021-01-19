@@ -49,7 +49,12 @@ namespace Kongres.Api.Application.Services
             if (!isParticipant)
                 throw new AuthenticationException();
 
-            var scientificWork = new ScientificWork()
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(uint.Parse(userId));
+
+            if (!(scientificWork is null))
+                throw new InvalidOperationException();
+
+            scientificWork = new ScientificWork()
             {
                 Name = title,
                 Description = description,
