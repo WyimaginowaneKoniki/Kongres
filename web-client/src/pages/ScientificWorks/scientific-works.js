@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import OneWork from "../../components/ScientificWorkList/OneWork";
@@ -7,7 +8,7 @@ import RecentAuthors from "../../components/ScientificWorkList/RecentAuthors";
 import Search from "../../components/Search";
 import picture from "../../images/empty-image.png";
 import axios from "axios";
-import { URL_API } from "../../Constants";
+import { URL_API, LINKS } from "../../Constants";
 
 export default function ScientificWorks() {
   const style = makeStyles({
@@ -33,6 +34,8 @@ export default function ScientificWorks() {
       paddingLeft: "5%",
     },
   })();
+
+  const history = useHistory();
 
   // Stores works
   const [works, SetWorks] = React.useState([
@@ -60,6 +63,12 @@ export default function ScientificWorks() {
         })
         .then((resp) => {
           SetWorks(resp.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          history.push({
+            pathname: LINKS.PARTICIPANT_LOGIN,
+          });
         });
     };
     fetchData();
@@ -69,12 +78,9 @@ export default function ScientificWorks() {
   const convertDate = (date) => {
     date = date?.substring(0, 10);
     if (!date) return null;
-    return date.replace(
-      /(\d{4})-(\d{1,2})-(\d{1,2})/,
-      function (_, y, m, d) {
-        return d + "/" + m + "/" + y;
-      }
-    );
+    return date.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function (_, y, m, d) {
+      return d + "/" + m + "/" + y;
+    });
   };
 
   const workList = works.map((work) => (
