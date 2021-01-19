@@ -17,11 +17,17 @@ export default function SignInForm(props) {
       display: "flex",
       flexDirection: "column",
       textAlign: "left",
-      maxWidth: "400px",
-      margin: "16px",
+      maxWidth: "300px",
+      margin: "24px",
     },
     columns: {
+      width: "100%",
       display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around",
+      "@media only screen and (max-width: 768px)": {
+        justifyContent: "center",
+      },
     },
     textField: {
       marginBottom: "32px",
@@ -32,25 +38,30 @@ export default function SignInForm(props) {
     },
     content: {
       textAlign: "left",
-      display: "block",
     },
-    btnSignIn: {
-      width: "100px",
-      float: "right",
+    loginLinks: {
+      display: "flex",
+      justifyContent: "space-between",
     },
     btnSignUp: {
       marginTop: "8px",
     },
     signUp: {
-      maxWidth: "400px",
-      marginLeft: "144px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      width: "400px",
+      margin: "24px",
+    },
+    signUpLink: {
+      textDecoration: "none",
     },
     formHelperText: {
       marginBottom: "32px",
     },
     bottomMessage: {
-      marginTop: "300px",
-      display: "block",
+      marginTop: "80px",
+      textAlign: "center",
     },
   })();
 
@@ -157,7 +168,7 @@ export default function SignInForm(props) {
             >
               {"Error: Incorrect password or/and email"}
             </FormHelperText>
-            <div>
+            <div className={style.loginLinks}>
               {/* Forgot password */}
               <PopUpForgotPassword SetEmail={passEmail} />
               {console.log(forgotEmail)}
@@ -176,7 +187,7 @@ export default function SignInForm(props) {
           <div className={style.signUp}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
-            <Link to={props.signUpLink}>
+            <Link to={props.signUpLink} className={style.signUpLink}>
               <Button variant="outlined" color="primary" className={style.btnSignUp}>
                 {props.btn}
               </Button>
@@ -186,7 +197,7 @@ export default function SignInForm(props) {
       </div>
 
       <p className={style.bottomMessage}>
-        If you want to log in as {props.signInAs}, go to{" "}
+        If you want to log in as {props.signInAs}, go to {" "}
         <Link to={props.signInAsOtherLink}>login page</Link>
       </p>
     </Container>
