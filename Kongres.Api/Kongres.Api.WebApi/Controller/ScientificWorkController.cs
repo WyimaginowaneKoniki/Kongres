@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.WebApi.Controller
@@ -18,7 +19,15 @@ namespace Kongres.Api.WebApi.Controller
         public async Task<IActionResult> AddWork([FromForm] AddWorkCommand command)
         {
             command.AuthorId = HttpContext.User.Identity.Name;
-            await CommandAsync(command);
+            try
+            {
+                await CommandAsync(command);
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+
             return Ok();
         }
 
