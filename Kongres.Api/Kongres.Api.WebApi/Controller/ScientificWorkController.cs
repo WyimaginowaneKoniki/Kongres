@@ -22,9 +22,10 @@ namespace Kongres.Api.WebApi.Controller
         {
             command.AuthorId = HttpContext.User.Identity.Name;
 
+            uint id;
             try
             {
-                await CommandAsync(command);
+                id = await CommandAsync(command);
             }
             catch (AuthenticationException)
             {
@@ -35,7 +36,7 @@ namespace Kongres.Api.WebApi.Controller
                 return BadRequest();
             }
 
-            return Ok();
+            return Created("ScientificWork/", new { ScientificWorkId = id });
         }
 
         [Authorize]

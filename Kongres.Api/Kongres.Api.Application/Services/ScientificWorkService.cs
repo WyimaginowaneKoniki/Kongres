@@ -39,17 +39,17 @@ namespace Kongres.Api.Application.Services
             _fileManager = fileManager;
         }
 
-        public async Task AddBasicInfoAsync(string userId, string title, string description, string authors,
+        public async Task<uint> AddBasicInfoAsync(uint authorId, string title, string description, string authors,
             string specialization)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(authorId.ToString());
 
             var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
 
             if (!isParticipant)
                 throw new AuthenticationException();
 
-            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(uint.Parse(userId));
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(authorId);
 
             if (!(scientificWork is null))
                 throw new InvalidOperationException();
@@ -66,6 +66,8 @@ namespace Kongres.Api.Application.Services
             };
 
             await _scientificWorkRepository.AddAsync(scientificWork);
+
+            return await _scientificWorkRepository.GetIdOfWorkByAuthorIdAsync(authorId);
         }
 
         public async Task AddVersionAsync(uint userId, IFormFile workFile, bool isFirstVersion = false)
