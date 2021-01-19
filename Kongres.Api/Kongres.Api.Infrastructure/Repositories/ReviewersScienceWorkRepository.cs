@@ -19,6 +19,8 @@ namespace Kongres.Api.Infrastructure.Repositories
         public IEnumerable<ScientificWork> GetListOfWorksForReviewer(uint reviewerId)
             => _context.ReviewersScienceWorks.Include(x => x.ScientificWork)
                                                 .ThenInclude(x => x.Versions)
+                                             .Include(x => x.ScientificWork)
+                                                .ThenInclude(x => x.MainAuthor)
                                              .Where(x => x.User.Id == reviewerId)
                                              .Select(x => x.ScientificWork);
     }
