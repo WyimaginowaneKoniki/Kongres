@@ -11,11 +11,11 @@ export default function AboutInfo(props) {
       textAlign: "left",
       "@media (min-width: 768px) and (max-width: 1300px)": {
         fontSize: "14px",
-        lineHeight: '16px',
+        lineHeight: "16px",
       },
       "@media (max-width: 768px)": {
         fontSize: "10px",
-        lineHeight: '16px',
+        lineHeight: "16px",
         flexWrap: "wrap",
       },
     },

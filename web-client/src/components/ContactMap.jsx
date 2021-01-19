@@ -5,12 +5,12 @@ import { makeStyles } from "@material-ui/core/styles";
 export default function ContactMap(props) {
   const style = makeStyles({
     map: {
-      width: "100vw",
+      width: "100%",
       marginLeft: "72px",
       "@media (max-width: 1000px)": {
         marginLeft: "0px",
         width: "90vw",
-        height: '240px',
+        height: "240px",
       },
     },
   })();

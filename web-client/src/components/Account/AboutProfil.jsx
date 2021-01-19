@@ -13,7 +13,7 @@ export default function AboutProfil(props) {
         fontSize: "12px",
       },
       "@media (max-width: 500px)": {
-        flexWrap: 'wrap',
+        flexWrap: "wrap",
         fontSize: "10px",
       },
     },
@@ -22,7 +22,7 @@ export default function AboutProfil(props) {
       textAlign: "left",
       "@media  (max-width: 1250px)": {
         width: "256px",
-        lineHeight: '16px',
+        lineHeight: "16px",
       },
     },
     photo: {

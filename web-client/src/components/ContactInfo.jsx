@@ -22,7 +22,7 @@ export default function ContactInfo(props) {
       marginLeft: "72px",
       "@media (max-width: 500px)": {
         marginLeft: "36px",
-        fontSize: '12px',
+        fontSize: "12px",
       },
     },
     a: {
