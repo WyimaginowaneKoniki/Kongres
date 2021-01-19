@@ -244,17 +244,31 @@ namespace Kongres.Api.Application.Services
                 throw new AuthenticationException();
 
             var scientificWorks = _reviewersWorkRepository.GetListOfWorksForReviewer(reviewerId);
-            return scientificWorks.Select(x => new ScientificWorkWithStatusDto()
+
+            var scientificWorksDto = new List<ScientificWorkWithStatusDto>();
+
+            foreach (var scientificWork in scientificWorks)
             {
-                Id = x.Id,
-                Title = x.Name,
-                Description = x.Description,
-                Specialization = x.Specialization,
-                CreationDate = x.CreationDate.ToString("g"),
-                UpdateDate = x.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
-                Authors = x.OtherAuthors,
-                Status = x.Status.ToString()
-            });
+                var authors = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}";
+
+                // Sometimes the work doesn't include other authors except main one
+                if (!(scientificWork.OtherAuthors is null))
+                    authors += $", {scientificWork.OtherAuthors}";
+
+                scientificWorksDto.Add(new ScientificWorkWithStatusDto()
+                {
+                    Id = scientificWork.Id,
+                    Title = scientificWork.Name,
+                    Description = scientificWork.Description,
+                    Authors = authors,
+                    Specialization = scientificWork.Specialization,
+                    CreationDate = scientificWork.CreationDate.ToString("g"),
+                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
+                    Status = scientificWork.Status.ToString()
+                });
+            }
+
+            return scientificWorksDto;
         }
     }
 }
