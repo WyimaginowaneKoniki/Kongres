@@ -54,5 +54,13 @@ namespace Kongres.Api.Infrastructure.Repositories
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Where(x => x.Specialization == specialization)
                                              .ToListAsync();
+
+        public async Task<byte> GetNumberOfVersionsByAuthorIdAsync(uint userId)
+        {
+            var scientificWork = await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                                               .Include(x => x.Versions)
+                                                               .SingleAsync(x => x.MainAuthor.Id == userId);
+            return scientificWork.Versions.Last().Version;
+        }
     }
 }
