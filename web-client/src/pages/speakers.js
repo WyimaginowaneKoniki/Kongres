@@ -13,6 +13,9 @@ export default function Speakers() {
   const style = makeStyles({
     title: {
       marginBottom: "96px",
+      "@media (max-width: 900px)": {
+        marginBottom: "48px",
+      },
     },
   })();
 
@@ -82,7 +85,7 @@ export default function Speakers() {
   return (
     <div>
       <h1 className={style.title}>Keynote speakers</h1>
-      {speakerList}
+      <div>{speakerList}</div>
     </div>
   );
 }

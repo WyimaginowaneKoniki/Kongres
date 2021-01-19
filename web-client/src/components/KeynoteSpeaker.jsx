@@ -33,8 +33,15 @@ export default function KeynoteSpeaker(props) {
       display: "flex",
       flexDirection: "column",
       marginTop: "48px",
-      "@media (max-width: 900px)": {
+      "@media (min-width: 500px) and (max-width: 900px)": {
+        width: "296px",
+      },
+      "@media (min-width: 400px) and (max-width: 900px)": {
         fontSize: "12px",
+        marginTop: "16px",
+      },
+      "@media (max-width: 400px)": {
+        fontSize: "10px",
         marginTop: "16px",
       },
     },

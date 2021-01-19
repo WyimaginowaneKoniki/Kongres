@@ -17,6 +17,9 @@ export default function About() {
       display: "flex",
       justifyContent: "center",
       marginTop: "40px",
+      "@media (max-width: 900px)": {
+        flexWrap: "wrap",
+      },
     },
     profileColumn: {
       marginLeft: "16px",
