@@ -6,7 +6,7 @@ import Information from "../../components/ScientificWork/Information";
 import VersionPanel from "../../components/ScientificWork/VersionPanel";
 import axios from "axios";
 import { URL_API } from "../../Constants";
-import defaultPhoto from "../../images/empty-image.png";
+import defaultPhoto from "../../images/default-avatar.png";
 
 export default function WorkView() {
   const style = makeStyles({
