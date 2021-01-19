@@ -2,23 +2,24 @@ import React from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Tooltip } from "@material-ui/core/";
-import PreviewPDF from "./PreviewPDF";
+import { Page } from "react-pdf";
+import { Document } from "react-pdf/dist/esm/entry.webpack";
+// import PreviewPDF from "./PreviewPDF";
 
 export default function Information(props) {
   const style = makeStyles({
     main: {
-      width: "80%",
-      margin: "auto",
+      // width: "80%",
+      display: "flex",
+      flexWrap: "wrap",
+      width: "100%",
     },
-    left: {
-      width: 320,
-      float: "left",
-      height: 450,
-      border: "2px solid black",
+    pdf: {
+      width: "30%",
     },
-    right: {
+    workInfo: {
       width: "70%",
-      float: "right",
+      // float: "right",
     },
     status: {
       width: "100%",
@@ -121,12 +122,14 @@ export default function Information(props) {
 
   return (
     <div className={style.main}>
-      <div className={style.left}>
-        <PreviewPDF pdf={props.workPDF} />
+      <div className={style.pdf}>
+      <Document file={props.workPDF}>
+      <Page pageNumber={1} width={320} />
+    </Document>
       </div>
 
-      <div className={style.right}>
-        <Tooltip title="Status" placement="top-start">
+      <div className={style.workInfo}>
+        <Tooltip title="Status" placement="top">
           <span className={style.status}>{props.status}</span>
         </Tooltip>
 
