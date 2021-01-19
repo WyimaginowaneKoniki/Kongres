@@ -2,32 +2,36 @@ import React from "react";
 import "../../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import MyReviewsOneReview from "../../../components/Reviews/MyReviewsOneReview";
-import MyReviewsCategories from "../../../components/Reviews/MyReviewsCategories";
+import Categories from "../../../components/ScientificWorkList/Categories";
 import Search from "../../../components/Search";
 import picture from "../../../images/empty-image.png";
 
 export default function MyReviews() {
   const style = makeStyles({
-    main: {
-      width: "80%",
-      margin: "auto",
+    works: {
+      display: "flex",
+      justifyContent: "flex-start",
+      "@media only screen and (max-width: 1280px)": {
+        justifyContent: "center",
+        flexDirection: "column",
+      },
     },
-    left: {
-      paddingTop: "5%",
-      width: "65%",
-      float: "left",
+    list: {
+      width: "70%",
+      "@media only screen and (max-width: 1280px)": {
+        width: "100%",
+      },
     },
-    right: {
-      paddingTop: "5%",
-      width: "35%",
-      float: "right",
+    sidebar: {
+      width: "30%",
+      textAlign: "left",
+      "@media only screen and (max-width: 1280px)": {
+        width: "100%",
+        marginTop: "40px",
+      },
     },
     h3: {
-      paddingTop: "5%",
-      width: "100%",
-      float: "left",
-      textAlign: "left",
-      paddingLeft: "5%",
+      marginTop: "40px",
     },
   })();
 
@@ -81,26 +85,20 @@ export default function MyReviews() {
     />
   ));
 
-  const status = [
-    "Waiting for review",
-    "Reviewed",
-    "Ended",
-    "Accepted",
-    "Rejected",
-  ];
-  const statusList = status.map((name) => <MyReviewsCategories name={name} />);
+  const status = ["Waiting for review", "Reviewed", "Ended", "Accepted", "Rejected"];
+  const statusList = status.map((name) => <Categories name={name} />);
 
   return (
     <div className={style.main}>
       <h1>My reviews</h1>
+      <div className={style.works}>
+        <div className={style.list}>{reviewList}</div>
 
-      <div className={style.left}>{reviewList}</div>
-
-      <div className={style.right}>
-        <Search />
-
-        <h3 className={style.h3}>Status</h3>
-        {statusList}
+        <div className={style.sidebar}>
+          <Search />
+          <h3 className={style.h3}>Status</h3>
+          {statusList}
+        </div>
       </div>
     </div>
   );
