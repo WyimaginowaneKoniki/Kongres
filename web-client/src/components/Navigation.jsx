@@ -1,6 +1,7 @@
 import React from "react";
 import "../App.css";
 import "../index.css";
+import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button } from "@material-ui/core/";
@@ -23,7 +24,7 @@ export default function Navigation(props) {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
-      "@media (max-width: 1000px)": {
+      "@media (max-width: 1200px)": {
         display: "none",
       },
     },
@@ -34,7 +35,7 @@ export default function Navigation(props) {
       fontWeight: "bold",
       paddingTop: "8px",
       paddingBottom: "8px",
-      "@media (max-width: 1000px)": {
+      "@media (max-width: 1200px)": {
         display: "none",
       },
     },
@@ -91,8 +92,9 @@ export default function Navigation(props) {
     hamburger: {
       color: "#6069A9",
       display: "none",
-      "@media (max-width: 1000px)": {
-        display: "block",
+      "@media (max-width: 1200px)": {
+        justifyContent: "flex-end",
+        display: "flex",
       },
     },
     paperAnchorTop: {
@@ -104,11 +106,21 @@ export default function Navigation(props) {
       textDecoration: "none",
       display: "block",
     },
-    name: {
-      margin: 'auto',
+    nameAdress: {
+      margin: "auto",
+    },
+    logoutAddress: {
+      fontSize: "14px",
+      margin: "auto",
+      color: "#767676",
+      lineHeight: "1em",
+      "&:hover": {
+        cursor: "pointer",
+        color: "#000000",
+      },
     },
     button: {
-      margin: 'auto',
+      margin: "auto",
     },
   })();
 
@@ -118,6 +130,8 @@ export default function Navigation(props) {
   };
 
   const [open, setOpen] = React.useState(false);
+  const display = clsx(style.hamburger);
+  console.log(display);
 
   const handleDrawer = () => {
     if (open) setOpen(false);
@@ -262,7 +276,185 @@ export default function Navigation(props) {
           />
         </NavLink>
       </Box>
-      <div className={style.navigation}>
+      <Drawer
+        open={open}
+        anchor="top"
+        variant="persistent"
+        classes={{ paper: style.paperAnchorTop }}
+      >
+        <List>
+          <NavLink exact to="/" className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.nameAdress}>Home</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.AGENDA} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.nameAdress}>Agenda</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.SPEAKERS} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.nameAdress}>Keynote speakers</span>
+            </ListItem>
+          </NavLink>
+          {props.userInfo && (
+              <NavLink exact to={LINKS.WORKS} className={style.linkMenu}>
+              <ListItem button onClick={handleDrawerClose}>
+              <span className={style.nameAdress}>Scientific works</span>
+                </ListItem>
+              </NavLink>
+          )}
+          <NavLink exact to={LINKS.ABOUT} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.nameAdress}>About</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.CONTACT} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.nameAdress}>Contact</span>
+            </ListItem>
+          </NavLink>
+          <ListItem>
+            <div className={style.button}>
+              {!props.userInfo && (
+                <NavLink
+                  exact
+                  to={LINKS.PARTICIPANT_SIGN_UP}
+                  className={style.linkButton}
+                >
+                  <Button
+                    className={style.btnSignup}
+                    color="primary"
+                    type="submit"
+                    variant="outlined"
+                    onClick={handleDrawerClose}
+                  >
+                    Sign up
+                  </Button>
+                </NavLink>
+              )}
+              {!props.userInfo && (
+                <NavLink
+                  exact
+                  to={LINKS.PARTICIPANT_LOGIN}
+                  className={style.linkButton}
+                >
+                  <Button
+                    className={style.btnLogin}
+                    color="primary"
+                    type="submit"
+                    variant="contained"
+                    onClick={handleDrawerClose}
+                  >
+                    Log in
+                  </Button>
+                </NavLink>
+              )}
+
+              {props.userInfo && props.userInfo.role === "Reviewer" && (
+                <Box>
+                  <NavLink
+                    exact
+                    to={LINKS.REVIEWS}
+                    className={style.linkButton}
+                  >
+                    <Button
+                      className={style.btn}
+                      color="primary"
+                      type="submit"
+                      variant="contained"
+                      onClick={handleDrawerClose}
+                    >
+                      My reviews
+                    </Button>
+                  </NavLink>
+                </Box>
+              )}
+
+              {/* Button My work */}
+              {props.userInfo &&
+                props.userInfo.role === "Participant" &&
+                props.userInfo.scientificWorkId !== 0 && (
+                  <Box>
+                    <NavLink
+                      exact
+                      to={`${LINKS.WORKS}/${props.userInfo.scientificWorkId}`}
+                      className={style.linkButton}
+                    >
+                      <Button
+                        className={style.btn}
+                        color="primary"
+                        type="submit"
+                        variant="contained"
+                        onClick={handleDrawerClose}
+                      >
+                        My work
+                      </Button>
+                    </NavLink>
+                  </Box>
+                )}
+
+              {/* Button Add work */}
+              {props.userInfo &&
+                props.userInfo.role === "Participant" &&
+                props.userInfo.scientificWorkId === 0 && (
+                  <Box>
+                    <NavLink
+                      exact
+                      to={LINKS.ADDING_WORK}
+                      className={style.linkButton}
+                    >
+                      <Button
+                        className={style.btn}
+                        color="primary"
+                        type="submit"
+                        variant="contained"
+                        onClick={handleDrawerClose}
+                      >
+                        Add work
+                      </Button>
+                    </NavLink>
+                  </Box>
+                )}
+            </div>
+          </ListItem>
+          <ListItem>
+            {!props.userInfo ? (
+              <span className={style.nameAdress}>
+                <p className={style.elements}>
+                  Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Log in</a> or
+                  <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
+                </p>
+              </span>
+            ) : (
+              <span className={style.logoutAddress} onClick={Logout}>
+                Log out
+              </span>
+            )}
+          </ListItem>
+        </List>
+      </Drawer>
+      {props.userInfo && clsx(style.hamburger) && (
+          <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
+            <img
+              className={style.avatar}
+              src={
+                props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
+              }
+              alt="Avatar"
+            />
+            <div className={style.name}>{props.userInfo.name}</div>
+          </NavLink>
+        )}
+      <div>
+        <IconButton onClick={handleDrawer} className={style.hamburger}>
+          {open ? (
+            <MenuOpen className={style.icon} />
+          ) : (
+            <MenuIcon className={style.icon} />
+          )}
+        </IconButton>
         {userPanel()}
         {/* Categories */}
         <Box className={style.boxBottom}>
@@ -330,91 +522,6 @@ export default function Navigation(props) {
           </Box>
         </Box>
       </div>
-      <div>
-        <IconButton onClick={handleDrawer} className={style.hamburger}>
-          {open ? (
-            <MenuOpen className={style.icon} />
-          ) : (
-            <MenuIcon className={style.icon} />
-          )}
-        </IconButton>
-      </div>
-      <Drawer
-        open={open}
-        anchor="top"
-        variant="persistent"
-        classes={{ paper: style.paperAnchorTop }}
-      >
-        <List>
-          <NavLink exact to="/" className={style.linkMenu}>
-            <ListItem button onClick={handleDrawerClose}>
-              <span className={style.name}>Home</span>
-            </ListItem>
-          </NavLink>
-          <NavLink exact to={LINKS.AGENDA} className={style.linkMenu}>
-            <ListItem button onClick={handleDrawerClose}>
-              <span className={style.name}>Agenda</span>
-            </ListItem>
-          </NavLink>
-          <NavLink exact to={LINKS.SPEAKERS} className={style.linkMenu}>
-            <ListItem button onClick={handleDrawerClose}>
-              <span className={style.name}>Keynote speakers</span>
-            </ListItem>
-          </NavLink>
-          <NavLink exact to={LINKS.ABOUT} className={style.linkMenu}>
-            <ListItem button onClick={handleDrawerClose}>
-              <span className={style.name}>About</span>
-            </ListItem>
-          </NavLink>
-          <NavLink exact to={LINKS.CONTACT} className={style.linkMenu}>
-            <ListItem button onClick={handleDrawerClose}>
-              <span className={style.name}>Contact</span>
-            </ListItem>
-          </NavLink>
-          <ListItem>
-            <div className={style.button}>
-              <NavLink
-                exact
-                to={LINKS.PARTICIPANT_SIGN_UP}
-                className={style.linkButton}
-              >
-                <Button
-                  className={style.btnSignup}
-                  color="primary"
-                  type="submit"
-                  variant="outlined"
-                  onClick={handleDrawerClose}
-                >
-                  Sign up
-                </Button>
-              </NavLink>
-              <NavLink
-                exact
-                to={LINKS.PARTICIPANT_LOGIN}
-                className={style.linkButton}
-              >
-                <Button
-                  className={style.btnLogin}
-                  color="primary"
-                  type="submit"
-                  variant="contained"
-                  onClick={handleDrawerClose}
-                >
-                  Log in
-                </Button>
-              </NavLink>
-            </div>
-          </ListItem>
-          <ListItem>
-            <span className={style.name}>
-              <p className={style.elements}>
-                Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Log in</a> or
-                <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
-              </p>
-            </span>
-          </ListItem>
-        </List>
-      </Drawer>
     </div>
   );
 }
