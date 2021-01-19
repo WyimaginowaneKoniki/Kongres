@@ -8,5 +8,6 @@ namespace Kongres.Api.Application.Services.Interfaces
         Task SendReceiveReviewEmailAsync(string userEmail, uint workId);
         Task SendNewVersionEnabledEmailAsync(string userEmail, uint workId);
         Task SendReceiveAnswerEmailAsync(string userEmail, uint workId);
+        Task SendAddedNewVersionEmailAsync(string userEmail, uint workId);
     }
 }

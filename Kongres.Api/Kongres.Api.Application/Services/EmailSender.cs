@@ -42,5 +42,12 @@ namespace Kongres.Api.Application.Services
             var message = $"<a href='{link}'>You have received a reply to the review!</a>";
             await _emailService.SendAsync(userEmail, "Work review", message, true);
         }
+        public async Task SendAddedNewVersionEmailAsync(string userEmail, uint workId)
+        {
+            var link = $"https://localhost:5001/scientific-works/{workId}";
+
+            var message = $"<a href='{link}'>A new version of the work has been added. You can review it now!</a>";
+            await _emailService.SendAsync(userEmail, "Work review", message, true);
+        }
     }
 }
