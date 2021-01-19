@@ -74,6 +74,18 @@ export default function OneWork(props) {
     btn2: {
       marginBottom: "8px",
     },
+    btnStatus: {
+      color: "#775866",
+      backgroundColor: "#F0D4E0",
+      padding: "4px 8px",
+      marginRight: "16px",
+      marginBottom: "8px",
+      boxShadow: "none",
+      "&:hover": {
+        backgroundColor: "#F0D4E0",
+        boxShadow: "none",
+      },
+    },
   })();
 
   const history = useHistory();
@@ -105,9 +117,15 @@ export default function OneWork(props) {
       });
   };
 
-  //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download
+  const showStatus = (
+    <Button variant="contained" className={style.btnStatus}>
+      {props.status}
+    </Button>
+  );
+  //https://www.xspdf.com/resolution/50694881.html <- information for button download
   return (
     <div className={style.main}>
+      <div className={style.status}>{props.status ? showStatus : null}</div>
       <h2 className={style.title} onClick={readMore}>
         {props.title}
       </h2>

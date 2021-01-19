@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import MyReviewsOneReview from "../../../components/Reviews/MyReviewsOneReview";
+import OneWork from "../../../components/ScientificWorkList/OneWork";
 import Categories from "../../../components/ScientificWorkList/Categories";
 import Search from "../../../components/Search";
 import picture from "../../../images/empty-image.png";
@@ -38,6 +38,7 @@ export default function MyReviews() {
   const reviews = [
     {
       title: "Importance of Golden Ratio in Mathematics",
+      status: "Waiting for review",
       categories: "Mathematics",
       data: "30/11/2020",
       authors: "John Doe, Sam Smith, Ashley Blue",
@@ -49,6 +50,7 @@ export default function MyReviews() {
     },
     {
       title: "Importance of Golden Ratio in Mathematics",
+      status: "Accepted",
       categories: "Mathematics",
       data: "30/11/2020",
       authors: "John Doe, Sam Smith, Ashley Blue",
@@ -60,6 +62,7 @@ export default function MyReviews() {
     },
     {
       title: "Importance of Golden Ratio in Mathematics",
+      status: "Rejected",
       categories: "Mathematics",
       data: "30/11/2020",
       authors: "John Doe, Sam Smith, Ashley Blue",
@@ -72,8 +75,9 @@ export default function MyReviews() {
   ];
 
   const reviewList = reviews.map((review) => (
-    <MyReviewsOneReview
+    <OneWork
       title={review.title}
+      status={review.status}
       categories={review.categories}
       data={review.data}
       authors={review.authors}
