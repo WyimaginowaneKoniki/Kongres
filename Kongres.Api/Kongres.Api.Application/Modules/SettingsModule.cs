@@ -17,6 +17,9 @@ namespace Kongres.Api.Application.Modules
         {
             builder.RegisterInstance(_configuration.GetSection("Jwt").Get<JwtSettings>())
                    .SingleInstance();
+
+            builder.RegisterInstance(_configuration.GetSection("StagesTime").Get<StagesTime>())
+                .SingleInstance();
         }
     }
 }
