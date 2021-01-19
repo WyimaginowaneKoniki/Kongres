@@ -13,14 +13,23 @@ export default function OneWork(props) {
       textAlign: "left",
     },
     title: {
+      marginBottom: "8px",
       "&:hover": {
         cursor: "pointer",
+      },
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "1em",
       },
     },
     panel: {
       display: "flex",
       flexWrap: "wrap",
       fontSize: "16px",
+      lineHeight: "1.4em",
+      marginBottom: "8px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.8em",
+      },
     },
     category: {
       color: "#6069A9",
@@ -40,6 +49,10 @@ export default function OneWork(props) {
     },
     text: {
       marginBottom: "16px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.9em",
+        lineHeight: "1.5em",
+      },
     },
     a: {
       textDecoration: "none",
