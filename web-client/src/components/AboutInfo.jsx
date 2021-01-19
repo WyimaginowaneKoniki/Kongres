@@ -9,34 +9,30 @@ export default function AboutInfo(props) {
       justifyContent: "center",
       alignItems: "center",
       textAlign: "left",
-      "@media (min-width: 1000px) and (max-width: 1350px)": {
+      "@media (min-width: 768px) and (max-width: 1300px)": {
         fontSize: "14px",
+        lineHeight: '16px',
       },
-      "@media (min-width: 770px) and (max-width: 1000px)": {
-        fontSize: "12px",
-      },
-      "@media (min-width: 500px) and (max-width: 770px)": {
+      "@media (max-width: 768px)": {
         fontSize: "10px",
-      },
-      "@media (max-width: 550px)": {
-        fontSize: "10px",
+        lineHeight: '16px',
         flexWrap: "wrap",
       },
     },
     left: {
-      "@media (min-width: 550px)": {
+      "@media (min-width: 768px)": {
         marginRight: "24px",
       },
     },
     right: {
-      "@media (min-width: 550px)": {
+      "@media (min-width: 768px)": {
         marginLeft: "24px",
       },
     },
     photo: {
       width: "592px",
       height: "374px",
-      "@media (min-width: 1150px) and (max-width: 1350px)": {
+      "@media (min-width: 1150px) and (max-width: 1300px)": {
         width: "440px",
         height: "274px",
       },
@@ -44,17 +40,9 @@ export default function AboutInfo(props) {
         width: "380px",
         height: "240px",
       },
-      "@media (min-width: 850px) and (max-width: 1000px)": {
-        width: "304px",
-        height: "204px",
-      },
-      "@media (min-width: 550px) and (max-width: 850px)": {
+      "@media (max-width: 1000px)": {
         width: "264px",
         height: "180px",
-      },
-      "@media (max-width: 550px)": {
-        width: "224px",
-        height: "124px",
       },
     },
   })();
