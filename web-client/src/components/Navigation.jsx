@@ -30,6 +30,7 @@ export default function Navigation(props) {
       fontSize: "14px",
     },
     avatar: {
+      objectFit: "cover",
       width: "56px",
       height: "56px",
       borderRadius: "50px",
