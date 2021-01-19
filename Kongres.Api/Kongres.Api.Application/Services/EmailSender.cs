@@ -20,5 +20,12 @@ namespace Kongres.Api.Application.Services
             var message = $"<a href='{link}'>Please confirm email</a>";
             await _emailService.SendAsync(userEmail, "Verify account", message, true);
         }
+        public async Task SendReceiveReviewEmailAsync(uint userId, string userEmail, string confirmationToken)
+        {
+            var link = "";
+
+            var message = $"<a href='{link}'>Your work has been reviewed!</a>";
+            await _emailService.SendAsync(userEmail, "Work review", message, true);
+        }
     }
 }
