@@ -14,9 +14,9 @@ export default function SignUpParticipant() {
   };
 
   const signInParticipant = {
-    heading: "Sign in",
-    content: "If you have already an account, sign in here",
-    btn: "Sign in",
+    heading: "Already have an account?",
+    content: "",
+    btn: "Log in",
     participant: true,
     signInLink: `${LINKS.PARTICIPANT_LOGIN}`,
   };

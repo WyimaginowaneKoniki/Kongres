@@ -31,10 +31,22 @@ export default function SignUpForm(props) {
     form: {
       display: "flex",
       flexDirection: "column",
-      float: "left",
       textAlign: "left",
       maxWidth: "400px",
-      margin: "16px",
+      margin: "24px",
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "0",
+        marginRight: "0",
+      },
+    },
+    columns: {
+      width: "100%",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around",
+      "@media only screen and (max-width: 768px)": {
+        justifyContent: "center",
+      },
     },
     textField: {
       marginBottom: "32px",
@@ -61,22 +73,24 @@ export default function SignUpForm(props) {
     formHelperText: {
       marginBottom: "32px",
     },
+    formHelperTextCheckbox: {
+      marginBottom: "8px",
+    },
     heading: {
       textAlign: "left",
     },
     content: {
       textAlign: "left",
-      display: "block",
     },
     btnSignIn: {
       marginTop: "8px",
     },
-    columns: {
+    logIn: {
       display: "flex",
-    },
-    signInUpOther: {
-      maxWidth: "400px",
-      marginLeft: "144px",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      width: "400px",
+      margin: "24px",
     },
   })();
 
@@ -316,7 +330,6 @@ export default function SignUpForm(props) {
 
             {/* Acceptance - Rules of Conference */}
             <FormControlLabel
-              className={style.formControlLabel}
               control={
                 <Checkbox
                   inputRef={register}
@@ -326,11 +339,11 @@ export default function SignUpForm(props) {
                   color="primary"
                 />
               }
-              label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
+              label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form*"
               inputRef={register}
               name="acceptance"
             />
-            <FormHelperText error className={style.formHelperText}>
+            <FormHelperText error className={style.formHelperTextCheckbox}>
               {errors.acceptance ? errors.acceptance.message : " "}
             </FormHelperText>
 
@@ -345,8 +358,8 @@ export default function SignUpForm(props) {
             </Button>
           </form>
 
-          {/* Info about signing in */}
-          <div className={style.signInUpOther}>
+          {/* Info about log in */}
+          <div className={style.logIn}>
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
             <Link to={props.signInLink} style={{ textDecoration: "none" }}>
