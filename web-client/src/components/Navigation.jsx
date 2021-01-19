@@ -91,11 +91,6 @@ export default function Navigation(props) {
     },
     hamburger: {
       color: "#6069A9",
-      display: "none",
-      "@media (max-width: 1200px)": {
-        justifyContent: "flex-end",
-        display: "flex",
-      },
     },
     paperAnchorTop: {
       marginTop: "120px",
@@ -121,6 +116,13 @@ export default function Navigation(props) {
     },
     button: {
       margin: "auto",
+    },
+    loggedHamburger: {
+      display: "none",
+      "@media (max-width: 1200px)": {
+        display: "flex",
+        alignItems: "center",
+      },
     },
   })();
 
@@ -435,26 +437,29 @@ export default function Navigation(props) {
           </ListItem>
         </List>
       </Drawer>
-      {props.userInfo && clsx(style.hamburger) && (
-        <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
-          <img
-            className={style.avatar}
-            src={
-              props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
-            }
-            alt="Avatar"
-          />
-          <div className={style.name}>{props.userInfo.name}</div>
-        </NavLink>
-      )}
       <div>
-        <IconButton onClick={handleDrawer} className={style.hamburger}>
-          {open ? (
-            <MenuOpen className={style.icon} />
-          ) : (
-            <MenuIcon className={style.icon} />
+        <div classname={style.loggedHamburger}>
+          {props.userInfo && clsx(style.hamburger) && (
+            <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
+              <img
+                className={style.avatar}
+                src={
+                  props.userInfo.photoBase64
+                    ? props.userInfo.photoBase64
+                    : Avatar
+                }
+                alt="Avatar"
+              />
+            </NavLink>
           )}
-        </IconButton>
+          <IconButton onClick={handleDrawer} className={style.hamburger}>
+            {open ? (
+              <MenuOpen className={style.icon} />
+            ) : (
+              <MenuIcon className={style.icon} />
+            )}
+          </IconButton>
+        </div>
         {userPanel()}
         {/* Categories */}
         <Box className={style.boxBottom}>
