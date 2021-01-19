@@ -4,16 +4,24 @@ namespace Kongres.Api.Application.Services.Interfaces
 {
     public interface IEmailSender : IService
     {
-        Task SendConfirmationEmailAsync(uint userId, string userEmail, string confirmationToken);
-        Task SendReceiveReviewEmailAsync(string userEmail, uint workId);
-        Task SendNewVersionEnabledEmailAsync(string userEmail, uint workId);
-        Task SendReceiveAnswerEmailAsync(string userEmail, uint workId);
-        Task SendAddedNewVersionEmailAsync(string userEmail, uint workId);
+        #region Reviewer
+        Task SendDoNotGetAssignToAnyWork(string reviewerEmail);
         Task SendWorkAssignmentInformationAsync(string reviewerEmail, uint workId);
-        Task SendReviewersAssignmentInformationAsync(string authorEmail, uint workId);
-        Task SendDoNotGetAssignToAnyWork (string reviewerEmail);
+        Task SendReceiveAnswerEmailAsync(string reviewerEmail, uint workId);
+        Task SendAddedNewVersionEmailAsync(string reviewerEmail, uint workId);
+        #endregion
+
+        #region AuthorOfWork
         Task SendWorkDidNotGetReviewers(string authorEmail);
+        Task SendReviewersAssignmentInformationAsync(string authorEmail, uint workId);
+        Task SendReceiveReviewEmailAsync(string authorEmail, uint workId);
+        Task SendNewVersionEnabledEmailAsync(string authorEmail, uint workId);
         Task SendToAuthorWorkGotAcceptedAsync(string authorEmail, uint workId);
         Task SendToAuthorWorkGotRejectedAsync(string authorEmail, uint workId);
+        #endregion
+
+        #region User
+        Task SendConfirmationEmailAsync(uint userId, string userEmail, string confirmationToken);
+        #endregion
     }
 }
