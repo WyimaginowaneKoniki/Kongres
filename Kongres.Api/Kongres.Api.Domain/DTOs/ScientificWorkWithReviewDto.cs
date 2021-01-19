@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Kongres.Api.Domain.Enums;
 
 namespace Kongres.Api.Domain.DTOs
 {

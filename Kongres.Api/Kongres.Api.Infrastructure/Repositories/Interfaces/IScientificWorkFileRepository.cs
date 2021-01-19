@@ -12,5 +12,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<ScientificWorkFile>> GetVersionsWithReviews(uint workId);
         int GetReviewsCountInNewestVersion(uint workId);
         Task<int> GetRatingSumFromVersion(uint versionId);
+        Task AddRatingAsync(ScientificWorkFile scientificWorkFile);
     }
 }

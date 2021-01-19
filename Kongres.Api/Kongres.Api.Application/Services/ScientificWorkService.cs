@@ -206,12 +206,13 @@ namespace Kongres.Api.Application.Services
                     {
                         Date = version.DateAdd.ToString("g"),
                         VersionNumber = version.Version,
-                        Reviews = reviewsDto
+                        Reviews = reviewsDto,
+                        Rating = version.Rating
                     });
                 }
             }
 
-            var scientificWorkWithReviewDto = new ScientificWorkWithReviewDto()
+            return new ScientificWorkWithReviewDto()
             {
                 ScientificWork = scientificWorkDto,
                 MainAuthor = mainAuthor,
@@ -219,8 +220,6 @@ namespace Kongres.Api.Application.Services
                 Versions = versionsDto,
                 Status = scientificWork.Status.ToString()
             };
-
-            return await Task.FromResult(scientificWorkWithReviewDto);
         }
     }
 }

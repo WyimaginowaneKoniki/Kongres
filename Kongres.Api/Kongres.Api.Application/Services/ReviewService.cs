@@ -112,17 +112,21 @@ namespace Kongres.Api.Application.Services
                 if (ratingAvg < 1.5)
                 {
                     work.Status = StatusEnum.Rejected;
+                    newestVersion.Rating = 1;
                 }
                 else if (ratingAvg <= 2.5)
                 {
                     work.Status = StatusEnum.Correcting;
+                    newestVersion.Rating = 2;
                 }
                 else
                 {
                     work.Status = StatusEnum.Accepted;
+                    newestVersion.Rating = 3;
                 }
 
                 await _scientificWorkRepository.ChangeStatusAsync(work);
+                await _scientificWorkFileRepository.AddRatingAsync(newestVersion);
             }
         }
 
