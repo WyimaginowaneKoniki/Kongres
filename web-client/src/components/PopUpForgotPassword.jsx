@@ -28,13 +28,9 @@ export default function PopUpForgotPassword(props) {
     },
     send: {
       width: "100px",
-      textTransform: "none",
       float: "right",
       marginLeft: "auto",
       display: "block",
-    },
-    textButton: {
-      textTransform: "none",
     },
     message: {
       textAlign: "center",
@@ -107,11 +103,7 @@ export default function PopUpForgotPassword(props) {
   return (
     <div className={style.main}>
       {/* Forgot password */}
-      <Button
-        className={style.textButton}
-        color="primary"
-        onClick={handleClickOpen}
-      >
+      <Button className={style.textButton} color="primary" onClick={handleClickOpen}>
         Forgot password?
       </Button>
 
@@ -150,21 +142,13 @@ export default function PopUpForgotPassword(props) {
         </div>
       </Dialog>
       {/* Successfully send email */}
-      <Snackbar
-        open={openAlertSuccess}
-        autoHideDuration={duration}
-        onClose={CloseAlert}
-      >
+      <Snackbar open={openAlertSuccess} autoHideDuration={duration} onClose={CloseAlert}>
         <Alert onClose={CloseAlert} severity={"success"}>
           {"Link has been sent"}
         </Alert>
       </Snackbar>
       {/* Unsuccessfully send email */}
-      <Snackbar
-        open={openAlertError}
-        autoHideDuration={duration}
-        onClose={CloseAlert}
-      >
+      <Snackbar open={openAlertError} autoHideDuration={duration} onClose={CloseAlert}>
         <Alert onClose={CloseAlert} severity={"error"}>
           {"Link has not been sent"}
         </Alert>

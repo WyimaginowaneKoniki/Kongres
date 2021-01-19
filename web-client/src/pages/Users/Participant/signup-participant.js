@@ -8,14 +8,15 @@ import { URL, URL_API, LINKS } from "../../../Constants";
 export default function SignUpParticipant() {
   const signUpParticipantInfo = {
     content:
-      "As Participant you can see and add your work. Be reviewed by our Reviewers. If you want to be Reviewer... Sign up ",
-    signUpAsOtherLink: `${LINKS.REVIEWER_SIGN_UP}`,
+      "Share your knowledge, add your work and see others as Participant! If you want to be Reviewer, ",
+    link: `${LINKS.REVIEWER_SIGN_UP}`,
+    textLink: "go to signup page",
   };
 
   const signInParticipant = {
-    heading: "Sign in",
-    content: "If you have already an account, sign in here",
-    btn: "Sign in",
+    heading: "Already have an account?",
+    content: "",
+    btn: "Log in",
     participant: true,
     signInLink: `${LINKS.PARTICIPANT_LOGIN}`,
   };
@@ -38,7 +39,8 @@ export default function SignUpParticipant() {
       <h1>Sign up as Participant</h1>
       <SignInUpInfo
         content={signUpParticipantInfo.content}
-        signUpAsOtherLink={signUpParticipantInfo.signUpAsOtherLink}
+        link={signUpParticipantInfo.link}
+        textLink={signUpParticipantInfo.textLink}
       />
       <div>
         <SignUpForm

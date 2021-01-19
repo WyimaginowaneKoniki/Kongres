@@ -4,34 +4,38 @@ import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import OneWork from "../../components/ScientificWorkList/OneWork";
 import Categories from "../../components/ScientificWorkList/Categories";
-import RecentAuthors from "../../components/ScientificWorkList/RecentAuthors";
+import RecentWorks from "../../components/ScientificWorkList/RecentWorks";
 import Search from "../../components/Search";
-import picture from "../../images/empty-image.png";
+import picture from "../../images/default-avatar.png";
 import axios from "axios";
 import { URL_API, LINKS } from "../../Constants";
 
 export default function ScientificWorks() {
   const style = makeStyles({
-    main: {
-      width: "80%",
-      margin: "auto",
+    works: {
+      display: "flex",
+      justifyContent: "flex-start",
+      "@media only screen and (max-width: 1280px)": {
+        justifyContent: "center",
+        flexDirection: "column",
+      },
     },
-    left: {
-      paddingTop: "5%",
-      width: "65%",
-      float: "left",
+    list: {
+      width: "70%",
+      "@media only screen and (max-width: 1280px)": {
+        width: "100%",
+      },
     },
-    right: {
-      paddingTop: "5%",
-      width: "35%",
-      float: "right",
+    sidebar: {
+      width: "30%",
+      textAlign: "left",
+      "@media only screen and (max-width: 1280px)": {
+        width: "100%",
+        marginTop: "40px",
+      },
     },
     h3: {
-      paddingTop: "5%",
-      width: "100%",
-      float: "left",
-      textAlign: "left",
-      paddingLeft: "5%",
+      marginTop: "40px",
     },
   })();
 
@@ -44,6 +48,7 @@ export default function ScientificWorks() {
   const [works, SetWorks] = React.useState([
     {
       title: null,
+      status: null,
       categories: null,
       date: null,
       authors: null,
@@ -98,40 +103,45 @@ export default function ScientificWorks() {
     />
   ));
 
-  const categories = ["Mathematics", "Technology", "Computer Science"];
+  const categories = [
+    "Computer Science",
+    "Mathematics",
+    "Biology",
+    "Chemistry",
+    "Physics",
+    "Geography",
+  ];
+
   const categoryList = categories.map((name) => <Categories name={name} />);
 
   const recents = [
     {
       path: picture,
-      alternativeText: "Photo John Doe",
       name: "John Doe",
-      description: "Academic title or Work title...",
+      description:
+        "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live...",
     },
     {
       path: picture,
-      alternativeText: "Photo John Doe",
+      name: "John Doe",
+      description:
+        "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live...",
+    },
+    {
+      path: picture,
       name: "John Doe",
       description: "Title",
     },
     {
       path: picture,
-      alternativeText: "Photo John Doe",
-      name: "John Doe",
-      description: "Title",
-    },
-    {
-      path: picture,
-      alternativeText: "Photo John Doe",
       name: "John Doe",
       description: "Title",
     },
   ];
 
   const recentList = recents.map((recent) => (
-    <RecentAuthors
+    <RecentWorks
       path={recent.path}
-      alternativeText={recent.alternativeText}
       name={recent.name}
       description={recent.description}
     />
@@ -141,20 +151,21 @@ export default function ScientificWorks() {
     isSuccessedLoad && (
       <div className={style.main}>
         <h1>Scientific works</h1>
+        <div className={style.works}>
+          <div className={style.list}>
+            {/* If list of works is null, then nothing is displayed */}
+            {works[0]?.title ? workList : null}
+          </div>
 
-        <div className={style.left}>
-          {/* If list of works is null, then nothing is displayed */}
-          {works[0]?.title ? workList : null}
-        </div>
+          <div className={style.sidebar}>
+            <Search />
 
-        <div className={style.right}>
-          <Search />
+            <h3 className={style.h3}>Categories</h3>
+            {categoryList}
 
-          <h3 className={style.h3}>Categories</h3>
-          {categoryList}
-
-          <h3 className={style.h3}>Recent authors / works</h3>
-          {recentList}
+            <h3 className={style.h3}>Recent works</h3>
+            {recentList}
+          </div>
         </div>
       </div>
     )

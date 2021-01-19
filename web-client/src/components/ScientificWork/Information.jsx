@@ -2,7 +2,6 @@ import React from "react";
 import "../../App.css";
 import {
   Button,
-  Tooltip,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -15,117 +14,82 @@ import { useForm } from "react-hook-form";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import { URL_API } from "../../Constants";
-import PreviewPDF from "./PreviewPDF";
+import { Page } from "react-pdf";
+import { Document } from "react-pdf/dist/esm/entry.webpack";
+import Categories from "../ScientificWorkList/Categories";
 
 export default function Information(props) {
   const style = makeStyles({
     main: {
-      width: "80%",
-      margin: "auto",
+      display: "flex",
+      flexWrap: "wrap",
+      width: "100%",
     },
-    left: {
-      width: 320,
-      float: "left",
-      height: 450,
-      border: "2px solid black",
+    pdf: {
+      width: "30%",
     },
-    right: {
+    workInfo: {
       width: "70%",
-      float: "right",
+      textAlign: "left",
     },
     status: {
-      width: "100%",
-      float: "left",
-      textAlign: "left",
-      paddingLeft: "5%",
-      color: "red",
+      color: "#775866",
+      backgroundColor: "#F0D4E0",
+      padding: "4px 8px",
+      borderRadius: "4px",
+      fontSize: "16px",
     },
     date: {
-      width: "100%",
-      float: "left",
-      textAlign: "left",
-      paddingLeft: "5%",
       fontSize: "12px",
+      color: "#767676",
+      marginRight: "24px",
+    },
+    dateCategory: {
+      display: "flex",
+      marginTop: "16px",
     },
     h1: {
-      width: "100%",
-      float: "left",
-      textAlign: "left",
-      paddingLeft: "5%",
-      fontSize: "30px",
+      marginTop: "0",
+      marginBottom: "1em",
+      lineHeight: "1.5em",
+    },
+    allAuthors: {
+      display: "flex",
     },
     author: {
-      width: "45%",
-      float: "left",
-      paddingLeft: "5%",
-      textAlign: "left",
+      marginRight: "32px",
     },
     shared: {
-      width: "100%",
-      float: "left",
-      color: "grey",
+      fontSize: "14px",
+      color: "#767676",
+      marginBottom: "16px",
     },
     photo: {
-      width: "90%",
-      borderRadius: "50%",
-      height: 80,
+      objectFit: "cover",
+      width: "72px",
+      height: "72px",
+      borderRadius: "50px",
+      boxShadow: "2px 2px 4px #C0C4E233",
     },
-    leftTitle: {
-      width: "28%",
-      float: "left",
+    authorInfo: {
+      display: "flex",
     },
-    rightTitle: {
-      width: "70%",
-      float: "right",
+    authorDesc: {
+      display: "flex",
+      justifyContent: "center",
+      flexDirection: "column",
+      lineHeight: "1.2em",
+      marginLeft: "16px",
     },
     authorName: {
-      paddingTop: "5%",
-      width: "100%",
-      float: "right",
       fontWeight: "bold",
     },
     degree: {
-      width: "100%",
-      float: "right",
-      fontSize: "12px",
+      fontSize: "14px",
     },
     university: {
-      width: "100%",
-      float: "right",
-      fontSize: "12px",
-      color: "grey",
-    },
-    authors: {
-      width: "45%",
-      float: "right",
-      paddingLeft: "5%",
-    },
-    other: {
-      width: "100%",
-      float: "left",
-      textAlign: "left",
-      color: "grey",
-    },
-    otherName: {
-      width: "100%",
-      float: "left",
-      textAlign: "left",
-      marginTop: "6%",
-      fontWeight: "bold",
-    },
-    text: {
-      width: "85%",
-      float: "left",
-      textAlign: "left",
-      paddingLeft: "5%",
-    },
-    btn: {
-      textTransform: "none",
-    },
-    btn1: {
-      textTransform: "none",
-      marginLeft: "5%",
-      float: "left",
+      fontSize: "14px",
+      color: "#767676",
     },
     popup: {
       width: "600px",
@@ -203,56 +167,51 @@ export default function Information(props) {
 
   return (
     <div className={style.main}>
-      <div className={style.left}>
-        <PreviewPDF pdf={props.workPDF} />
+      <div className={style.pdf}>
+        <Document file={props.workPDF}>
+          <Page pageNumber={1} width={320} />
+        </Document>
       </div>
 
-      <div className={style.right}>
-        <Tooltip title="Status" placement="top-start">
-          <span className={style.status}>{props.status}</span>
-        </Tooltip>
+      <div className={style.workInfo}>
+        <span className={style.status}>{props.status}</span>
 
-        {/* Panel includes status, date add work, date modification and category  */}
-        <span className={style.date}>
-          <span>{props.scientificWork.createDate}</span>
-          <span>&nbsp; (Edited: {props.scientificWork.updateDate}) &nbsp;</span>
-          <span>
-            {" "}
-            <Button variant="contained" color="primary" className={style.btn}>
-              {props.scientificWork.specialization}
-            </Button>{" "}
-          </span>
-        </span>
+        {/* Panel includes status, date add work, date modification and specialization  */}
+        <div className={style.dateCategory}>
+          <p className={style.date}>
+            {props.scientificWork.createDate}
+            &nbsp; (Edited: {props.scientificWork.updateDate})
+          </p>
+          <Categories name={props.scientificWork.specialization} />
+        </div>
+
         <h1 className={style.h1}>{props.scientificWork.title}</h1>
 
         {/* Panel includes photo, name author, degree, univeristy */}
-        <div className={style.author}>
-          <span className={style.shared}>Shared by</span>
-          <p className={style.leftTitle}>
-            <img
-              src={props.author.photo}
-              className={style.photo}
-              alt={props.author.name}
-            ></img>
-          </p>
-          <p className={style.rightTitle}>
-            <span className={style.authorName}>{props.author.name}</span>
-            <span className={style.degree}>{props.author.degree}</span>
-            <span className={style.university}>{props.author.university}</span>
-          </p>
+        <div className={style.allAuthors}>
+          <div className={style.author}>
+            <span className={style.shared}>Shared by</span>
+            <div className={style.authorInfo}>
+              <img src={props.author.photo} className={style.photo} alt=""></img>
+              <div className={style.authorDesc}>
+                <span className={style.authorName}>{props.author.name}</span>
+                <span className={style.degree}>{props.author.degree}</span>
+                <span className={style.university}>{props.author.university}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className={style.authors}>
+            <p className={style.shared}>Other authors</p>
+            <p className={style.authorName}>{props.scientificWork.authors}</p>
+          </div>
         </div>
-        <div className={style.authors}>
-          <span className={style.other}>Other authors</span>
-          <span className={style.otherName}>
-            {props.scientificWork.authors}
-          </span>
-        </div>
-        <p className={style.text}>{props.scientificWork.description}</p>
+        <p className={style.description}>{props.scientificWork.description}</p>
 
         <Button
           variant="outlined"
           color="primary"
-          className={style.btn1}
+          className={style.btnDownload}
           onClick={downloadFile}
         >
           Download full work

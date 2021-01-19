@@ -21,7 +21,6 @@ export default function KeynoteSpeaker(props) {
     },
   })();
 
-
   return (
     <div className={style.main}>
       <img className={style.photo} src={props.photo} alt="" />
