@@ -133,8 +133,6 @@ export default function Navigation(props) {
   };
 
   const [open, setOpen] = React.useState(false);
-  const display = clsx(style.hamburger);
-  console.log(display);
 
   const handleDrawer = () => {
     if (open) setOpen(false);
@@ -439,7 +437,7 @@ export default function Navigation(props) {
         </List>
       </Drawer>
       <div>
-        <div classname={style.loggedHamburger}>
+        <div className={style.loggedHamburger}>
           {props.userInfo && clsx(style.hamburger) && (
             <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
               <img
