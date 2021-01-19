@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import OneWork from "../../../components/ScientificWorkList/OneWork";
 import Categories from "../../../components/ScientificWorkList/Categories";
 import Search from "../../../components/Search";
-import picture from "../../../images/empty-image.png";
 
 export default function MyReviews() {
   const style = makeStyles({
@@ -44,7 +43,6 @@ export default function MyReviews() {
       authors: "John Doe, Sam Smith, Ashley Blue",
       text:
         "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ",
-      path: picture,
       author: "John Doe",
       modificationDate: "12/12/2020",
     },
@@ -56,7 +54,6 @@ export default function MyReviews() {
       authors: "John Doe, Sam Smith, Ashley Blue",
       text:
         "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ",
-      path: picture,
       author: "John Doe",
       modificationDate: "12/12/2020",
     },
@@ -68,7 +65,6 @@ export default function MyReviews() {
       authors: "John Doe, Sam Smith, Ashley Blue",
       text:
         "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ",
-      path: picture,
       author: "John Doe",
       modificationDate: "12/12/2020",
     },
@@ -83,7 +79,6 @@ export default function MyReviews() {
       authors={review.authors}
       text={review.text}
       link={review.link}
-      path={review.path}
       author={review.author}
       modificationDate={review.modificationDate}
     />
