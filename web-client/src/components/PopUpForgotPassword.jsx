@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import MuiAlert from "@material-ui/lab/Alert";
+import Close from "@material-ui/icons/Close";
 
 export default function PopUpForgotPassword(props) {
   const style = makeStyles({
@@ -36,6 +37,14 @@ export default function PopUpForgotPassword(props) {
       textAlign: "center",
       marginTop: "30px",
       marginBottom: "30px",
+    },
+    close: {
+      color: "#AD1457",
+      width: "32px",
+      height: "32px",
+      "&:hover": {
+        cursor: "pointer",
+      },
     },
   })();
 
@@ -108,6 +117,9 @@ export default function PopUpForgotPassword(props) {
       </Button>
 
       <Dialog open={open} onClose={handleClose}>
+      <div className={style.close}>
+            <Close onClick={handleClose} />
+          </div>
         <span className={style.message}>You will receive link...</span>
         <div className={style.content}>
           <div className={style.form}>
