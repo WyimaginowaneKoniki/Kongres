@@ -299,11 +299,11 @@ export default function Navigation(props) {
             </ListItem>
           </NavLink>
           {props.userInfo && (
-              <NavLink exact to={LINKS.WORKS} className={style.linkMenu}>
+            <NavLink exact to={LINKS.WORKS} className={style.linkMenu}>
               <ListItem button onClick={handleDrawerClose}>
-              <span className={style.nameAdress}>Scientific works</span>
-                </ListItem>
-              </NavLink>
+                <span className={style.nameAdress}>Scientific works</span>
+              </ListItem>
+            </NavLink>
           )}
           <NavLink exact to={LINKS.ABOUT} className={style.linkMenu}>
             <ListItem button onClick={handleDrawerClose}>
@@ -436,17 +436,17 @@ export default function Navigation(props) {
         </List>
       </Drawer>
       {props.userInfo && clsx(style.hamburger) && (
-          <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
-            <img
-              className={style.avatar}
-              src={
-                props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
-              }
-              alt="Avatar"
-            />
-            <div className={style.name}>{props.userInfo.name}</div>
-          </NavLink>
-        )}
+        <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
+          <img
+            className={style.avatar}
+            src={
+              props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
+            }
+            alt="Avatar"
+          />
+          <div className={style.name}>{props.userInfo.name}</div>
+        </NavLink>
+      )}
       <div>
         <IconButton onClick={handleDrawer} className={style.hamburger}>
           {open ? (
