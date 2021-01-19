@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import OneWork from "../../../components/ScientificWorkList/OneWork";
 import Categories from "../../../components/ScientificWorkList/Categories";
 import Search from "../../../components/Search";
-import picture from "../../../images/empty-image.png";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -45,6 +44,19 @@ export default function MyReviews() {
   // Check if page is load successful
   const [isSuccessedLoad, SetIsSuccessedLoad] = React.useState(false);
 
+  // Stores reviews
+  const [reviews, SetReviews] = React.useState([
+    {
+      title: null,
+      status: null,
+      creationDate: null,
+      authors: null,
+      description: null,
+      specialization: null,
+      updateDate: null,
+    },
+  ]);
+
   useEffect(() => {
     let id = window.location.pathname.split("/").slice(-1)[0];
     if (isNaN(id)) id = null;
@@ -59,6 +71,7 @@ export default function MyReviews() {
         })
         .then((resp) => {
           SetIsSuccessedLoad(true);
+          SetReviews(resp.data);
           console.log(resp.data);
         })
         .catch((_) => {
@@ -70,53 +83,25 @@ export default function MyReviews() {
     })();
   }, [location]);
 
-  const reviews = [
-    {
-      title: "Importance of Golden Ratio in Mathematics",
-      status: "Waiting for review",
-      categories: "Mathematics",
-      data: "30/11/2020",
-      authors: "John Doe, Sam Smith, Ashley Blue",
-      text:
-        "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ",
-      author: "John Doe",
-      modificationDate: "12/12/2020",
-    },
-    {
-      title: "Importance of Golden Ratio in Mathematics",
-      status: "Accepted",
-      categories: "Mathematics",
-      data: "30/11/2020",
-      authors: "John Doe, Sam Smith, Ashley Blue",
-      text:
-        "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ",
-      author: "John Doe",
-      modificationDate: "12/12/2020",
-    },
-    {
-      title: "Importance of Golden Ratio in Mathematics",
-      status: "Rejected",
-      categories: "Mathematics",
-      data: "30/11/2020",
-      authors: "John Doe, Sam Smith, Ashley Blue",
-      text:
-        "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place. ",
-      author: "John Doe",
-      modificationDate: "12/12/2020",
-    },
-  ];
+  // convert date from ISO [YYYY-MM-DDTHH:mm:ss.sssZ] to DD/MM/YYYY
+  const convertDate = (date) => {
+    date = date?.substring(0, 10);
+    if (!date) return null;
+    return date.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function (_, y, m, d) {
+      return d + "/" + m + "/" + y;
+    });
+  };
 
   const reviewList = reviews.map((review) => (
     <OneWork
       title={review.title}
       status={review.status}
-      categories={review.categories}
-      data={review.data}
+      categories={review.specialization}
+      date={convertDate(review.creationDate)}
       authors={review.authors}
-      text={review.text}
-      link={review.link}
-      author={review.author}
-      modificationDate={review.modificationDate}
+      text={review.description}
+      modificationDate={convertDate(review.updateDate)}
+      id={review.id}
     />
   ));
 
