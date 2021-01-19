@@ -13,5 +13,6 @@ namespace Kongres.Api.Application.Services.Interfaces
         Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync();
         Task<Stream> GetStreamOfScientificWorkAsync(uint workId);
         Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint userId, uint scientificWorkId);
+        Task<IEnumerable<ScientificWorkWithStatusDto>> GetListOfWorksForReviewer(uint reviewerId);
     }
 }

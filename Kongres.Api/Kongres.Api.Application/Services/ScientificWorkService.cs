@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Application.Services
@@ -18,18 +19,21 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
+        private readonly IReviewersScienceWorkRepository _reviewersWorkRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
+                                    IReviewersScienceWorkRepository reviewersWorkRepository,
                                     IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
                                     IFileManager fileManager)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
+            _reviewersWorkRepository = reviewersWorkRepository;
             _reviewRepository = reviewRepository;
             _userManager = userManager;
             _fileManager = fileManager;
@@ -214,6 +218,28 @@ namespace Kongres.Api.Application.Services
             };
 
             return await Task.FromResult(scientificWorkWithReviewDto);
+        }
+
+        public async Task<IEnumerable<ScientificWorkWithStatusDto>> GetListOfWorksForReviewer(uint reviewerId)
+        {
+            var user = await _userManager.FindByIdAsync(reviewerId.ToString());
+            var isReviewer = await _userManager.IsInRoleAsync(user, "Reviewer");
+
+            if (!isReviewer)
+                throw new AuthenticationException();
+
+            var scientificWorks = _reviewersWorkRepository.GetListOfWorksForReviewer(reviewerId);
+            return scientificWorks.Select(x => new ScientificWorkWithStatusDto()
+            {
+                Id = x.Id,
+                Title = x.Name,
+                Description = x.Description,
+                Specialization = x.Specialization,
+                CreationDate = x.CreationDate.ToString("g"),
+                UpdateDate = x.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
+                Authors = x.OtherAuthors,
+                Status = x.Status.ToString()
+            });
         }
     }
 }
