@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kongres.Api.Domain.DTOs
+﻿namespace Kongres.Api.Domain.DTOs
 {
     public class ScientificWorkDto
     {
