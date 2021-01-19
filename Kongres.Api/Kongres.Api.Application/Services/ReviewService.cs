@@ -20,13 +20,15 @@ namespace Kongres.Api.Application.Services
         private readonly IReviewRepository _reviewRepository;
         private readonly IFileManager _fileManager;
         private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _emailSender;
 
         public ReviewService(IScientificWorkRepository scientificWorkRepository,
                             IScientificWorkFileRepository scientificWorkFileRepository,
                             IReviewersScienceWorkRepository reviewersWorkRepository,
                             IReviewRepository reviewRepository,
                             IFileManager fileManager,
-                            UserManager<User> userManager)
+                            UserManager<User> userManager,
+                            IEmailSender emailSender)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
@@ -34,6 +36,7 @@ namespace Kongres.Api.Application.Services
             _reviewRepository = reviewRepository;
             _fileManager = fileManager;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         public async Task AddAnswerToReviewAsync(uint authorId, uint reviewId, string answerMsg)
@@ -97,7 +100,7 @@ namespace Kongres.Api.Application.Services
             review.Comment = reviewMsg;
 
             await _reviewRepository.AddReviewAsync(review);
-            
+
             var reviewerCount = _reviewersWorkRepository.GetReviewersCount(scientificWorkId);
             var reviewsCount = _scientificWorkFileRepository.GetReviewsCountInNewestVersion(scientificWorkId);
 
@@ -116,6 +119,8 @@ namespace Kongres.Api.Application.Services
                 // 1.5 - 2.5  send back to review
                 // 2.5 <      approve
             }
+            var emailOfAuthor = await _scientificWorkRepository.GetEmailOfAuthorByWorkIdAsync(scientificWorkId);
+            await _emailSender.SendReceiveReviewEmailAsync(emailOfAuthor, scientificWorkId);
         }
 
         public async Task<Stream> GetStreamOfReviewFileAsync(uint userId, uint reviewId)

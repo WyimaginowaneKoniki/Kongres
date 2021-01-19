@@ -15,5 +15,6 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task<byte> GetNumberOfVersionsByAuthorIdAsync(uint userId);
         Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization);
         Task ChangeStatusAsync(ScientificWork scientificWork);
+        Task<string> GetEmailOfAuthorByWorkIdAsync(uint scientificWorkId);
     }
 }

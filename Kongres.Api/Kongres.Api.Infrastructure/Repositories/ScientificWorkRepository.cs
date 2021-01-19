@@ -67,5 +67,10 @@ namespace Kongres.Api.Infrastructure.Repositories
             _context.ScientificWorks.Update(scientificWork);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<string> GetEmailOfAuthorByWorkIdAsync(uint scientificWorkId)
+            => await _context.ScientificWorks.Where(x => x.Id == scientificWorkId)
+                                             .Select(x => x.MainAuthor.Email)
+                                             .SingleAsync();
     }
 }
