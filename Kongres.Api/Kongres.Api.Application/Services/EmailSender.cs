@@ -61,5 +61,13 @@ namespace Kongres.Api.Application.Services
             var message = $"<a href='{link}'>You have been assigned to scientific work! Go check it out</a>";
             await _emailService.SendAsync(reviewerEmail, "Work review", message, true);
         }
+
+        public async Task SendReviewersAssignmentInformationAsync(string authorEmail, uint workId)
+        {
+            var link = $"https://localhost:5001/scientific-works/{workId}";
+
+            var message = $"<a href='{link}'>Reviewers have just been assigned to your scientific work! Stay tuned for the reviews</a>";
+            await _emailService.SendAsync(authorEmail, "Work review", message, true);
+        }
     }
 }

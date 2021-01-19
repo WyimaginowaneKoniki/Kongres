@@ -73,9 +73,13 @@ namespace Kongres.Api.Application.Services
                         var reviewerEmail = _userRepository.GetEmailById(reviewersId[i]);
                         await _emailSender.SendWorkAssignmentInformationAsync(reviewerEmail, workId);
                     }
+                }
 
-                    // Send email to author of work about preparing to review
-
+                // Send email to author of the work about assigned reviewers
+                foreach (var scientificWork in scientificWorks)
+                {
+                    var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
+                    await _emailSender.SendReviewersAssignmentInformationAsync(authorEmail, scientificWork.Id);
                 }
 
                 await _reviewersScienceWorkRepository.AddAsync(reviewersScientificWorks);
