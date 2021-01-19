@@ -35,7 +35,7 @@ namespace Kongres.Api.Application.Services
             var link = $"https://localhost:5001/scientific-works/{workId}";
 
             var message = $"<a href='{link}'>Your work has been rated by all reviewers. You can add a new version now!</a>";
-           
+
             await _emailService.SendAsync(userEmail, "Work review", message, true);
         }
         public async Task SendReceiveAnswerEmailAsync(string userEmail, uint workId)
@@ -68,6 +68,12 @@ namespace Kongres.Api.Application.Services
 
             var message = $"<a href='{link}'>Reviewers have just been assigned to your scientific work! Stay tuned for the reviews</a>";
             await _emailService.SendAsync(authorEmail, "Work review", message, true);
+        }
+
+        public async Task SendDoNotGetAssignToAnyWork(string reviewerEmail)
+        {
+            const string message = "Unfortunately, you were not assigned to any scientific work because of too few applicants";
+            await _emailService.SendAsync(reviewerEmail, "Work review", message);
         }
     }
 }

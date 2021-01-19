@@ -53,7 +53,15 @@ namespace Kongres.Api.Application.Services
 
                 // TODO: Send information to authors/reviewers about too small number of works/reviewers
                 if (reviewerIds.Length < 4 || scientificWorkIds.Count() < 4)
+                {
+                    for (var i = 0; i < reviewerIds.Length; i++)
+                    {
+                        var reviewerEmail = _userRepository.GetEmailById(reviewerIds[i]);
+                        await _emailSender.SendDoNotGetAssignToAnyWork(reviewerEmail);
+                    }
+
                     continue;
+                }
 
                 var scientificWoksWithReviewers = RandomizeReviewers(scientificWorkIds, reviewerIds);
 
