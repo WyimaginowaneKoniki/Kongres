@@ -9,57 +9,51 @@ export default function MyReviewsOneReview(props) {
       width: "100%",
       paddingBottom: "300px",
     },
-    h2: {
-      width: "90%",
-      float: "left",
+    main: {
+      marginBottom: "80px",
       textAlign: "left",
-      margin: "auto",
-      marginTop: "2%",
+    },
+    title: {
+      marginBottom: "8px",
+      "&:hover": {
+        cursor: "pointer",
+      },
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "1em",
+      },
     },
     panel: {
-      width: "100%",
-      float: "left",
-    },
-    author: {
-      float: "left",
-      fontSize: "12px",
-    },
-    photo: {
-      float: "left",
-      width: "6%",
-      height: "35px",
-      borderRadius: "50%",
-    },
-    name: {
-      float: "left",
-      margin: "auto",
-      marginLeft: "2%",
-      marginTop: "1.2%",
-      fontSize: "12px",
+      display: "flex",
+      flexWrap: "wrap",
+      fontSize: "16px",
+      lineHeight: "1.4em",
+      marginBottom: "8px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.8em",
+      },
     },
     category: {
-      float: "left",
-      fontSize: "12px",
-      color: "#3f51b5",
-      paddingRight: "2.5%",
+      color: "#6069A9",
+      marginRight: "16px",
     },
     dot: {
-      float: "left",
       fontSize: "28px",
-      color: "#DCDCDC",
-      paddingRight: "2.5%",
+      color: "#C0C4E2",
+      marginRight: "16px",
     },
     date: {
-      float: "left",
-      fontSize: "12px",
-      paddingRight: "2.5%",
+      marginRight: "16px",
+      color: "#767676",
+    },
+    author: {
+      color: "#767676",
     },
     text: {
-      width: "94%",
-      float: "left",
-      textAlign: "left",
-      fontSize: "14px",
-      paddingBottom: "2%",
+      marginBottom: "16px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.9em",
+        lineHeight: "1.5em",
+      },
     },
     a: {
       textDecoration: "none",
@@ -67,23 +61,39 @@ export default function MyReviewsOneReview(props) {
       fontWeight: "bold",
     },
     buttons: {
-      float: "left",
-      width: "100%",
+      display: "flex",
+      flexWrap: "wrap",
     },
     btn1: {
-      float: "left",
-      marginRight: "5%",
+      marginRight: "24px",
+      marginBottom: "8px",
+      backgroundColor: "white",
+      "&:hover": {
+        backgroundColor: "#F1F3FF",
+      },
     },
     btn2: {
-      float: "left",
+      marginBottom: "8px",
+    },
+    btnStatus: {
+      color: "#775866",
+      backgroundColor: "#F0D4E0",
+      padding: "4px 8px",
+      marginRight: "16px",
+      marginBottom: "8px",
+      boxShadow: "none",
+      "&:hover": {
+        backgroundColor: "#F0D4E0",
+        boxShadow: "none",
+      },
     },
   })();
 
   //https://www.xspdf.com/resolution/50694881.html <- information for button download
   return (
     <div className={style.main}>
-      <Button variant="outlined" color="primary" className={style.btn1}>
-        Waiting for review
+      <Button variant="contained" className={style.btnStatus}>
+        Waiting for Review
       </Button>
       <h2 className={style.h2}>{props.title}</h2>
       <div className={style.panel}>
@@ -97,7 +107,7 @@ export default function MyReviewsOneReview(props) {
         <span className={style.dot}>&bull;</span>
         <p className={style.author}>{props.authors}</p>
       </div>
-      <span className={style.text}>{props.text}</span>
+      <p className={style.text}>{props.text}</p>
       <div className={style.buttons}>
         <Button variant="outlined" color="primary" className={style.btn1}>
           Download full work
