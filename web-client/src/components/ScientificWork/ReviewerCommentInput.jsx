@@ -66,10 +66,15 @@ export default function ReviewerCommentInput(props) {
       width: "520px",
       margin: "15px",
     },
+    divClose: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
     close: {
       color: "#AD1457",
       width: "32px",
       height: "32px",
+      padding: "0.5em",
       "&:hover": {
         cursor: "pointer",
       },
@@ -167,8 +172,8 @@ export default function ReviewerCommentInput(props) {
       {/* All Dialog in Popup */}
       <Dialog open={isDialogOpen} onClose={closeDialog}>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
-          <div className={style.close}>
-            <Close onClick={closeDialog} />
+          <div className={style.divClose}>
+            <Close className={style.close} onClick={closeDialog} />
           </div>
           <DialogTitle className={style.dialogTitle}>
             Add your review
