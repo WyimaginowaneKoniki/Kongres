@@ -25,6 +25,7 @@ import Error404 from "./pages/error-404";
 import NavigationNotLogged from "./components/NavigationNotLogged";
 import axios from "axios";
 import EmailConfirmationToken from "./pages/email-confirmation-token";
+import PhotoGallery from './pages/photo-gallery';
 
 export default function App() {
   const [userInfo, setUserInfo] = React.useState(null);
@@ -58,6 +59,8 @@ export default function App() {
           <Route path={LINKS.COOKIES} component={CookiesPolicy} />
           <Route path={LINKS.PRIVACY} component={PrivacyPolicy} />
           <Route path={LINKS.CONFIRM} component={EmailConfirmationToken} />
+          <Route path={LINKS.GALLERY} component={PhotoGallery} />
+          
           {/* Scientific works */}
           <Route path={LINKS.WORKS} exact component={ScientificWorks} />
           <Route path={LINKS.WORKS} component={WorkView} />
