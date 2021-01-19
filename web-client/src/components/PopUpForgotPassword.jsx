@@ -38,10 +38,15 @@ export default function PopUpForgotPassword(props) {
       marginTop: "30px",
       marginBottom: "30px",
     },
+    divClose: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
     close: {
       color: "#AD1457",
       width: "32px",
       height: "32px",
+      padding: '0.5em',
       "&:hover": {
         cursor: "pointer",
       },
@@ -117,8 +122,8 @@ export default function PopUpForgotPassword(props) {
       </Button>
 
       <Dialog open={open} onClose={handleClose}>
-      <div className={style.close}>
-            <Close onClick={handleClose} />
+      <div className={style.divClose}>
+            <Close className={style.close} onClick={handleClose} />
           </div>
         <span className={style.message}>You will receive link...</span>
         <div className={style.content}>

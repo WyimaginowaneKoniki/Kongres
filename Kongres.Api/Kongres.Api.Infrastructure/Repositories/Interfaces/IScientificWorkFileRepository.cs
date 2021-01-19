@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using Kongres.Api.Domain.Entities;
 using System.Collections.Generic;
-using Kongres.Api.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure.Repositories.Interfaces
