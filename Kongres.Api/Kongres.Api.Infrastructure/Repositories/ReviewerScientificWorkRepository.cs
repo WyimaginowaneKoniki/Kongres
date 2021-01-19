@@ -18,7 +18,7 @@ namespace Kongres.Api.Infrastructure.Repositories
         public async Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks)
         {
             await _context.ReviewersScienceWorks.AddRangeAsync(reviewersScienceWorks);
-            var a = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

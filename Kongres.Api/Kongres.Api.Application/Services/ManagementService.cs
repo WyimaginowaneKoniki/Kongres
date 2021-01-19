@@ -61,7 +61,6 @@ namespace Kongres.Api.Application.Services
                             ScientificWork = scientificWorks.Single(x => x.Id == key),
                             User = reviewers.Single(x => x.Id == value[i])
                         });
-
                     }
                 }
 
