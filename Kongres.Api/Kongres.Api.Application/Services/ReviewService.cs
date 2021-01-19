@@ -97,24 +97,32 @@ namespace Kongres.Api.Application.Services
             review.Comment = reviewMsg;
 
             await _reviewRepository.AddReviewAsync(review);
-            
+
             var reviewerCount = _reviewersWorkRepository.GetReviewersCount(scientificWorkId);
             var reviewsCount = _scientificWorkFileRepository.GetReviewsCountInNewestVersion(scientificWorkId);
 
             // all reviewers added their reviews
             if (reviewsCount == reviewerCount)
             {
+                var sumOfRating = await _scientificWorkFileRepository.GetRatingSumFromVersion(newestVersion.Id);
+                var ratingAvg = (float)sumOfRating / reviewerCount;
+
                 var work = await _scientificWorkRepository.GetWorkByIdAsync(scientificWorkId);
-                work.Status = StatusEnum.Correcting;
+
+                if (ratingAvg < 1.5)
+                {
+                    work.Status = StatusEnum.Rejected;
+                }
+                else if (ratingAvg <= 2.5)
+                {
+                    work.Status = StatusEnum.Correcting;
+                }
+                else
+                {
+                    work.Status = StatusEnum.Accepted;
+                }
 
                 await _scientificWorkRepository.ChangeStatusAsync(work);
-
-                // TODO: calculate rating and save it
-
-                // TODO: based on rating:
-                // < 1.5      reject
-                // 1.5 - 2.5  send back to review
-                // 2.5 <      approve
             }
         }
 

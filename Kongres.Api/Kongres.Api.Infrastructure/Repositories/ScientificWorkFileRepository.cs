@@ -47,5 +47,10 @@ namespace Kongres.Api.Infrastructure.Repositories
             => _context.ScientificWorkFiles.Where(x => x.ScientificWork.Id == workId)
                                            .OrderByDescending(x => x.Version)
                                            .First().Reviews.Count();
+
+        public async Task<int> GetRatingSumFromVersion(uint versionId)
+            => await _context.ScientificWorkFiles.Where(x => x.Id == versionId)
+                                                 .Select(x => x.Reviews.Sum(y => y.Rating))
+                                                 .SingleAsync();
     }
 }
