@@ -64,6 +64,10 @@ namespace Kongres.Api.Application.Services
             };
 
             await _reviewRepository.AddAnswerToReviewAsync(review);
+
+            var scientificWorkId = await _reviewRepository.GetWorkIdByReviewIdAsync(reviewId);
+            var emailOfReviewer = await _reviewRepository.GetEmailOfReviewerByReviewIdAsync(reviewId);
+            await _emailSender.SendReceiveAnswerEmailAsync(emailOfReviewer, scientificWorkId);
         }
 
         public async Task AddReviewAsync(uint reviewerId, string reviewMsg, IFormFile reviewFile, byte rating, uint scientificWorkId)
