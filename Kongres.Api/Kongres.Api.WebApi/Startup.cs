@@ -1,9 +1,8 @@
-using System.Text;
 using Autofac;
 using Kongres.Api.Application.Modules;
 using Kongres.Api.Application.Services;
+using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
-using Kongres.Api.Domain.Settings;
 using Kongres.Api.Infrastructure;
 using Kongres.Api.Infrastructure.Context;
 using Kongres.Api.Infrastructure.Identity;
@@ -17,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
+using System.Text;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 
@@ -46,10 +47,6 @@ namespace Kongres.Api.WebApi
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.User.AllowedUserNameCharacters = _configuration["Identity:AllowedUserNameCharacters"];
             }).AddDefaultTokenProviders();
-
-            services.AddTransient<IUserStore<User>, UserStore>();
-            services.AddTransient<IRoleStore<Role>, RoleStore>();
-            services.AddSingleton<IFileManager, FileManager>();
 
             services.AddControllers()
                 .AddJsonOptions(x =>
@@ -81,6 +78,10 @@ namespace Kongres.Api.WebApi
 
             services.AddMemoryCache();
             services.AddMailKit(config => config.UseMailKit(_configuration.GetSection("Email").Get<MailKitOptions>()));
+
+            services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<Role>, RoleStore>();
+            services.AddSingleton<IFileManager, FileManager>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -89,10 +90,11 @@ namespace Kongres.Api.WebApi
             builder.RegisterModule(new SettingsModule(_configuration));
             builder.RegisterModule<ServiceModule>();
             builder.RegisterModule<RepositoryModule>();
+            builder.RegisterModule<QuartzModule>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context,
-            RoleManager<Role> roleManager)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, KongresDbContext context,
+            RoleManager<Role> roleManager, IJobsInitializer jobsInitializer)
         {
             context.Database.Migrate();
 
@@ -127,6 +129,8 @@ namespace Kongres.Api.WebApi
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            await jobsInitializer.SeedJobsAsync();
         }
     }
 }

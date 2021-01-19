@@ -50,6 +50,11 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                    .AnyAsync(x => x.User.Id == userId &&
                                                                   x.ScientificWork.Id == scientificWorkId);
 
+        public async Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Where(x => x.Specialization == specialization)
+                                             .ToListAsync();
+
         public async Task<byte> GetNumberOfVersionsByAuthorIdAsync(uint userId)
         {
             var scientificWork = await _context.ScientificWorks.Include(x => x.MainAuthor)

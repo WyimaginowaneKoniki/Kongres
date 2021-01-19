@@ -19,14 +19,14 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
-        private readonly IReviewersScienceWorkRepository _reviewersWorkRepository;
+        private readonly IReviewerScientificWorkRepository _reviewersWorkRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
-                                    IReviewersScienceWorkRepository reviewersWorkRepository,
+                                    IReviewerScientificWorkRepository reviewersWorkRepository,
                                     IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
                                     IFileManager fileManager)
@@ -137,8 +137,6 @@ namespace Kongres.Api.Application.Services
 
         public async Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint userId, uint scientificWorkId)
         {
-            // TODO: If science work is approved
-
             var scientificWork = await _scientificWorkRepository.GetWorkByIdAsync(scientificWorkId);
             if (scientificWork is null)
                 return null;
@@ -152,6 +150,7 @@ namespace Kongres.Api.Application.Services
             else
                 mode = "Participant";
 
+            // participant can see this work only when it's approved
             if (scientificWork.Status != StatusEnum.Accepted && mode == "Participant")
                 throw new AuthenticationException();
 

@@ -1,17 +1,18 @@
-﻿using Kongres.Api.Domain.Entities;
-using Kongres.Api.Infrastructure.Context;
+﻿using System.Collections.Generic;
+using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using Kongres.Api.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Kongres.Api.Infrastructure.Repositories
 {
-    public class ReviewersScienceWorkRepository : IReviewersScienceWorkRepository
+    public class ReviewerScientificWorkRepository : IReviewerScientificWorkRepository
     {
         private readonly KongresDbContext _context;
 
-        public ReviewersScienceWorkRepository(KongresDbContext context)
+        public ReviewerScientificWorkRepository(KongresDbContext context)
         {
             _context = context;
         }
@@ -23,5 +24,10 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                 .ThenInclude(x => x.MainAuthor)
                                              .Where(x => x.User.Id == reviewerId)
                                              .Select(x => x.ScientificWork);
+        public async Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks)
+        {
+            await _context.ReviewersScienceWorks.AddRangeAsync(reviewersScienceWorks);
+            await _context.SaveChangesAsync();
+        }
     }
 }
