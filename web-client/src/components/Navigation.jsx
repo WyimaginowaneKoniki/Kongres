@@ -4,15 +4,18 @@ import "../index.css";
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button } from "@material-ui/core/";
-import Logo from "../images/logo.png";
-import Avatar from "../images/default-avatar.png";
-import IconButton from "@material-ui/core/IconButton";
+import {
+  Box,
+  Button,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+} from "@material-ui/core/";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOpen from "@material-ui/icons/MenuOpen";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Logo from "../images/logo.png";
+import Avatar from "../images/default-avatar.png";
 import { URL, LINKS } from "../Constants";
 
 export default function Navigation(props) {
