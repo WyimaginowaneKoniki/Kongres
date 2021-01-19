@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Kongres.Api.Application.Commands.Users.Participant;
+using Kongres.Api.Application.Queries.Users;
 using Kongres.Api.Domain.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -40,6 +43,29 @@ namespace Kongres.Api.WebApi.Controller
 
             var token = _cache.GetJwt(command.TokenId);
             return Ok(token);
+        }
+
+        [Authorize]
+        [HttpGet("GetInfoForAddWork")]
+        public async Task<IActionResult> GetInfoForAddWork()
+        {
+            var command = new GetInfoForAddWorkQuery
+            {
+                UserId = HttpContext.User.Identity.Name
+            };
+
+            string userName;
+
+            try
+            {
+                userName = await CommandAsync(command);
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(userName);
         }
     }
 }
