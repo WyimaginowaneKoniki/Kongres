@@ -60,6 +60,13 @@ namespace Kongres.Api.Application.Services
                         await _emailSender.SendDoNotGetAssignToAnyWork(reviewerEmail);
                     }
 
+
+                    foreach (var scientificWork in scientificWorks)
+                    {
+                        var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
+                        await _emailSender.SendWorkDidNotGetReviewers(authorEmail);
+                    }
+
                     continue;
                 }
 

@@ -72,8 +72,14 @@ namespace Kongres.Api.Application.Services
 
         public async Task SendDoNotGetAssignToAnyWork(string reviewerEmail)
         {
-            const string message = "Unfortunately, you were not assigned to any scientific work because of too few applicants";
+            const string message = "Unfortunately, you were not assigned to any scientific work, because of too few applicants";
             await _emailService.SendAsync(reviewerEmail, "Work review", message);
+        }
+
+        public async Task SendWorkDidNotGetReviewers(string authorEmail)
+        {
+            const string message = "Unfortunately, no reviewer has been assigned to your scientific work, because of too few applicants";
+            await _emailService.SendAsync(authorEmail, "Work review", message);
         }
     }
 }
