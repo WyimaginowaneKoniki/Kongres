@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../App.css";
 import DropZone from "../../../components/DropZone";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,7 +20,9 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
-import { URL_API, categories } from "../../../Constants";
+import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { URL_API, LINKS, categories } from "../../../Constants";
 
 export default function AddingWork() {
   const style = makeStyles({
@@ -77,6 +79,39 @@ export default function AddingWork() {
   })();
 
   const formRef = React.useRef(null);
+  const location = useLocation();
+  const history = useHistory();
+
+  // get main author from API
+  const [mainAuthor, SetMainAutor] = React.useState(null);
+
+  useEffect(() => {
+    let id = window.location.pathname.split("/").slice(-1)[0];
+    if (isNaN(id)) id = null;
+    console.log(location.state?.detail ? location.state?.detail : id);
+
+    const token = localStorage.getItem("jwt");
+
+    (async () => {
+      await axios
+        .get(`${URL_API}/Participant/GetInfoForAddWork`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          SetMainAutor(resp.data);
+        })
+        .catch((error) => {
+          if (error.response.status == 400)
+            history.push({
+              pathname: "/",
+            });
+          else
+            history.push({
+              pathname: LINKS.PARTICIPANT_LOGIN,
+            });
+        });
+    })();
+  }, [location]);
 
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
@@ -264,9 +299,6 @@ export default function AddingWork() {
     );
   });
 
-  // get main author from API
-  const mainAuthor = "John Doe";
-
   const createFormData = () => {
     const formData = new FormData(formRef.current);
 
@@ -395,6 +427,7 @@ export default function AddingWork() {
             {/* Authors */}
             <TextField
               className={style.textFieldAuthor}
+              disabled
               inputRef={register}
               id="authors-adding-work"
               name="authors"

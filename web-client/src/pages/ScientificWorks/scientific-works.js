@@ -64,8 +64,7 @@ export default function ScientificWorks() {
         .then((resp) => {
           SetWorks(resp.data);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((_) => {
           history.push({
             pathname: LINKS.PARTICIPANT_LOGIN,
           });

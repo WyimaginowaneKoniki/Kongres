@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import "../../App.css";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import Information from "../../components/ScientificWork/Information";
 import VersionPanel from "../../components/ScientificWork/VersionPanel";
 import axios from "axios";
-import { URL_API } from "../../Constants";
+import { URL_API, LINKS } from "../../Constants";
 import defaultPhoto from "../../images/empty-image.png";
 
 export default function WorkView() {
@@ -28,6 +29,7 @@ export default function WorkView() {
   })();
 
   const location = useLocation();
+  const history = useHistory();
 
   const [workPDF, SetWorkPDF] = React.useState(null);
   const [data, setData] = React.useState({
@@ -45,6 +47,25 @@ export default function WorkView() {
 
     const token = localStorage.getItem("jwt");
 
+    // get all data about scientific work with reviews
+    (async () => {
+      await axios
+        .get(`${URL_API}/ScientificWork/${Number(id)}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          if (!resp.data.mainAuthor.photo)
+            resp.data.mainAuthor.photo = defaultPhoto;
+          setData(resp.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          history.push({
+            pathname: "/",
+          });
+        });
+    })();
+
     // get scientific work file
     (async () => {
       await axios
@@ -57,20 +78,11 @@ export default function WorkView() {
             new Blob([resp.data], { type: "application/pdf" })
           );
           SetWorkPDF(pdf);
-        });
-    })();
-
-    // get all data about scientific work with reviews
-    (async () => {
-      await axios
-        .get(`${URL_API}/ScientificWork/${Number(id)}`, {
-          headers: { Authorization: `Bearer ${token}` },
         })
-        .then((resp) => {
-          if (!resp.data.mainAuthor.photo)
-            resp.data.mainAuthor.photo = defaultPhoto;
-
-          setData(resp.data);
+        .catch((_) => {
+          history.push({
+            pathname: LINKS.PARTICIPANT_LOGIN,
+          });
         });
     })();
   }, [location]);
