@@ -12,8 +12,10 @@ export default function OneWork(props) {
       marginBottom: "80px",
       textAlign: "left",
     },
-    h2: {
-      lineHeight: "1em",
+    title: {
+      "&:hover": {
+        cursor: "pointer",
+      },
     },
     panel: {
       display: "flex",
@@ -50,13 +52,14 @@ export default function OneWork(props) {
     },
     btn1: {
       marginRight: "24px",
+      marginBottom: "8px",
       backgroundColor: "white",
       "&:hover": {
         backgroundColor: "#F1F3FF",
       },
     },
     btn2: {
-      marginTop: "8px",
+      marginBottom: "8px",
     },
   })();
 
@@ -92,7 +95,9 @@ export default function OneWork(props) {
   //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download
   return (
     <div className={style.main}>
-      <h2 className={style.h2}>{props.title}</h2>
+      <h2 className={style.title} onClick={readMore}>
+        {props.title}
+      </h2>
       <div className={style.panel}>
         <a href={props.link}>
           <p className={style.category}>{props.categories}</p>
