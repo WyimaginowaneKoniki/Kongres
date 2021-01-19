@@ -52,7 +52,7 @@ namespace Kongres.Api.WebApi.Controller
         public async Task<IActionResult> GetListOfWorks([FromQuery] GetListOfWorksCommand command)
         {
             command.ReviewerId = HttpContext.User.Identity.Name;
-            IEnumerable<ScientificWorkDto> scientificWorks;
+            IEnumerable<ScientificWorkWithStatusDto> scientificWorks;
             try
             {
                 scientificWorks = await CommandAsync(command);
