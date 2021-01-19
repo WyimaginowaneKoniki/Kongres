@@ -42,6 +42,7 @@ export default function ScientificWorks() {
   const [works, SetWorks] = React.useState([
     {
       title: null,
+      status: null,
       categories: null,
       date: null,
       authors: null,

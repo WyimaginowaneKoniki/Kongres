@@ -3,19 +3,20 @@ import "../../../App.css";
 import SignInUpInfo from "../../../components/Account/SignInUpInfo";
 import SignUpForm from "../../../components/Account/SignUpForm";
 import axios from "axios";
-import { URL, URL_API } from "../../../Constants";
+import { URL, URL_API, LINKS } from "../../../Constants";
 
 export default function SignUpReviewer() {
   const signUpReviewerInfo = {
     content:
-      "As Reviewer you can see and review other works. If you want to join us and rate scientific works... Sign up ",
-    signUpAsOtherLink: "/participant/sign-up",
+      "Share your experience and review others scientific works! However, if you want to join us as Participant, ",
+    link: `${LINKS.PARTICIPANT_SIGN_UP}`,
+    textLink: "go to signup page",
   };
 
   const signInReviewer = {
-    heading: "Sign in",
-    content: "If you have already an account, sign in here",
-    btn: "Sign in",
+    heading: "Already have an account?",
+    content: "",
+    btn: "Log in",
     signInLink: "/reviewer/login",
   };
 
@@ -37,7 +38,8 @@ export default function SignUpReviewer() {
       <h1>Sign up as Reviewer</h1>
       <SignInUpInfo
         content={signUpReviewerInfo.content}
-        signUpAsOtherLink={signUpReviewerInfo.signUpAsOtherLink}
+        link={signUpReviewerInfo.link}
+        textLink={signUpReviewerInfo.textLink}
       />
       <div>
         <SignUpForm

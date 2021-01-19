@@ -12,9 +12,9 @@ export default function SignInUpInfo(props) {
     content: {
       justifyContent: "center",
       textAlign: "center",
-      fontSize: "14px",
+      fontSize: "0.8em",
       marginBottom: "40px",
-      width: "30%",
+      width: "80%",
     },
   })();
 

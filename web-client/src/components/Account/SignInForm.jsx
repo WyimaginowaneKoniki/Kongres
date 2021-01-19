@@ -19,6 +19,10 @@ export default function SignInForm(props) {
       textAlign: "left",
       maxWidth: "300px",
       margin: "24px",
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "0",
+        marginRight: "0",
+      },
     },
     columns: {
       width: "100%",
@@ -197,7 +201,7 @@ export default function SignInForm(props) {
       </div>
 
       <p className={style.bottomMessage}>
-        If you want to log in as {props.signInAs}, go to {" "}
+        If you want to log in as {props.signInAs}, go to{" "}
         <Link to={props.signInAsOtherLink}>login page</Link>
       </p>
     </Container>

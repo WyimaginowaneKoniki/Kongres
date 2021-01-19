@@ -12,13 +12,24 @@ export default function OneWork(props) {
       marginBottom: "80px",
       textAlign: "left",
     },
-    h2: {
-      lineHeight: "1em",
+    title: {
+      marginBottom: "8px",
+      "&:hover": {
+        cursor: "pointer",
+      },
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "1em",
+      },
     },
     panel: {
       display: "flex",
       flexWrap: "wrap",
       fontSize: "16px",
+      lineHeight: "1.4em",
+      marginBottom: "8px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.8em",
+      },
     },
     category: {
       color: "#6069A9",
@@ -38,6 +49,10 @@ export default function OneWork(props) {
     },
     text: {
       marginBottom: "16px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.9em",
+        lineHeight: "1.5em",
+      },
     },
     a: {
       textDecoration: "none",
@@ -50,13 +65,26 @@ export default function OneWork(props) {
     },
     btn1: {
       marginRight: "24px",
+      marginBottom: "8px",
       backgroundColor: "white",
       "&:hover": {
         backgroundColor: "#F1F3FF",
       },
     },
     btn2: {
-      marginTop: "8px",
+      marginBottom: "8px",
+    },
+    btnStatus: {
+      color: "#775866",
+      backgroundColor: "#F0D4E0",
+      padding: "4px 8px",
+      marginRight: "16px",
+      marginBottom: "8px",
+      boxShadow: "none",
+      "&:hover": {
+        backgroundColor: "#F0D4E0",
+        boxShadow: "none",
+      },
     },
   })();
 
@@ -89,10 +117,18 @@ export default function OneWork(props) {
       });
   };
 
-  //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download
+  const showStatus = (
+    <Button variant="contained" className={style.btnStatus}>
+      {props.status}
+    </Button>
+  );
+  //https://www.xspdf.com/resolution/50694881.html <- information for button download
   return (
     <div className={style.main}>
-      <h2 className={style.h2}>{props.title}</h2>
+      <div className={style.status}>{props.status ? showStatus : null}</div>
+      <h2 className={style.title} onClick={readMore}>
+        {props.title}
+      </h2>
       <div className={style.panel}>
         <a href={props.link}>
           <p className={style.category}>{props.categories}</p>
