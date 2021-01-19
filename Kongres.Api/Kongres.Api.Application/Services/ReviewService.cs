@@ -108,6 +108,8 @@ namespace Kongres.Api.Application.Services
             var reviewerCount = _reviewersWorkRepository.GetReviewersCount(scientificWorkId);
             var reviewsCount = _scientificWorkFileRepository.GetReviewsCountInNewestVersion(scientificWorkId);
 
+            var emailOfAuthor = await _scientificWorkRepository.GetEmailOfAuthorByWorkIdAsync(scientificWorkId);
+
             // all reviewers added their reviews
             if (reviewsCount == reviewerCount)
             {
@@ -122,9 +124,14 @@ namespace Kongres.Api.Application.Services
                 // < 1.5      reject
                 // 1.5 - 2.5  send back to review
                 // 2.5 <      approve
+
+
+                await _emailSender.SendNewVersionEnabledEmailAsync(emailOfAuthor, scientificWorkId);
             }
-            var emailOfAuthor = await _scientificWorkRepository.GetEmailOfAuthorByWorkIdAsync(scientificWorkId);
-            await _emailSender.SendReceiveReviewEmailAsync(emailOfAuthor, scientificWorkId);
+            else
+            {
+                await _emailSender.SendReceiveReviewEmailAsync(emailOfAuthor, scientificWorkId);
+            }
         }
 
         public async Task<Stream> GetStreamOfReviewFileAsync(uint userId, uint reviewId)
