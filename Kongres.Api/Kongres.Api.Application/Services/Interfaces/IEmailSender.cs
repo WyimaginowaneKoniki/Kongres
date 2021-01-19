@@ -13,5 +13,7 @@ namespace Kongres.Api.Application.Services.Interfaces
         Task SendReviewersAssignmentInformationAsync(string authorEmail, uint workId);
         Task SendDoNotGetAssignToAnyWork (string reviewerEmail);
         Task SendWorkDidNotGetReviewers(string authorEmail);
+        Task SendToAuthorWorkGotAcceptedAsync(string authorEmail, uint workId);
+        Task SendToAuthorWorkGotRejectedAsync(string authorEmail, uint workId);
     }
 }

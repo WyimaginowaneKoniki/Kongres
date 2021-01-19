@@ -81,5 +81,21 @@ namespace Kongres.Api.Application.Services
             const string message = "Unfortunately, no reviewer has been assigned to your scientific work, because of too few applicants";
             await _emailService.SendAsync(authorEmail, "Work review", message);
         }
+
+        public async Task SendToAuthorWorkGotAcceptedAsync(string authorEmail, uint workId)
+        {
+            var link = $"https://localhost:5001/scientific-works/{workId}";
+
+            var message = $"<a href='{link}'>Congratulations! Your scientific work is accepted now</a>";
+            await _emailService.SendAsync(authorEmail, "Work review", message, true);
+        }
+
+        public async Task SendToAuthorWorkGotRejectedAsync(string authorEmail, uint workId)
+        {
+            var link = $"https://localhost:5001/scientific-works/{workId}";
+
+            var message = $"<a href='{link}'>Unfortunately, your scientific work is rejected</a>";
+            await _emailService.SendAsync(authorEmail, "Work review", message, true);
+        }
     }
 }

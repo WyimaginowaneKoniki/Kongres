@@ -122,6 +122,8 @@ namespace Kongres.Api.Application.Services
                 {
                     work.Status = StatusEnum.Rejected;
                     newestVersion.Rating = 1;
+
+                    await _emailSender.SendToAuthorWorkGotRejectedAsync(emailOfAuthor, scientificWorkId);
                 }
                 else if (ratingAvg <= 2.5)
                 {
@@ -134,6 +136,8 @@ namespace Kongres.Api.Application.Services
                 {
                     work.Status = StatusEnum.Accepted;
                     newestVersion.Rating = 3;
+
+                    await _emailSender.SendToAuthorWorkGotAcceptedAsync(emailOfAuthor, scientificWorkId);
                 }
 
                 await _scientificWorkRepository.ChangeStatusAsync(work);
