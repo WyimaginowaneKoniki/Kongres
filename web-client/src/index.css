@@ -111,7 +111,8 @@ a:hover {
     display: none;
   }
   .footer {
-    display: none;
+    justify-content: flex-start;
+    flex-wrap: wrap-reverse;
   }
 }
 

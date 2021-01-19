@@ -7,13 +7,28 @@ export default function Footer() {
   const style = makeStyles({
     left: {
       justifyContent: "flex-start",
+      "@media only screen and (max-width: 768px)": {
+        justifyContent: "center",
+      },
+    },
+    centrum: {
+      marginLeft: "32px",
+      minWidth: "120px",
+      "@media only screen and (max-width: 768px)": {
+        display: "flex",
+        flexWrap: "wrap",
+      },
+    },
+    right: {
+      marginLeft: "32px",
+      minWidth: "270px",
     },
     logo: {
       width: "210px",
     },
-
     link: {
       textDecoration: "none",
+      paddingRight: "8px",
       color: "black",
       "&:hover": {
         color: "#6069A9",
@@ -24,7 +39,7 @@ export default function Footer() {
   return (
     <div className="footer">
       <div className={style.left}>
-        <img className={style.logo} src={Logo} alt="Logo" />
+        <img className={style.logo} src={Logo} alt="Scienture conference logo" />
         <div className={style.text}>Scienture conference &copy; 2021</div>
       </div>
       <div className={style.centrum}>
@@ -45,9 +60,17 @@ export default function Footer() {
         </div>
       </div>
       <div className={style.right}>
-        <div className={style.text}>tel:123456789</div>
-        <div className={style.text}>ul.Kaszubska 23, Gliwice</div>
-        <div className={style.text}>e-mail: scientureconf@gmail.com</div>
+        <div className={style.text}>
+          <a href="tel:987654321" className={style.link}>
+            987 654 321
+          </a>
+        </div>
+        <div className={style.text}>
+          <a href="mailto:scientureconf@gmail.com" className={style.link}>
+            scientureconf@gmail.com
+          </a>
+        </div>
+        <div className={style.text}>ul. Kaszubska 23, Gliwice</div>
       </div>
     </div>
   );
