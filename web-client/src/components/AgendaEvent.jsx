@@ -7,13 +7,14 @@ export default function AgendaEvent(props) {
     main: {
       width: "70%",
       margin: "auto",
+      display: "flex",
       marginBottom: "24px",
       borderRadius: "4px",
       padding: "1em",
       backgroundColor: "#DFE2F8",
       textAlign: "left",
-      "@media (min-width: 700px)": {
-        display: "flex",
+      "@media (max-width: 1100px)": {
+        flexWrap: "wrap",
       },
     },
     title: {
@@ -26,7 +27,7 @@ export default function AgendaEvent(props) {
       width: "130px",
       opacity: 0.8,
       color: "#54457F",
-      "@media (max-width: 1000px)": {
+      "@media (max-width: 1100px)": {
         width: "88px",
         fontSize: "14px",
         marginLeft: "16px",
@@ -40,7 +41,7 @@ export default function AgendaEvent(props) {
     },
     info: {
       marginLeft: "40px",
-      "@media (max-width: 1000px)": {
+      "@media (max-width: 1100px)": {
         marginLeft: "16px",
       },
     },
