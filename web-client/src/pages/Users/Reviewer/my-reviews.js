@@ -38,6 +38,9 @@ export default function MyReviews() {
   const location = useLocation();
   const history = useHistory();
 
+  // Check if page is load successful
+  const [isSuccessedLoad, SetIsSuccessedLoad] = React.useState(false);
+
   useEffect(() => {
     let id = window.location.pathname.split("/").slice(-1)[0];
     if (isNaN(id)) id = null;
@@ -51,12 +54,14 @@ export default function MyReviews() {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {
+          SetIsSuccessedLoad(true);
           console.log(resp.data);
         })
         .catch((_) => {
-            history.push({
-              pathname: LINKS.REVIEWER_LOGIN,
-            });
+          SetIsSuccessedLoad(false);
+          history.push({
+            pathname: LINKS.REVIEWER_LOGIN,
+          });
         });
     })();
   }, [location]);
@@ -121,17 +126,19 @@ export default function MyReviews() {
   const statusList = status.map((name) => <MyReviewsCategories name={name} />);
 
   return (
-    <div className={style.main}>
-      <h1>My reviews</h1>
+    isSuccessedLoad && (
+      <div className={style.main}>
+        <h1>My reviews</h1>
 
-      <div className={style.left}>{reviewList}</div>
+        <div className={style.left}>{reviewList}</div>
 
-      <div className={style.right}>
-        <Search />
+        <div className={style.right}>
+          <Search />
 
-        <h3 className={style.h3}>Status</h3>
-        {statusList}
+          <h3 className={style.h3}>Status</h3>
+          {statusList}
+        </div>
       </div>
-    </div>
+    )
   );
 }

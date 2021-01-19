@@ -40,6 +40,9 @@ export default function WorkView() {
     mode: "",
   });
 
+  // Check if page is load successful
+  const [isSuccessedLoad, SetIsSuccessedLoad] = React.useState(false);
+
   useEffect(() => {
     let id = window.location.pathname.split("/").slice(-1)[0];
     if (isNaN(id)) id = null;
@@ -57,12 +60,14 @@ export default function WorkView() {
           if (!resp.data.mainAuthor.photo)
             resp.data.mainAuthor.photo = defaultPhoto;
           setData(resp.data);
+          SetIsSuccessedLoad(true);
         })
         .catch((error) => {
           console.log(error);
           history.push({
             pathname: "/",
           });
+          SetIsSuccessedLoad(false);
         });
     })();
 
@@ -88,40 +93,42 @@ export default function WorkView() {
   }, [location]);
 
   return (
-    <div>
-      {data.mode === "Author" ? (
-        <p className={style.path}>
-          My profile / <span className={style.title}>My Work</span>
-        </p>
-      ) : (
-        <p className={style.path}>
-          Scientific works /{" "}
-          <span className={style.title}>{data.scientificWork.title}</span>
-        </p>
-      )}
+    isSuccessedLoad && (
+      <div>
+        {data.mode === "Author" ? (
+          <p className={style.path}>
+            My profile / <span className={style.title}>My Work</span>
+          </p>
+        ) : (
+          <p className={style.path}>
+            Scientific works /{" "}
+            <span className={style.title}>{data.scientificWork.title}</span>
+          </p>
+        )}
 
-      <Information
-        scientificWork={data.scientificWork}
-        author={data.mainAuthor}
-        status={data.status}
-        mode={data.mode}
-        workPDF={workPDF}
-      />
+        <Information
+          scientificWork={data.scientificWork}
+          author={data.mainAuthor}
+          status={data.status}
+          mode={data.mode}
+          workPDF={workPDF}
+        />
 
-      <div className={style.menu}>
-        {data.mode !== "Participant" &&
-          data.versions.map((version, i) => (
-            <div key={i}>
-              <VersionPanel
-                version={version}
-                mode={data.mode}
-                authorPhoto={data.mainAuthor.photo}
-                authorName={data.mainAuthor.name}
-                scientificWorkId={data.scientificWork.id}
-              />
-            </div>
-          ))}
+        <div className={style.menu}>
+          {data.mode !== "Participant" &&
+            data.versions.map((version, i) => (
+              <div key={i}>
+                <VersionPanel
+                  version={version}
+                  mode={data.mode}
+                  authorPhoto={data.mainAuthor.photo}
+                  authorName={data.mainAuthor.name}
+                  scientificWorkId={data.scientificWork.id}
+                />
+              </div>
+            ))}
+        </div>
       </div>
-    </div>
+    )
   );
 }

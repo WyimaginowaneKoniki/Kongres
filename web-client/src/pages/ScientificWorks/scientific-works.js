@@ -37,6 +37,9 @@ export default function ScientificWorks() {
 
   const history = useHistory();
 
+  // Check if page is load successful
+  const [isSuccessedLoad, SetIsSuccessedLoad] = React.useState(false);
+
   // Stores works
   const [works, SetWorks] = React.useState([
     {
@@ -63,11 +66,13 @@ export default function ScientificWorks() {
         })
         .then((resp) => {
           SetWorks(resp.data);
+          SetIsSuccessedLoad(true);
         })
         .catch((_) => {
           history.push({
             pathname: LINKS.PARTICIPANT_LOGIN,
           });
+          SetIsSuccessedLoad(false);
         });
     };
     fetchData();
@@ -133,23 +138,25 @@ export default function ScientificWorks() {
   ));
 
   return (
-    <div className={style.main}>
-      <h1>Scientific works</h1>
+    isSuccessedLoad && (
+      <div className={style.main}>
+        <h1>Scientific works</h1>
 
-      <div className={style.left}>
-        {/* If list of works is null, then nothing is displayed */}
-        {works[0]?.title ? workList : null}
+        <div className={style.left}>
+          {/* If list of works is null, then nothing is displayed */}
+          {works[0]?.title ? workList : null}
+        </div>
+
+        <div className={style.right}>
+          <Search />
+
+          <h3 className={style.h3}>Categories</h3>
+          {categoryList}
+
+          <h3 className={style.h3}>Recent authors / works</h3>
+          {recentList}
+        </div>
       </div>
-
-      <div className={style.right}>
-        <Search />
-
-        <h3 className={style.h3}>Categories</h3>
-        {categoryList}
-
-        <h3 className={style.h3}>Recent authors / works</h3>
-        {recentList}
-      </div>
-    </div>
+    )
   );
 }
