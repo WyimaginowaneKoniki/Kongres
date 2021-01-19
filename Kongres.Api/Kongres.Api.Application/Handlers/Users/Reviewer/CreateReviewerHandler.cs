@@ -20,7 +20,7 @@ namespace Kongres.Api.Application.Handlers.Users.Reviewer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _userService.RegisterAsync(UserTypeEnum.Participant, request);
+            await _userService.RegisterAsync(UserTypeEnum.Reviewer, request);
         }
     }
 }

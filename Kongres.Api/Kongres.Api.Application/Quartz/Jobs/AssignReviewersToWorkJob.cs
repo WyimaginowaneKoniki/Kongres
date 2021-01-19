@@ -18,14 +18,7 @@ namespace Kongres.Api.Application.Quartz.Jobs
         {
             // TODO: Block reviewer registration
 
-            // TODO: AssignReviewersToScientificWork
             await _fooService.AssignReviewersToScientificWorkAsync();
-
-            // TODO: Change status of scientific works
-
-
-            Debug.WriteLine("Hello my friend");
-            return;
         }
     }
 }
