@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import MyReviewsOneReview from "../../../components/Reviews/MyReviewsOneReview";
 import MyReviewsCategories from "../../../components/Reviews/MyReviewsCategories";
 import Search from "../../../components/Search";
 import picture from "../../../images/empty-image.png";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { URL_API, LINKS } from "../../../Constants";
 
 export default function MyReviews() {
   const style = makeStyles({
@@ -30,6 +34,32 @@ export default function MyReviews() {
       paddingLeft: "5%",
     },
   })();
+
+  const location = useLocation();
+  const history = useHistory();
+
+  useEffect(() => {
+    let id = window.location.pathname.split("/").slice(-1)[0];
+    if (isNaN(id)) id = null;
+    console.log(location.state?.detail ? location.state?.detail : id);
+
+    const token = localStorage.getItem("jwt");
+
+    (async () => {
+      await axios
+        .get(`${URL_API}/Reviewer/MyReviews`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          console.log(resp.data);
+        })
+        .catch((_) => {
+            history.push({
+              pathname: LINKS.REVIEWER_LOGIN,
+            });
+        });
+    })();
+  }, [location]);
 
   const reviews = [
     {
