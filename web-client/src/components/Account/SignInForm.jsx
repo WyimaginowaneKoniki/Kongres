@@ -1,11 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  TextField,
-  Container,
-  Button,
-  FormHelperText,
-} from "@material-ui/core/";
+import { TextField, Container, Button, FormHelperText } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,11 +17,21 @@ export default function SignInForm(props) {
       display: "flex",
       flexDirection: "column",
       textAlign: "left",
-      maxWidth: "400px",
-      margin: "16px",
+      maxWidth: "300px",
+      margin: "24px",
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "0",
+        marginRight: "0",
+      },
     },
     columns: {
+      width: "100%",
       display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around",
+      "@media only screen and (max-width: 768px)": {
+        justifyContent: "center",
+      },
     },
     textField: {
       marginBottom: "32px",
@@ -37,30 +42,30 @@ export default function SignInForm(props) {
     },
     content: {
       textAlign: "left",
-      display: "block",
     },
-    btnSignIn: {
-      width: "100px",
-      textTransform: "none",
-      float: "right",
+    loginLinks: {
+      display: "flex",
+      justifyContent: "space-between",
     },
     btnSignUp: {
       marginTop: "8px",
-      textTransform: "none",
     },
     signUp: {
-      maxWidth: "400px",
-      marginLeft: "144px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      width: "400px",
+      margin: "24px",
+    },
+    signUpLink: {
+      textDecoration: "none",
     },
     formHelperText: {
       marginBottom: "32px",
     },
-    textButton: {
-      textTransform: "none",
-    },
     bottomMessage: {
-      marginTop: "300px",
-      display: "block",
+      marginTop: "80px",
+      textAlign: "center",
     },
   })();
 
@@ -128,7 +133,7 @@ export default function SignInForm(props) {
               required
               id="email-signin"
               name="email"
-              label="Login/Email"
+              label="Email"
               type="email"
               value={values.email}
               autoComplete="email"
@@ -167,7 +172,7 @@ export default function SignInForm(props) {
             >
               {"Error: Incorrect password or/and email"}
             </FormHelperText>
-            <div>
+            <div className={style.loginLinks}>
               {/* Forgot password */}
               <PopUpForgotPassword SetEmail={passEmail} />
               {console.log(forgotEmail)}
@@ -182,19 +187,19 @@ export default function SignInForm(props) {
               </Button>
             </div>
           </form>
-        </div>
-
-        {/* Info about signing up */}
-        <div className={style.signUp}>
-          <h2 className={style.heading}>{props.heading}</h2>
-          <p className={style.content}>{props.content}</p>
-          <Link to={props.signUpLink} style={{ textDecoration: "none" }}>
-            <Button variant="outlined" color="primary" className={style.btnSignUp}>
-              {props.btn}
-            </Button>
-          </Link>
+          {/* Info about signing up */}
+          <div className={style.signUp}>
+            <h2 className={style.heading}>{props.heading}</h2>
+            <p className={style.content}>{props.content}</p>
+            <Link to={props.signUpLink} className={style.signUpLink}>
+              <Button variant="outlined" color="primary" className={style.btnSignUp}>
+                {props.btn}
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
+
       <p className={style.bottomMessage}>
         If you want to log in as {props.signInAs}, go to{" "}
         <Link to={props.signInAsOtherLink}>login page</Link>

@@ -30,7 +30,7 @@ export default function SignInParticipant() {
 
   return (
     <div>
-      <h1>Sign in as Participant</h1>
+      <h1>Log in as Participant</h1>
 
       <SignInForm
         Login={Login}

@@ -1,12 +1,16 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Rating from "@material-ui/lab/Rating";
 import ReviewerComment from "./ReviewerComment";
 import ReviewerCommentInput from "./ReviewerCommentInput";
 import AuthorAnswer from "./AuthorAnswer";
 import AuthorAnswerInput from "./AuthorAnswerInput";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@material-ui/core/";
 import "../../App.css";
 
 export default function VersionPanel(props) {
@@ -26,10 +30,7 @@ export default function VersionPanel(props) {
     },
   })();
 
-  const [isPanelOpen, setIsPanelOpen] = React.useState(true);
   const [reviewsList, setReviewsList] = React.useState([]);
-
-  const togglePanel = () => setIsPanelOpen(!isPanelOpen);
 
   React.useEffect(() => {
     function GeneratePanelContent(reviews) {
@@ -100,19 +101,18 @@ export default function VersionPanel(props) {
 
   return (
     <div>
-      <div className={style.panel} onClick={togglePanel}>
-        <span className={style.version}>
-          Version {props.version.versionNumber}
-        </span>
-        <p className={style.date}>{props.version.date}</p>
-        <Rating value={2} max={3} readOnly />
-        {isPanelOpen ? (
-          <ArrowDropDownIcon className={style.arrow} />
-        ) : (
-          <ArrowDropUpIcon className={style.arrow} />
-        )}
-      </div>
-      {isPanelOpen && reviewsList}
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <div className={style.panel}>
+            <span className={style.version}>
+              Version {props.version.versionNumber}
+            </span>
+            <p className={style.date}>{props.version.date}</p>
+            <Rating value={2} max={3} readOnly />
+          </div>
+        </AccordionSummary>
+        <AccordionDetails width={1000}>{reviewsList}</AccordionDetails>
+      </Accordion>
     </div>
   );
 }

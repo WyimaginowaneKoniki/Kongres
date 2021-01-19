@@ -43,7 +43,6 @@ export default function ChangePassword() {
     },
     btnChange: {
       width: "155px",
-      textTransform: "none",
       float: "right",
       marginLeft: "auto",
     },
