@@ -28,17 +28,23 @@ export default function Information(props) {
     },
     pdf: {
       width: "30%",
+      "@media only screen and (max-width: 1280px)": {
+        display: "none",
+      },
     },
     workInfo: {
       width: "70%",
       textAlign: "left",
+      "@media only screen and (max-width: 1280px)": {
+        width: "100%",
+      },
     },
     status: {
       color: "#775866",
       backgroundColor: "#F0D4E0",
       padding: "4px 8px",
       borderRadius: "4px",
-      fontSize: "16px",
+      fontSize: "14px",
     },
     date: {
       fontSize: "12px",
@@ -47,15 +53,20 @@ export default function Information(props) {
     },
     dateCategory: {
       display: "flex",
-      marginTop: "16px",
+      marginTop: "8px",
     },
     h1: {
       marginTop: "0",
-      marginBottom: "1em",
+      marginBottom: "0.7em",
       lineHeight: "1.5em",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "1em",
+      },
     },
     allAuthors: {
       display: "flex",
+      flexWrap: "wrap",
+      marginBottom: "16px",
     },
     author: {
       marginRight: "32px",
@@ -63,7 +74,6 @@ export default function Information(props) {
     shared: {
       fontSize: "14px",
       color: "#767676",
-      marginBottom: "16px",
     },
     photo: {
       objectFit: "cover",
@@ -74,13 +84,15 @@ export default function Information(props) {
     },
     authorInfo: {
       display: "flex",
+      marginRight: "56px",
+      marginBottom: "24px",
     },
     authorDesc: {
       display: "flex",
       justifyContent: "center",
       flexDirection: "column",
       lineHeight: "1.2em",
-      marginLeft: "16px",
+      marginLeft: "24px",
     },
     authorName: {
       fontWeight: "bold",
@@ -91,6 +103,12 @@ export default function Information(props) {
     university: {
       fontSize: "14px",
       color: "#767676",
+    },
+    description: {
+      marginBottom: "24px",
+    },
+    btnDownload: {
+      marginRight: "32px",
     },
     popup: {
       width: "600px",
@@ -103,7 +121,7 @@ export default function Information(props) {
       color: "#AD1457",
       width: "32px",
       height: "32px",
-      padding: '0.5em',
+      padding: "0.5em",
       "&:hover": {
         cursor: "pointer",
       },
@@ -183,7 +201,7 @@ export default function Information(props) {
     <div className={style.main}>
       <div className={style.pdf}>
         <Document file={props.workPDF}>
-          <Page pageNumber={1} width={320} />
+          <Page pageNumber={1} width={440} />
         </Document>
       </div>
 
@@ -206,17 +224,11 @@ export default function Information(props) {
           <div className={style.author}>
             <span className={style.shared}>Shared by</span>
             <div className={style.authorInfo}>
-              <img
-                src={props.author.photo}
-                className={style.photo}
-                alt=""
-              ></img>
+              <img src={props.author.photo} className={style.photo} alt=""></img>
               <div className={style.authorDesc}>
-                <span className={style.authorName}>{props.author.name}</span>
-                <span className={style.degree}>{props.author.degree}</span>
-                <span className={style.university}>
-                  {props.author.university}
-                </span>
+                <p className={style.authorName}>{props.author.name}</p>
+                <p className={style.degree}>{props.author.degree}</p>
+                <p className={style.university}>{props.author.university}</p>
               </div>
             </div>
           </div>

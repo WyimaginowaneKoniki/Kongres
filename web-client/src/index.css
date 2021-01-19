@@ -108,8 +108,9 @@ a:hover {
   html {
     background-image: url("../src/images/background-tablet@2x.png");
   }
-
-  /* for a moment */
+  .header-menu {
+    padding: 24px 24px 12px;
+  }
   .footer {
     justify-content: flex-start;
     flex-wrap: wrap-reverse;

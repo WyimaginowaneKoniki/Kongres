@@ -22,6 +22,9 @@ export default function Navigation(props) {
   const style = makeStyles({
     logo: {
       width: "210px",
+      "@media (max-width: 768px)": {
+        width: "144px",
+      },
     },
     boxTop: {
       display: "flex",
@@ -51,6 +54,10 @@ export default function Navigation(props) {
       height: "56px",
       borderRadius: "50px",
       marginLeft: "16px",
+      "@media (max-width: 768px)": {
+        width: "48px",
+        height: "48px",
+      },
     },
     btnLogin: {
       marginLeft: "32px",
@@ -60,6 +67,9 @@ export default function Navigation(props) {
     },
     user: {
       marginLeft: "40px",
+      "@media (max-width: 768px)": {
+        width: "16px",
+      },
     },
     name: {
       fontSize: "14px",
