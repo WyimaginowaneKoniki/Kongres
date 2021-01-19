@@ -150,6 +150,9 @@ namespace Kongres.Api.Application.Services
             else
                 mode = "Participant";
 
+            if (scientificWork.Status != StatusEnum.Accepted && mode == "Participant")
+                throw new AuthenticationException();
+
             var scientificWorkDto = new ScientificWorkDto()
             {
                 Id = scientificWork.Id,

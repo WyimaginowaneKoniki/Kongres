@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using Kongres.Api.Domain.DTOs;
 
 namespace Kongres.Api.WebApi.Controller
 {
@@ -56,7 +57,18 @@ namespace Kongres.Api.WebApi.Controller
         public async Task<IActionResult> GetById([FromHeader] GetWorkQuery query)
         {
             query.UserId = uint.Parse(HttpContext.User.Identity.Name ?? "0");
-            return Ok(await CommandAsync(query));
+            ScientificWorkWithReviewDto scientificWork;
+
+            try
+            {
+                scientificWork = await CommandAsync(query);
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(scientificWork);
         }
 
         [Authorize]
