@@ -36,10 +36,10 @@ namespace Kongres.Api.Application.Services
             _userManager = userManager;
         }
 
-        public async Task AddAnswerToReviewAsync(uint userId, uint reviewId, string answerMsg)
+        public async Task AddAnswerToReviewAsync(uint authorId, uint reviewId, string answerMsg)
         {
             // can user add answer to this review?
-            var isAuthorOfWork = await _scientificWorkRepository.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId);
+            var isAuthorOfWork = await _scientificWorkRepository.IsAuthorOfScientificWorkByReviewIdAsync(authorId, reviewId);
 
             if (!isAuthorOfWork)
                 return;
@@ -50,7 +50,7 @@ namespace Kongres.Api.Application.Services
             if (review.Answer != null)
                 return;
 
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByIdAsync(authorId.ToString());
 
             // add answer to review
             review.Answer = new Answer()
@@ -63,22 +63,22 @@ namespace Kongres.Api.Application.Services
             await _reviewRepository.AddAnswerToReviewAsync(review);
         }
 
-        public async Task AddReviewAsync(uint userId, string reviewMsg, IFormFile reviewFile, byte rating, uint scientificWorkId)
+        public async Task AddReviewAsync(uint reviewerId, string reviewMsg, IFormFile reviewFile, byte rating, uint scientificWorkId)
         {
             // check if user is a reviewer for given ScientificWork
-            var isReviewerOfScientificWork = await _scientificWorkRepository.IsReviewerOfScientificWorkAsync(userId, scientificWorkId);
+            var isReviewerOfScientificWork = await _scientificWorkRepository.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId);
 
             if (!isReviewerOfScientificWork)
                 return;
 
             // check if review exists
             var newestVersion = await _scientificWorkFileRepository.GetNewestVersionWithReviewsAsync(scientificWorkId);
-            var isReviewAdded = newestVersion.Reviews.Any(x => x.Reviewer.Id == userId);
+            var isReviewAdded = newestVersion.Reviews.Any(x => x.Reviewer.Id == reviewerId);
 
             if (isReviewAdded)
                 return;
 
-            var reviewer = await _userManager.FindByIdAsync(userId.ToString());
+            var reviewer = await _userManager.FindByIdAsync(reviewerId.ToString());
 
             var review = new Review()
             {
