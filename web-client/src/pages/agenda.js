@@ -10,7 +10,7 @@ export default function Agenda() {
       justifyContent: "flexStart",
       color: "#54457F",
       marginBottom: "40px",
-      "@media (max-width: 800px)": {
+      "@media (max-width: 768px)": {
         fontSize: "24px",
       },
     },

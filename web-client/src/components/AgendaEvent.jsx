@@ -15,11 +15,12 @@ export default function AgendaEvent(props) {
       textAlign: "left",
       "@media (max-width: 1100px)": {
         flexWrap: "wrap",
+        lineHeight: '16px',
       },
     },
     title: {
       color: "#54457F",
-      "@media (max-width: 1000px)": {
+      "@media (max-width: 1100px)": {
         fontSize: "16px",
       },
     },
@@ -31,6 +32,7 @@ export default function AgendaEvent(props) {
         width: "88px",
         fontSize: "14px",
         marginLeft: "16px",
+        marginBottom: '16px',
       },
     },
     desc: {
