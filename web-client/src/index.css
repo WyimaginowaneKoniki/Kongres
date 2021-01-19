@@ -108,9 +108,6 @@ a:hover {
   }
 
   /* for a moment */
-  .header-menu {
-    display: none;
-  }
   .footer {
     justify-content: flex-start;
     flex-wrap: wrap-reverse;

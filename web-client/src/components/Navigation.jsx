@@ -6,6 +6,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button } from "@material-ui/core/";
 import Logo from "../images/logo.png";
 import Avatar from "../images/default-avatar.png";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import MenuOpen from "@material-ui/icons/MenuOpen";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 import { URL, LINKS } from "../Constants";
 
 export default function Navigation(props) {
@@ -17,6 +23,9 @@ export default function Navigation(props) {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
+      "@media (max-width: 1000px)": {
+        display: "none",
+      },
     },
     boxBottom: {
       display: "flex",
@@ -25,6 +34,9 @@ export default function Navigation(props) {
       fontWeight: "bold",
       paddingTop: "8px",
       paddingBottom: "8px",
+      "@media (max-width: 1000px)": {
+        display: "none",
+      },
     },
     elements: {
       fontSize: "14px",
@@ -72,11 +84,48 @@ export default function Navigation(props) {
     linkButton: {
       textDecoration: "none",
     },
+    icon: {
+      width: "60px",
+      height: "60px",
+    },
+    hamburger: {
+      color: "#6069A9",
+      display: "none",
+      "@media (max-width: 1000px)": {
+        display: "block",
+      },
+    },
+    paperAnchorTop: {
+      marginTop: "120px",
+    },
+    linkMenu: {
+      fontWeight: "700",
+      color: "#6069A9",
+      textDecoration: "none",
+      display: "block",
+    },
+    name: {
+      margin: 'auto',
+    },
+    button: {
+      margin: 'auto',
+    },
   })();
 
   const Logout = () => {
     localStorage.removeItem("jwt");
     window.location.href = URL;
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawer = () => {
+    if (open) setOpen(false);
+    else if (!open) setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
   const userPanel = () => {
@@ -122,7 +171,11 @@ export default function Navigation(props) {
           {props.userInfo.role === "Participant" &&
             props.userInfo.scientificWorkId === 0 && (
               <Box>
-                <NavLink exact to={LINKS.ADDING_WORK} className={style.linkButton}>
+                <NavLink
+                  exact
+                  to={LINKS.ADDING_WORK}
+                  className={style.linkButton}
+                >
                   <Button
                     className={style.btn}
                     color="primary"
@@ -148,7 +201,9 @@ export default function Navigation(props) {
           <NavLink exact to={LINKS.PROFILE}>
             <img
               className={style.avatar}
-              src={props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar}
+              src={
+                props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
+              }
               alt="Avatar"
             />
           </NavLink>
@@ -162,7 +217,11 @@ export default function Navigation(props) {
             Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Log in</a> or
             <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
           </p>
-          <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.linkButton}>
+          <NavLink
+            exact
+            to={LINKS.PARTICIPANT_SIGN_UP}
+            className={style.linkButton}
+          >
             <Button
               className={style.btnSignup}
               color="primary"
@@ -172,7 +231,11 @@ export default function Navigation(props) {
               Sign up
             </Button>
           </NavLink>
-          <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
+          <NavLink
+            exact
+            to={LINKS.PARTICIPANT_LOGIN}
+            className={style.linkButton}
+          >
             <Button
               className={style.btnLogin}
               color="primary"
@@ -192,7 +255,11 @@ export default function Navigation(props) {
       {/* Logo */}
       <Box>
         <NavLink exact to="/">
-          <img className={style.logo} src={Logo} alt="Scienture conference logo" />
+          <img
+            className={style.logo}
+            src={Logo}
+            alt="Scienture conference logo"
+          />
         </NavLink>
       </Box>
       <div className={style.navigation}>
@@ -263,6 +330,91 @@ export default function Navigation(props) {
           </Box>
         </Box>
       </div>
+      <div>
+        <IconButton onClick={handleDrawer} className={style.hamburger}>
+          {open ? (
+            <MenuOpen className={style.icon} />
+          ) : (
+            <MenuIcon className={style.icon} />
+          )}
+        </IconButton>
+      </div>
+      <Drawer
+        open={open}
+        anchor="top"
+        variant="persistent"
+        classes={{ paper: style.paperAnchorTop }}
+      >
+        <List>
+          <NavLink exact to="/" className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.name}>Home</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.AGENDA} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.name}>Agenda</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.SPEAKERS} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.name}>Keynote speakers</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.ABOUT} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.name}>About</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.CONTACT} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.name}>Contact</span>
+            </ListItem>
+          </NavLink>
+          <ListItem>
+            <div className={style.button}>
+              <NavLink
+                exact
+                to={LINKS.PARTICIPANT_SIGN_UP}
+                className={style.linkButton}
+              >
+                <Button
+                  className={style.btnSignup}
+                  color="primary"
+                  type="submit"
+                  variant="outlined"
+                  onClick={handleDrawerClose}
+                >
+                  Sign up
+                </Button>
+              </NavLink>
+              <NavLink
+                exact
+                to={LINKS.PARTICIPANT_LOGIN}
+                className={style.linkButton}
+              >
+                <Button
+                  className={style.btnLogin}
+                  color="primary"
+                  type="submit"
+                  variant="contained"
+                  onClick={handleDrawerClose}
+                >
+                  Log in
+                </Button>
+              </NavLink>
+            </div>
+          </ListItem>
+          <ListItem>
+            <span className={style.name}>
+              <p className={style.elements}>
+                Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Log in</a> or
+                <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
+              </p>
+            </span>
+          </ListItem>
+        </List>
+      </Drawer>
     </div>
   );
 }
