@@ -11,15 +11,23 @@ export default function ContactInfo(props) {
       marginBottom: "40px",
     },
     photo: {
-      width: "60px",
+      width: "80px",
+      height: "80px",
+      "@media (max-width: 500px)": {
+        width: "40px",
+        height: "40px",
+      },
     },
     info: {
-      marginLeft: "16px",
+      marginLeft: "72px",
+      "@media (max-width: 500px)": {
+        marginLeft: "36px",
+        fontSize: '12px',
+      },
     },
     a: {
       textDecoration: "none",
       color: "black",
-
       "&:hover": {
         color: "grey",
       },
@@ -35,7 +43,11 @@ export default function ContactInfo(props) {
 
   return (
     <div className={style.main}>
-      <img src={props.path} className={style.photo} alt={props.alternativeText}></img>
+      <img
+        src={props.path}
+        className={style.photo}
+        alt={props.alternativeText}
+      ></img>
       <div className={style.info}>{props.link ? showLink : showAddress}</div>
     </div>
   );
