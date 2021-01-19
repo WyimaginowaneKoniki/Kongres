@@ -19,6 +19,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import defaultPhoto from "../../images/empty-image.png";
+import Close from "@material-ui/icons/Close";
 import axios from "axios";
 import { URL_API, RATING } from "../../Constants";
 
@@ -64,6 +65,14 @@ export default function ReviewerCommentInput(props) {
     reviewInput: {
       width: "520px",
       margin: "15px",
+    },
+    close: {
+      color: "#AD1457",
+      width: "32px",
+      height: "32px",
+      "&:hover": {
+        cursor: "pointer",
+      },
     },
   })();
 
@@ -143,7 +152,7 @@ export default function ReviewerCommentInput(props) {
     <div>
       <div className={style.contentOnPage}>
         <div className={style.userInfo}>
-          <img src={defaultPhoto} className={style.image} alt=""/>
+          <img src={defaultPhoto} className={style.image} alt="" />
           <p className={style.userName}>Me</p>
         </div>
         <Button
@@ -158,6 +167,9 @@ export default function ReviewerCommentInput(props) {
       {/* All Dialog in Popup */}
       <Dialog open={isDialogOpen} onClose={closeDialog}>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <div className={style.close}>
+            <Close onClick={closeDialog} />
+          </div>
           <DialogTitle className={style.dialogTitle}>
             Add your review
           </DialogTitle>
