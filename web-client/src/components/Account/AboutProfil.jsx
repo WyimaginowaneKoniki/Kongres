@@ -9,15 +9,35 @@ export default function AboutProfil(props) {
       justifyContent: "center",
       alignItems: "center",
       marginBottom: "40px",
+      "@media (min-width: 500px) and (max-width: 1250px)": {
+        fontSize: "12px",
+      },
+      "@media (max-width: 500px)": {
+        fontSize: "10px",
+      },
     },
     personInfo: {
       width: "384px",
       textAlign: "left",
+      "@media (min-width: 500px) and (max-width: 1250px)": {
+        width: "256px",
+      },
+      "@media (max-width: 500px)": {
+        width: "212px",
+      },
     },
     photo: {
       height: "184px",
       width: "184px",
       marginRight: "24px",
+      "@media (min-width: 500px) and (max-width: 1250px)": {
+        height: "124px",
+        width: "124px",
+      },
+      "@media (max-width: 500px)": {
+        height: "80px",
+        width: "80px",
+      },
     },
     specialization: {
       fontWeight: "600",
