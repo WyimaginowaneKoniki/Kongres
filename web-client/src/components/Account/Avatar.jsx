@@ -36,12 +36,10 @@ export default function Avatar() {
   const [openAlertError, SetOpenAlertError] = React.useState(false);
   const durationOfAlert = 4000;
 
-  // Show alert
   const ShowAlert = () => {
     SetOpenAlertError(true);
   };
 
-  // Close alert
   const CloseAlert = (_, reason) => {
     if (reason === "clickaway") return;
 
@@ -87,11 +85,7 @@ export default function Avatar() {
         </Button>
       </div>
       {avatarURL !== defaultPicture && (
-        <Button
-          color="secondary"
-          onClick={onRemovePicture}
-          className={style.btnDelete}
-        >
+        <Button color="secondary" onClick={onRemovePicture} className={style.btnDelete}>
           Delete photo
         </Button>
       )}

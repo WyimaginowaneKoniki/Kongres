@@ -125,7 +125,7 @@ export default function OneWork(props) {
   //https://www.xspdf.com/resolution/50694881.html <- information for button download
   return (
     <div className={style.main}>
-      <div className={style.status}>{props.status ? showStatus : null}</div>
+      <div className={style.status}>{props.status && showStatus}</div>
       <h2 className={style.title} onClick={readMore}>
         {props.title}
       </h2>

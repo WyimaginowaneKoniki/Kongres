@@ -46,7 +46,7 @@ export default function PopUpForgotPassword(props) {
       color: "#AD1457",
       width: "32px",
       height: "32px",
-      padding: '0.5em',
+      padding: "0.5em",
       "&:hover": {
         cursor: "pointer",
       },
@@ -122,9 +122,9 @@ export default function PopUpForgotPassword(props) {
       </Button>
 
       <Dialog open={open} onClose={handleClose}>
-      <div className={style.divClose}>
-            <Close className={style.close} onClick={handleClose} />
-          </div>
+        <div className={style.divClose}>
+          <Close className={style.close} onClick={handleClose} />
+        </div>
         <span className={style.message}>You will receive link...</span>
         <div className={style.content}>
           <div className={style.form}>
@@ -134,7 +134,7 @@ export default function PopUpForgotPassword(props) {
               required
               id="forgot-email-signin"
               name="email"
-              label="Login/Email"
+              label="Email"
               type="email"
               value={email}
               autoComplete="email"

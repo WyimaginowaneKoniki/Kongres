@@ -136,7 +136,7 @@ export default function ScientificWorks() {
       <div className={style.works}>
         <div className={style.list}>
           {/* If list of works is null, then nothing is displayed */}
-          {works[0]?.title ? workList : null}
+          {works[0]?.title && workList}
         </div>
 
         <div className={style.sidebar}>
