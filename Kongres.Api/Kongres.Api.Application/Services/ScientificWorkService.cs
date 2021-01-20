@@ -21,18 +21,24 @@ namespace Kongres.Api.Application.Services
         private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
+        private readonly IEmailSender _emailSender;
+        private readonly IReviewersScienceWorkRepository _reviewersWorkRepository;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
                                     IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
-                                    IFileManager fileManager)
+                                    IFileManager fileManager,
+                                    IEmailSender emailSender,
+                                    IReviewersScienceWorkRepository reviewersWorkRepository)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
             _reviewRepository = reviewRepository;
             _userManager = userManager;
             _fileManager = fileManager;
+            _emailSender = emailSender;
+            _reviewersWorkRepository = reviewersWorkRepository;
         }
 
         public async Task AddBasicInfoAsync(string userId, string title, string description, string authors,
@@ -82,6 +88,12 @@ namespace Kongres.Api.Application.Services
             {
                 scientificWork.Status = StatusEnum.UnderReview;
                 await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
+
+                var emailsOfReviewers = await _reviewersWorkRepository.GetEmailsOfReviewersByWorkIdAsync(scientificWork.Id);
+                foreach (var email in emailsOfReviewers)
+                {
+                    await _emailSender.SendAddedNewVersionEmailAsync(email, scientificWork.Id);
+                }
             }
         }
 

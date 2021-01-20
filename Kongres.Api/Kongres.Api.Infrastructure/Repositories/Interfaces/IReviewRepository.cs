@@ -10,5 +10,7 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task AddAnswerToReviewAsync(Review review);
         Task AddReviewAsync(Review review);
         Task<bool> IsAuthorOfReview(uint userId, uint reviewId);
+        Task<string> GetEmailOfReviewerByReviewIdAsync(uint reviewId);
+        Task<uint> GetWorkIdByReviewIdAsync(uint reviewId);
     }
 }
