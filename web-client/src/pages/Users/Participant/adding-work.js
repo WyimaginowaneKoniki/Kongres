@@ -105,7 +105,7 @@ export default function AddingWork() {
         })
         .catch((error) => {
           SetIsSuccessedLoad(false);
-          if (error.response.status == 400)
+          if (error.response.status === 400)
             history.push({
               pathname: "/",
             });
