@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
+using Kongres.Api.Domain.Enums;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace Kongres.Api.Application.Services
 {
@@ -12,15 +14,21 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IReviewerRepository _reviewerRepository;
-        private readonly IReviewersScienceWorkRepository _reviewersScienceWorkRepository;
+        private readonly IReviewerScientificWorkRepository _reviewersScientificWorkRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IEmailSender _emailSender;
 
         public ManagementService(IScientificWorkRepository scientificWorkRepository,
                             IReviewerRepository reviewerRepository,
-                            IReviewersScienceWorkRepository reviewersScienceWorkRepository)
+                            IReviewerScientificWorkRepository reviewersScientificWorkRepository,
+                            IUserRepository userRepository,
+                            IEmailSender emailSender)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _reviewerRepository = reviewerRepository;
-            _reviewersScienceWorkRepository = reviewersScienceWorkRepository;
+            _reviewersScientificWorkRepository = reviewersScientificWorkRepository;
+            _userRepository = userRepository;
+            _emailSender = emailSender;
         }
 
         public async Task AssignReviewersToScientificWorkAsync()
@@ -44,27 +52,61 @@ namespace Kongres.Api.Application.Services
 
                 var reviewerIds = reviewers.Select(x => x.Id).ToArray();
 
-                // TODO: Send information to authors/reviewers about too small number of works/reviewers
+                // send information to authors/reviewers about too small number of works/reviewers
+                // and set status to rejected
                 if (reviewerIds.Length < 4 || scientificWorkIds.Count() < 4)
+                {
+                    for (var i = 0; i < reviewerIds.Length; i++)
+                    {
+                        var reviewerEmail = _userRepository.GetEmailById(reviewerIds[i]);
+                        await _emailSender.SendDoNotGetAssignToAnyWork(reviewerEmail);
+                    }
+
+
+                    foreach (var scientificWork in scientificWorks)
+                    {
+                        var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
+                        await _emailSender.SendWorkDidNotGetReviewers(authorEmail);
+
+                        scientificWork.Status = StatusEnum.Rejected;
+                        await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
+                    }
+
                     continue;
+                }
 
                 var scientificWoksWithReviewers = RandomizeReviewers(scientificWorkIds, reviewerIds);
 
                 // save assignment to db
                 var reviewersScientificWorks = new List<ReviewersScienceWork>();
-                foreach (var (key, value) in scientificWoksWithReviewers)
+                foreach (var (workId, reviewersId) in scientificWoksWithReviewers)
                 {
-                    for (var i = 0; i < value.Count; i++)
+                    for (var i = 0; i < reviewersId.Count; i++)
                     {
                         reviewersScientificWorks.Add(new ReviewersScienceWork()
                         {
-                            ScientificWork = scientificWorks.Single(x => x.Id == key),
-                            User = reviewers.Single(x => x.Id == value[i])
+                            ScientificWork = scientificWorks.Single(x => x.Id == workId),
+                            User = reviewers.Single(x => x.Id == reviewersId[i])
                         });
+
+                        // send email to reviewer about work to review
+                        var reviewerEmail = _userRepository.GetEmailById(reviewersId[i]);
+                        await _emailSender.SendWorkAssignmentInformationAsync(reviewerEmail, workId);
                     }
                 }
 
-                await _reviewersScienceWorkRepository.AddAsync(reviewersScientificWorks);
+                // send email to author of the work about assigned reviewers
+                // and change status to UnderReview
+                foreach (var scientificWork in scientificWorks)
+                {
+                    var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
+                    await _emailSender.SendReviewersAssignmentInformationAsync(authorEmail, scientificWork.Id);
+
+                    scientificWork.Status = StatusEnum.UnderReview;
+                    await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
+                }
+
+                await _reviewersScientificWorkRepository.AddAsync(reviewersScientificWorks);
             }
         }
 

@@ -12,6 +12,7 @@ export default function ParagraphText(props) {
     },
     content: {
       textAlign: "left",
+      whiteSpace: 'pre-wrap',
     },
   })();
 

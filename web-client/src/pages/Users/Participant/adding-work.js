@@ -23,6 +23,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { URL_API, LINKS, categories } from "../../../Constants";
+import { useLocation } from "react-router-dom";
 
 function IsDropZoneShown() {
   const [width, SetWidth] = React.useState(undefined);
@@ -115,6 +116,38 @@ export default function AddingWork() {
 
   const history = useHistory();
   const formRef = React.useRef(null);
+  const location = useLocation();
+
+  // get main author from API
+  const [mainAuthor, SetMainAutor] = React.useState(null);
+
+  useEffect(() => {
+    let id = window.location.pathname.split("/").slice(-1)[0];
+    if (isNaN(id)) id = null;
+    console.log(location.state?.detail ? location.state?.detail : id);
+
+    const token = localStorage.getItem("jwt");
+
+    (async () => {
+      await axios
+        .get(`${URL_API}/Participant/GetInfoForAddWork`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          SetMainAutor(resp.data);
+        })
+        .catch((error) => {
+          if (error?.response?.status === 400)
+            history.push({
+              pathname: "/",
+            });
+          else
+            history.push({
+              pathname: LINKS.PARTICIPANT_LOGIN,
+            });
+        });
+    })();
+  }, [location, history]);
 
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
@@ -182,7 +215,7 @@ export default function AddingWork() {
       )
       .max(maxAuthors, "You cannot add more authors"),
     specialization: yup.string().when("specializations", {
-      is: (specializations) => specialization === "Select",
+      is: (_) => specialization === "Select",
       then: yup.string().required("Required field"),
     }),
     acceptance: yup
@@ -302,9 +335,6 @@ export default function AddingWork() {
     );
   });
 
-  // get main author from API
-  const mainAuthor = "John Doe";
-
   const createFormData = () => {
     const formData = new FormData(formRef.current);
 
@@ -344,12 +374,11 @@ export default function AddingWork() {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((response) => {
-            const id = response.data;
-            console.log("response:", response);
-            // const path = `${LINKS.WORKS}/${id}`;
-            // history.push({
-            //   pathname: path,
-            // });
+            const id = response.data.scientificWorkId;
+            const path = `${LINKS.WORKS}/${id}`;
+            history.push({
+              pathname: path,
+            });
           });
       })();
     }

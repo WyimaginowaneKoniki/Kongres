@@ -6,7 +6,12 @@ export default function ContactMap(props) {
   const style = makeStyles({
     map: {
       width: "100%",
-      marginLeft: "40px",
+      marginLeft: "72px",
+      "@media (max-width: 1000px)": {
+        marginLeft: "0",
+        width: "90vw",
+        height: "240px",
+      },
     },
   })();
 
