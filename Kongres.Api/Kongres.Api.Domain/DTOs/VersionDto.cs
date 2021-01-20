@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Kongres.Api.Domain.DTOs
 {
@@ -8,5 +7,6 @@ namespace Kongres.Api.Domain.DTOs
         public uint VersionNumber { get; set; }
         public string Date { get; set; }
         public IEnumerable<ReviewDto> Reviews { get; set; }
+        public byte Rating { get; set; }
     }
 }
