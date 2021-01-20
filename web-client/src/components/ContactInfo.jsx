@@ -47,7 +47,7 @@ export default function ContactInfo(props) {
         src={props.path}
         className={style.photo}
         alt={props.alternativeText}
-      ></img>
+      />
       <div className={style.info}>{props.link ? showLink : showAddress}</div>
     </div>
   );
