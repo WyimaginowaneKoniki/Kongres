@@ -33,14 +33,19 @@ export default function KeynoteSpeaker(props) {
       flexDirection: "column",
       marginTop: "48px",
       "@media (max-width: 768px)": {
+        marginLeft: "16px",
         fontSize: "12px",
         marginTop: "16px",
         width: "296px",
         lineHeight: "16px",
       },
+      "@media (max-width: 480px)": {
+        marginLeft: "0",
+        textAlign: 'center',
+      },
     },
     spec: {
-      fontWeight: "600",
+      fontWeight: "bold",
     },
     info: {
       "@media (min-width: 900px)": {
