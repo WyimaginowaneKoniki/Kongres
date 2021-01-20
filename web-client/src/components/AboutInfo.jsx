@@ -72,7 +72,7 @@ export default function AboutInfo(props) {
         {props.isImageRight || window.innerWidth < 768 ? image : infos}
       </div>
     );
-  }, [left, right]);
+  }, [left, right, image, infos, props.isImageRight, style.left, style.right]);
 
   return (
     <div className={style.main}>
