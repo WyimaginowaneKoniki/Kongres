@@ -216,7 +216,6 @@ export default function SignInForm(props) {
             <div className={style.loginLinks}>
               {/* Forgot password */}
               <PopUpForgotPassword SetEmail={passEmail} />
-              {console.log(forgotEmail)}
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
@@ -233,11 +232,7 @@ export default function SignInForm(props) {
             <h2 className={style.heading}>{props.heading}</h2>
             <p className={style.content}>{props.content}</p>
             <Link to={props.signUpLink} className={style.signUpLink}>
-              <Button
-                variant="outlined"
-                color="primary"
-                className={style.btnSignUp}
-              >
+              <Button variant="outlined" color="primary" className={style.btnSignUp}>
                 {props.btn}
               </Button>
             </Link>
