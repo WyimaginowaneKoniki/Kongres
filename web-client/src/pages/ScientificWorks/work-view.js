@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "../../App.css";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Information from "../../components/ScientificWork/Information";
 import VersionPanel from "../../components/ScientificWork/VersionPanel";
 import axios from "axios";
@@ -12,13 +12,16 @@ import defaultPhoto from "../../images/default-avatar.png";
 export default function WorkView() {
   const style = makeStyles({
     path: {
-      width: "70%",
-      padding: "2%",
-      paddingLeft: "10%",
-      float: "left",
       textAlign: "left",
-      color: "grey",
-      fontSize: "14px",
+      color: "#767676",
+      fontSize: "12px",
+      lineHeight: "1.4em",
+      marginTop: "24px",
+      marginBottom: "24px",
+    },
+    link: {
+      textDecoration: "none",
+      color: "#767676",
     },
     title: {
       fontWeight: "bold",
@@ -57,8 +60,7 @@ export default function WorkView() {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {
-          if (!resp.data.mainAuthor.photo)
-            resp.data.mainAuthor.photo = defaultPhoto;
+          if (!resp.data.mainAuthor.photo) resp.data.mainAuthor.photo = defaultPhoto;
           setData(resp.data);
           SetIsSuccessedLoad(true);
         })
@@ -97,12 +99,17 @@ export default function WorkView() {
       <div>
         {data.mode === "Author" ? (
           <p className={style.path}>
-            My profile / <span className={style.title}>My Work</span>
+            <Link to={LINKS.PROFILE} className={style.link}>
+              My profile
+            </Link>{" "}
+            / <span className={style.title}>My Work</span>
           </p>
         ) : (
           <p className={style.path}>
-            Scientific works /{" "}
-            <span className={style.title}>{data.scientificWork.title}</span>
+            <Link to={LINKS.WORKS} className={style.link}>
+              Scientific works
+            </Link>{" "}
+            s / <span className={style.title}>{data.scientificWork.title}</span>
           </p>
         )}
 

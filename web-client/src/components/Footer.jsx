@@ -2,6 +2,11 @@ import React from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Logo from "../images/logo.png";
+import Email from "../images/icon-mail.png";
+import Phone from "../images/icon-phone.png";
+import Github from "../images/icon-github.png";
+import { NavLink } from "react-router-dom";
+import { LINKS } from "../Constants";
 
 export default function Footer() {
   const style = makeStyles({
@@ -29,48 +34,71 @@ export default function Footer() {
     link: {
       textDecoration: "none",
       paddingRight: "8px",
+      paddingBottom: "8px",
       color: "black",
+      display: "flex",
       "&:hover": {
         color: "#6069A9",
       },
+    },
+    icon: {
+      width: "32px",
+      height: "32px",
+      marginRight: "16px",
     },
   })();
 
   return (
     <div className="footer">
       <div className={style.left}>
-        <img className={style.logo} src={Logo} alt="Scienture conference logo" />
-        <div className={style.text}>Scienture conference &copy; 2021</div>
+        <NavLink exact to="/">
+          <img
+            className={style.logo}
+            src={Logo}
+            alt="Scienture conference logo"
+          />
+        </NavLink>
+        <div>Scienture conference &copy; 2021</div>
       </div>
       <div className={style.centrum}>
-        <div className={style.text}>
-          <a href="privacy-policy" className={style.link}>
+        <div>
+          <NavLink exact to={LINKS.PRIVACY} className={style.link}>
             Privacy policy
-          </a>
+          </NavLink>
         </div>
-        <div className={style.text}>
-          <a href="cookies-policy" className={style.link}>
+        <div>
+          <NavLink exact to={LINKS.COOKIES} className={style.link}>
             Cookies policy
-          </a>
+          </NavLink>
         </div>
-        <div className={style.text}>
-          <a href="https://github.com/WyimaginowaneKoniki/Kongres" className={style.link}>
-            Github
-          </a>
+        <div>
+          <NavLink exact to={LINKS.REGULATIONS} className={style.link}>
+            Regulations
+          </NavLink>
         </div>
       </div>
       <div className={style.right}>
-        <div className={style.text}>
-          <a href="tel:987654321" className={style.link}>
-            987 654 321
-          </a>
-        </div>
-        <div className={style.text}>
+        <div>
           <a href="mailto:scientureconf@gmail.com" className={style.link}>
+            <img src={Email} alt="Email" className={style.icon} />
             scientureconf@gmail.com
           </a>
         </div>
-        <div className={style.text}>ul. Kaszubska 23, Gliwice</div>
+        <div>
+          <a href="tel:987654321" className={style.link}>
+            <img src={Phone} alt="Phone" className={style.icon} />
+            987 654 321
+          </a>
+        </div>
+        <div>
+          <a
+            href="https://github.com/WyimaginowaneKoniki/Kongres"
+            className={style.link}
+          >
+            <img src={Github} alt="Github" className={style.icon} />
+            Github
+          </a>
+        </div>
       </div>
     </div>
   );
