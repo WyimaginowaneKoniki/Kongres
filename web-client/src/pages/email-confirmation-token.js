@@ -22,6 +22,11 @@ export default function EmailConfirmationToken() {
     // it causes token changes like '+' sign is replaced by space :C
     var params = window.location.search.split("&userId=");
 
+    if(!window.location.search.includes("?"))
+    history.push({
+      pathname: "/",
+    });
+
     axios
       .post(`${URL_API}/User/Confirm`, {
         confirmToken: params[0].substr(14),
