@@ -21,7 +21,8 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
-import { URL_API, categories } from "../../../Constants";
+import { useHistory } from "react-router-dom";
+import { URL_API, LINKS, categories } from "../../../Constants";
 
 function IsDropZoneShown() {
   const [width, SetWidth] = React.useState(undefined);
@@ -109,9 +110,10 @@ export default function AddingWork() {
       "@media only screen and (max-width: 1400px)": {
         display: "block",
       },
-    }
+    },
   })();
 
+  const history = useHistory();
   const formRef = React.useRef(null);
 
   function Alert(props) {
@@ -336,9 +338,20 @@ export default function AddingWork() {
     if (file !== null && specialization !== "Select") {
       const formData = createFormData();
       const token = localStorage.getItem("jwt");
-      axios.post(`${URL_API}/ScientificWork/AddWork`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      (async () => {
+        axios
+          .post(`${URL_API}/ScientificWork/AddWork`, formData, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then((response) => {
+            const id = response.data;
+            console.log("response:", response);
+            // const path = `${LINKS.WORKS}/${id}`;
+            // history.push({
+            //   pathname: path,
+            // });
+          });
+      })();
     }
   };
 
@@ -452,7 +465,7 @@ export default function AddingWork() {
                 {authorList}
 
                 <div>
-                {!IsDropZoneShown() && <DropZone SetFile={passFile} />}
+                  {!IsDropZoneShown() && <DropZone SetFile={passFile} />}
                 </div>
 
                 {/* Acceptance - Rules of Conference */}
