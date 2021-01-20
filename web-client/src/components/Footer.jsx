@@ -6,7 +6,7 @@ import Email from "../images/icon-mail.png";
 import Phone from "../images/icon-phone.png";
 import Github from "../images/icon-github.png";
 import { NavLink } from "react-router-dom";
-import { URL, LINKS } from "../Constants";
+import { LINKS } from "../Constants";
 
 export default function Footer() {
   const style = makeStyles({
@@ -34,9 +34,9 @@ export default function Footer() {
     link: {
       textDecoration: "none",
       paddingRight: "8px",
-      paddingBottom: '8px',
+      paddingBottom: "8px",
       color: "black",
-      display: 'flex',
+      display: "flex",
       "&:hover": {
         color: "#6069A9",
       },
@@ -44,7 +44,7 @@ export default function Footer() {
     icon: {
       width: "32px",
       height: "32px",
-      marginRight: '16px',
+      marginRight: "16px",
     },
   })();
 
@@ -95,7 +95,7 @@ export default function Footer() {
             href="https://github.com/WyimaginowaneKoniki/Kongres"
             className={style.link}
           >
-          <img src={Github} alt="Github" className={style.icon} />
+            <img src={Github} alt="Github" className={style.icon} />
             Github
           </a>
         </div>
