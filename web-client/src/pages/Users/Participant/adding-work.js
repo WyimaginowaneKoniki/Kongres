@@ -115,7 +115,7 @@ export default function AddingWork() {
             });
         });
     })();
-  }, [location]);
+  }, [location, history]);
 
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
