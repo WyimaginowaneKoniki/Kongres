@@ -7,7 +7,10 @@ import { Button, Box } from "@material-ui/core/";
 export default function DropZone(props) {
   const style = makeStyles({
     container: {
-      width: "550px",
+      width: "550px",      
+      "@media only screen and (max-width: 768px)": {
+        width: "350px",
+      },
     },
     dropContainer: {
       margin: "0px",
@@ -47,6 +50,9 @@ export default function DropZone(props) {
       width: "400px",
       lineHeight: "1.4em",
       display: "block",
+      "@media only screen and (max-width: 768px)": {
+        width: "300px",
+      },
     },
     inputInfo: {
       height: "19px",
