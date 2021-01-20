@@ -23,6 +23,12 @@ export default function AboutProfil(props) {
       "@media  (max-width: 1250px)": {
         width: "256px",
         lineHeight: "16px",
+        marginLeft: '16px',
+      },
+      "@media  (max-width: 475px)": {
+        textAlign: 'center',
+        width: "256px",
+        lineHeight: "16px",
       },
     },
     photo: {
@@ -30,12 +36,14 @@ export default function AboutProfil(props) {
       width: "184px",
       marginRight: "24px",
       "@media  (max-width: 1250px)": {
+        marginBottom: '16px',
+        marginRight: "0",
         height: "124px",
         width: "124px",
       },
     },
     specialization: {
-      fontWeight: "600",
+      fontWeight: "bold",
     },
   })();
 

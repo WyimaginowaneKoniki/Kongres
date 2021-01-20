@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "../App.css";
 
@@ -58,10 +58,26 @@ export default function AboutInfo(props) {
     <img src={props.path} className={style.photo} alt={props.alternativeText} />
   );
 
+  const [left, SetLeft] = React.useState(null);
+  const [right, SetRight] = React.useState(null);
+
+  useEffect(() => {
+    SetLeft(
+      <div className={style.left}>
+        {props.isImageRight || window.innerWidth < 768 ? infos : image}
+      </div>
+    );
+    SetRight(
+      <div className={style.right}>
+        {props.isImageRight || window.innerWidth < 768 ? image : infos}
+      </div>
+    );
+  }, [left, right]);
+
   return (
     <div className={style.main}>
-      <div className={style.left}>{props.isImageRight ? infos : image}</div>
-      <div className={style.right}>{props.isImageRight ? image : infos}</div>
+      {left}
+      {right}
     </div>
   );
 }
