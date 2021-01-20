@@ -36,6 +36,7 @@ export default function ReviewerComment(props) {
       width: "72px",
       height: "72px",
       borderRadius: "50px",
+      boxShadow: "2px 2px 4px #C0C4E233",
       "@media only screen and (max-width: 1080px)": {
         width: "40px",
         height: "40px",

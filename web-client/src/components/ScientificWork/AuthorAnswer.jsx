@@ -15,9 +15,11 @@ export default function AuthorAnswer(props) {
       alignItems: "center",
     },
     image: {
+      objectFit: "cover",
       width: "80px",
       height: "80px",
       borderRadius: "50px",
+      boxShadow: "2px 2px 4px #C0C4E233",
     },
     userName: {
       textAlign: "center",
