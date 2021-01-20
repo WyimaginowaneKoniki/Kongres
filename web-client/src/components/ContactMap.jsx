@@ -8,7 +8,7 @@ export default function ContactMap(props) {
       width: "100%",
       marginLeft: "72px",
       "@media (max-width: 1000px)": {
-        marginLeft: "0px",
+        marginLeft: "0",
         width: "90vw",
         height: "240px",
       },
