@@ -18,24 +18,46 @@ export default function ReviewerComment(props) {
     review: {
       width: "600px",
       display: "flex",
+      marginTop: "40px",
       marginLeft: "40px",
+      marginBottom: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        marginLeft: "24px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        width: "320px",
+        marginLeft: "0",
+      },
     },
     userInfo: {
-      // width: "80px",
       alignItems: "center",
     },
     image: {
-      width: "80px",
-      height: "80px",
+      width: "72px",
+      height: "72px",
       borderRadius: "50px",
+      "@media only screen and (max-width: 1080px)": {
+        width: "40px",
+        height: "40px",
+      },
     },
     userName: {
       textAlign: "center",
       fontSize: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "12px",
+        lineHeight: "1em",
+      },
     },
     reviewContent: {
       marginLeft: "24px",
       textAlign: "left",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "16px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "8px",
+      },
     },
     rating: {
       display: "flex",

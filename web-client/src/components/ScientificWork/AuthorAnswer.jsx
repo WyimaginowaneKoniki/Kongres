@@ -8,7 +8,7 @@ export default function AuthorAnswer(props) {
       width: "600px",
       margin: "20px",
       marginLeft: "150px",
-      display: "flex",
+      display: "none",
     },
     userInfo: {
       width: "80px",

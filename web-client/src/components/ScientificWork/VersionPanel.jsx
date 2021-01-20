@@ -23,10 +23,10 @@ export default function VersionPanel(props) {
       flexWrap: "wrap",
       padding: "16px 80px",
       "@media only screen and (max-width: 768px)": {
-        padding: "16px 40px",
+        padding: "0px 40px",
       },
       "@media only screen and (max-width: 600px)": {
-        padding: "8px 24px",
+        padding: "0px 24px",
       },
     },
     version: {
