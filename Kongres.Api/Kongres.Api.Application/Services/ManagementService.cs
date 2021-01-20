@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
+using Kongres.Api.Domain.Enums;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
@@ -95,6 +96,9 @@ namespace Kongres.Api.Application.Services
                 {
                     var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
                     await _emailSender.SendReviewersAssignmentInformationAsync(authorEmail, scientificWork.Id);
+
+                    scientificWork.Status = StatusEnum.UnderReview;
+                    await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
                 }
 
                 await _reviewersScienceWorkRepository.AddAsync(reviewersScientificWorks);
