@@ -77,7 +77,7 @@ export default function MyReviews() {
           });
         });
     })();
-  }, [location]);
+  }, [location, history]);
 
   // convert date from ISO [YYYY-MM-DDTHH:mm:ss.sssZ] to DD/MM/YYYY
   const convertDate = (date) => {
