@@ -16,7 +16,7 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
-        private readonly IReviewersScienceWorkRepository _reviewersWorkRepository;
+        private readonly IReviewerScientificWorkRepository _reviewersWorkRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly IFileManager _fileManager;
         private readonly UserManager<User> _userManager;
@@ -24,7 +24,7 @@ namespace Kongres.Api.Application.Services
 
         public ReviewService(IScientificWorkRepository scientificWorkRepository,
                             IScientificWorkFileRepository scientificWorkFileRepository,
-                            IReviewersScienceWorkRepository reviewersWorkRepository,
+                            IReviewerScientificWorkRepository reviewersWorkRepository,
                             IReviewRepository reviewRepository,
                             IFileManager fileManager,
                             UserManager<User> userManager,

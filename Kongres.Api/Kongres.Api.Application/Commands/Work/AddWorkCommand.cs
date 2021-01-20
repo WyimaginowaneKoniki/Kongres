@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kongres.Api.Application.Commands.Work
 {
-    public class AddWorkCommand : IRequest
+    public class AddWorkCommand : IRequest<uint>
     {
         public string AuthorId { get; set; }
         public string Title { get; set; }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kongres.Api.Infrastructure.Repositories
 {
-    public class ReviewerScientificWorkRepository : IReviewersScienceWorkRepository
+    public class ReviewerScientificWorkRepository : IReviewerScientificWorkRepository
     {
         private readonly KongresDbContext _context;
 
@@ -17,6 +17,13 @@ namespace Kongres.Api.Infrastructure.Repositories
             _context = context;
         }
 
+        public IEnumerable<ScientificWork> GetListOfWorksForReviewer(uint reviewerId)
+            => _context.ReviewersScienceWorks.Include(x => x.ScientificWork)
+                                                .ThenInclude(x => x.Versions)
+                                             .Include(x => x.ScientificWork)
+                                                .ThenInclude(x => x.MainAuthor)
+                                             .Where(x => x.User.Id == reviewerId)
+                                             .Select(x => x.ScientificWork);
         public async Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks)
         {
             await _context.ReviewersScienceWorks.AddRangeAsync(reviewersScienceWorks);

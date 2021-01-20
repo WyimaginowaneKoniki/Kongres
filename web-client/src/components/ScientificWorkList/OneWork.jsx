@@ -9,44 +9,50 @@ import "../../App.css";
 export default function OneWork(props) {
   const style = makeStyles({
     main: {
-      width: "100%",
-      paddingBottom: "300px",
+      marginBottom: "80px",
+      textAlign: "left",
     },
-    h2: {
-      float: "left",
+    title: {
+      marginBottom: "8px",
+      "&:hover": {
+        cursor: "pointer",
+      },
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "1em",
+      },
     },
     panel: {
-      width: "100%",
-      float: "left",
-      marginTop: "-25px",
+      display: "flex",
+      flexWrap: "wrap",
+      fontSize: "16px",
+      lineHeight: "1.4em",
+      marginBottom: "8px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.8em",
+      },
     },
     category: {
-      float: "left",
-      fontSize: "12px",
-      color: "#3f51b5",
-      paddingRight: "2.5%",
+      color: "#6069A9",
+      marginRight: "16px",
     },
     dot: {
-      float: "left",
       fontSize: "28px",
-      color: "#DCDCDC",
-      paddingRight: "2.5%",
+      color: "#C0C4E2",
+      marginRight: "16px",
     },
     date: {
-      float: "left",
-      fontSize: "12px",
-      paddingRight: "2.5%",
+      marginRight: "16px",
+      color: "#767676",
     },
     author: {
-      float: "left",
-      fontSize: "12px",
+      color: "#767676",
     },
     text: {
-      width: "94%",
-      float: "left",
-      textAlign: "left",
-      fontSize: "14px",
-      paddingBottom: "2%",
+      marginBottom: "16px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "0.9em",
+        lineHeight: "1.5em",
+      },
     },
     a: {
       textDecoration: "none",
@@ -54,17 +60,31 @@ export default function OneWork(props) {
       fontWeight: "bold",
     },
     buttons: {
-      float: "left",
-      width: "100%",
+      display: "flex",
+      flexWrap: "wrap",
     },
     btn1: {
-      float: "left",
-      marginRight: "5%",
-      textTransform: "none",
+      marginRight: "24px",
+      marginBottom: "8px",
+      backgroundColor: "white",
+      "&:hover": {
+        backgroundColor: "#F1F3FF",
+      },
     },
     btn2: {
-      float: "left",
-      textTransform: "none",
+      marginBottom: "8px",
+    },
+    btnStatus: {
+      color: "#775866",
+      backgroundColor: "#F0D4E0",
+      padding: "4px 8px",
+      marginRight: "16px",
+      marginBottom: "8px",
+      boxShadow: "none",
+      "&:hover": {
+        backgroundColor: "#F0D4E0",
+        boxShadow: "none",
+      },
     },
   })();
 
@@ -97,10 +117,18 @@ export default function OneWork(props) {
       });
   };
 
-  //https://www.xspdf.com/resolution/50694881.html <- informacje do buttona download
+  const showStatus = (
+    <Button variant="contained" className={style.btnStatus}>
+      {props.status}
+    </Button>
+  );
+  //https://www.xspdf.com/resolution/50694881.html <- information for button download
   return (
     <div className={style.main}>
-      <h2 className={style.h2}>{props.title}</h2>
+      <div className={style.status}>{props.status && showStatus}</div>
+      <h2 className={style.title} onClick={readMore}>
+        {props.title}
+      </h2>
       <div className={style.panel}>
         <a href={props.link}>
           <p className={style.category}>{props.categories}</p>
@@ -110,7 +138,7 @@ export default function OneWork(props) {
         <span className={style.dot}>&bull;</span>
         <p className={style.author}>{props.authors}</p>
       </div>
-      <span className={style.text}>{props.text}</span>
+      <p className={style.text}>{props.text}</p>
       <div className={style.buttons}>
         <Button
           variant="outlined"

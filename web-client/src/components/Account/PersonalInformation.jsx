@@ -34,7 +34,6 @@ export default function PersonalInformation(props) {
     },
     btnSignup: {
       width: "130px",
-      textTransform: "none",
     },
     menuItem: {
       textAlign: "left",
@@ -56,7 +55,6 @@ export default function PersonalInformation(props) {
     },
     btnSignIn: {
       margin: "8px 0px",
-      textTransform: "none",
     },
     columns: {
       display: "flex",

@@ -1,50 +1,63 @@
 import React from "react";
-import defaultPicture from "../../images/blank-profile-picture.png";
-import Button from "@material-ui/core/Button";
+import defaultPicture from "../../images/default-avatar-grey.png";
 import { makeStyles } from "@material-ui/core/styles";
+import MuiAlert from "@material-ui/lab/Alert";
+import { Button, Snackbar } from "@material-ui/core/";
 
 export default function Avatar() {
   const style = makeStyles({
     main: {
-      width: "100%",
-      marginBottom: "5%",
+      marginBottom: "16px",
     },
-    btn: {
-      marginLeft: "8%",
-      marginTop: "6%",
-      float: "left",
-      textTransform: "none",
+    photoButton: {
+      display: "flex",
+      alignItems: "center",
     },
-    btn1: {
-      marginTop: "8%",
-      float: "left",
-      textTransform: "none",
+    btnAddEdit: {
+      marginLeft: "32px",
+    },
+    btnDelete: {
+      marginTop: "8px",
+      color: "#AD1457",
     },
     photo: {
-      width: 100,
-      height: 100,
-      margin: "auto",
+      objectFit: "cover",
+      width: "100px",
+      height: "100px",
       borderRadius: "50px",
-      marginLeft: "8%",
-    },
-    img: {
-      width: "130px",
-      float: "left",
+      boxShadow: "2px 2px 4px #C0C4E233",
     },
   })();
+
   // Stores the source of the picture
   // File and ULR:
   // https://stackoverflow.com/a/61302835/14865551
   const [avatarURL, SetAvatarURL] = React.useState(defaultPicture);
+  const [openAlertError, SetOpenAlertError] = React.useState(false);
+  const durationOfAlert = 4000;
+
+  const ShowAlert = () => {
+    SetOpenAlertError(true);
+  };
+
+  const CloseAlert = (_, reason) => {
+    if (reason === "clickaway") return;
+
+    SetOpenAlertError(false);
+  };
 
   const onChangePicture = (e) => {
     const file = e.target.files[0];
     if (file && file.type.match("image.*")) {
       SetAvatarURL(URL.createObjectURL(file));
     } else {
-      alert("Invalid input type!");
+      ShowAlert(true);
     }
   };
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} {...props} />;
+  }
 
   const onRemovePicture = () => {
     SetAvatarURL(defaultPicture);
@@ -52,32 +65,39 @@ export default function Avatar() {
 
   return (
     <div className={style.main}>
-      <div className={style.img}>
+      <div className={style.photoButton}>
         <img src={avatarURL} alt="" id="img" className={style.photo} />
         <Button
-          color="secondary"
-          onClick={onRemovePicture}
-          className={style.btn}
+          variant="outlined"
+          color="primary"
+          component="label"
+          className={style.btnAddEdit}
         >
-          Delete photo
+          {avatarURL === defaultPicture ? "Add" : "Edit"} photo
+          <input
+            type="file"
+            accept="image/*"
+            name="avatar"
+            id="input"
+            onChange={onChangePicture}
+            hidden
+          />
         </Button>
       </div>
-      <Button
-        variant="outlined"
-        color="primary"
-        component="label"
-        className={style.btn1}
+      {avatarURL !== defaultPicture && (
+        <Button color="secondary" onClick={onRemovePicture} className={style.btnDelete}>
+          Delete photo
+        </Button>
+      )}
+      <Snackbar
+        open={openAlertError}
+        autoHideDuration={durationOfAlert}
+        onClose={CloseAlert}
       >
-        {avatarURL === defaultPicture ? "Add" : "Edit"} photo
-        <input
-          type="file"
-          accept="image/*"
-          name="avatar"
-          id="input"
-          onChange={onChangePicture}
-          hidden
-        />
-      </Button>
+        <Alert onClose={CloseAlert} severity={"error"}>
+          {"Invalid extension!"}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
