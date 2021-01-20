@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kongres.Api.Domain.Enums;
 
 namespace Kongres.Api.Infrastructure.Repositories
 {
@@ -29,6 +30,7 @@ namespace Kongres.Api.Infrastructure.Repositories
         public async Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync()
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Include(x => x.Versions)
+                                             .Where(x => x.Status == StatusEnum.Accepted)
                                              .ToListAsync();
 
         public async Task<ScientificWork> GetWorkByIdAsync(uint scientificWorkId)
@@ -50,11 +52,6 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                    .AnyAsync(x => x.User.Id == userId &&
                                                                   x.ScientificWork.Id == scientificWorkId);
 
-        public async Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization)
-            => await _context.ScientificWorks.Include(x => x.MainAuthor)
-                                             .Where(x => x.Specialization == specialization)
-                                             .ToListAsync();
-
         public async Task<byte> GetNumberOfVersionsByAuthorIdAsync(uint userId)
         {
             var scientificWork = await _context.ScientificWorks.Include(x => x.MainAuthor)
@@ -62,5 +59,25 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                                .SingleAsync(x => x.MainAuthor.Id == userId);
             return scientificWork.Versions.Last().Version;
         }
+
+        public async Task<IEnumerable<ScientificWork>> GetAllBySpecializationAsync(string specialization)
+            => await _context.ScientificWorks.Include(x => x.MainAuthor)
+                                             .Where(x => x.Specialization == specialization)
+                                             .ToListAsync();
+
+        public async Task ChangeStatusAsync(ScientificWork scientificWork)
+        {
+            _context.ScientificWorks.Update(scientificWork);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<string> GetEmailOfAuthorByWorkIdAsync(uint scientificWorkId)
+            => await _context.ScientificWorks.Where(x => x.Id == scientificWorkId)
+                                             .Select(x => x.MainAuthor.Email)
+                                             .SingleAsync();
+        public async Task<uint> GetIdOfWorkByAuthorIdAsync(uint authorId)
+            => await _context.ScientificWorks.Where(x => x.MainAuthor.Id == authorId)
+                                             .Select(x => x.Id)
+                                             .SingleAsync();
     }
 }

@@ -43,5 +43,15 @@ namespace Kongres.Api.Infrastructure.Repositories
             => await _context.Reviews.Include(x => x.Reviewer)
                                      .AnyAsync(x => x.Id == reviewId &&
                                                     x.Reviewer.Id == userId);
+
+        public async Task<string> GetEmailOfReviewerByReviewIdAsync(uint reviewId)
+            => await _context.Reviews.Where(x => x.Id == reviewId)
+                                     .Select(x => x.Reviewer.Email)
+                                     .SingleAsync();
+
+        public async Task<uint> GetWorkIdByReviewIdAsync(uint reviewId)
+            => await _context.Reviews.Where(x => x.Id == reviewId)
+                                     .Select(x => x.VersionOfScientificWork.ScientificWork.Id)
+                                     .SingleAsync();
     }
 }

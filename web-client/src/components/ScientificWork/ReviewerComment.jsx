@@ -47,7 +47,6 @@ export default function ReviewerComment(props) {
       fontSize: "16px",
     },
     btn: {
-      textTransform: "none",
       width: "150px",
       height: "45px",
       margin: "5px",

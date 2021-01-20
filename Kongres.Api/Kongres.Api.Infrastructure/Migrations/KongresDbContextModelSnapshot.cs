@@ -164,6 +164,9 @@ namespace Kongres.Api.Infrastructure.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<byte>("Rating")
+                        .HasColumnType("tinyint unsigned");
+
                     b.Property<uint?>("ScientificWorkId")
                         .HasColumnType("int unsigned");
 

@@ -47,9 +47,6 @@ export default function DropZone(props) {
       paddingLeft: "5%",
       color: "#aaaaaa",
     },
-    btn: {
-      textTransform: "none",
-    },
     logo: {
       height: "30px",
       margin: "2%",

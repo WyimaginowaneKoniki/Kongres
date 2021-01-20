@@ -5,11 +5,17 @@ import {
   Container,
   Button,
   FormHelperText,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+  IconButton,
+  InputAdornment,
 } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@material-ui/icons/";
 import PopUpForgotPassword from "../PopUpForgotPassword";
 
 export default function SignInForm(props) {
@@ -22,11 +28,21 @@ export default function SignInForm(props) {
       display: "flex",
       flexDirection: "column",
       textAlign: "left",
-      maxWidth: "400px",
-      margin: "16px",
+      maxWidth: "300px",
+      margin: "24px",
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "0",
+        marginRight: "0",
+      },
     },
     columns: {
+      width: "100%",
       display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around",
+      "@media only screen and (max-width: 768px)": {
+        justifyContent: "center",
+      },
     },
     textField: {
       marginBottom: "32px",
@@ -37,30 +53,35 @@ export default function SignInForm(props) {
     },
     content: {
       textAlign: "left",
-      display: "block",
     },
-    btnSignIn: {
-      width: "100px",
-      textTransform: "none",
-      float: "right",
+    loginLinks: {
+      display: "flex",
+      justifyContent: "space-between",
     },
     btnSignUp: {
       marginTop: "8px",
-      textTransform: "none",
     },
     signUp: {
-      maxWidth: "400px",
-      marginLeft: "144px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      width: "400px",
+      margin: "24px",
+    },
+    signUpLink: {
+      textDecoration: "none",
     },
     formHelperText: {
       marginBottom: "32px",
     },
-    textButton: {
-      textTransform: "none",
-    },
     bottomMessage: {
-      marginTop: "300px",
-      display: "block",
+      marginTop: "80px",
+      textAlign: "center",
+    },
+    inputLabel: {
+      backgroundColor: "white",
+      padding: "0px 4px",
+      marginLeft: "-4px",
     },
   })();
 
@@ -77,6 +98,14 @@ export default function SignInForm(props) {
     email: "",
     password: "",
   });
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const schema = yup.object().shape({
     email: yup
@@ -96,7 +125,7 @@ export default function SignInForm(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const [forgotEmail, SetForgotEmail] = React.useState(null);
+  const [SetForgotEmail] = React.useState(null);
   const passEmail = (email) => {
     SetForgotEmail(email);
   };
@@ -128,7 +157,7 @@ export default function SignInForm(props) {
               required
               id="email-signin"
               name="email"
-              label="Login/Email"
+              label="Email"
               type="email"
               value={values.email}
               autoComplete="email"
@@ -141,36 +170,53 @@ export default function SignInForm(props) {
               helperText={errors?.email?.message}
             />
             {/* Password Input */}
-            <TextField
+            <FormControl
               className={style.textField}
-              inputRef={register}
               required
-              id="password-signin"
               name="password"
-              label="Password"
-              type="password"
-              value={values.password}
-              autoComplete="current-password"
-              onChange={handleChange("password")}
-              InputLabelProps={{
-                shrink: true,
-              }}
               variant="outlined"
               error={!!errors.password}
-              helperText={errors?.password?.message}
-            />
-            {/* Info about correct password and email */}
-            <FormHelperText
-              error={true}
-              style={messageStyle}
-              className={style.formHelperText}
             >
-              {"Error: Incorrect password or/and email"}
-            </FormHelperText>
-            <div>
+              <InputLabel shrink className={style.inputLabel}>
+                Password
+              </InputLabel>
+              <OutlinedInput
+                inputRef={register}
+                id="password-signin"
+                name="password"
+                type={values.showPassword ? "text" : "password"}
+                value={values.password}
+                autoComplete="current-password"
+                onChange={handleChange("password")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {/* Info about correct password and email */}
+              <FormHelperText error={true} id="helper-text-password-signup">
+                {errors?.password?.message}
+              </FormHelperText>
+              <FormHelperText
+                error={true}
+                style={messageStyle}
+                className={style.formHelperText}
+              >
+                {"Error: Incorrect password or/and email"}
+              </FormHelperText>
+            </FormControl>
+            <div className={style.loginLinks}>
               {/* Forgot password */}
               <PopUpForgotPassword SetEmail={passEmail} />
-              {console.log(forgotEmail)}
+
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
@@ -182,19 +228,19 @@ export default function SignInForm(props) {
               </Button>
             </div>
           </form>
-        </div>
-
-        {/* Info about signing up */}
-        <div className={style.signUp}>
-          <h2 className={style.heading}>{props.heading}</h2>
-          <p className={style.content}>{props.content}</p>
-          <Link to={props.signUpLink} style={{ textDecoration: "none" }}>
-            <Button variant="outlined" color="primary" className={style.btnSignUp}>
-              {props.btn}
-            </Button>
-          </Link>
+          {/* Info about signing up */}
+          <div className={style.signUp}>
+            <h2 className={style.heading}>{props.heading}</h2>
+            <p className={style.content}>{props.content}</p>
+            <Link to={props.signUpLink} className={style.signUpLink}>
+              <Button variant="outlined" color="primary" className={style.btnSignUp}>
+                {props.btn}
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
+
       <p className={style.bottomMessage}>
         If you want to log in as {props.signInAs}, go to{" "}
         <Link to={props.signInAsOtherLink}>login page</Link>

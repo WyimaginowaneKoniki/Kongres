@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Kongres.Api.Application.Services
@@ -18,40 +19,58 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
+        private readonly IReviewerScientificWorkRepository _reviewersWorkRepository;
         private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
+        private readonly IEmailSender _emailSender;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
+                                    IReviewerScientificWorkRepository reviewersWorkRepository,
                                     IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
-                                    IFileManager fileManager)
+                                    IFileManager fileManager,
+                                    IEmailSender emailSender)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
             _reviewRepository = reviewRepository;
             _userManager = userManager;
             _fileManager = fileManager;
+            _emailSender = emailSender;
+            _reviewersWorkRepository = reviewersWorkRepository;
         }
 
-        public async Task AddBasicInfoAsync(string userId, string title, string description, string authors,
+        public async Task<uint> AddBasicInfoAsync(uint authorId, string title, string description, string authors,
             string specialization)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(authorId.ToString());
 
-            var scientificWork = new ScientificWork()
+            var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
+
+            if (!isParticipant)
+                throw new AuthenticationException();
+
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(authorId);
+
+            if (!(scientificWork is null))
+                throw new InvalidOperationException();
+
+            scientificWork = new ScientificWork()
             {
                 Name = title,
                 Description = description,
                 MainAuthor = user,
                 OtherAuthors = authors,
                 CreationDate = DateTime.Now,
-                Status = StatusEnum.WaitingForReview,
+                Status = StatusEnum.WaitingForDrawOfReviewers,
                 Specialization = specialization
             };
 
             await _scientificWorkRepository.AddAsync(scientificWork);
+
+            return await _scientificWorkRepository.GetIdOfWorkByAuthorIdAsync(authorId);
         }
 
         public async Task AddVersionAsync(uint userId, IFormFile workFile, bool isFirstVersion = false)
@@ -76,6 +95,19 @@ namespace Kongres.Api.Application.Services
             };
 
             await _scientificWorkFileRepository.AddAsync(versionOfWork);
+
+            // change status when the work reviewed before 
+            if (!isFirstVersion)
+            {
+                scientificWork.Status = StatusEnum.UnderReview;
+                await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
+
+                var emailsOfReviewers = await _reviewersWorkRepository.GetEmailsOfReviewersByWorkIdAsync(scientificWork.Id);
+                foreach (var email in emailsOfReviewers)
+                {
+                    await _emailSender.SendAddedNewVersionEmailAsync(email, scientificWork.Id);
+                }
+            }
         }
 
         public async Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync()
@@ -121,8 +153,6 @@ namespace Kongres.Api.Application.Services
 
         public async Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint userId, uint scientificWorkId)
         {
-            // TODO: If science work is approved
-
             var scientificWork = await _scientificWorkRepository.GetWorkByIdAsync(scientificWorkId);
             if (scientificWork is null)
                 return null;
@@ -135,6 +165,10 @@ namespace Kongres.Api.Application.Services
                 mode = "Reviewer";
             else
                 mode = "Participant";
+
+            // participant can see this work only when it's approved
+            if (scientificWork.Status != StatusEnum.Accepted && mode == "Participant")
+                throw new AuthenticationException();
 
             var scientificWorkDto = new ScientificWorkDto()
             {
@@ -199,12 +233,13 @@ namespace Kongres.Api.Application.Services
                     {
                         Date = version.DateAdd.ToString("g"),
                         VersionNumber = version.Version,
-                        Reviews = reviewsDto
+                        Reviews = reviewsDto,
+                        Rating = version.Rating
                     });
                 }
             }
 
-            var scientificWorkWithReviewDto = new ScientificWorkWithReviewDto()
+            return new ScientificWorkWithReviewDto()
             {
                 ScientificWork = scientificWorkDto,
                 MainAuthor = mainAuthor,
@@ -212,8 +247,42 @@ namespace Kongres.Api.Application.Services
                 Versions = versionsDto,
                 Status = scientificWork.Status.ToString()
             };
+        }
 
-            return await Task.FromResult(scientificWorkWithReviewDto);
+        public async Task<IEnumerable<ScientificWorkWithStatusDto>> GetListOfWorksForReviewer(uint reviewerId)
+        {
+            var user = await _userManager.FindByIdAsync(reviewerId.ToString());
+            var isReviewer = await _userManager.IsInRoleAsync(user, "Reviewer");
+
+            if (!isReviewer)
+                throw new AuthenticationException();
+
+            var scientificWorks = _reviewersWorkRepository.GetListOfWorksForReviewer(reviewerId);
+
+            var scientificWorksDto = new List<ScientificWorkWithStatusDto>();
+
+            foreach (var scientificWork in scientificWorks)
+            {
+                var authors = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}";
+
+                // Sometimes the work doesn't include other authors except main one
+                if (!(scientificWork.OtherAuthors is null))
+                    authors += $", {scientificWork.OtherAuthors}";
+
+                scientificWorksDto.Add(new ScientificWorkWithStatusDto()
+                {
+                    Id = scientificWork.Id,
+                    Title = scientificWork.Name,
+                    Description = scientificWork.Description,
+                    Authors = authors,
+                    Specialization = scientificWork.Specialization,
+                    CreationDate = scientificWork.CreationDate.ToString("g"),
+                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
+                    Status = scientificWork.Status.ToString()
+                });
+            }
+
+            return scientificWorksDto;
         }
     }
 }

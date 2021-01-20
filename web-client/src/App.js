@@ -22,7 +22,6 @@ import SignInParticipant from "./pages/Users/Participant/signin-participant";
 import WorkView from "./pages/ScientificWorks/work-view";
 import { LINKS, URL } from "./Constants";
 import Error404 from "./pages/error-404";
-import NavigationNotLogged from "./components/NavigationNotLogged";
 import axios from "axios";
 import EmailConfirmationToken from "./pages/email-confirmation-token";
 import PhotoGallery from './pages/photo-gallery';
@@ -47,7 +46,7 @@ export default function App() {
 
   return (
     <Router>
-      {userInfo ? <Navigation userInfo={userInfo} /> : <NavigationNotLogged />}
+      <Navigation userInfo={userInfo} />
       <div className="App">
         <Switch>
           <Route path="/" exact component={Home} />
@@ -72,10 +71,7 @@ export default function App() {
           />
 
           {/* Participant */}
-          <Route
-            path={LINKS.PARTICIPANT_SIGN_UP}
-            component={SignUpParticipant}
-          />
+          <Route path={LINKS.PARTICIPANT_SIGN_UP} component={SignUpParticipant} />
           <Route path={LINKS.PARTICIPANT_LOGIN} component={SignInParticipant} />
           <Route path={LINKS.ADDING_WORK} component={AddingWork} />
 

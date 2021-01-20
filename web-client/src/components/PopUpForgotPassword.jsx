@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import MuiAlert from "@material-ui/lab/Alert";
+import Close from "@material-ui/icons/Close";
 
 export default function PopUpForgotPassword(props) {
   const style = makeStyles({
@@ -28,18 +29,27 @@ export default function PopUpForgotPassword(props) {
     },
     send: {
       width: "100px",
-      textTransform: "none",
       float: "right",
       marginLeft: "auto",
       display: "block",
-    },
-    textButton: {
-      textTransform: "none",
     },
     message: {
       textAlign: "center",
       marginTop: "30px",
       marginBottom: "30px",
+    },
+    divClose: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+    close: {
+      color: "#AD1457",
+      width: "32px",
+      height: "32px",
+      padding: "0.5em",
+      "&:hover": {
+        cursor: "pointer",
+      },
     },
   })();
 
@@ -107,15 +117,14 @@ export default function PopUpForgotPassword(props) {
   return (
     <div className={style.main}>
       {/* Forgot password */}
-      <Button
-        className={style.textButton}
-        color="primary"
-        onClick={handleClickOpen}
-      >
+      <Button className={style.textButton} color="primary" onClick={handleClickOpen}>
         Forgot password?
       </Button>
 
       <Dialog open={open} onClose={handleClose}>
+        <div className={style.divClose}>
+          <Close className={style.close} onClick={handleClose} />
+        </div>
         <span className={style.message}>You will receive link...</span>
         <div className={style.content}>
           <div className={style.form}>
@@ -125,7 +134,7 @@ export default function PopUpForgotPassword(props) {
               required
               id="forgot-email-signin"
               name="email"
-              label="Login/Email"
+              label="Email"
               type="email"
               value={email}
               autoComplete="email"
@@ -150,21 +159,13 @@ export default function PopUpForgotPassword(props) {
         </div>
       </Dialog>
       {/* Successfully send email */}
-      <Snackbar
-        open={openAlertSuccess}
-        autoHideDuration={duration}
-        onClose={CloseAlert}
-      >
+      <Snackbar open={openAlertSuccess} autoHideDuration={duration} onClose={CloseAlert}>
         <Alert onClose={CloseAlert} severity={"success"}>
           {"Link has been sent"}
         </Alert>
       </Snackbar>
       {/* Unsuccessfully send email */}
-      <Snackbar
-        open={openAlertError}
-        autoHideDuration={duration}
-        onClose={CloseAlert}
-      >
+      <Snackbar open={openAlertError} autoHideDuration={duration} onClose={CloseAlert}>
         <Alert onClose={CloseAlert} severity={"error"}>
           {"Link has not been sent"}
         </Alert>
