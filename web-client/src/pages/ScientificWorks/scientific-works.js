@@ -83,20 +83,11 @@ export default function ScientificWorks() {
     fetchData();
   }, [history]);
 
-  // convert date from ISO [YYYY-MM-DDTHH:mm:ss.sssZ] to DD/MM/YYYY
-  const convertDate = (date) => {
-    date = date?.substring(0, 10);
-    if (!date) return null;
-    return date.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function (_, y, m, d) {
-      return d + "/" + m + "/" + y;
-    });
-  };
-
   const workList = works.map((work) => (
     <OneWork
       title={work.title}
       categories={work.specialization}
-      date={convertDate(work.creationDate)}
+      date={work.creationDate}
       authors={work.authors}
       text={work.description}
       id={work.id}
@@ -154,7 +145,7 @@ export default function ScientificWorks() {
         <div className={style.works}>
           <div className={style.list}>
             {/* If list of works is null, then nothing is displayed */}
-            {works[0]?.title ? workList : null}
+            {works[0]?.title && workList}
           </div>
 
           <div className={style.sidebar}>

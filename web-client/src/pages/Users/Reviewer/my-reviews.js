@@ -68,7 +68,6 @@ export default function MyReviews() {
         .then((resp) => {
           SetIsSuccessedLoad(true);
           SetReviews(resp.data);
-          console.log(resp.data);
         })
         .catch((_) => {
           SetIsSuccessedLoad(false);
@@ -79,24 +78,15 @@ export default function MyReviews() {
     })();
   }, [location, history]);
 
-  // convert date from ISO [YYYY-MM-DDTHH:mm:ss.sssZ] to DD/MM/YYYY
-  const convertDate = (date) => {
-    date = date?.substring(0, 10);
-    if (!date) return null;
-    return date.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function (_, y, m, d) {
-      return d + "/" + m + "/" + y;
-    });
-  };
-
   const reviewList = reviews.map((review) => (
     <OneWork
       title={review.title}
       status={review.status}
       categories={review.specialization}
-      date={convertDate(review.creationDate)}
+      date={review.creationDate}
       authors={review.authors}
       text={review.description}
-      modificationDate={convertDate(review.updateDate)}
+      modificationDate={review.updateDate}
       id={review.id}
     />
   ));
