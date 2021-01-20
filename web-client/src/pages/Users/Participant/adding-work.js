@@ -509,7 +509,7 @@ export default function AddingWork() {
                       color="primary"
                     />
                   }
-                  label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
+                  label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form*"
                   inputRef={register}
                   name="acceptance"
                 />
