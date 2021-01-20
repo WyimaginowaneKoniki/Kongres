@@ -52,7 +52,8 @@ namespace Kongres.Api.Application.Services
 
                 var reviewerIds = reviewers.Select(x => x.Id).ToArray();
 
-                // TODO: Send information to authors/reviewers about too small number of works/reviewers
+                // send information to authors/reviewers about too small number of works/reviewers
+                // and set status to rejected
                 if (reviewerIds.Length < 4 || scientificWorkIds.Count() < 4)
                 {
                     for (var i = 0; i < reviewerIds.Length; i++)
@@ -66,6 +67,9 @@ namespace Kongres.Api.Application.Services
                     {
                         var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
                         await _emailSender.SendWorkDidNotGetReviewers(authorEmail);
+
+                        scientificWork.Status = StatusEnum.Rejected;
+                        await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
                     }
 
                     continue;
@@ -85,13 +89,14 @@ namespace Kongres.Api.Application.Services
                             User = reviewers.Single(x => x.Id == reviewersId[i])
                         });
 
-                        // Send email to reviewer about work to review
+                        // send email to reviewer about work to review
                         var reviewerEmail = _userRepository.GetEmailById(reviewersId[i]);
                         await _emailSender.SendWorkAssignmentInformationAsync(reviewerEmail, workId);
                     }
                 }
 
-                // Send email to author of the work about assigned reviewers
+                // send email to author of the work about assigned reviewers
+                // and change status to UnderReview
                 foreach (var scientificWork in scientificWorks)
                 {
                     var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
