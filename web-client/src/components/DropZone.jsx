@@ -7,9 +7,9 @@ import { Button, Box } from "@material-ui/core/";
 export default function DropZone(props) {
   const style = makeStyles({
     container: {
-      width: "550px",      
-      "@media only screen and (max-width: 768px)": {
-        width: "350px",
+      width: "550px",
+      "@media only screen and (max-width: 1480px)": {
+        width: "auto",
       },
     },
     dropContainer: {
@@ -17,12 +17,20 @@ export default function DropZone(props) {
       height: "400px",
       border: "4px dashed #DFE2F8",
       opacity: 1,
+
+      "@media only screen and (max-width: 1480px)": {
+        border: "none",
+        height: "auto",
+      },
     },
     top: {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       height: "90%",
+      "@media only screen and (max-width: 1480px)": {
+        height: "auto",
+      },
     },
     dropMessage: {
       textAlign: "center",
@@ -36,6 +44,9 @@ export default function DropZone(props) {
       margin: "0 auto",
       paddingTop: "30px",
       color: "#6069A9",
+      "@media only screen and (max-width: 1480px)": {
+        display: "none",
+      },
     },
     dragText: {
       color: "black",
@@ -50,8 +61,22 @@ export default function DropZone(props) {
       width: "400px",
       lineHeight: "1.4em",
       display: "block",
-      "@media only screen and (max-width: 768px)": {
-        width: "300px",
+      "@media only screen and (max-width: 1480px)": {
+        display: "none",
+      },
+    },
+    messageButton: {
+      color: "#AD1457",
+      height: 19,
+      fontSize: 16,
+      letterSpacing: "0px",
+      textAlign: "center",
+      width: "auto",
+      lineHeight: "1.4em",
+      display: "none",
+      "@media only screen and (max-width: 1480px)": {
+        display: "block",
+        marginBottom: "50px",
       },
     },
     inputInfo: {
@@ -62,6 +87,10 @@ export default function DropZone(props) {
       letterSpacing: "0px",
       color: "#767676",
       fontSize: 16,
+      "@media only screen and (max-width: 1480px)": {
+        marginTop: "-80px",
+        marginBottom: "75px",
+      },
     },
     logo: {
       fontSize: "40px",
@@ -74,10 +103,16 @@ export default function DropZone(props) {
       width: "379px",
       textAlign: "left",
       marginLeft: "10px",
+      "@media only screen and (max-width: 1480px)": {
+        width: "350px",
+      },
     },
     fileSize: {
       color: "#767676",
       width: "100px",
+      "@media only screen and (max-width: 1480px)": {
+        width: "129px",
+      },
     },
     exit: {
       width: "21px",
@@ -96,6 +131,14 @@ export default function DropZone(props) {
     },
     bottom: {
       justifyContent: "flex-start",
+      "@media only screen and (max-width: 1480px)": {
+        marginBottom: "25px",
+      },
+    },
+    dragDesc: {
+      "@media only screen and (max-width: 1480px)": {
+        display: "none",
+      },
     },
   })();
 
@@ -111,7 +154,6 @@ export default function DropZone(props) {
   // Changes style of area with added file (pdf icon, name, size). Changes display none → flex, flex → none.
   const [divStyle, SetDivStyle] = React.useState({
     display: "none",
-    
   });
 
   const DragOver = (e) => {
@@ -216,10 +258,10 @@ export default function DropZone(props) {
             <BackupOutlinedIcon className={style.uploadIcon} />
 
             <Box lineHeight={2} m={1} className={style.dragText}>
-              Drag & Drop file here
+<div className={style.dragDesc}>              Drag & Drop file here
               <br />
               or
-              <br />
+              <br /></div>
               <Button
                 variant="outlined"
                 className={style.btn}
@@ -240,9 +282,10 @@ export default function DropZone(props) {
         <span className={style.fileName}>{fileName}</span>
         <span className={style.fileSize}>{fileSize}</span>
         <span className={style.exit} onClick={Delete}>
-        🗙
+          🗙
         </span>
       </div>
+      <span className={style.messageButton}>{message}</span>
     </div>
   );
 }

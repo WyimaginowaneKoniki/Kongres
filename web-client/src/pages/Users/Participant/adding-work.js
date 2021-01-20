@@ -69,7 +69,10 @@ export default function AddingWork() {
     textField: {
       marginBottom: "32px",
       width: "400px",
-      "@media only screen and (max-width: 768px)": {
+      "@media only screen and (max-width: 450px)": {
+        width: "350px",
+      },
+      "@media only screen and (max-width: 400px)": {
         width: "300px",
       },
     },
@@ -101,6 +104,12 @@ export default function AddingWork() {
       display: "flex",
       justifyContent: "flex-end",
     },
+    selectWorkDiv: {
+      display: "none",
+      "@media only screen and (max-width: 1400px)": {
+        display: "block",
+      },
+    }
   })();
 
   const formRef = React.useRef(null);
@@ -441,6 +450,10 @@ export default function AddingWork() {
                 />
 
                 {authorList}
+
+                <div>
+                {!IsDropZoneShown() && <DropZone SetFile={passFile} />}
+                </div>
 
                 {/* Acceptance - Rules of Conference */}
                 <FormControlLabel
