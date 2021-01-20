@@ -28,14 +28,14 @@ export default function Information(props) {
     },
     pdf: {
       width: "30%",
-      "@media only screen and (max-width: 1280px)": {
+      "@media only screen and (max-width: 1440px)": {
         display: "none",
       },
     },
     workInfo: {
       width: "70%",
       textAlign: "left",
-      "@media only screen and (max-width: 1280px)": {
+      "@media only screen and (max-width: 1440px)": {
         width: "100%",
       },
     },
@@ -201,7 +201,7 @@ export default function Information(props) {
     <div className={style.main}>
       <div className={style.pdf}>
         <Document file={props.workPDF}>
-          <Page pageNumber={1} width={440} />
+          <Page pageNumber={1} width={320} />
         </Document>
       </div>
 
