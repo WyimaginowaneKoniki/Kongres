@@ -25,34 +25,32 @@ import RepeatIcon from "@material-ui/icons/Repeat";
 import { makeStyles } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
 import { LINKS } from "../Constants";
-import bckg1 from "../images/home-desktop.png";
-import bckg2 from "../images/home-1280.png";
-import bckg3 from "../images/home-mobile.png";
+import bckg1 from "../images/logo-values.png";
 
 export default function Home() {
   const style = makeStyles({
     main: {
       display: "flex",
       flexDirection: "column",
-      backgroundImage: `url(${bckg1})`,
-      "@media (min-width: 600px) and (max-width: 1280px)": {
-        backgroundImage: `url(${bckg2})`,
-      },
-      "@media (max-width: 600px)": {
-        backgroundImage: `url(${bckg3})`,
-      },
     },
     title: {
       display: "flex",
       marginTop: "264px",
       fontSize: "48px",
+      "@media (max-width: 1280px)": {
+        fontSize: "24px",
+      },
     },
     buttons: {
       display: "flex",
-      marginBottom: "528px",
-      "@media (max-width: 768px)": {
+      marginBottom: "56px",
+      "@media (max-width: 1280px)": {
         flexWrap: "wrap",
       },
+    },
+    photo: {
+      width: "75vw",
+      marginBottom: "56px",
     },
     btn: {
       width: "204px",
@@ -60,8 +58,19 @@ export default function Home() {
       fontSize: "32px",
       marginRight: "40px",
       textTransform: "none",
-      "@media (max-width: 768px)": {
-        marginTop: '32px',
+      "@media (max-width: 1280px)": {
+        marginTop: "32px",
+      },
+    },
+    btn1: {
+      width: "204px",
+      height: "70px",
+      fontSize: "32px",
+      marginRight: "40px",
+      textTransform: "none",
+      backgroundColor: "#FFFFFF",
+      "@media (max-width: 1280px)": {
+        marginTop: "32px",
       },
     },
     link: {
@@ -71,35 +80,41 @@ export default function Home() {
       fontWeight: "bold",
       textAlign: "left",
     },
+    resetContainer: {
+      padding: "0.5em",
+    },
     panel: {
       display: "flex",
       textAlign: "left",
       marginBottom: "125px",
-      "@media (max-width: 768px)": {
+      "@media (max-width: 1280px)": {
         flexWrap: "wrap",
       },
     },
-    textPanel: {
-      width: "1125px",
-    },
-    stepperPanel: {
-      width: "1125px",
+    panelComponents: {
+      width: "80%",
+      padding: "1em",
     },
     information: {
       textAlign: "left",
       marginBottom: "128px",
     },
     paper: {
-      padding: '0.5em',
+      padding: "0.5em",
     },
     paperLeft: {
-      padding: '0.5em',
-      textAlign: 'left',
+      padding: "0.5em",
+      textAlign: "left",
     },
   })();
 
   function getSteps() {
-    return ["Select campaign settings", "Create an ad group", "Create an ad"];
+    return [
+      "Adding works",
+      "Review of other works",
+      "Responding to reviews",
+      "Downloading reviews",
+    ];
   }
 
   function getStepContent(step) {
@@ -115,13 +130,18 @@ export default function Home() {
                 and learn how to enhance your ads using features like ad extensions.
                 If you run into any problems with your ads, find out how to tell if
                 they're running and how to resolve approval issues.`;
+      case 3:
+        return `Try out different ad text to see what brings in the most customers,
+                and learn how to enhance your ads using features like ad extensions.
+                If you run into any problems with your ads, find out how to tell if
+                they're running and how to resolve approval issues.`;
       default:
         return "Unknown step";
     }
   }
 
   function getStepsTwo() {
-    return ["Select campaign settings", "Create an ad group", "Create an ad"];
+    return ["Adding a review", "Review of other works", "Downloading works"];
   }
 
   function getStepTwoContent(step) {
@@ -176,10 +196,9 @@ export default function Home() {
       <div className={style.title}>
         <h2>Let&apos;s start our future!</h2>
       </div>
-
       <div className={style.buttons}>
         <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.link}>
-          <Button variant="outlined" color="primary" className={style.btn}>
+          <Button variant="outlined" color="primary" className={style.btn1}>
             Sign up
           </Button>
         </NavLink>
@@ -189,6 +208,8 @@ export default function Home() {
           </Button>
         </NavLink>
       </div>
+
+      <img src={bckg1} alt="" className={style.photo} />
 
       <div>
         <p className={style.information}>
@@ -200,7 +221,7 @@ export default function Home() {
         </p>
       </div>
       <div className={style.panel}>
-        <div className={style.textPanel}>
+        <div className={style.panelComponents}>
           <p className={style.text}>Join us as Participant</p>
           <p>
             Scienture is an international web conference that brings together
@@ -210,7 +231,7 @@ export default function Home() {
             solutions in this area and shape future research directions.
           </p>
         </div>
-        <div className={style.stepperPanel}>
+        <div className={style.panelComponents}>
           <p className={style.text}>What should you do?</p>
           <Stepper activeStep={activeStep} orientation="vertical">
             {steps.map((label, index) => (
@@ -255,7 +276,7 @@ export default function Home() {
       </div>
 
       <div className={style.panel}>
-        <div className={style.stepperPanel}>
+        <div className={style.panelComponents}>
           <p className={style.text}>What should you do?</p>
           <Stepper activeStep={activeStepTwo} orientation="vertical">
             {stepsTwo.map((label, index) => (
@@ -278,7 +299,9 @@ export default function Home() {
                         color="primary"
                         onClick={handleNextTwo}
                       >
-                        {activeStepTwo === stepsTwo.length - 1 ? "Finish" : "Next"}
+                        {activeStepTwo === stepsTwo.length - 1
+                          ? "Finish"
+                          : "Next"}
                       </Button>
                     </div>
                   </div>
@@ -287,18 +310,22 @@ export default function Home() {
             ))}
           </Stepper>
           {activeStepTwo === stepsTwo.length && (
-            <Paper square elevation={0}>
+            <Paper square elevation={0} className={style.resetContainer}>
               <Typography>
                 All steps completed - you&apos;re finished
               </Typography>
-              <Button onClick={handleResetTwo} variant="outlined" color="primary">
+              <Button
+                onClick={handleResetTwo}
+                variant="outlined"
+                color="primary"
+              >
                 Reset
               </Button>
             </Paper>
           )}
         </div>
-        <div className={style.textPanel}>
-          <p className={style.text}>Join us as Participant</p>
+        <div className={style.panelComponents}>
+          <p className={style.text}>Join us as Reviewer</p>
           <p>
             Scienture is an international web conference that brings together
             researchers from a variety of fields: computer science, mathematics,
@@ -334,7 +361,7 @@ export default function Home() {
             <TimelineContent>
               <Paper elevation={3} className={style.paperLeft}>
                 <Typography variant="h6" component="h1">
-                  Eat
+                  Register
                 </Typography>
                 <Typography>Because you need strength</Typography>
               </Paper>
@@ -355,7 +382,7 @@ export default function Home() {
             <TimelineContent>
               <Paper elevation={3} className={style.paper}>
                 <Typography variant="h6" component="h1">
-                  Code
+                Adding works
                 </Typography>
                 <Typography>Because it&apos;s awesome!</Typography>
               </Paper>
@@ -366,12 +393,12 @@ export default function Home() {
               <TimelineDot color="primary" variant="outlined">
                 <HotelIcon />
               </TimelineDot>
-              <TimelineConnector/>
+              <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
               <Paper elevation={3} className={style.paperLeft}>
                 <Typography variant="h6" component="h1">
-                  Sleep
+                Draw of reviewers
                 </Typography>
                 <Typography>Because you need rest</Typography>
               </Paper>
@@ -382,11 +409,27 @@ export default function Home() {
               <TimelineDot color="secondary">
                 <RepeatIcon />
               </TimelineDot>
+              <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
               <Paper elevation={3} className={style.paper}>
                 <Typography variant="h6" component="h1">
-                  Repeat
+                  Adding reviews and improving work
+                </Typography>
+                <Typography>Because this is the life you love!</Typography>
+              </Paper>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot color="secondary">
+                <RepeatIcon />
+              </TimelineDot>
+            </TimelineSeparator>
+            <TimelineContent>
+              <Paper elevation={3} className={style.paperLeft}>
+                <Typography variant="h6" component="h1">
+                  End of Congress
                 </Typography>
                 <Typography>Because this is the life you love!</Typography>
               </Paper>
