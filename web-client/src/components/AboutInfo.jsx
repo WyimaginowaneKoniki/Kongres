@@ -47,21 +47,26 @@ export default function AboutInfo(props) {
     },
   })();
 
-  const infos = [
-    <h2>{props.head}</h2>,
-    <p>{props.text}</p>,
-    <a className={style.link} href={props.link}>
-      {props.adnotation}
-    </a>,
-  ];
-  const image = (
-    <img src={props.path} className={style.photo} alt={props.alternativeText} />
-  );
-
   const [left, SetLeft] = React.useState(null);
   const [right, SetRight] = React.useState(null);
+  const [infos, SetInfos] = React.useState(null);
+  const [image, SetImages] = React.useState(null);
 
   useEffect(() => {
+    SetInfos([
+      <h2>{props.head}</h2>,
+      <p>{props.text}</p>,
+      <a className={style.link} href={props.link}>
+        {props.adnotation}
+      </a>,
+    ]);
+    SetImages(
+      <img
+        src={props.path}
+        className={style.photo}
+        alt={props.alternativeText}
+      />
+    );
     SetLeft(
       <div className={style.left}>
         {props.isImageRight || window.innerWidth < 768 ? infos : image}
@@ -72,7 +77,23 @@ export default function AboutInfo(props) {
         {props.isImageRight || window.innerWidth < 768 ? image : infos}
       </div>
     );
-  }, [left, right, image, infos, props.isImageRight, style.left, style.right]);
+  }, [
+    left,
+    right,
+    props.isImageRight,
+    style.left,
+    style.right,
+    infos,
+    image,
+    props.adnotation,
+    props.head,
+    props.link,
+    props.text,
+    style.link,
+    props.alternativeText,
+    props.path,
+    style.photo,
+  ]);
 
   return (
     <div className={style.main}>
