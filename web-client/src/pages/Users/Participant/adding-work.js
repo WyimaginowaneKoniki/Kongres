@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../App.css";
 import DropZone from "../../../components/DropZone";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,7 +20,9 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
-import { URL_API, categories } from "../../../Constants";
+import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { URL_API, LINKS, categories } from "../../../Constants";
 
 export default function AddingWork() {
   const style = makeStyles({
@@ -76,6 +78,44 @@ export default function AddingWork() {
   })();
 
   const formRef = React.useRef(null);
+  const location = useLocation();
+  const history = useHistory();
+
+  // Check if page is load successful
+  const [isSuccessedLoad, SetIsSuccessedLoad] = React.useState(false);
+
+  // get main author from API
+  const [mainAuthor, SetMainAutor] = React.useState(null);
+
+  useEffect(() => {
+    let id = window.location.pathname.split("/").slice(-1)[0];
+    if (isNaN(id)) id = null;
+    console.log(location.state?.detail ? location.state?.detail : id);
+
+    const token = localStorage.getItem("jwt");
+
+    (async () => {
+      await axios
+        .get(`${URL_API}/Participant/GetInfoForAddWork`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          SetIsSuccessedLoad(true);
+          SetMainAutor(resp.data);
+        })
+        .catch((error) => {
+          SetIsSuccessedLoad(false);
+          if (error.response.status === 400)
+            history.push({
+              pathname: "/",
+            });
+          else
+            history.push({
+              pathname: LINKS.PARTICIPANT_LOGIN,
+            });
+        });
+    })();
+  }, [location, history]);
 
   function Alert(props) {
     return <MuiAlert elevation={6} {...props} />;
@@ -263,9 +303,6 @@ export default function AddingWork() {
     );
   });
 
-  // get main author from API
-  const mainAuthor = "John Doe";
-
   const createFormData = () => {
     const formData = new FormData(formRef.current);
 
@@ -306,154 +343,157 @@ export default function AddingWork() {
   };
 
   return (
-    <div className={style.main}>
-      <h1>Adding scientific work</h1>
+    isSuccessedLoad && (
+      <div className={style.main}>
+        <h1>Adding scientific work</h1>
 
-      <div className={style.container}>
-        <form ref={formRef} noValidate onSubmit={handleSubmit(onSubmit)}>
-          <div className={style.left}>
-            {/* Title */}
-            <TextField
-              className={style.textField}
-              inputRef={register}
-              required
-              id="title-adding-work"
-              name="title"
-              label="Title"
-              autoComplete="title"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {counts.title}/{maxTitleSize}
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleChange("title")}
-              variant="outlined"
-              error={!!errors.title}
-              helperText={errors?.title?.message}
-            />
+        <div className={style.container}>
+          <form ref={formRef} noValidate onSubmit={handleSubmit(onSubmit)}>
+            <div className={style.left}>
+              {/* Title */}
+              <TextField
+                className={style.textField}
+                inputRef={register}
+                required
+                id="title-adding-work"
+                name="title"
+                label="Title"
+                autoComplete="title"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {counts.title}/{maxTitleSize}
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={handleChange("title")}
+                variant="outlined"
+                error={!!errors.title}
+                helperText={errors?.title?.message}
+              />
 
-            <TextField
-              className={style.textField}
-              inputRef={register}
-              required
-              id="description-adding-work"
-              name="description"
-              label="Description"
-              autoComplete="description"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {counts.description}/{maxDescriptionSize}
-                  </InputAdornment>
-                ),
-              }}
-              multiline
-              rows={4}
-              placeholder="Add text"
-              onChange={handleChange("description")}
-              variant="outlined"
-              error={!!errors.description}
-              helperText={errors?.description?.message}
-            />
+              <TextField
+                className={style.textField}
+                inputRef={register}
+                required
+                id="description-adding-work"
+                name="description"
+                label="Description"
+                autoComplete="description"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {counts.description}/{maxDescriptionSize}
+                    </InputAdornment>
+                  ),
+                }}
+                multiline
+                rows={4}
+                placeholder="Add text"
+                onChange={handleChange("description")}
+                variant="outlined"
+                error={!!errors.description}
+                helperText={errors?.description?.message}
+              />
 
-            {/* Specialization Input - Select*/}
-            <TextField
-              select
-              className={style.textField}
-              inputRef={register}
-              required
-              id="specialization-adding-work"
-              name="specialization"
-              label="Specialization"
-              autoComplete="specialization"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder="Select"
-              variant="outlined"
-              onChange={handleChangeSelect}
-              error={!!errors.specialization}
-              helperText={errors?.specialization?.message}
-              value={specialization}
-            >
-              {categories.map((category) => (
-                <MenuItem className={style.MenuItem} value={category.value}>
-                  {category.value}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            {/* Authors */}
-            <TextField
-              className={style.textFieldAuthor}
-              inputRef={register}
-              id="authors-adding-work"
-              name="authors"
-              label="Authors"
-              autoComplete="authors"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={mainAuthor}
-              variant="outlined"
-            />
-
-            {authorList}
-
-            {/* Acceptance - Rules of Conference */}
-            <FormControlLabel
-              className={style.formControlLabel}
-              control={
-                <Checkbox
-                  inputRef={register}
-                  required
-                  id="acceptance-signup"
-                  name="acceptance"
-                  color="primary"
-                />
-              }
-              label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
-              inputRef={register}
-              name="acceptance"
-            />
-            <FormHelperText error className={style.formHelperText}>
-              {errors.acceptance ? errors.acceptance.message : " "}
-            </FormHelperText>
-
-            <div className={style.button}>
-              <Button
-                className={style.addButton}
-                color="primary"
-                type="submit"
-                variant="contained"
-                onClick={ClickSubmit}
+              {/* Specialization Input - Select*/}
+              <TextField
+                select
+                className={style.textField}
+                inputRef={register}
+                required
+                id="specialization-adding-work"
+                name="specialization"
+                label="Specialization"
+                autoComplete="specialization"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                placeholder="Select"
+                variant="outlined"
+                onChange={handleChangeSelect}
+                error={!!errors.specialization}
+                helperText={errors?.specialization?.message}
+                value={specialization}
               >
-                Add work
-              </Button>
+                {categories.map((category) => (
+                  <MenuItem className={style.MenuItem} value={category.value}>
+                    {category.value}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+              {/* Authors */}
+              <TextField
+                className={style.textFieldAuthor}
+                disabled
+                inputRef={register}
+                id="authors-adding-work"
+                name="authors"
+                label="Authors"
+                autoComplete="authors"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={mainAuthor}
+                variant="outlined"
+              />
+
+              {authorList}
+
+              {/* Acceptance - Rules of Conference */}
+              <FormControlLabel
+                className={style.formControlLabel}
+                control={
+                  <Checkbox
+                    inputRef={register}
+                    required
+                    id="acceptance-signup"
+                    name="acceptance"
+                    color="primary"
+                  />
+                }
+                label="I accept the Rules of Scienture Conference and I agree to processing my personal data included in the above form by...*"
+                inputRef={register}
+                name="acceptance"
+              />
+              <FormHelperText error className={style.formHelperText}>
+                {errors.acceptance ? errors.acceptance.message : " "}
+              </FormHelperText>
+
+              <div className={style.button}>
+                <Button
+                  className={style.addButton}
+                  color="primary"
+                  type="submit"
+                  variant="contained"
+                  onClick={ClickSubmit}
+                >
+                  Add work
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className={style.right}>
-            <DropZone SetFile={passFile} />
-          </div>
-        </form>
+            <div className={style.right}>
+              <DropZone SetFile={passFile} />
+            </div>
+          </form>
+        </div>
+        <Snackbar
+          open={openAlertError}
+          autoHideDuration={durationOfAlert}
+          onClose={CloseAlert}
+        >
+          <Alert onClose={CloseAlert} severity={"error"}>
+            {"You did not choose a work!"}
+          </Alert>
+        </Snackbar>
       </div>
-      <Snackbar
-        open={openAlertError}
-        autoHideDuration={durationOfAlert}
-        onClose={CloseAlert}
-      >
-        <Alert onClose={CloseAlert} severity={"error"}>
-          {"You did not choose a work!"}
-        </Alert>
-      </Snackbar>
-    </div>
+    )
   );
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kongres.Api.Application.Handlers.Work
 {
-    public class AddWorkHandler : AsyncRequestHandler<AddWorkCommand>
+    public class AddWorkHandler : IRequestHandler<AddWorkCommand, uint>
     {
         private readonly IScientificWorkService _scientificWorkService;
 
@@ -15,21 +15,23 @@ namespace Kongres.Api.Application.Handlers.Work
             _scientificWorkService = scientificWorkService;
         }
 
-        protected override async Task Handle(AddWorkCommand request, CancellationToken cancellationToken)
+        public async Task<uint> Handle(AddWorkCommand request, CancellationToken cancellationToken)
         {
             // JSON doesn't know what is null :C
             if (request.Authors == "null")
                 request.Authors = null;
 
-            await _scientificWorkService.AddBasicInfoAsync(request.AuthorId,
-                                                            request.Title,
-                                                            request.Description,
-                                                            request.Authors,
-                                                            request.Specialization);
+            var authorId = uint.Parse(request.AuthorId);
 
-            var userId = uint.Parse(request.AuthorId);
+            var scientificWorkId = await _scientificWorkService.AddBasicInfoAsync(authorId,
+                                                                                    request.Title,
+                                                                                    request.Description,
+                                                                                    request.Authors,
+                                                                                    request.Specialization);
+            
+            await _scientificWorkService.AddVersionAsync(authorId, request.Work, true);
 
-            await _scientificWorkService.AddVersionAsync(userId, request.Work, true);
+            return scientificWorkId;
         }
     }
 }

@@ -62,5 +62,10 @@ namespace Kongres.Api.Infrastructure.Repositories
                                                                .SingleAsync(x => x.MainAuthor.Id == userId);
             return scientificWork.Versions.Last().Version;
         }
+
+        public async Task<uint> GetIdOfWorkByAuthorIdAsync(uint authorId)
+            => await _context.ScientificWorks.Where(x => x.MainAuthor.Id == authorId)
+                                             .Select(x => x.Id)
+                                             .SingleAsync();
     }
 }
