@@ -89,9 +89,6 @@ export default function Navigation(props) {
     activeLink: {
       color: "#6069A9",
     },
-    linkButton: {
-      textDecoration: "none",
-    },
     icon: {
       width: "60px",
       height: "60px",

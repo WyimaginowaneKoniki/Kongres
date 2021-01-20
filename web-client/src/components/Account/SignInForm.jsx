@@ -125,7 +125,7 @@ export default function SignInForm(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const [forgotEmail, SetForgotEmail] = React.useState(null);
+  const [SetForgotEmail] = React.useState(null);
   const passEmail = (email) => {
     SetForgotEmail(email);
   };
@@ -216,6 +216,7 @@ export default function SignInForm(props) {
             <div className={style.loginLinks}>
               {/* Forgot password */}
               <PopUpForgotPassword SetEmail={passEmail} />
+
               {/* Button Submit */}
               <Button
                 className={style.btnSignIn}
