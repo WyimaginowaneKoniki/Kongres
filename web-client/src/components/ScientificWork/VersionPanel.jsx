@@ -1,32 +1,59 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Rating from "@material-ui/lab/Rating";
 import ReviewerComment from "./ReviewerComment";
 import ReviewerCommentInput from "./ReviewerCommentInput";
 import AuthorAnswer from "./AuthorAnswer";
 import AuthorAnswerInput from "./AuthorAnswerInput";
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@material-ui/core/";
+import { Accordion, AccordionSummary, AccordionDetails, Box } from "@material-ui/core/";
 import "../../App.css";
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#6069A9",
+  },
+})(Rating);
 
 export default function VersionPanel(props) {
   const style = makeStyles({
     panel: {
-      padding: "20px",
       display: "flex",
-      width: "800px",
       alignItems: "center",
+      flexWrap: "wrap",
+      padding: "16px 80px",
+      "@media only screen and (max-width: 768px)": {
+        padding: "16px 40px",
+      },
+      "@media only screen and (max-width: 600px)": {
+        padding: "8px 24px",
+      },
     },
     version: {
-      width: "100px",
-      marginLeft: "80px",
+      fontWeight: "bold",
+      marginRight: "40px",
+      "@media only screen and (max-width: 768px)": {
+        marginRight: "16px",
+        fontSize: "16px",
+      },
+    },
+    boxRating: {
+      lineHeight: "0",
+      marginRight: "8px",
+    },
+    ratingDesc: {
+      fontSize: "14px",
+      marginRight: "40px",
+      "@media only screen and (max-width: 768px)": {
+        marginRight: "16px",
+      },
     },
     date: {
-      width: "300px",
+      color: "#767676",
+      fontSize: "16px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "14px",
+      },
     },
   })();
 
@@ -79,18 +106,14 @@ export default function VersionPanel(props) {
         }
       } else if (props.mode === "Reviewer") {
         reviewsView.push(
-          <ReviewerCommentInput
-            key={j++}
-            scientificWorkId={props.scientificWorkId}
-          />
+          <ReviewerCommentInput key={j++} scientificWorkId={props.scientificWorkId} />
         );
       }
 
       return reviewsView;
     }
 
-    if (props.version)
-      setReviewsList(GeneratePanelContent(props.version.reviews));
+    if (props.version) setReviewsList(GeneratePanelContent(props.version.reviews));
   }, [
     props.version,
     props.mode,
@@ -102,16 +125,26 @@ export default function VersionPanel(props) {
   return (
     <div>
       <Accordion>
+        {/* Version number, date and rating */}
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <div className={style.panel}>
-            <span className={style.version}>
-              Version {props.version.versionNumber}
-            </span>
+            <span className={style.version}>Version {props.version.versionNumber}</span>
+
+            <Box
+              component="fieldset"
+              borderColor="transparent"
+              className={style.boxRating}
+            >
+              <StyledRating name="customized-color" value={2} max={3} readOnly />
+            </Box>
+            <p className={style.ratingDesc}>Accepted</p>
+
             <p className={style.date}>{props.version.date}</p>
-            <Rating value={2} max={3} readOnly />
           </div>
         </AccordionSummary>
-        <AccordionDetails width={1000}>{reviewsList}</AccordionDetails>
+
+        {/* Reviews and comments */}
+        <AccordionDetails width={1920}>{reviewsList}</AccordionDetails>
       </Accordion>
     </div>
   );
