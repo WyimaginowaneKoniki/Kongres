@@ -24,7 +24,7 @@ export default function Error404() {
           Go to home
         </Button>
       </NavLink>
-      <div><img className={style.photo} src={background} alt="404"/></div>
+      <div><img className={style.photo} src={background} alt=""/></div>
     </div>
   );
 }
