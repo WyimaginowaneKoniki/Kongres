@@ -120,6 +120,12 @@ export default function Navigation(props) {
       justifyContent: "center",
       alignItems: "center",
     },
+    linkButton: {
+      textDecoration: "none",
+      "@media (max-width: 1280px)": {
+        marginBottom: "16px",
+      },
+    },
     hamburger: {
       visibility: "hidden",
       color: "#6069A9",
