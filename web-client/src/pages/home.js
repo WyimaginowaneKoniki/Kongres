@@ -73,6 +73,9 @@ export default function Home() {
         marginTop: "32px",
       },
     },
+    btnNext: {
+      marginLeft: '8px',
+    },
     link: {
       textDecoration: "none",
     },
@@ -253,6 +256,7 @@ export default function Home() {
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
+                        className={style.btnNext}
                       >
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
                       </Button>
@@ -297,6 +301,7 @@ export default function Home() {
                       <Button
                         variant="contained"
                         color="primary"
+                        className={style.btnNext}
                         onClick={handleNextTwo}
                       >
                         {activeStepTwo === stepsTwo.length - 1
