@@ -37,7 +37,7 @@ export default function EmailConfirmationToken() {
           SetOpenAlert(true);
         }
       });
-  },[]);
+  },[history]);
 
   const [openAlert, SetOpenAlert] = React.useState(false);
 
