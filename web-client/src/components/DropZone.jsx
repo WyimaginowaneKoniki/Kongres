@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import uploadIcon from "../images/upload.png";
-import pdfIcon from "../images/pdf-icon.png";
+import BackupOutlinedIcon from "@material-ui/icons/BackupOutlined";
+import PictureAsPdfOutlinedIcon from "@material-ui/icons/PictureAsPdfOutlined";
 import { Button, Box } from "@material-ui/core/";
 
 export default function DropZone(props) {
@@ -11,8 +11,9 @@ export default function DropZone(props) {
     },
     dropContainer: {
       margin: "0px",
-      height: "350px",
-      border: "3px dashed #aaaaaa",
+      height: "400px",
+      border: "4px dashed #DFE2F8",
+      opacity: 1,
     },
     top: {
       display: "flex",
@@ -27,53 +28,68 @@ export default function DropZone(props) {
       fontSize: "20px",
     },
     uploadIcon: {
-      width: "50px",
-      height: "50px",
-      background: `url(${uploadIcon}) no-repeat center center`,
-      backgroundSize: "100%",
-      textAlign: "center",
+      width: "101px",
+      height: "67px",
       margin: "0 auto",
       paddingTop: "30px",
+      color: "#6069A9",
+    },
+    dragText: {
+      color: "black",
+      fontSize: 24,
     },
     message: {
-      color: "red",
-      padding: "2%",
-      fontSize: "15px",
+      color: "#AD1457",
+      height: 19,
+      fontSize: 16,
+      letterSpacing: "0px",
+      textAlign: "center",
+      width: "400px",
+      lineHeight: "1.4em",
+      display: "block",
     },
     inputInfo: {
-      height: "10%",
+      height: "19px",
       width: "100%",
       textAlign: "left",
-      paddingLeft: "5%",
-      color: "#aaaaaa",
+      paddingLeft: "24px",
+      letterSpacing: "0px",
+      color: "#767676",
+      fontSize: 16,
     },
     logo: {
-      height: "30px",
-      margin: "2%",
-      float: "left",
+      fontSize: "40px",
+      color: "#6069A9",
     },
     fileName: {
-      height: "30px",
-      width: "60%",
-      margin: "3%",
-      float: "left",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
+      width: "379px",
+      textAlign: "left",
+      marginLeft: "10px",
     },
     fileSize: {
-      height: "30px",
-      margin: "3% 2%",
-      float: "left",
+      color: "#767676",
+      width: "100px",
     },
     exit: {
-      height: "30px",
-      margin: "3% 2%",
-      float: "right",
+      width: "21px",
+      fontSize: 21,
+      color: "#AD1457",
       cursor: "pointer",
     },
     dialog: {
       display: "none",
+    },
+    btn: {
+      color: "#54457F",
+      size: 16,
+      border: "1px solid #54457F4D",
+      backgroundColor: "white",
+    },
+    bottom: {
+      justifyContent: "flex-start",
     },
   })();
 
@@ -86,9 +102,10 @@ export default function DropZone(props) {
   const [fileName, SetFileName] = React.useState(null);
   const [fileSize, SetFileSize] = React.useState(null);
 
-  // Changes style of area with added file (pdf icon, name, size). Changes display none → block, block → none.
+  // Changes style of area with added file (pdf icon, name, size). Changes display none → flex, flex → none.
   const [divStyle, SetDivStyle] = React.useState({
     display: "none",
+    
   });
 
   const DragOver = (e) => {
@@ -127,7 +144,7 @@ export default function DropZone(props) {
       file = f;
       SetFileName(file.name);
       SetFileSize(FileSize(file.size));
-      SetDivStyle({ display: "block" });
+      SetDivStyle({ display: "flex" });
       props.SetFile(file);
     }
   };
@@ -190,16 +207,15 @@ export default function DropZone(props) {
               onChange={FileSelected}
             />
 
-            <div className={style.uploadIcon}/>
+            <BackupOutlinedIcon className={style.uploadIcon} />
 
-            <Box lineHeight={2} m={1}>
+            <Box lineHeight={2} m={1} className={style.dragText}>
               Drag & Drop file here
               <br />
               or
               <br />
               <Button
                 variant="outlined"
-                color="primary"
                 className={style.btn}
                 onClick={OpenDialog}
               >
@@ -213,12 +229,12 @@ export default function DropZone(props) {
           Accepted file types: .pdf, max file size: 20MB
         </div>
       </div>
-      <div style={divStyle}>
-        <img className={style.logo} src={pdfIcon} alt="Logo" />
+      <div style={divStyle} className={style.bottom}>
+        <PictureAsPdfOutlinedIcon className={style.logo} />
         <span className={style.fileName}>{fileName}</span>
         <span className={style.fileSize}>{fileSize}</span>
         <span className={style.exit} onClick={Delete}>
-          x
+        🗙
         </span>
       </div>
     </div>
