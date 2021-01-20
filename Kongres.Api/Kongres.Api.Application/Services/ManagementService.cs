@@ -12,11 +12,11 @@ namespace Kongres.Api.Application.Services
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IReviewerRepository _reviewerRepository;
-        private readonly IReviewersScienceWorkRepository _reviewersScienceWorkRepository;
+        private readonly IReviewerScientificWorkRepository _reviewersScienceWorkRepository;
 
         public ManagementService(IScientificWorkRepository scientificWorkRepository,
                             IReviewerRepository reviewerRepository,
-                            IReviewersScienceWorkRepository reviewersScienceWorkRepository)
+                            IReviewerScientificWorkRepository reviewersScienceWorkRepository)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _reviewerRepository = reviewerRepository;

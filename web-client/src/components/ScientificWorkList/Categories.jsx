@@ -5,20 +5,23 @@ import "../../App.css";
 
 export default function Categories(props) {
   const style = makeStyles({
-    main: {
-      padding: "1.5%",
-      float: "left",
-    },
     btn: {
-      textTransform: "none",
+      color: "#6069A9",
+      backgroundColor: "#F1F3FF",
+      padding: "4px 8px",
+      marginRight: "16px",
+      marginBottom: "16px",
+      boxShadow: "none",
+      "&:hover": {
+        backgroundColor: "#C0C4E2",
+        boxShadow: "none",
+      },
     },
   })();
 
   return (
-    <div className={style.main}>
-      <Button variant="contained" color="primary" className={style.btn}>
-        {props.name}
-      </Button>
-    </div>
+    <Button variant="contained" className={style.btn}>
+      {props.name}
+    </Button>
   );
 }

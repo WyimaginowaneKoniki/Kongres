@@ -1,9 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Kongres.Api.Application.Commands.Users.Reviewer;
+using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Kongres.Api.WebApi.Controller
@@ -40,6 +44,25 @@ namespace Kongres.Api.WebApi.Controller
 
             var token = _cache.GetJwt(command.TokenId);
             return Ok(token);
+        }
+
+        // api/Reviewer/MyReviews
+        [Authorize]
+        [HttpGet("MyReviews")]
+        public async Task<IActionResult> GetListOfWorks([FromQuery] GetListOfWorksCommand command)
+        {
+            command.ReviewerId = HttpContext.User.Identity.Name;
+            IEnumerable<ScientificWorkWithStatusDto> scientificWorks;
+            try
+            {
+                scientificWorks = await CommandAsync(command);
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(scientificWorks);
         }
     }
 }

@@ -7,7 +7,7 @@ import { URL, URL_API, LINKS } from "../../../Constants";
 export default function SignInReviewer() {
   const signUpReviewer = {
     heading: "Interested in reviewing works?",
-    content: "Sign up now and become our reviewer",
+    content: "Sign up now and become our reviewer!",
     btn: "Sign up",
     signUpLink: LINKS.REVIEWER_SIGN_UP,
     signInAs: "participant",

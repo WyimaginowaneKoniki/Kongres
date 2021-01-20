@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 
 namespace Kongres.Api.Infrastructure.Repositories.Interfaces
 {
-    public interface IReviewersScienceWorkRepository : IRepository
+    public interface IReviewerScientificWorkRepository : IRepository
     {
+        IEnumerable<ScientificWork> GetListOfWorksForReviewer(uint reviewerId);
         Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks);
     }
 }

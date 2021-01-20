@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import "../../App.css";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import Information from "../../components/ScientificWork/Information";
 import VersionPanel from "../../components/ScientificWork/VersionPanel";
 import axios from "axios";
-import { URL_API } from "../../Constants";
-import defaultPhoto from "../../images/empty-image.png";
+import { URL_API, LINKS } from "../../Constants";
+import defaultPhoto from "../../images/default-avatar.png";
 
 export default function WorkView() {
   const style = makeStyles({
@@ -28,6 +29,7 @@ export default function WorkView() {
   })();
 
   const location = useLocation();
+  const history = useHistory();
 
   const [workPDF, SetWorkPDF] = React.useState(null);
   const [data, setData] = React.useState({
@@ -38,12 +40,36 @@ export default function WorkView() {
     mode: "",
   });
 
+  // Check if page is load successful
+  const [isSuccessedLoad, SetIsSuccessedLoad] = React.useState(false);
+
   useEffect(() => {
     let id = window.location.pathname.split("/").slice(-1)[0];
     if (isNaN(id)) id = null;
     console.log(location.state?.detail ? location.state?.detail : id);
 
     const token = localStorage.getItem("jwt");
+
+    // get all data about scientific work with reviews
+    (async () => {
+      await axios
+        .get(`${URL_API}/ScientificWork/${Number(id)}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          if (!resp.data.mainAuthor.photo)
+            resp.data.mainAuthor.photo = defaultPhoto;
+          setData(resp.data);
+          SetIsSuccessedLoad(true);
+        })
+        .catch((error) => {
+          console.log(error);
+          history.push({
+            pathname: "/",
+          });
+          SetIsSuccessedLoad(false);
+        });
+    })();
 
     // get scientific work file
     (async () => {
@@ -57,59 +83,52 @@ export default function WorkView() {
             new Blob([resp.data], { type: "application/pdf" })
           );
           SetWorkPDF(pdf);
-        });
-    })();
-
-    // get all data about scientific work with reviews
-    (async () => {
-      await axios
-        .get(`${URL_API}/ScientificWork/${Number(id)}`, {
-          headers: { Authorization: `Bearer ${token}` },
         })
-        .then((resp) => {
-          if (!resp.data.mainAuthor.photo)
-            resp.data.mainAuthor.photo = defaultPhoto;
-
-          setData(resp.data);
+        .catch((_) => {
+          history.push({
+            pathname: LINKS.PARTICIPANT_LOGIN,
+          });
         });
     })();
-  }, [location]);
+  }, [location, history]);
 
   return (
-    <div>
-      {data.mode === "Author" ? (
-        <p className={style.path}>
-          My profile / <span className={style.title}>My Work</span>
-        </p>
-      ) : (
-        <p className={style.path}>
-          Scientific works /{" "}
-          <span className={style.title}>{data.scientificWork.title}</span>
-        </p>
-      )}
+    isSuccessedLoad && (
+      <div>
+        {data.mode === "Author" ? (
+          <p className={style.path}>
+            My profile / <span className={style.title}>My Work</span>
+          </p>
+        ) : (
+          <p className={style.path}>
+            Scientific works /{" "}
+            <span className={style.title}>{data.scientificWork.title}</span>
+          </p>
+        )}
 
-      <Information
-        scientificWork={data.scientificWork}
-        author={data.mainAuthor}
-        status={data.status}
-        mode={data.mode}
-        workPDF={workPDF}
-      />
+        <Information
+          scientificWork={data.scientificWork}
+          author={data.mainAuthor}
+          status={data.status}
+          mode={data.mode}
+          workPDF={workPDF}
+        />
 
-      <div className={style.menu}>
-        {data.mode !== "Participant" &&
-          data.versions.map((version, i) => (
-            <div key={i}>
-              <VersionPanel
-                version={version}
-                mode={data.mode}
-                authorPhoto={data.mainAuthor.photo}
-                authorName={data.mainAuthor.name}
-                scientificWorkId={data.scientificWork.id}
-              />
-            </div>
-          ))}
+        <div className={style.menu}>
+          {data.mode !== "Participant" &&
+            data.versions.map((version, i) => (
+              <div key={i}>
+                <VersionPanel
+                  version={version}
+                  mode={data.mode}
+                  authorPhoto={data.mainAuthor.photo}
+                  authorName={data.mainAuthor.name}
+                  scientificWorkId={data.scientificWork.id}
+                />
+              </div>
+            ))}
+        </div>
       </div>
-    </div>
+    )
   );
 }
