@@ -43,17 +43,18 @@ export default function VersionPanel(props) {
     },
     ratingDesc: {
       fontSize: "14px",
-      marginRight: "40px",
-      "@media only screen and (max-width: 768px)": {
-        marginRight: "16px",
-      },
     },
     date: {
       color: "#767676",
       fontSize: "16px",
+      marginRight: "40px",
       "@media only screen and (max-width: 768px)": {
         fontSize: "14px",
+        marginRight: "16px",
       },
+    },
+    reviews: {
+      display: "block",
     },
   })();
 
@@ -129,7 +130,7 @@ export default function VersionPanel(props) {
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <div className={style.panel}>
             <span className={style.version}>Version {props.version.versionNumber}</span>
-
+            <p className={style.date}>{props.version.date}</p>
             <Box
               component="fieldset"
               borderColor="transparent"
@@ -139,12 +140,12 @@ export default function VersionPanel(props) {
             </Box>
             <p className={style.ratingDesc}>Accepted</p>
 
-            <p className={style.date}>{props.version.date}</p>
+            
           </div>
         </AccordionSummary>
 
         {/* Reviews and comments */}
-        <AccordionDetails width={1920}>{reviewsList}</AccordionDetails>
+        <AccordionDetails className={style.reviews} width={1920}>{reviewsList}</AccordionDetails>
       </Accordion>
     </div>
   );
