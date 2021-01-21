@@ -77,7 +77,6 @@ export default function PersonalInformation(props) {
     props.info.name,
     props.info.surname,
     props.info.email,
-    props.info.email,
     props.info.university,
     props.info.academicTitle,
     props.info.specialization,

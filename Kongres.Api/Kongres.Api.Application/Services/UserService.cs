@@ -128,7 +128,6 @@ namespace Kongres.Api.Application.Services
         {
             var user = await _userManager.FindByIdAsync(userId);
 
-
             string base64Photo = null;
 
             if (user.Photo != null)
