@@ -69,7 +69,8 @@ export default function AboutInfo(props) {
     SetRight(
         props.isImageRight || window.innerWidth < 768 ? image : infos
     );
-  }, [left, right, props.isImageRight, style.left, style.right]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={style.main}>

@@ -98,6 +98,7 @@ export default function VersionPanel(props) {
     props.authorPhoto,
     props.authorName,
     props.scientificWorkId,
+    props.status
   ]);
 
   return (
