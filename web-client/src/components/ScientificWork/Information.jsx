@@ -109,6 +109,14 @@ export default function Information(props) {
     },
     btnDownload: {
       marginRight: "32px",
+      "@media only screen and (max-width: 600px)": {
+        marginTop: "16px",
+      },
+    },
+    btnNewVersion: {
+      "@media only screen and (max-width: 600px)": {
+        marginTop: "16px",
+      },
     },
     popup: {
       width: "600px",
@@ -154,7 +162,6 @@ export default function Information(props) {
     setVersionFile(null);
   };
 
-  // Show alert
   const ShowAlert = () => {
     SetOpenAlertError(true);
   };
@@ -163,7 +170,6 @@ export default function Information(props) {
     SetOpenAlertSuccess(true);
   };
 
-  // Close alert
   const CloseAlert = (event, reason) => {
     if (reason === "clickaway") return;
 
@@ -252,7 +258,7 @@ export default function Information(props) {
           <Button
             variant="contained"
             color="primary"
-            className={style.btn1}
+            className={style.btnNewVersion}
             onClick={openDialog}
           >
             Add new version

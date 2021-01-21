@@ -1,13 +1,12 @@
 import React from "react";
 import "../../App.css";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
   Box,
-  Typography,
   TextField,
   DialogActions,
   InputAdornment,
@@ -18,53 +17,106 @@ import DropZone from "../DropZone";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import defaultPhoto from "../../images/empty-image.png";
+import defaultPhoto from "../../images/default-avatar.png";
 import Close from "@material-ui/icons/Close";
 import axios from "axios";
 import { URL_API, RATING } from "../../Constants";
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#6069A9",
+  },
+})(Rating);
 
 export default function ReviewerCommentInput(props) {
   const style = makeStyles({
     contentOnPage: {
       width: "600px",
       display: "flex",
-      margin: "20px",
-      marginLeft: "60px",
+      alignItems: "center",
+      marginTop: "40px",
+      marginLeft: "40px",
+      marginBottom: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        marginLeft: "24px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        width: "320px",
+        marginLeft: "0",
+      },
     },
     userInfo: {
-      width: "80px",
       alignItems: "center",
     },
     image: {
-      width: "80px",
-      height: "80px",
+      width: "72px",
+      height: "72px",
       borderRadius: "50px",
+      boxShadow: "2px 2px 4px #C0C4E233",
+      "@media only screen and (max-width: 1080px)": {
+        width: "40px",
+        height: "40px",
+      },
     },
     userName: {
       textAlign: "center",
+      fontSize: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "12px",
+        lineHeight: "1em",
+      },
     },
     btn: {
       width: "120px",
       height: "45px",
-      margin: "5px",
+      marginLeft: "24px",
+      marginRight: "16px",
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "8px",
+      },
     },
+    dialog: {},
     dialogContent: {
       display: "flex",
       flexDirection: "column",
+      "@media only screen and (max-width: 768px)": {
+        justifyContent: "center",
+      },
     },
     dialogTitle: {
       fontWeight: "bold",
+      fontSize: "24px",
       textAlign: "center",
+      padding: "0",
     },
     rating: {
       display: "flex",
+      alignItems: "center",
+      marginBottom: "16px",
+    },
+    boxRating: {
+      lineHeight: "0",
+      marginRight: "8px",
     },
     info: {
       textAlign: "center",
+      color: "#54457F",
+      marginBottom: "8px",
     },
     reviewInput: {
-      width: "520px",
-      margin: "15px",
+      width: "550px",
+      marginBottom: "8px",
+      "@media only screen and (max-width: 1480px)": {
+        marginBottom: "32px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        textAlign: "center",
+        alignSelf: "center",
+        width: "320px",
+      },
+      "@media only screen and (max-width: 425px)": {
+        width: "240px",
+      },
     },
     divClose: {
       display: "flex",
@@ -74,7 +126,7 @@ export default function ReviewerCommentInput(props) {
       color: "#AD1457",
       width: "32px",
       height: "32px",
-      padding: "0.5em",
+      padding: "16px",
       "&:hover": {
         cursor: "pointer",
       },
@@ -89,15 +141,10 @@ export default function ReviewerCommentInput(props) {
     }),
     reviewInput: yup
       .string()
-      .max(
-        maxReviewLength,
-        `Review should be ${maxReviewLength} characters or less`
-      )
+      .max(maxReviewLength, `Review should be ${maxReviewLength} characters or less`)
       .when("file", () => {
         if (!workFile)
-          return yup
-            .string()
-            .required("Review must contain comment or/and file");
+          return yup.string().required("Review must contain comment or/and file");
       }),
   });
 
@@ -170,35 +217,35 @@ export default function ReviewerCommentInput(props) {
         </Button>
       </div>
       {/* All Dialog in Popup */}
-      <Dialog open={isDialogOpen} onClose={closeDialog}>
+      <Dialog open={isDialogOpen} onClose={closeDialog} className={style.dialog}>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className={style.divClose}>
             <Close className={style.close} onClick={closeDialog} />
           </div>
-          <DialogTitle className={style.dialogTitle}>
-            Add your review
-          </DialogTitle>
+          <DialogTitle className={style.dialogTitle}>Add your review</DialogTitle>
           <DialogContent className={style.dialogContent}>
             <div className={style.rating}>
-              <Typography component="legend">Your rating:</Typography>
-              <Rating
-                max={3}
-                name="rating"
-                value={ratingValue}
-                onChange={handleChangeRating}
-                onChangeActive={handleHoverRating}
-              />
-              <Box ml={2}>
-                {RATING[ratingHover !== -1 ? ratingHover : ratingValue]}
+              <p>Your rating:</p>
+              <Box
+                component="fieldset"
+                borderColor="transparent"
+                className={style.boxRating}
+              >
+                <StyledRating
+                  name="customized-color"
+                  max={3}
+                  value={ratingValue}
+                  onChange={handleChangeRating}
+                  onChangeActive={handleHoverRating}
+                />
               </Box>
+              <Box ml={2}>{RATING[ratingHover !== -1 ? ratingHover : ratingValue]}</Box>
               <FormHelperText error>
                 {errors?.rating && errors?.rating?.message}
               </FormHelperText>
             </div>
-            <p className={style.info}>
-              Review must contain comment or/and file
-            </p>
 
+            <p className={style.info}>Remember: review must contain comment or file</p>
             <TextField
               className={style.reviewInput}
               inputRef={register}
@@ -225,7 +272,6 @@ export default function ReviewerCommentInput(props) {
               error={!!errors.reviewInput}
               helperText={errors?.reviewInput?.message}
             />
-
             <DropZone SetFile={setWorkFile} inputRef={register} required />
           </DialogContent>
           <DialogActions>
