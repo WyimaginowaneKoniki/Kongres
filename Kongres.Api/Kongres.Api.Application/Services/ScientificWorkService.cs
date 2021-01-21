@@ -110,9 +110,9 @@ namespace Kongres.Api.Application.Services
             }
         }
 
-        public async Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync()
+        public async Task<IEnumerable<ScientificWorkDto>> GetApprovedWorksAsync(string title, string category)
         {
-            var listOfScientificWorks = await _scientificWorkRepository.GetApprovedWorksAsync();
+            var listOfScientificWorks = await _scientificWorkRepository.GetApprovedWorksAsync(title, category);
 
             var listOfScientificWorksDto = new List<ScientificWorkDto>();
 

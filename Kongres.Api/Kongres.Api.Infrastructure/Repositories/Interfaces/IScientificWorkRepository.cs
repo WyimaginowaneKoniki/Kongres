@@ -8,7 +8,7 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
     {
         Task AddAsync(ScientificWork scienceWork);
         Task<ScientificWork> GetByAuthorIdAsync(uint authorId);
-        Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync();
+        Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync(string title, string category);
         Task<ScientificWork> GetWorkByIdAsync(uint scientificWorkId);
         Task<bool> IsAuthorOfScientificWorkByReviewIdAsync(uint userId, uint reviewOfWorkId);
         Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId);

@@ -18,6 +18,6 @@ namespace Kongres.Api.Application.Handlers.Work
         }
 
         public async Task<IEnumerable<ScientificWorkDto>> Handle(GetApprovedWorksQuery request, CancellationToken cancellationToken)
-            => await _scientificWorkService.GetApprovedWorksAsync();
+            => await _scientificWorkService.GetApprovedWorksAsync(request.Title, request.Category);
     }
 }

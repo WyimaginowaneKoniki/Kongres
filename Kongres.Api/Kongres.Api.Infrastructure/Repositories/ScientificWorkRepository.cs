@@ -1,4 +1,5 @@
-﻿using Kongres.Api.Domain.Entities;
+﻿using System;
+using Kongres.Api.Domain.Entities;
 using Kongres.Api.Infrastructure.Context;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kongres.Api.Domain.Enums;
+using Kongres.Api.Domain.Extensions;
 
 namespace Kongres.Api.Infrastructure.Repositories
 {
@@ -27,10 +29,12 @@ namespace Kongres.Api.Infrastructure.Repositories
         public async Task<ScientificWork> GetByAuthorIdAsync(uint userId)
             => await _context.ScientificWorks.FirstOrDefaultAsync(x => x.MainAuthor.Id == userId);
 
-        public async Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync()
+        public async Task<IEnumerable<ScientificWork>> GetApprovedWorksAsync(string title, string category)
             => await _context.ScientificWorks.Include(x => x.MainAuthor)
                                              .Include(x => x.Versions)
                                              .Where(x => x.Status == StatusEnum.Accepted)
+                                             .WhereIf(!title.isEmpty(), x => x.Name.Contains(title, StringComparison.InvariantCultureIgnoreCase))
+                                             .WhereIf(!category.isEmpty(), x => x.Specialization == category)
                                              .ToListAsync();
 
         public async Task<ScientificWork> GetWorkByIdAsync(uint scientificWorkId)
