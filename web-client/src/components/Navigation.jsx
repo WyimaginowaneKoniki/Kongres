@@ -23,7 +23,7 @@ export default function Navigation(props) {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
-      "@media (max-width: 1280px)": {
+      "@media (max-width: 1410px)": {
         display: "none",
       },
     },
@@ -34,7 +34,7 @@ export default function Navigation(props) {
       fontWeight: "bold",
       paddingTop: "8px",
       paddingBottom: "8px",
-      "@media (max-width: 1280px)": {
+      "@media (max-width: 1410px)": {
         display: "none",
       },
     },
@@ -77,6 +77,7 @@ export default function Navigation(props) {
       textAlign: "right",
       color: "#767676",
       lineHeight: "1em",
+      margin: 'auto',
       "&:hover": {
         cursor: "pointer",
         color: "#000000",
@@ -119,20 +120,20 @@ export default function Navigation(props) {
     },
     linkButton: {
       textDecoration: "none",
-      "@media (max-width: 1280px)": {
+      "@media (max-width: 1410px)": {
         marginBottom: "16px",
       },
     },
     hamburger: {
       visibility: "hidden",
       color: "#6069A9",
-      "@media (max-width: 1280px)": {
+      "@media (max-width: 1410px)": {
         visibility: "visible",
       },
     },
     loggedHamburger: {
       visibility: "hidden",
-      "@media (max-width: 1280px)": {
+      "@media (max-width: 1410px)": {
         visibility: "visible",
         display: "flex",
         alignItems: "center",
@@ -305,6 +306,11 @@ export default function Navigation(props) {
           <NavLink exact to={LINKS.ABOUT} className={style.linkMenu}>
             <ListItem button onClick={handleDrawerClose}>
               <span className={style.nameAdress}>About</span>
+            </ListItem>
+          </NavLink>
+          <NavLink exact to={LINKS.GALLERY} className={style.linkMenu}>
+            <ListItem button onClick={handleDrawerClose}>
+              <span className={style.nameAdress}>Gallery</span>
             </ListItem>
           </NavLink>
           <NavLink exact to={LINKS.CONTACT} className={style.linkMenu}>
@@ -492,6 +498,16 @@ export default function Navigation(props) {
               activeClassName={style.activeLink}
             >
               About
+            </NavLink>
+          </Box>
+          <Box>
+            <NavLink
+              exact
+              to={LINKS.GALLERY}
+              className={`menu-category ${style.link}`}
+              activeClassName={style.activeLink}
+            >
+              Gallery
             </NavLink>
           </Box>
           <Box>

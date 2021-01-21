@@ -7,6 +7,7 @@ import ReviewerCommentInput from "./ReviewerCommentInput";
 import AuthorAnswer from "./AuthorAnswer";
 import AuthorAnswerInput from "./AuthorAnswerInput";
 import { Accordion, AccordionSummary, AccordionDetails, Box } from "@material-ui/core/";
+import {RATING} from "../../Constants";
 import "../../App.css";
 
 const StyledRating = withStyles({
@@ -136,9 +137,9 @@ export default function VersionPanel(props) {
               borderColor="transparent"
               className={style.boxRating}
             >
-              <StyledRating name="customized-color" value={2} max={3} readOnly />
+              <StyledRating name="customized-color" value={props.version.rating} max={3} readOnly />
             </Box>
-            <p className={style.ratingDesc}>Accepted</p>
+            <p className={style.ratingDesc}>{RATING[props.version.rating]}</p>
           </div>
         </AccordionSummary>
 
