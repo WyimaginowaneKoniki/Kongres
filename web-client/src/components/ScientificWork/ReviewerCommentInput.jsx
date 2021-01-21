@@ -7,7 +7,6 @@ import {
   DialogContent,
   DialogTitle,
   Box,
-  Typography,
   TextField,
   DialogActions,
   InputAdornment,
@@ -28,6 +27,7 @@ export default function ReviewerCommentInput(props) {
     contentOnPage: {
       width: "600px",
       display: "flex",
+      alignItems: "center",
       marginTop: "40px",
       marginLeft: "40px",
       marginBottom: "16px",
@@ -63,25 +63,50 @@ export default function ReviewerCommentInput(props) {
     btn: {
       width: "120px",
       height: "45px",
-      margin: "5px",
+      marginLeft: "24px",
+      marginRight: "16px",
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "8px",
+      },
     },
+    dialog: {},
     dialogContent: {
       display: "flex",
       flexDirection: "column",
+      "@media only screen and (max-width: 768px)": {
+        justifyContent: "center",
+      },
     },
     dialogTitle: {
       fontWeight: "bold",
+      fontSize: "24px",
       textAlign: "center",
+      padding: "0",
     },
     rating: {
       display: "flex",
+      alignItems: "center",
+      marginBottom: "16px",
     },
     info: {
       textAlign: "center",
+      color: "#54457F",
+      marginBottom: "8px",
     },
     reviewInput: {
-      width: "520px",
-      margin: "15px",
+      width: "550px",
+      marginBottom: "8px",
+      "@media only screen and (max-width: 1480px)": {
+        marginBottom: "32px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        textAlign: "center",
+        alignSelf: "center",
+        width: "320px",
+      },
+      "@media only screen and (max-width: 425px)": {
+        width: "240px",
+      },
     },
     divClose: {
       display: "flex",
@@ -91,7 +116,7 @@ export default function ReviewerCommentInput(props) {
       color: "#AD1457",
       width: "32px",
       height: "32px",
-      padding: "0.5em",
+      padding: "16px",
       "&:hover": {
         cursor: "pointer",
       },
@@ -106,15 +131,10 @@ export default function ReviewerCommentInput(props) {
     }),
     reviewInput: yup
       .string()
-      .max(
-        maxReviewLength,
-        `Review should be ${maxReviewLength} characters or less`
-      )
+      .max(maxReviewLength, `Review should be ${maxReviewLength} characters or less`)
       .when("file", () => {
         if (!workFile)
-          return yup
-            .string()
-            .required("Review must contain comment or/and file");
+          return yup.string().required("Review must contain comment or/and file");
       }),
   });
 
@@ -187,17 +207,15 @@ export default function ReviewerCommentInput(props) {
         </Button>
       </div>
       {/* All Dialog in Popup */}
-      <Dialog open={isDialogOpen} onClose={closeDialog}>
+      <Dialog open={isDialogOpen} onClose={closeDialog} className={style.dialog}>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className={style.divClose}>
             <Close className={style.close} onClick={closeDialog} />
           </div>
-          <DialogTitle className={style.dialogTitle}>
-            Add your review
-          </DialogTitle>
+          <DialogTitle className={style.dialogTitle}>Add your review</DialogTitle>
           <DialogContent className={style.dialogContent}>
             <div className={style.rating}>
-              <Typography component="legend">Your rating:</Typography>
+              <p>Your rating:</p>
               <Rating
                 max={3}
                 name="rating"
@@ -205,16 +223,12 @@ export default function ReviewerCommentInput(props) {
                 onChange={handleChangeRating}
                 onChangeActive={handleHoverRating}
               />
-              <Box ml={2}>
-                {RATING[ratingHover !== -1 ? ratingHover : ratingValue]}
-              </Box>
+              <Box ml={2}>{RATING[ratingHover !== -1 ? ratingHover : ratingValue]}</Box>
               <FormHelperText error>
                 {errors?.rating && errors?.rating?.message}
               </FormHelperText>
             </div>
-            <p className={style.info}>
-              Review must contain comment or/and file
-            </p>
+            <p className={style.info}>Remember: review must contain comment or file</p>
 
             <TextField
               className={style.reviewInput}

@@ -32,8 +32,6 @@ export default function ReviewerComment(props) {
       },
       "@media only screen and (max-width: 360px)": {
         width: "280px",
-        marginLeft: "0",
-        lineHeight: "1.5em",
       },
     },
     userInfo: {
