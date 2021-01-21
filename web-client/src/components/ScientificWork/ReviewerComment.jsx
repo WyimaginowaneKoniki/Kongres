@@ -21,12 +21,19 @@ export default function ReviewerComment(props) {
       marginTop: "40px",
       marginLeft: "40px",
       marginBottom: "16px",
+      fontSize: "16px",
       "@media only screen and (max-width: 1080px)": {
         marginLeft: "24px",
       },
       "@media only screen and (max-width: 768px)": {
         width: "320px",
         marginLeft: "0",
+        lineHeight: "1.5em",
+      },
+      "@media only screen and (max-width: 360px)": {
+        width: "280px",
+        marginLeft: "0",
+        lineHeight: "1.5em",
       },
     },
     userInfo: {
@@ -83,7 +90,6 @@ export default function ReviewerComment(props) {
     },
     reviewText: {
       textAlign: "left",
-      fontSize: "16px",
       marginLeft: "4px",
     },
     btn: {

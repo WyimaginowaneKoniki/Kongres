@@ -18,7 +18,7 @@ import DropZone from "../DropZone";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import defaultPhoto from "../../images/empty-image.png";
+import defaultPhoto from "../../images/default-avatar.png";
 import Close from "@material-ui/icons/Close";
 import axios from "axios";
 import { URL_API, RATING } from "../../Constants";
@@ -28,20 +28,37 @@ export default function ReviewerCommentInput(props) {
     contentOnPage: {
       width: "600px",
       display: "flex",
-      margin: "20px",
-      marginLeft: "60px",
+      marginTop: "40px",
+      marginLeft: "40px",
+      marginBottom: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        marginLeft: "24px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        width: "320px",
+        marginLeft: "0",
+      },
     },
     userInfo: {
-      width: "80px",
       alignItems: "center",
     },
     image: {
-      width: "80px",
-      height: "80px",
+      width: "72px",
+      height: "72px",
       borderRadius: "50px",
+      boxShadow: "2px 2px 4px #C0C4E233",
+      "@media only screen and (max-width: 1080px)": {
+        width: "40px",
+        height: "40px",
+      },
     },
     userName: {
       textAlign: "center",
+      fontSize: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "12px",
+        lineHeight: "1em",
+      },
     },
     btn: {
       width: "120px",

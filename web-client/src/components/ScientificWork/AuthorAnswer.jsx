@@ -9,16 +9,17 @@ export default function AuthorAnswer(props) {
       marginLeft: "144px",
       marginTop: "16px",
       display: "flex",
-      flexWrap: "wrap",
       marginBottom: "48px",
       "@media only screen and (max-width: 1080px)": {
         marginLeft: "64px",
         fontSize: "16px",
+        flexWrap: "wrap",
       },
       "@media only screen and (max-width: 768px)": {
-        width: "80vw",
+        width: "60vw",
         marginLeft: "0",
         justifyContent: "flex-start",
+        lineHeight: "1.5em"
       },
     },
     userInfo: {
