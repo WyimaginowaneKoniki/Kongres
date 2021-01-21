@@ -9,25 +9,26 @@ export default function MyProfile(props) {
   const style = makeStyles({
     main: {
       display: "flex",
+      justifyContent: "center",
+      fontWeight: "bold",
       "@media (max-width: 1050px)": {
         flexWrap: "wrap",
       },
     },
     left: {
       width: "400px",
-      border: "2px solid black",
     },
     right: {
       marginLeft: "64px",
       "@media (max-width: 1050px)": {
         padding: "0.5em",
-        marginTop: '64px',
+        marginTop: "64px",
         marginLeft: "0",
       },
     },
-    h2: {
+    profileLinks: {
       textAlign: "left",
-      padding: "1.5em",
+      padding: "1.2em",
       "&:hover": {
         cursor: "pointer",
         color: "#6069A9",
@@ -35,6 +36,9 @@ export default function MyProfile(props) {
       "@media (max-width: 450px)": {
         padding: "0em",
       },
+    },
+    smallLinks: {
+      fontSize: "16px",
     },
     link: {
       color: "black",
@@ -80,28 +84,31 @@ export default function MyProfile(props) {
       <h1 className={style.h1}> My Profile</h1>
       <div className={style.main}>
         <div className={style.left}>
-          <h2 className={style.h2} onClick={moveToWork}>
+          <p className={style.profileLinks} onClick={moveToWork}>
             Add work / My work
-          </h2>
-          <h2
-            className={style.h2}
+          </p>
+          <p
+            className={style.profileLinks}
             onClick={moveToPersonalInformation}
             style={{ color: info }}
           >
             Personal Information
-          </h2>
-          <h2
-            className={style.h2}
+          </p>
+          <p
+            className={style.profileLinks}
             onClick={moveToChangePassword}
             style={{ color: password }}
           >
             Change password
-          </h2>
-          <h2 className={style.h2} onClick={moveToLogOut}>
+          </p>
+          <p
+            className={`${style.profileLinks} ${style.smallLinks}`}
+            onClick={moveToLogOut}
+          >
             Log out
-          </h2>
+          </p>
           <NavLink exact to="/regulations" className={style.link}>
-            <h2 className={style.h2}>Rules</h2>
+            <p className={`${style.profileLinks} ${style.smallLinks}`}>Rules</p>
           </NavLink>
         </div>
         <div className={style.right}>
