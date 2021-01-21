@@ -50,13 +50,13 @@ export default function DropZone(props) {
     },
     dragText: {
       color: "black",
-      fontSize: 24,
+      fontSize: "24px",
     },
     message: {
       color: "#AD1457",
-      height: 19,
-      fontSize: 16,
-      letterSpacing: "0px",
+      height: "19px",
+      fontSize: "16px",
+      letterSpacing: "0",
       textAlign: "center",
       width: "400px",
       lineHeight: "1.4em",
@@ -67,9 +67,9 @@ export default function DropZone(props) {
     },
     messageButton: {
       color: "#AD1457",
-      height: 19,
-      fontSize: 16,
-      letterSpacing: "0px",
+      height: "19px",
+      fontSize: "16px",
+      letterSpacing: "0",
       textAlign: "center",
       width: "auto",
       lineHeight: "1.4em",
@@ -84,9 +84,9 @@ export default function DropZone(props) {
       width: "100%",
       textAlign: "left",
       paddingLeft: "24px",
-      letterSpacing: "0px",
+      letterSpacing: "0",
       color: "#767676",
-      fontSize: 16,
+      fontSize: "16px",
       "@media only screen and (max-width: 1480px)": {
         marginTop: "-80px",
         marginBottom: "75px",
@@ -116,7 +116,7 @@ export default function DropZone(props) {
     },
     exit: {
       width: "21px",
-      fontSize: 21,
+      fontSize: "21px",
       color: "#AD1457",
       cursor: "pointer",
     },
@@ -125,12 +125,14 @@ export default function DropZone(props) {
     },
     btn: {
       color: "#54457F",
-      size: 16,
+      size: "16px",
       border: "1px solid #54457F4D",
       backgroundColor: "white",
     },
     bottom: {
       justifyContent: "flex-start",
+      alignItems: "center",
+      marginTop: "16px",
       "@media only screen and (max-width: 1480px)": {
         marginBottom: "25px",
       },
