@@ -46,10 +46,8 @@ namespace Kongres.Api.Application.Services
             string specialization)
         {
             var user = await _userManager.FindByIdAsync(authorId.ToString());
-
-            var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
-
-            if (!isParticipant)
+            
+            if (user.NormalizedUserName.Split(":")[0] != "PARTICIPANT")
                 throw new AuthenticationException();
 
             var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(authorId);
@@ -252,9 +250,8 @@ namespace Kongres.Api.Application.Services
         public async Task<IEnumerable<ScientificWorkWithStatusDto>> GetListOfWorksForReviewer(uint reviewerId)
         {
             var user = await _userManager.FindByIdAsync(reviewerId.ToString());
-            var isReviewer = await _userManager.IsInRoleAsync(user, "Reviewer");
 
-            if (!isReviewer)
+            if (user.NormalizedUserName.Split(":")[0] != "REVIEWER")
                 throw new AuthenticationException();
 
             var scientificWorks = _reviewersWorkRepository.GetListOfWorksForReviewer(reviewerId);
