@@ -139,13 +139,13 @@ export default function VersionPanel(props) {
               <StyledRating name="customized-color" value={2} max={3} readOnly />
             </Box>
             <p className={style.ratingDesc}>Accepted</p>
-
-            
           </div>
         </AccordionSummary>
 
         {/* Reviews and comments */}
-        <AccordionDetails className={style.reviews} width={1920}>{reviewsList}</AccordionDetails>
+        <AccordionDetails className={style.reviews} width={1920}>
+          {reviewsList}
+        </AccordionDetails>
       </Accordion>
     </div>
   );

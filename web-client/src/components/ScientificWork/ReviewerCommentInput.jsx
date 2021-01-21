@@ -1,6 +1,6 @@
 import React from "react";
 import "../../App.css";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
   Button,
   Dialog,
@@ -21,6 +21,12 @@ import defaultPhoto from "../../images/default-avatar.png";
 import Close from "@material-ui/icons/Close";
 import axios from "axios";
 import { URL_API, RATING } from "../../Constants";
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#6069A9",
+  },
+})(Rating);
 
 export default function ReviewerCommentInput(props) {
   const style = makeStyles({
@@ -87,6 +93,10 @@ export default function ReviewerCommentInput(props) {
       display: "flex",
       alignItems: "center",
       marginBottom: "16px",
+    },
+    boxRating: {
+      lineHeight: "0",
+      marginRight: "8px",
     },
     info: {
       textAlign: "center",
@@ -216,20 +226,27 @@ export default function ReviewerCommentInput(props) {
           <DialogContent className={style.dialogContent}>
             <div className={style.rating}>
               <p>Your rating:</p>
-              <Rating
-                max={3}
-                name="rating"
-                value={ratingValue}
-                onChange={handleChangeRating}
-                onChangeActive={handleHoverRating}
-              />
+              <Box
+                component="fieldset"
+                borderColor="transparent"
+                className={style.boxRating}
+              >
+                <StyledRating
+                  name="customized-color"
+                  max={3}
+                  name="rating"
+                  value={ratingValue}
+                  onChange={handleChangeRating}
+                  onChangeActive={handleHoverRating}
+                />
+              </Box>
               <Box ml={2}>{RATING[ratingHover !== -1 ? ratingHover : ratingValue]}</Box>
               <FormHelperText error>
                 {errors?.rating && errors?.rating?.message}
               </FormHelperText>
             </div>
-            <p className={style.info}>Remember: review must contain comment or file</p>
 
+            <p className={style.info}>Remember: review must contain comment or file</p>
             <TextField
               className={style.reviewInput}
               inputRef={register}
@@ -256,7 +273,6 @@ export default function ReviewerCommentInput(props) {
               error={!!errors.reviewInput}
               helperText={errors?.reviewInput?.message}
             />
-
             <DropZone SetFile={setWorkFile} inputRef={register} required />
           </DialogContent>
           <DialogActions>
