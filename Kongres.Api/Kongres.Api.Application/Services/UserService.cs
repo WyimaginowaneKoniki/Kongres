@@ -116,12 +116,31 @@ namespace Kongres.Api.Application.Services
             var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
             if (!isParticipant)
                 throw new AuthenticationException();
-            
+
             var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(uint.Parse(userId));
             if (scientificWork != null)
                 throw new InvalidOperationException();
 
             return $"{user.Name} {user.Surname}";
+        }
+
+        public async Task<MyProfileUserDto> GetInformationForMyProfileAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var authorPhoto = await _fileManager.GetBase64FileAsync(user.Photo);
+            var photoExtension = user.Photo.Split(".")[^1];
+
+            return new MyProfileUserDto()
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                Email = user.Email,
+                AcademicTitle = user.Degree,
+                University = user.University,
+                Specialization = user.Specialization,
+                PhotoBase64 = $"data:image/{photoExtension};base64,{authorPhoto}",
+                Role = user.UserName.Split(":")[0]
+            };
         }
     }
 }

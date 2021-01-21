@@ -29,5 +29,17 @@ namespace Kongres.Api.WebApi.Controller
             var userInfo = await CommandAsync(query);
             return Ok(userInfo);
         }
+
+        [Authorize]
+        [HttpGet("MyProfile")]
+        public async Task<IActionResult> GetInformationForMyProfile()
+        {
+            var query = new GetInformationForMyProfileQuery()
+            {
+                UserId = HttpContext.User.Identity.Name
+            };
+            var userInfo = await CommandAsync(query);
+            return Ok(userInfo);
+        }
     }
 }
