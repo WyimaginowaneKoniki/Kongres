@@ -1,11 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, MenuItem, Container } from "@material-ui/core/";
+import { TextField, Container } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Avatar from "./Avatar";
-import { categories } from "../../Constants";
 
 export default function PersonalInformation(props) {
   const style = makeStyles({
@@ -16,9 +14,8 @@ export default function PersonalInformation(props) {
     form: {
       display: "flex",
       flexDirection: "column",
-      float: "left",
       textAlign: "left",
-      maxWidth: "400px",
+      maxWidth: "320px",
       margin: "16px",
     },
     textField: {
@@ -61,19 +58,33 @@ export default function PersonalInformation(props) {
     },
     signInUpOther: {
       maxWidth: "400px",
-      float: "left",
       marginLeft: "144px",
     },
   })();
 
-  const [specialization, setSpecialization] = React.useState(
-    props.specialization
-  );
-  const [firstName, setFirstName] = React.useState(props.firstName);
-  const [lastName, setLastName] = React.useState(props.lastName);
-  const [email, setEmail] = React.useState(props.email);
-  const [university, setUniversity] = React.useState(props.university);
-  const [academicTitle, setAcademicTitle] = React.useState(props.academicTitle);
+  React.useEffect(() => {
+    setFirstName(props.info.name);
+    setLastName(props.info.surname);
+    setEmail(props.info.email);
+    setUniversity(props.info.university);
+    setAcademicTitle(props.info.academicTitle);
+    setSpecialization(props.info.specialization);
+  }, [
+    props.info.name,
+    props.info.surname,
+    props.info.email,
+    props.info.university,
+    props.info.academicTitle,
+    props.info.specialization,
+    props.info.role,
+  ]);
+
+  const [specialization, setSpecialization] = React.useState(props.info.specialization);
+  const [firstName, setFirstName] = React.useState(props.info.name);
+  const [lastName, setLastName] = React.useState(props.info.surname);
+  const [email, setEmail] = React.useState(props.info.email);
+  const [university, setUniversity] = React.useState(props.info.university);
+  const [academicTitle, setAcademicTitle] = React.useState(props.info.academicTitle);
 
   const schema = yup.object().shape({
     firstName: yup
@@ -90,16 +101,10 @@ export default function PersonalInformation(props) {
       .string()
       .email("Email should have correct format")
       .required("Required field"),
-    university: yup
-      .string()
-      .max(255, "University should be 255 character long or less"),
+    university: yup.string().max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
-    specialization: yup.string().when("specializations", {
-      is: (specializations) => specialization === "Select",
-      then: yup.string().required("Required field"),
-    }),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -109,10 +114,6 @@ export default function PersonalInformation(props) {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
-
-  const handleChangeSelect = (event) => {
-    setSpecialization(event.target.value);
-  };
 
   const handleChangeFirstName = (event) => {
     setFirstName(event.target.value);
@@ -239,11 +240,10 @@ export default function PersonalInformation(props) {
             />
 
             {/* Specialization Input - Select*/}
+
             <TextField
-              select
               className={style.textField}
               inputRef={register}
-              required
               id="specialization-personal-information"
               name="specialization"
               label="Specialization"
@@ -251,34 +251,11 @@ export default function PersonalInformation(props) {
               InputLabelProps={{
                 shrink: true,
               }}
-              placeholder="Select"
-              variant="outlined"
-              onChange={handleChangeSelect}
-              error={!!errors.specialization}
-              helperText={errors?.specialization?.message}
               value={specialization}
-            >
-              {categories.map((category) => (
-                <MenuItem className={style.MenuItem} value={category.value}>
-                  {category.value}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            {/* Avatar */}
-            {props.participant === "Participant" ? (
-              <Avatar name="avatar" />
-            ) : null}
-
-            {/* Button Submit */}
-            <Button
-              className={style.btnSignup}
-              color="primary"
-              type="submit"
-              variant="contained"
-            >
-              Save changes
-            </Button>
+              variant="outlined"
+              error={!!errors.academicTitle}
+              helperText={errors?.academicTitle?.message}
+            />
           </form>
         </div>
       </div>

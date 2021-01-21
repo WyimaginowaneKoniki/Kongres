@@ -64,28 +64,18 @@ export default function AboutInfo(props) {
 
   useEffect(() => {
     SetLeft(
-      <div className={style.left}>
-        {props.isImageRight || window.innerWidth < 768 ? infos : image}
-      </div>
-    )
+        props.isImageRight || window.innerWidth < 768 ? infos : image
+    );
     SetRight(
-      <div className={style.right}>
-        {props.isImageRight || window.innerWidth < 768 ? image : infos}
-      </div>
-    )
+        props.isImageRight || window.innerWidth < 768 ? image : infos
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[
-    left,
-    right,
-    props.isImageRight,
-    style.left,
-    style.right,
-  ])
+  }, []);
 
   return (
     <div className={style.main}>
-      {left}
-      {right}
+      <div className={style.left}>{left}</div>
+      <div className={style.right}>{right}</div> 
     </div>
   );
 }

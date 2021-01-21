@@ -207,14 +207,14 @@ export default function ReviewerCommentInput(props) {
           <img src={defaultPhoto} className={style.image} alt="" />
           <p className={style.userName}>Me</p>
         </div>
-        <Button
+        {props.status === "UnderReview" && (<Button
           variant="contained"
           color="primary"
           onClick={openDialog}
           className={style.btn}
         >
           Add review
-        </Button>
+        </Button>)}
       </div>
       {/* All Dialog in Popup */}
       <Dialog open={isDialogOpen} onClose={closeDialog} className={style.dialog}>

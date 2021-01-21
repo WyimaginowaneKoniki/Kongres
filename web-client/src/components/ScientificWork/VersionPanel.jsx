@@ -6,8 +6,13 @@ import ReviewerComment from "./ReviewerComment";
 import ReviewerCommentInput from "./ReviewerCommentInput";
 import AuthorAnswer from "./AuthorAnswer";
 import AuthorAnswerInput from "./AuthorAnswerInput";
-import { Accordion, AccordionSummary, AccordionDetails, Box } from "@material-ui/core/";
-import {RATING} from "../../Constants";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+} from "@material-ui/core/";
+import { RATING } from "../../Constants";
 import "../../App.css";
 
 const StyledRating = withStyles({
@@ -108,20 +113,26 @@ export default function VersionPanel(props) {
         }
       } else if (props.mode === "Reviewer") {
         reviewsView.push(
-          <ReviewerCommentInput key={j++} scientificWorkId={props.scientificWorkId} />
+          <ReviewerCommentInput
+            key={j++}
+            scientificWorkId={props.scientificWorkId}
+            status={props.status}
+          />
         );
       }
 
       return reviewsView;
     }
 
-    if (props.version) setReviewsList(GeneratePanelContent(props.version.reviews));
+    if (props.version)
+      setReviewsList(GeneratePanelContent(props.version.reviews));
   }, [
     props.version,
     props.mode,
     props.authorPhoto,
     props.authorName,
     props.scientificWorkId,
+    props.status,
   ]);
 
   return (
@@ -130,14 +141,21 @@ export default function VersionPanel(props) {
         {/* Version number, date and rating */}
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <div className={style.panel}>
-            <span className={style.version}>Version {props.version.versionNumber}</span>
+            <span className={style.version}>
+              Version {props.version.versionNumber}
+            </span>
             <p className={style.date}>{props.version.date}</p>
             <Box
               component="fieldset"
               borderColor="transparent"
               className={style.boxRating}
             >
-              <StyledRating name="customized-color" value={props.version.rating} max={3} readOnly />
+              <StyledRating
+                name="customized-color"
+                value={props.version.rating}
+                max={3}
+                readOnly
+              />
             </Box>
             <p className={style.ratingDesc}>{RATING[props.version.rating]}</p>
           </div>

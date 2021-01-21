@@ -254,7 +254,7 @@ export default function Information(props) {
         >
           Download full work
         </Button>
-        {props.mode === "Author" && (
+        {props.mode === "Author" && props.status === "Correcting" && (
           <Button
             variant="contained"
             color="primary"
