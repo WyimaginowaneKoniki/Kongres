@@ -82,6 +82,7 @@ export default function VersionPanel(props) {
           <ReviewerCommentInput
             key={j++}
             scientificWorkId={props.scientificWorkId}
+            status={props.status}
           />
         );
       }
