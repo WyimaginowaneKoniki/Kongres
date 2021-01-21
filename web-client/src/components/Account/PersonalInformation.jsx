@@ -1,11 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, MenuItem, Container } from "@material-ui/core/";
+import { TextField, Container } from "@material-ui/core/";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Avatar from "./Avatar";
-import { categories } from "../../Constants";
 
 export default function PersonalInformation(props) {
   const style = makeStyles({
@@ -72,7 +70,6 @@ export default function PersonalInformation(props) {
     setAcademicTitle(props.info.academicTitle);
     setSpecialization(props.info.specialization);
     setRole(props.info.role);
-    setPhoto(props.info.photoBase64);
   }, [
     props.info.name,
     props.info.surname,
@@ -81,7 +78,6 @@ export default function PersonalInformation(props) {
     props.info.academicTitle,
     props.info.specialization,
     props.info.role,
-    props.info.photoBase64,
   ]);
 
   const [role, setRole] = React.useState(props.info.role);
@@ -91,7 +87,6 @@ export default function PersonalInformation(props) {
   const [email, setEmail] = React.useState(props.info.email);
   const [university, setUniversity] = React.useState(props.info.university);
   const [academicTitle, setAcademicTitle] = React.useState(props.info.academicTitle);
-  const [photo, setPhoto] = React.useState(props.info.photoBase64);
 
   const schema = yup.object().shape({
     firstName: yup
@@ -112,10 +107,6 @@ export default function PersonalInformation(props) {
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
-    specialization: yup.string().when("specializations", {
-      is: (specializations) => specialization === "Select",
-      then: yup.string().required("Required field"),
-    }),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -125,10 +116,6 @@ export default function PersonalInformation(props) {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
-
-  const handleChangeSelect = (event) => {
-    setSpecialization(event.target.value);
-  };
 
   const handleChangeFirstName = (event) => {
     setFirstName(event.target.value);
