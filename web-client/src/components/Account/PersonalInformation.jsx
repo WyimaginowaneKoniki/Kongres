@@ -16,9 +16,8 @@ export default function PersonalInformation(props) {
     form: {
       display: "flex",
       flexDirection: "column",
-      float: "left",
       textAlign: "left",
-      maxWidth: "400px",
+      maxWidth: "320px",
       margin: "16px",
     },
     textField: {
@@ -61,7 +60,6 @@ export default function PersonalInformation(props) {
     },
     signInUpOther: {
       maxWidth: "400px",
-      float: "left",
       marginLeft: "144px",
     },
   })();

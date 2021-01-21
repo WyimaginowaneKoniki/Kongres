@@ -11,36 +11,43 @@ import { useHistory } from "react-router-dom";
 export default function MyProfile(props) {
   const style = makeStyles({
     main: {
-      width: "80%",
-      margin: "auto",
-    },
-    h1: {
-      float: "center",
+      display: "flex",
+      justifyContent: "center",
+      fontWeight: "bold",
+      "@media (max-width: 1050px)": {
+        flexWrap: "wrap",
+      },
     },
     left: {
-      float: "left",
       width: "400px",
-      margin: "auto",
-      border: "1px solid black",
     },
     right: {
-      float: "right",
-      width: "50%",
+      marginLeft: "64px",
+      "@media (max-width: 1050px)": {
+        padding: "0.5em",
+        marginTop: "64px",
+        marginLeft: "0",
+      },
     },
-    h2: {
+    profileLinks: {
       textAlign: "left",
-      marginTop: "10%",
-      marginBottom: "15%",
-      marginLeft: "10%",
+      padding: "1.2em",
       "&:hover": {
         cursor: "pointer",
+        color: "#6069A9",
       },
+      "@media (max-width: 450px)": {
+        padding: "0em",
+      },
+    },
+    smallLinks: {
+      fontSize: "16px",
     },
     link: {
       color: "black",
       textDecoration: "none",
       "&:active": {
-        color: "blue",
+        color: "#6069A9",
       },
     },
   })();
@@ -77,18 +84,18 @@ export default function MyProfile(props) {
   }, [history, userInfo]);
 
   const [panel, SetPanel] = React.useState(true);
-  const [info, SetInfo] = React.useState("blue");
+  const [info, SetInfo] = React.useState("#6069A9");
   const [password, SetPassword] = React.useState("black");
 
   const moveToPersonalInformation = () => {
     SetPanel(true);
-    SetInfo("blue");
+    SetInfo("#6069A9");
     SetPassword("black");
   };
 
   const moveToChangePassword = () => {
     SetPanel(false);
-    SetPassword("blue");
+    SetPassword("#6069A9");
     SetInfo("black");
   };
 
@@ -98,11 +105,12 @@ export default function MyProfile(props) {
   };
 
   return (
-    <div className={style.main}>
+    <div>
       <h1 className={style.h1}> My Profile</h1>
-      <div className={style.left}>
-        <h2 className={style.h2}>
-         {userInfo.workId === 0 ?
+      <div className={style.main}>
+        <div className={style.left}>
+          <p className={style.profileLinks}>
+          {userInfo.workId === 0 ?
          <NavLink exact to={LINKS.ADDING_WORK} className={style.link}>
             Add work 
           </NavLink> :
@@ -110,30 +118,34 @@ export default function MyProfile(props) {
             My work 
           </NavLink>
          }
-        </h2>
-        <h2
-          className={style.h2}
-          onClick={moveToPersonalInformation}
-          style={{ color: info }}
-        >
-          Personal Information
-        </h2>
-        <h2
-          className={style.h2}
-          onClick={moveToChangePassword}
-          style={{ color: password }}
-        >
-          Change password
-        </h2>
-        <NavLink exact to="/regulations" className={style.link}>
-          <h2 className={style.h2}>Rules</h2>
-        </NavLink>
-        <h2 className={style.h2} onClick={moveToLogOut}>
-          Log out
-        </h2>
-      </div>
-      <div className={style.right}>
+          </p>
+          <p
+            className={style.profileLinks}
+            onClick={moveToPersonalInformation}
+            style={{ color: info }}
+          >
+            Personal Information
+          </p>
+          <p
+            className={style.profileLinks}
+            onClick={moveToChangePassword}
+            style={{ color: password }}
+          >
+            Change password
+          </p>
+          <p
+            className={`${style.profileLinks} ${style.smallLinks}`}
+            onClick={moveToLogOut}
+          >
+            Log out
+          </p>
+          <NavLink exact to="/regulations" className={style.link}>
+            <p className={`${style.profileLinks} ${style.smallLinks}`}>Rules</p>
+          </NavLink>
+        </div>
+        <div className={style.right}>
         {panel ? <PersonalInformation info={userInfo} /> : <ChangePassword />}
+        </div>
       </div>
     </div>
   );
