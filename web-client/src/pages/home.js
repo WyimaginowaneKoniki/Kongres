@@ -83,9 +83,6 @@ export default function Home() {
       fontWeight: "bold",
       textAlign: "left",
     },
-    resetContainer: {
-      padding: "0.5em",
-    },
     panel: {
       display: "flex",
       textAlign: "left",
@@ -190,10 +187,6 @@ export default function Home() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
   const handleNextTwo = () => {
     const newActiveStep = isLastStepTwo() ? 0 : activeStepTwo + 1;
     setActiveStepTwo(newActiveStep);
@@ -201,10 +194,6 @@ export default function Home() {
 
   const handleBackTwo = () => {
     setActiveStepTwo((prevActiveStepTwo) => prevActiveStepTwo - 1);
-  };
-
-  const handleResetTwo = () => {
-    setActiveStepTwo(0);
   };
 
   return (
@@ -270,11 +259,7 @@ export default function Home() {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={
-                          activeStep === steps.length - 1
-                            ? handleReset
-                            : handleNext
-                        }
+                        onClick={handleNext}
                         className={style.btnNext}
                       >
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
@@ -311,11 +296,7 @@ export default function Home() {
                         variant="contained"
                         color="primary"
                         className={style.btnNext}
-                        onClick={
-                          activeStepTwo === stepsTwo.length - 1
-                            ? handleResetTwo
-                            : handleNextTwo
-                        }
+                        onClick={handleNextTwo}
                       >
                         {activeStepTwo === stepsTwo.length - 1
                           ? "Finish"
