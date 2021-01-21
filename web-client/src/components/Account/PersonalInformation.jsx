@@ -80,7 +80,6 @@ export default function PersonalInformation(props) {
     props.info.role,
   ]);
 
-  const [role, setRole] = React.useState(props.info.role);
   const [specialization, setSpecialization] = React.useState(props.info.specialization);
   const [firstName, setFirstName] = React.useState(props.info.name);
   const [lastName, setLastName] = React.useState(props.info.surname);
