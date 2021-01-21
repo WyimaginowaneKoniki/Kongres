@@ -84,12 +84,6 @@ export default function MyProfile(props) {
 
   const [info, SetInfo] = React.useState("#6069A9");
 
-  const moveToPersonalInformation = () => {
-    SetPanel(true);
-    SetInfo("#6069A9");
-    SetPassword("black");
-  };
-
   const moveToLogOut = () => {
     localStorage.removeItem("jwt");
     window.location.href = LINKS.PARTICIPANT_LOGIN;
@@ -112,7 +106,6 @@ export default function MyProfile(props) {
           </p>
           <p
             className={style.profileLinks}
-            onClick={moveToPersonalInformation}
             style={{ color: info }}
           >
             Personal Information

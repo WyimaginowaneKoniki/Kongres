@@ -69,7 +69,6 @@ export default function PersonalInformation(props) {
     setUniversity(props.info.university);
     setAcademicTitle(props.info.academicTitle);
     setSpecialization(props.info.specialization);
-    setRole(props.info.role);
   }, [
     props.info.name,
     props.info.surname,
