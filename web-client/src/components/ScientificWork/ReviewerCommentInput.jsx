@@ -234,7 +234,6 @@ export default function ReviewerCommentInput(props) {
                 <StyledRating
                   name="customized-color"
                   max={3}
-                  name="rating"
                   value={ratingValue}
                   onChange={handleChangeRating}
                   onChangeActive={handleHoverRating}
