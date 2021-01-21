@@ -127,8 +127,16 @@ namespace Kongres.Api.Application.Services
         public async Task<MyProfileUserDto> GetInformationForMyProfileAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            var authorPhoto = await _fileManager.GetBase64FileAsync(user.Photo);
-            var photoExtension = user.Photo.Split(".")[^1];
+
+
+            string base64Photo = null;
+
+            if (user.Photo != null)
+            {
+                var authorPhoto = await _fileManager.GetBase64FileAsync(user.Photo);
+                var photoExtension = user.Photo.Split(".")[^1];
+                base64Photo = $"data:image/{photoExtension};base64,{authorPhoto}";
+            }
 
             return new MyProfileUserDto()
             {
@@ -138,7 +146,7 @@ namespace Kongres.Api.Application.Services
                 AcademicTitle = user.Degree,
                 University = user.University,
                 Specialization = user.Specialization,
-                PhotoBase64 = $"data:image/{photoExtension};base64,{authorPhoto}",
+                PhotoBase64 = base64Photo,
                 Role = user.UserName.Split(":")[0]
             };
         }

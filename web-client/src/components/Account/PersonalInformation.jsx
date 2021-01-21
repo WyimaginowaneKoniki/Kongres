@@ -66,14 +66,36 @@ export default function PersonalInformation(props) {
     },
   })();
 
+  React.useEffect(() => {
+    setFirstName(props.info.name);
+    setLastName(props.info.surname);
+    setEmail(props.info.email);
+    setUniversity(props.info.university);
+    setAcademicTitle(props.info.academicTitle);
+    setSpecialization(props.info.specialization);
+    setRole(props.info.role);
+  }, [
+    props.info.name,
+    props.info.surname,
+    props.info.email,
+    props.info.email,
+    props.info.university,
+    props.info.academicTitle,
+    props.info.specialization,
+    props.info.role,
+  ]);
+
+  const [role, setRole] = React.useState(props.info.role);
   const [specialization, setSpecialization] = React.useState(
-    props.specialization
+    props.info.specialization
   );
-  const [firstName, setFirstName] = React.useState(props.firstName);
-  const [lastName, setLastName] = React.useState(props.lastName);
-  const [email, setEmail] = React.useState(props.email);
-  const [university, setUniversity] = React.useState(props.university);
-  const [academicTitle, setAcademicTitle] = React.useState(props.academicTitle);
+  const [firstName, setFirstName] = React.useState(props.info.name);
+  const [lastName, setLastName] = React.useState(props.info.surname);
+  const [email, setEmail] = React.useState(props.info.email);
+  const [university, setUniversity] = React.useState(props.info.university);
+  const [academicTitle, setAcademicTitle] = React.useState(
+    props.info.academicTitle
+  );
 
   const schema = yup.object().shape({
     firstName: yup
@@ -266,9 +288,9 @@ export default function PersonalInformation(props) {
             </TextField>
 
             {/* Avatar */}
-            {props.participant === "Participant" ? (
+            {role === "Participant"&& (
               <Avatar name="avatar" />
-            ) : null}
+            )}
 
             {/* Button Submit */}
             <Button

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonalInformation from "../../components/Account/PersonalInformation";
 import ChangePassword from "../../components/Account/ChangePassword";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { URL_API, LINKS } from "../../Constants";
+import { useHistory } from "react-router-dom";
 
 export default function MyProfile(props) {
   const style = makeStyles({
@@ -42,15 +45,37 @@ export default function MyProfile(props) {
     },
   })();
 
-  const myProfile = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "John.doe@gmail.com",
-    academicTitle: "",
-    university: "",
-    specialization: "Biology",
-    participant: props?.userInfo?.role,
-  };
+  const history = useHistory();
+
+  const [userInfo, SetUserInfo] = React.useState({
+    name: null,
+    surname: null,
+    email: null,
+    academicTitle: null,
+    university: null,
+    specialization: null,
+    role: null,
+    photoBase64: null,
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    (async () => {
+      await axios
+        .get(`${URL_API}/User/MyProfile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((resp) => {
+          SetUserInfo(resp.data);
+          console.log(resp.data);
+        })
+        .catch((_) => {
+          history.push({
+            pathname: LINKS.PARTICIPANT_LOGIN,
+          });
+        });
+    })();
+  }, [history, userInfo]);
 
   const [panel, SetPanel] = React.useState(true);
   const [info, SetInfo] = React.useState("blue");
@@ -101,19 +126,7 @@ export default function MyProfile(props) {
         </NavLink>
       </div>
       <div className={style.right}>
-        {panel ? (
-          <PersonalInformation
-            firstName={myProfile.firstName}
-            lastName={myProfile.lastName}
-            email={myProfile.email}
-            academicTitle={myProfile.academicTitle}
-            university={myProfile.university}
-            specialization={myProfile.specialization}
-            participant={myProfile.participant}
-          />
-        ) : (
-          <ChangePassword />
-        )}
+        {panel ? <PersonalInformation info={userInfo} /> : <ChangePassword />}
       </div>
     </div>
   );
