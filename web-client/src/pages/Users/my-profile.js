@@ -93,15 +93,15 @@ export default function MyProfile(props) {
     SetPassword("black");
   };
 
-  const moveToChangePassword = () => {
-    SetPanel(false);
-    SetPassword("#6069A9");
-    SetInfo("black");
-  };
+  // const moveToChangePassword = () => {
+  //   SetPanel(false);
+  //   SetPassword("#6069A9");
+  //   SetInfo("black");
+  // };
 
   const moveToLogOut = () => {
     localStorage.removeItem("jwt");
-    window.location.href = URL;
+    window.location.href = LINKS.PARTICIPANT_LOGIN;
   };
 
   return (
@@ -126,13 +126,15 @@ export default function MyProfile(props) {
           >
             Personal Information
           </p>
-          <p
+
+
+          {/* <p
             className={style.profileLinks}
             onClick={moveToChangePassword}
             style={{ color: password }}
           >
             Change password
-          </p>
+          </p> */}
           <p
             className={`${style.profileLinks} ${style.smallLinks}`}
             onClick={moveToLogOut}
@@ -144,7 +146,8 @@ export default function MyProfile(props) {
           </NavLink>
         </div>
         <div className={style.right}>
-        {panel ? <PersonalInformation info={userInfo} /> : <ChangePassword />}
+        {/* {panel ? <PersonalInformation info={userInfo} /> : <ChangePassword />} */}
+        <PersonalInformation info={userInfo} />
         </div>
       </div>
     </div>

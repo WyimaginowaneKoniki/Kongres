@@ -85,16 +85,12 @@ export default function PersonalInformation(props) {
   ]);
 
   const [role, setRole] = React.useState(props.info.role);
-  const [specialization, setSpecialization] = React.useState(
-    props.info.specialization
-  );
+  const [specialization, setSpecialization] = React.useState(props.info.specialization);
   const [firstName, setFirstName] = React.useState(props.info.name);
   const [lastName, setLastName] = React.useState(props.info.surname);
   const [email, setEmail] = React.useState(props.info.email);
   const [university, setUniversity] = React.useState(props.info.university);
-  const [academicTitle, setAcademicTitle] = React.useState(
-    props.info.academicTitle
-  );
+  const [academicTitle, setAcademicTitle] = React.useState(props.info.academicTitle);
   const [photo, setPhoto] = React.useState(props.info.photoBase64);
 
   const schema = yup.object().shape({
@@ -112,9 +108,7 @@ export default function PersonalInformation(props) {
       .string()
       .email("Email should have correct format")
       .required("Required field"),
-    university: yup
-      .string()
-      .max(255, "University should be 255 character long or less"),
+    university: yup.string().max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
@@ -261,11 +255,10 @@ export default function PersonalInformation(props) {
             />
 
             {/* Specialization Input - Select*/}
+
             <TextField
-              select
               className={style.textField}
               inputRef={register}
-              required
               id="specialization-personal-information"
               name="specialization"
               label="Specialization"
@@ -273,32 +266,11 @@ export default function PersonalInformation(props) {
               InputLabelProps={{
                 shrink: true,
               }}
-              placeholder="Select"
-              variant="outlined"
-              onChange={handleChangeSelect}
-              error={!!errors.specialization}
-              helperText={errors?.specialization?.message}
               value={specialization}
-            >
-              {categories.map((category) => (
-                <MenuItem className={style.MenuItem} value={category.value}>
-                  {category.value}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            {/* Avatar */}
-            {role === "Participant" && <Avatar photo={photo} name="avatar" />}
-
-            {/* Button Submit */}
-            <Button
-              className={style.btnSignup}
-              color="primary"
-              type="submit"
-              variant="contained"
-            >
-              Save changes
-            </Button>
+              variant="outlined"
+              error={!!errors.academicTitle}
+              helperText={errors?.academicTitle?.message}
+            />
           </form>
         </div>
       </div>
