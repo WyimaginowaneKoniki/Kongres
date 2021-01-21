@@ -15,9 +15,10 @@ export default function AuthorAnswerInput(props) {
       marginLeft: "144px",
       display: "flex",
       flexWrap: "wrap",
-      marginBottom: "40px",
+      marginBottom: "48px",
       "@media only screen and (max-width: 1080px)": {
         marginLeft: "64px",
+        fontSize: "16px",
       },
       "@media only screen and (max-width: 768px)": {
         width: "80vw",
