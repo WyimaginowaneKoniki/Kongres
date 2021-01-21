@@ -5,21 +5,47 @@ import "../App.css";
 export default function AgendaEvent(props) {
   const style = makeStyles({
     main: {
+      width: "70%",
+      margin: "auto",
       display: "flex",
-      justifyContent: "flexStart",
-      padding: "24px",
       marginBottom: "24px",
+      borderRadius: "4px",
+      padding: "1em",
       backgroundColor: "#DFE2F8",
+      textAlign: "left",
+      "@media (max-width: 1100px)": {
+        flexWrap: "wrap",
+        lineHeight: "16px",
+      },
     },
     title: {
-      textAlign: "left",
+      color: "#54457F",
+      "@media (max-width: 1100px)": {
+        fontSize: "16px",
+      },
     },
     time: {
-      textAlign: "left",
-      width: "320px",
+      width: "130px",
+      opacity: 0.8,
+      color: "#54457F",
+      "@media (max-width: 1100px)": {
+        width: "88px",
+        fontSize: "14px",
+        marginLeft: "16px",
+        marginBottom: "16px",
+      },
     },
     desc: {
-      textAlign: "left",
+      color: "#59546C",
+      "@media (max-width: 1000px)": {
+        fontSize: "14px",
+      },
+    },
+    info: {
+      marginLeft: "40px",
+      "@media (max-width: 1100px)": {
+        marginLeft: "16px",
+      },
     },
   })();
 
@@ -28,7 +54,7 @@ export default function AgendaEvent(props) {
       <h3 className={style.time}>
         {props.time1} - {props.time2}
       </h3>
-      <div className={style.eventInfo}>
+      <div className={style.info}>
         <h2 className={style.title}>{props.title}</h2>
         <p className={style.desc}>{props.content}</p>
       </div>

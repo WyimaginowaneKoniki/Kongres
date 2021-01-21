@@ -11,5 +11,6 @@ namespace Kongres.Api.Domain.Entities
         public DateTime DateAdd { get; set; }
         public ScientificWork ScientificWork { get; set; }
         public IEnumerable<Review> Reviews { get; set; }
+        public byte Rating { get; set; }
     }
 }

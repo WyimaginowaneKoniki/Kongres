@@ -9,14 +9,15 @@ import {
   Snackbar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import DropZone from "../DropZone";
-import { useForm } from "react-hook-form";
-import MuiAlert from "@material-ui/lab/Alert";
-import axios from "axios";
-import { URL_API } from "../../Constants";
 import { Page } from "react-pdf";
 import { Document } from "react-pdf/dist/esm/entry.webpack";
 import Categories from "../ScientificWorkList/Categories";
+import DropZone from "../DropZone";
+import { useForm } from "react-hook-form";
+import MuiAlert from "@material-ui/lab/Alert";
+import Close from "@material-ui/icons/Close";
+import axios from "axios";
+import { URL_API } from "../../Constants";
 
 export default function Information(props) {
   const style = makeStyles({
@@ -27,17 +28,23 @@ export default function Information(props) {
     },
     pdf: {
       width: "30%",
+      "@media only screen and (max-width: 1440px)": {
+        display: "none",
+      },
     },
     workInfo: {
       width: "70%",
       textAlign: "left",
+      "@media only screen and (max-width: 1440px)": {
+        width: "100%",
+      },
     },
     status: {
       color: "#775866",
       backgroundColor: "#F0D4E0",
       padding: "4px 8px",
       borderRadius: "4px",
-      fontSize: "16px",
+      fontSize: "14px",
     },
     date: {
       fontSize: "12px",
@@ -46,15 +53,20 @@ export default function Information(props) {
     },
     dateCategory: {
       display: "flex",
-      marginTop: "16px",
+      marginTop: "8px",
     },
     h1: {
       marginTop: "0",
-      marginBottom: "1em",
+      marginBottom: "0.7em",
       lineHeight: "1.5em",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "1em",
+      },
     },
     allAuthors: {
       display: "flex",
+      flexWrap: "wrap",
+      marginBottom: "16px",
     },
     author: {
       marginRight: "32px",
@@ -62,7 +74,6 @@ export default function Information(props) {
     shared: {
       fontSize: "14px",
       color: "#767676",
-      marginBottom: "16px",
     },
     photo: {
       objectFit: "cover",
@@ -73,13 +84,15 @@ export default function Information(props) {
     },
     authorInfo: {
       display: "flex",
+      marginRight: "56px",
+      marginBottom: "24px",
     },
     authorDesc: {
       display: "flex",
       justifyContent: "center",
       flexDirection: "column",
       lineHeight: "1.2em",
-      marginLeft: "16px",
+      marginLeft: "24px",
     },
     authorName: {
       fontWeight: "bold",
@@ -91,8 +104,27 @@ export default function Information(props) {
       fontSize: "14px",
       color: "#767676",
     },
+    description: {
+      marginBottom: "24px",
+    },
+    btnDownload: {
+      marginRight: "32px",
+    },
     popup: {
       width: "600px",
+    },
+    divClose: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+    close: {
+      color: "#AD1457",
+      width: "32px",
+      height: "32px",
+      padding: "0.5em",
+      "&:hover": {
+        cursor: "pointer",
+      },
     },
   })();
 
@@ -194,9 +226,9 @@ export default function Information(props) {
             <div className={style.authorInfo}>
               <img src={props.author.photo} className={style.photo} alt=""></img>
               <div className={style.authorDesc}>
-                <span className={style.authorName}>{props.author.name}</span>
-                <span className={style.degree}>{props.author.degree}</span>
-                <span className={style.university}>{props.author.university}</span>
+                <p className={style.authorName}>{props.author.name}</p>
+                <p className={style.degree}>{props.author.degree}</p>
+                <p className={style.university}>{props.author.university}</p>
               </div>
             </div>
           </div>
@@ -228,6 +260,9 @@ export default function Information(props) {
         )}
         <Dialog open={isDialogOpen} onClose={closeDialog}>
           <form onSubmit={handleSubmit(onSubmit)} className={style.popup}>
+            <div className={style.divClose}>
+              <Close className={style.close} onClick={closeDialog} />
+            </div>
             <DialogTitle>Add new version of scientific work</DialogTitle>
             <DialogContent>
               <DropZone SetFile={setVersionFile} inputRef={register} required />

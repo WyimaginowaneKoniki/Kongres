@@ -1,10 +1,14 @@
 import React from "react";
 import defaultPicture from "../../images/default-avatar-grey.png";
-import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import MuiAlert from "@material-ui/lab/Alert";
+import { Button, Snackbar } from "@material-ui/core/";
 
 export default function Avatar() {
   const style = makeStyles({
+    main: {
+      marginBottom: "16px",
+    },
     photoButton: {
       display: "flex",
       alignItems: "center",
@@ -13,8 +17,7 @@ export default function Avatar() {
       marginLeft: "32px",
     },
     btnDelete: {
-      marginTop: "4px",
-      marginBottom: "16px",
+      marginTop: "8px",
       color: "#AD1457",
     },
     photo: {
@@ -30,15 +33,31 @@ export default function Avatar() {
   // File and ULR:
   // https://stackoverflow.com/a/61302835/14865551
   const [avatarURL, SetAvatarURL] = React.useState(defaultPicture);
+  const [openAlertError, SetOpenAlertError] = React.useState(false);
+  const durationOfAlert = 4000;
+
+  const ShowAlert = () => {
+    SetOpenAlertError(true);
+  };
+
+  const CloseAlert = (_, reason) => {
+    if (reason === "clickaway") return;
+
+    SetOpenAlertError(false);
+  };
 
   const onChangePicture = (e) => {
     const file = e.target.files[0];
     if (file && file.type.match("image.*")) {
       SetAvatarURL(URL.createObjectURL(file));
     } else {
-      alert("Invalid input type!"); //TODO: error message instead of alert
+      ShowAlert(true);
     }
   };
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} {...props} />;
+  }
 
   const onRemovePicture = () => {
     SetAvatarURL(defaultPicture);
@@ -65,9 +84,20 @@ export default function Avatar() {
           />
         </Button>
       </div>
-      <Button color="secondary" onClick={onRemovePicture} className={style.btnDelete}>
-        Delete photo
-      </Button>
+      {avatarURL !== defaultPicture && (
+        <Button color="secondary" onClick={onRemovePicture} className={style.btnDelete}>
+          Delete photo
+        </Button>
+      )}
+      <Snackbar
+        open={openAlertError}
+        autoHideDuration={durationOfAlert}
+        onClose={CloseAlert}
+      >
+        <Alert onClose={CloseAlert} severity={"error"}>
+          {"Invalid extension!"}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

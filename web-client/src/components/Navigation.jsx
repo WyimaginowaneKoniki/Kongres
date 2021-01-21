@@ -4,27 +4,26 @@ import "../index.css";
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button } from "@material-ui/core/";
-import Logo from "../images/logo.png";
-import Avatar from "../images/default-avatar.png";
-import IconButton from "@material-ui/core/IconButton";
+import { Box, Button, IconButton, Drawer, List, ListItem } from "@material-ui/core/";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOpen from "@material-ui/icons/MenuOpen";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Logo from "../images/logo.png";
+import Avatar from "../images/default-avatar.png";
 import { URL, LINKS } from "../Constants";
 
 export default function Navigation(props) {
   const style = makeStyles({
     logo: {
       width: "210px",
+      "@media (max-width: 768px)": {
+        width: "144px",
+      },
     },
     boxTop: {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
-      "@media (max-width: 1200px)": {
+      "@media (max-width: 1280px)": {
         display: "none",
       },
     },
@@ -35,7 +34,7 @@ export default function Navigation(props) {
       fontWeight: "bold",
       paddingTop: "8px",
       paddingBottom: "8px",
-      "@media (max-width: 1200px)": {
+      "@media (max-width: 1280px)": {
         display: "none",
       },
     },
@@ -48,6 +47,10 @@ export default function Navigation(props) {
       height: "56px",
       borderRadius: "50px",
       marginLeft: "16px",
+      "@media (max-width: 768px)": {
+        width: "48px",
+        height: "48px",
+      },
     },
     btnLogin: {
       marginLeft: "32px",
@@ -57,6 +60,9 @@ export default function Navigation(props) {
     },
     user: {
       marginLeft: "40px",
+      "@media (max-width: 768px)": {
+        width: "16px",
+      },
     },
     name: {
       fontSize: "14px",
@@ -83,31 +89,21 @@ export default function Navigation(props) {
     activeLink: {
       color: "#6069A9",
     },
-    linkButton: {
-      textDecoration: "none",
-    },
     icon: {
       width: "60px",
       height: "60px",
-    },
-    hamburger: {
-      color: "#6069A9",
     },
     paperAnchorTop: {
       marginTop: "120px",
     },
     linkMenu: {
-      fontWeight: "700",
+      fontWeight: "bold",
       color: "#6069A9",
       textDecoration: "none",
       display: "block",
     },
-    nameAdress: {
-      margin: "auto",
-    },
     logoutAddress: {
       fontSize: "14px",
-      margin: "auto",
       color: "#767676",
       lineHeight: "1em",
       "&:hover": {
@@ -116,14 +112,37 @@ export default function Navigation(props) {
       },
     },
     button: {
-      margin: "auto",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    linkButton: {
+      textDecoration: "none",
+      "@media (max-width: 1280px)": {
+        marginBottom: "16px",
+      },
+    },
+    hamburger: {
+      visibility: "hidden",
+      color: "#6069A9",
+      "@media (max-width: 1280px)": {
+        visibility: "visible",
+      },
     },
     loggedHamburger: {
-      display: "none",
-      "@media (max-width: 1200px)": {
+      visibility: "hidden",
+      "@media (max-width: 1280px)": {
+        visibility: "visible",
         display: "flex",
         alignItems: "center",
       },
+    },
+    listMenu: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
     },
   })();
 
@@ -132,16 +151,11 @@ export default function Navigation(props) {
     window.location.href = URL;
   };
 
-  const [open, setOpen] = React.useState(false);
+  //  store status of drawer
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
-  const handleDrawer = () => {
-    if (open) setOpen(false);
-    else if (!open) setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
+  const handleDrawerClose = () => setIsDrawerOpen(false);
 
   const userPanel = () => {
     // If user is logged
@@ -186,11 +200,7 @@ export default function Navigation(props) {
           {props.userInfo.role === "Participant" &&
             props.userInfo.scientificWorkId === 0 && (
               <Box>
-                <NavLink
-                  exact
-                  to={LINKS.ADDING_WORK}
-                  className={style.linkButton}
-                >
+                <NavLink exact to={LINKS.ADDING_WORK} className={style.linkButton}>
                   <Button
                     className={style.btn}
                     color="primary"
@@ -216,9 +226,7 @@ export default function Navigation(props) {
           <NavLink exact to={LINKS.PROFILE}>
             <img
               className={style.avatar}
-              src={
-                props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
-              }
+              src={props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar}
               alt="Avatar"
             />
           </NavLink>
@@ -232,11 +240,7 @@ export default function Navigation(props) {
             Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Log in</a> or
             <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
           </p>
-          <NavLink
-            exact
-            to={LINKS.PARTICIPANT_SIGN_UP}
-            className={style.linkButton}
-          >
+          <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.linkButton}>
             <Button
               className={style.btnSignup}
               color="primary"
@@ -246,11 +250,7 @@ export default function Navigation(props) {
               Sign up
             </Button>
           </NavLink>
-          <NavLink
-            exact
-            to={LINKS.PARTICIPANT_LOGIN}
-            className={style.linkButton}
-          >
+          <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
             <Button
               className={style.btnLogin}
               color="primary"
@@ -270,20 +270,16 @@ export default function Navigation(props) {
       {/* Logo */}
       <Box>
         <NavLink exact to="/">
-          <img
-            className={style.logo}
-            src={Logo}
-            alt="Scienture conference logo"
-          />
+          <img className={style.logo} src={Logo} alt="Scienture conference logo" />
         </NavLink>
       </Box>
       <Drawer
-        open={open}
+        open={isDrawerOpen}
         anchor="top"
         variant="persistent"
         classes={{ paper: style.paperAnchorTop }}
       >
-        <List>
+        <List className={style.listMenu}>
           <NavLink exact to="/" className={style.linkMenu}>
             <ListItem button onClick={handleDrawerClose}>
               <span className={style.nameAdress}>Home</span>
@@ -336,11 +332,7 @@ export default function Navigation(props) {
                 </NavLink>
               )}
               {!props.userInfo && (
-                <NavLink
-                  exact
-                  to={LINKS.PARTICIPANT_LOGIN}
-                  className={style.linkButton}
-                >
+                <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
                   <Button
                     className={style.btnLogin}
                     color="primary"
@@ -355,11 +347,7 @@ export default function Navigation(props) {
 
               {props.userInfo && props.userInfo.role === "Reviewer" && (
                 <Box>
-                  <NavLink
-                    exact
-                    to={LINKS.REVIEWS}
-                    className={style.linkButton}
-                  >
+                  <NavLink exact to={LINKS.REVIEWS} className={style.linkButton}>
                     <Button
                       className={style.btn}
                       color="primary"
@@ -401,11 +389,7 @@ export default function Navigation(props) {
                 props.userInfo.role === "Participant" &&
                 props.userInfo.scientificWorkId === 0 && (
                   <Box>
-                    <NavLink
-                      exact
-                      to={LINKS.ADDING_WORK}
-                      className={style.linkButton}
-                    >
+                    <NavLink exact to={LINKS.ADDING_WORK} className={style.linkButton}>
                       <Button
                         className={style.btn}
                         color="primary"
@@ -442,17 +426,13 @@ export default function Navigation(props) {
             <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
               <img
                 className={style.avatar}
-                src={
-                  props.userInfo.photoBase64
-                    ? props.userInfo.photoBase64
-                    : Avatar
-                }
-                alt="Avatar"
+                src={props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar}
+                alt=""
               />
             </NavLink>
           )}
-          <IconButton onClick={handleDrawer} className={style.hamburger}>
-            {open ? (
+          <IconButton onClick={toggleDrawer} className={style.hamburger}>
+            {isDrawerOpen ? (
               <MenuOpen className={style.icon} />
             ) : (
               <MenuIcon className={style.icon} />

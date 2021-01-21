@@ -2,7 +2,10 @@ import React from "react";
 import "../App.css";
 import ContactInfo from "../components/ContactInfo";
 import ContactMap from "../components/ContactMap";
-import picture from "../images/empty-image.png";
+import email from "../images/icon-mail.png";
+import phone from "../images/icon-phone.png";
+import street from "../images/icon-map.png";
+import github from "../images/icon-github.png";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function Contact() {
@@ -10,33 +13,39 @@ export default function Contact() {
     main: {
       display: "flex",
       justifyContent: "center",
+      "@media (max-width: 1000px)": {
+        flexWrap: "wrap",
+      },
+    },
+    title: {
+      marginBottom: "80px",
     },
   })();
 
   const inf1 = {
-    path: picture,
+    path: email,
     link: "mailto:conference@gmail.com",
     name: "conference@gmail.com",
     alternativeText: "Email icon",
   };
 
   const inf2 = {
-    path: picture,
+    path: phone,
     link: "tel:987654321",
     name: "987654321",
     alternativeText: "Phone icon",
   };
 
   const inf3 = {
-    path: picture,
-    name: "Parkowa 11/12",
+    path: street,
+    name: "Kaszubska 23",
     alternativeText: "Address icon",
   };
 
   const inf4 = {
-    path: picture,
+    path: github,
     link: "https://github.com/WyimaginowaneKoniki/Kongres",
-    name: "github.com/WyimaginowaneKoniki/Kongres",
+    name: "Source Code",
     alternativeText: "Github icon",
   };
 
@@ -47,7 +56,7 @@ export default function Contact() {
 
   return (
     <div>
-      <h1>Contact</h1>
+      <h1 className={style.title}>Contact</h1>
 
       <div className={style.main}>
         <div>
