@@ -165,8 +165,25 @@ export default function Home() {
   const [activeStepTwo, setActiveStepTwo] = React.useState(0);
   const stepsTwo = getStepsTwo();
 
+  const totalSteps = () => {
+    return steps.length;
+  };
+
+  const isLastStep = () => {
+    return activeStep === totalSteps() - 1;
+  };
+
+  const totalStepsTwo = () => {
+    return stepsTwo.length;
+  };
+
+  const isLastStepTwo = () => {
+    return activeStepTwo === totalStepsTwo() - 1;
+  };
+
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const newActiveStep = isLastStep() ? 0 : activeStep + 1;
+    setActiveStep(newActiveStep);
   };
 
   const handleBack = () => {
@@ -178,7 +195,8 @@ export default function Home() {
   };
 
   const handleNextTwo = () => {
-    setActiveStepTwo((prevActiveStepTwo) => prevActiveStepTwo + 1);
+    const newActiveStep = isLastStepTwo() ? 0 : activeStepTwo + 1;
+    setActiveStepTwo(newActiveStep);
   };
 
   const handleBackTwo = () => {
