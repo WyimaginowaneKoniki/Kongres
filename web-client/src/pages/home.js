@@ -139,22 +139,18 @@ export default function Home() {
   }
 
   function getStepsTwo() {
-    return ["Adding a review", "Review of other works", "Downloading works"];
+    return ["Signing up as a Reviewer", "Browsing the scientific works of others", "Reviewing participant' works"];
   }
 
   function getStepTwoContent(step) {
     switch (step) {
       case 0:
-        return `For each ad campaign that you create, you can control how much
-                you're willing to spend on clicks and conversions, which networks
-                and geographical locations you want your ads to show on, and more.`;
+        return `First you need to join us as a Reviewer!`;
       case 1:
-        return "An ad group contains one or more ads which target a shared set of keywords.";
+        return `As a new member of our community you will have access to a 
+                lot of scientific works that you can also download!`;
       case 2:
-        return `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`;
+        return `When the adding work phase is over, you will be assigned to review several works!`;
       default:
         return "Unknown step";
     }
@@ -250,7 +246,7 @@ export default function Home() {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleNext}
+                        onClick={activeStep === steps.length - 1 ? handleReset : handleNext}
                         className={style.btnNext}
                       >
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
@@ -261,16 +257,6 @@ export default function Home() {
               </Step>
             ))}
           </Stepper>
-          {activeStep === steps.length && (
-            <Paper square elevation={0} className={style.resetContainer}>
-              <Typography>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Button onClick={handleReset} variant="outlined" color="primary">
-                Reset
-              </Button>
-            </Paper>
-          )}
         </div>
       </div>
 
@@ -297,7 +283,7 @@ export default function Home() {
                         variant="contained"
                         color="primary"
                         className={style.btnNext}
-                        onClick={handleNextTwo}
+                        onClick={activeStepTwo === stepsTwo.length - 1 ? handleResetTwo : handleNextTwo}
                       >
                         {activeStepTwo === stepsTwo.length - 1
                           ? "Finish"
@@ -309,39 +295,23 @@ export default function Home() {
               </Step>
             ))}
           </Stepper>
-          {activeStepTwo === stepsTwo.length && (
-            <Paper square elevation={0} className={style.resetContainer}>
-              <Typography>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Button
-                onClick={handleResetTwo}
-                variant="outlined"
-                color="primary"
-              >
-                Reset
-              </Button>
-            </Paper>
-          )}
         </div>
         <div className={style.panelComponents}>
           <p className={style.text}>Join us as Reviewer</p>
           <p>
-            Scienture is an international web conference that brings together
-            researchers from a variety of fields: computer science, mathematics,
-            biology, chemistry, physics and geography. The main purpose of this
-            meeting is to inspire and build knowledge, discuss problems and
-            solutions in this area and shape future research directions.
+          As a reviewer, you will have access to all reviewer features except adding work. 
+          You will be able to rate the work of others for it and you will help us develop our website!
+          However, if you want to add a work as well, you can create a new account with the 
+          same e-mail address, this time as a participant!
           </p>
         </div>
       </div>
       <div>
         <p className={style.information}>
-          Scienture is an international web conference that brings together
-          researchers from a variety of fields: computer science, mathematics,
-          biology, chemistry, physics and geography. The main purpose of this
-          meeting is to inspire and build knowledge, discuss problems and
-          solutions in this area and shape future research directions.
+          The entire course of the conference was divided into several stages in order to allow 
+          participation and demonstrate the position of the author of a scientific work or a reviewer. 
+          The evaluation of multiple reviews and possible corrections may take a long time.
+          Below you will see the next stages of the scientific conference in a clear form!
         </p>
       </div>
       <div>
