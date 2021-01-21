@@ -128,6 +128,7 @@ export default function WorkView() {
                 <VersionPanel
                   version={version}
                   mode={data.mode}
+                  status={data.status}
                   authorPhoto={data.mainAuthor.photo}
                   authorName={data.mainAuthor.name}
                   scientificWorkId={data.scientificWork.id}

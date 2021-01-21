@@ -403,7 +403,7 @@ export default function Home() {
           </TimelineItem>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot color="alternate">
+              <TimelineDot color="grey">
                 <MenuBookOutlinedIcon />
               </TimelineDot>
             </TimelineSeparator>
