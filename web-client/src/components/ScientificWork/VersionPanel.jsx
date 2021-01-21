@@ -12,6 +12,7 @@ import {
   AccordionDetails,
   Box,
 } from "@material-ui/core/";
+import { RATING } from "../../Constants";
 import "../../App.css";
 
 const StyledRating = withStyles({
@@ -151,12 +152,12 @@ export default function VersionPanel(props) {
             >
               <StyledRating
                 name="customized-color"
-                value={2}
+                value={props.version.rating}
                 max={3}
                 readOnly
               />
             </Box>
-            <p className={style.ratingDesc}>Accepted</p>
+            <p className={style.ratingDesc}>{RATING[props.version.rating]}</p>
           </div>
         </AccordionSummary>
 
