@@ -83,6 +83,7 @@ export default function MyProfile(props) {
   }, [history, userInfo]);
 
   const [info, SetInfo] = React.useState("#6069A9");
+  SetInfo(info);
 
   const moveToLogOut = () => {
     localStorage.removeItem("jwt");
