@@ -113,31 +113,26 @@ export default function Home() {
 
   function getSteps() {
     return [
-      "Adding works",
-      "Review of other works",
-      "Responding to reviews",
-      "Downloading reviews",
+      "Signing up as a Participant",
+      "Browsing the scientific works of others",
+      "Adding own work",
+      "Waiting for reviews",
     ];
   }
 
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return `For each ad campaign that you create, you can control how much
-                you're willing to spend on clicks and conversions, which networks
-                and geographical locations you want your ads to show on, and more.`;
+        return "First you need to join us as a Participant!";
       case 1:
-        return "An ad group contains one or more ads which target a shared set of keywords.";
+        return `As a new member of our community you will have access to a 
+                lot of scientific works that you can also download!`;
       case 2:
-        return `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`;
+        return `If you want to pass your knowledge on, add a new scientific work!`;
       case 3:
-        return `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`;
+        return `After submitting your work, you will be waiting for a review from 
+                the randomly selected reviewers. Until the work is positively rated,
+                only you and your reviewers will have access to it!`;
       default:
         return "Unknown step";
     }
@@ -216,22 +211,22 @@ export default function Home() {
 
       <div>
         <p className={style.information}>
-          Scienture is an international web conference that brings together
-          researchers from a variety of fields: computer science, mathematics,
-          biology, chemistry, physics and geography. The main purpose of this
-          meeting is to inspire and build knowledge, discuss problems and
-          solutions in this area and shape future research directions.
+        Welcome to the Scienture Conference, an international
+        science conference that brings together researchers from various fields:
+        computer science, mathematics, biology, chemistry, physics and geography.
+        The main purpose of this meeting is to inspire and build knowledge, 
+        discuss problems and solutions in this area and shape future research directions.
+        On the [Agenda] you can see upcoming events, while on the [Keynote Speakers]
+        you can read about our leaders. Don't wait any longer, join now!
         </p>
       </div>
       <div className={style.panel}>
         <div className={style.panelComponents}>
           <p className={style.text}>Join us as Participant</p>
           <p>
-            Scienture is an international web conference that brings together
-            researchers from a variety of fields: computer science, mathematics,
-            biology, chemistry, physics and geography. The main purpose of this
-            meeting is to inspire and build knowledge, discuss problems and
-            solutions in this area and shape future research directions.
+            As a participant, you will have access to a wide database of interesting scientific works.
+            Develop your knowledge in selected areas! Or maybe you want to share your 
+            knowledge and publish your own scientific work? We are waiting for you!
           </p>
         </div>
         <div className={style.panelComponents}>
