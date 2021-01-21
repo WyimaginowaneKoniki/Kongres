@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Kongres.Api.Application\Kongres.Api.Application.csproj" />
     <ProjectReference Include="..\..\Kongres.Api.Domain\Kongres.Api.Domain.csproj" />
   </ItemGroup>

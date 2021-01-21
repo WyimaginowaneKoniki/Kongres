@@ -1029,9 +1029,7 @@ namespace Kongres.Api.Tests.Unit.Services
         {
             var userId = 4u;
             var scientificWorkId = 1u;
-
-            var randomBase64 = "fasnljkbt432b634jhvk123j42=";
-
+            
             var author = new User()
             {
                 Id = 2,
