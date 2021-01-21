@@ -49,51 +49,38 @@ export default function AboutInfo(props) {
 
   const [left, SetLeft] = React.useState(null);
   const [right, SetRight] = React.useState(null);
-  const [infos, SetInfos] = React.useState(null);
-  const [image, SetImages] = React.useState(null);
+
+  const infos = [
+    <h2>{props.head}</h2>,
+    <p>{props.text}</p>,
+    <a className={style.link} href={props.link}>
+      {props.adnotation}
+    </a>,
+  ];
+
+  const image = (
+    <img src={props.path} className={style.photo} alt={props.alternativeText} />
+  );
 
   useEffect(() => {
-    SetInfos([
-      <h2>{props.head}</h2>,
-      <p>{props.text}</p>,
-      <a className={style.link} href={props.link}>
-        {props.adnotation}
-      </a>,
-    ]);
-    SetImages(
-      <img
-        src={props.path}
-        className={style.photo}
-        alt={props.alternativeText}
-      />
-    );
     SetLeft(
       <div className={style.left}>
         {props.isImageRight || window.innerWidth < 768 ? infos : image}
       </div>
-    );
+    )
     SetRight(
       <div className={style.right}>
         {props.isImageRight || window.innerWidth < 768 ? image : infos}
       </div>
-    );
-  }, [
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[
     left,
     right,
     props.isImageRight,
     style.left,
     style.right,
-    infos,
-    image,
-    props.adnotation,
-    props.head,
-    props.link,
-    props.text,
-    style.link,
-    props.alternativeText,
-    props.path,
-    style.photo,
-  ]);
+  ])
 
   return (
     <div className={style.main}>

@@ -1,55 +1,97 @@
 import React from "react";
 import "../../App.css";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import { Box, Button } from "@material-ui/core/";
-import defaultPicture from "../../images/empty-image.png";
+import defaultPicture from "../../images/default-avatar.png";
 import axios from "axios";
 import { URL_API, RATING } from "../../Constants";
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#6069A9",
+  },
+})(Rating);
 
 export default function ReviewerComment(props) {
   const style = makeStyles({
     review: {
       width: "600px",
-      margin: "20px",
-      marginLeft: "60px",
       display: "flex",
+      marginTop: "40px",
+      marginLeft: "40px",
+      marginBottom: "16px",
+      fontSize: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        marginLeft: "24px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        width: "320px",
+        marginLeft: "0",
+        lineHeight: "1.5em",
+      },
+      "@media only screen and (max-width: 360px)": {
+        width: "280px",
+      },
     },
     userInfo: {
-      width: "80px",
       alignItems: "center",
     },
     image: {
-      width: "80px",
-      height: "80px",
+      width: "72px",
+      height: "72px",
       borderRadius: "50px",
+      boxShadow: "2px 2px 4px #C0C4E233",
+      "@media only screen and (max-width: 1080px)": {
+        width: "40px",
+        height: "40px",
+      },
     },
     userName: {
       textAlign: "center",
+      fontSize: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "12px",
+        lineHeight: "1em",
+      },
     },
     reviewContent: {
+      marginLeft: "24px",
+      textAlign: "left",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "16px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "8px",
+      },
+    },
+    rating: {
       display: "flex",
-      flexFlow: "row wrap",
-      width: "470px",
+    },
+    ratingDateDiv: {
+      display: "flex",
+      flexWrap: "wrap",
       alignItems: "center",
+      justifyContent: "space-between",
     },
-    ratingDiv: {
-      width: "50%",
-      display: "flex",
+    ratingDesc: {
+      fontSize: "14px",
     },
-
+    boxRating: {
+      lineHeight: "0",
+      marginRight: "4px",
+    },
     date: {
-      width: "50%",
-      color: "grey",
+      fontSize: "14px",
+      color: "#767676",
+      marginRight: "24px",
     },
     reviewText: {
       textAlign: "left",
-      fontSize: "16px",
+      marginLeft: "4px",
     },
     btn: {
-      width: "150px",
-      height: "45px",
-      margin: "5px",
+      marginTop: "16px",
     },
   })();
 
@@ -77,16 +119,30 @@ export default function ReviewerComment(props) {
         <p className={style.userName}>{props.reviewerName}</p>
       </div>
       <div className={style.reviewContent}>
-        <div className={style.ratingDiv}>
-          <Rating max={3} value={props.rating} readOnly />
-          <Box ml={2}>{RATING[props.rating]}</Box>
+        <div className={style.ratingDateDiv}>
+          <p className={style.date}>{props.date}</p>
+          {/* <Rating max={3} value={props.rating} readOnly />
+          <Box ml={2}>{RATING[props.rating]}</Box> */}
+          <div className={style.rating}>
+            <Box
+              component="fieldset"
+              borderColor="transparent"
+              className={style.boxRating}
+            >
+              <StyledRating
+                name="customized-color"
+                value={props.rating}
+                max={3}
+                readOnly
+              />
+            </Box>
+            <p className={style.ratingDesc}>{RATING[props.rating]}</p>
+          </div>
         </div>
-        <p className={style.date}>{props.date}</p>
+
         <div>
           {/* review text */}
-          {props.reviewText && (
-            <p className={style.textReview}>{props.reviewText}</p>
-          )}
+          {props.reviewText && <p className={style.textReview}>{props.reviewText}</p>}
 
           {/* review file (button to download) */}
           {props.isReviewFileExist && (

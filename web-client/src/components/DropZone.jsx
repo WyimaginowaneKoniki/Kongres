@@ -1,79 +1,145 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import uploadIcon from "../images/upload.png";
-import pdfIcon from "../images/pdf-icon.png";
+import BackupOutlinedIcon from "@material-ui/icons/BackupOutlined";
+import PictureAsPdfOutlinedIcon from "@material-ui/icons/PictureAsPdfOutlined";
 import { Button, Box } from "@material-ui/core/";
 
 export default function DropZone(props) {
   const style = makeStyles({
     container: {
       width: "550px",
+      "@media only screen and (max-width: 1480px)": {
+        width: "auto",
+      },
     },
     dropContainer: {
-      margin: "0px",
-      height: "350px",
-      border: "3px dashed #aaaaaa",
+      margin: "0",
+      height: "400px",
+      border: "4px dashed #DFE2F8",
+      opacity: 1,
+      "@media only screen and (max-width: 1480px)": {
+        border: "none",
+        height: "auto",
+      },
     },
     top: {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       height: "90%",
+      "@media only screen and (max-width: 1480px)": {
+        height: "auto",
+      },
     },
     dropMessage: {
       textAlign: "center",
-      color: "#aaaaaa",
-      fontFamily: "Arial",
+      color: "#767676",
       fontSize: "20px",
     },
     uploadIcon: {
-      width: "50px",
-      height: "50px",
-      background: `url(${uploadIcon}) no-repeat center center`,
-      backgroundSize: "100%",
-      textAlign: "center",
+      width: "101px",
+      height: "67px",
       margin: "0 auto",
       paddingTop: "30px",
+      color: "#6069A9",
+      "@media only screen and (max-width: 1480px)": {
+        display: "none",
+      },
+    },
+    dragText: {
+      color: "black",
+      fontSize: "24px",
     },
     message: {
-      color: "red",
-      padding: "2%",
-      fontSize: "15px",
+      color: "#AD1457",
+      height: "19px",
+      fontSize: "16px",
+      letterSpacing: "0",
+      textAlign: "center",
+      width: "400px",
+      lineHeight: "1.4em",
+      display: "block",
+      "@media only screen and (max-width: 1480px)": {
+        display: "none",
+      },
+    },
+    messageButton: {
+      color: "#AD1457",
+      height: "19px",
+      fontSize: "16px",
+      letterSpacing: "0",
+      textAlign: "center",
+      width: "auto",
+      lineHeight: "1.4em",
+      display: "none",
+      "@media only screen and (max-width: 1480px)": {
+        display: "block",
+        marginBottom: "50px",
+      },
     },
     inputInfo: {
-      height: "10%",
+      height: "19px",
       width: "100%",
       textAlign: "left",
-      paddingLeft: "5%",
-      color: "#aaaaaa",
+      paddingLeft: "24px",
+      letterSpacing: "0",
+      color: "#767676",
+      fontSize: "16px",
+      "@media only screen and (max-width: 1480px)": {
+        marginTop: "-80px",
+        marginBottom: "75px",
+      },
     },
     logo: {
-      height: "30px",
-      margin: "2%",
-      float: "left",
+      fontSize: "40px",
+      color: "#6069A9",
     },
     fileName: {
-      height: "30px",
-      width: "60%",
-      margin: "3%",
-      float: "left",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
+      width: "379px",
+      textAlign: "left",
+      marginLeft: "10px",
+      "@media only screen and (max-width: 1480px)": {
+        width: "350px",
+      },
     },
     fileSize: {
-      height: "30px",
-      margin: "3% 2%",
-      float: "left",
+      color: "#767676",
+      width: "100px",
+      fontSize: "14px",
     },
     exit: {
-      height: "30px",
-      margin: "3% 2%",
-      float: "right",
+      width: "21px",
+      fontSize: "21px",
+      color: "#AD1457",
       cursor: "pointer",
     },
     dialog: {
       display: "none",
+    },
+    btn: {
+      color: "#54457F",
+      size: "16px",
+      border: "1px solid #54457F4D",
+      backgroundColor: "white",
+      "@media only screen and (max-width: 768px)": {
+        marginTop: "16px",
+      },
+    },
+    bottom: {
+      justifyContent: "flex-start",
+      alignItems: "center",
+      marginTop: "16px",
+      "@media only screen and (max-width: 1480px)": {
+        marginBottom: "25px",
+      },
+    },
+    dragDesc: {
+      "@media only screen and (max-width: 1480px)": {
+        display: "none",
+      },
     },
   })();
 
@@ -86,7 +152,7 @@ export default function DropZone(props) {
   const [fileName, SetFileName] = React.useState(null);
   const [fileSize, SetFileSize] = React.useState(null);
 
-  // Changes style of area with added file (pdf icon, name, size). Changes display none → block, block → none.
+  // Changes style of area with added file (pdf icon, name, size). Changes display none → flex, flex → none.
   const [divStyle, SetDivStyle] = React.useState({
     display: "none",
   });
@@ -120,14 +186,12 @@ export default function DropZone(props) {
     } else if (!isFileValid) {
       ShowMessage("Invalid file format. Only PDF file format can be uploaded.");
     } else if (!isSizeValid) {
-      ShowMessage(
-        "Too large file. Only file not greather than 20 MB can be uploaded."
-      );
+      ShowMessage("Too large file. Only file not greather than 20 MB can be uploaded.");
     } else {
       file = f;
       SetFileName(file.name);
       SetFileSize(FileSize(file.size));
-      SetDivStyle({ display: "block" });
+      SetDivStyle({ display: "flex" });
       props.SetFile(file);
     }
   };
@@ -190,19 +254,17 @@ export default function DropZone(props) {
               onChange={FileSelected}
             />
 
-            <div className={style.uploadIcon}/>
+            <BackupOutlinedIcon className={style.uploadIcon} />
 
-            <Box lineHeight={2} m={1}>
-              Drag & Drop file here
-              <br />
-              or
-              <br />
-              <Button
-                variant="outlined"
-                color="primary"
-                className={style.btn}
-                onClick={OpenDialog}
-              >
+            <Box lineHeight={2} m={1} className={style.dragText}>
+              <div className={style.dragDesc}>
+                {" "}
+                Drag & Drop file here
+                <br />
+                or
+                <br />
+              </div>
+              <Button variant="outlined" className={style.btn} onClick={OpenDialog}>
                 Browse file
               </Button>
             </Box>
@@ -213,14 +275,15 @@ export default function DropZone(props) {
           Accepted file types: .pdf, max file size: 20MB
         </div>
       </div>
-      <div style={divStyle}>
-        <img className={style.logo} src={pdfIcon} alt="Logo" />
+      <div style={divStyle} className={style.bottom}>
+        <PictureAsPdfOutlinedIcon className={style.logo} />
         <span className={style.fileName}>{fileName}</span>
         <span className={style.fileSize}>{fileSize}</span>
         <span className={style.exit} onClick={Delete}>
-          x
+          🗙
         </span>
       </div>
+      <span className={style.messageButton}>{message}</span>
     </div>
   );
 }
