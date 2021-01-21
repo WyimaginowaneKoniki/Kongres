@@ -83,6 +83,10 @@ export default function Home() {
         marginBottom: "24px",
       },
     },
+    infoTimeline: {
+      width: "100%",
+      marginBottom: "24px",
+    },
     photo: {
       width: "100%",
     },
@@ -364,7 +368,7 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <p className={style.information}>
+        <p className={`${style.information} ${style.infoTimeline}`}>
           The entire course of the conference was divided into several stages in order to
           allow participation and demonstrate the position of the author of a scientific
           work or a reviewer. The evaluation of multiple reviews and possible corrections
