@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Rating from "@material-ui/lab/Rating";
 import ReviewerComment from "./ReviewerComment";
@@ -10,23 +10,56 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Box,
 } from "@material-ui/core/";
 import "../../App.css";
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#6069A9",
+  },
+})(Rating);
 
 export default function VersionPanel(props) {
   const style = makeStyles({
     panel: {
-      padding: "20px",
       display: "flex",
-      width: "800px",
       alignItems: "center",
+      flexWrap: "wrap",
+      padding: "16px 80px",
+      "@media only screen and (max-width: 768px)": {
+        padding: "0px 40px",
+      },
+      "@media only screen and (max-width: 600px)": {
+        padding: "0px 24px",
+      },
     },
     version: {
-      width: "100px",
-      marginLeft: "80px",
+      fontWeight: "bold",
+      marginRight: "40px",
+      "@media only screen and (max-width: 768px)": {
+        marginRight: "16px",
+        fontSize: "16px",
+      },
+    },
+    boxRating: {
+      lineHeight: "0",
+      marginRight: "8px",
+    },
+    ratingDesc: {
+      fontSize: "14px",
     },
     date: {
-      width: "300px",
+      color: "#767676",
+      fontSize: "16px",
+      marginRight: "40px",
+      "@media only screen and (max-width: 768px)": {
+        fontSize: "14px",
+        marginRight: "16px",
+      },
+    },
+    reviews: {
+      display: "block",
     },
   })();
 
@@ -98,22 +131,39 @@ export default function VersionPanel(props) {
     props.authorPhoto,
     props.authorName,
     props.scientificWorkId,
-    props.status
+    props.status,
   ]);
 
   return (
     <div>
       <Accordion>
+        {/* Version number, date and rating */}
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <div className={style.panel}>
             <span className={style.version}>
               Version {props.version.versionNumber}
             </span>
             <p className={style.date}>{props.version.date}</p>
-            <Rating value={2} max={3} readOnly />
+            <Box
+              component="fieldset"
+              borderColor="transparent"
+              className={style.boxRating}
+            >
+              <StyledRating
+                name="customized-color"
+                value={2}
+                max={3}
+                readOnly
+              />
+            </Box>
+            <p className={style.ratingDesc}>Accepted</p>
           </div>
         </AccordionSummary>
-        <AccordionDetails width={1000}>{reviewsList}</AccordionDetails>
+
+        {/* Reviews and comments */}
+        <AccordionDetails className={style.reviews} width={1920}>
+          {reviewsList}
+        </AccordionDetails>
       </Accordion>
     </div>
   );

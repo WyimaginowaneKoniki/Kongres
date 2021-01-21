@@ -17,15 +17,18 @@ import {
   TimelineContent,
   TimelineDot,
 } from "@material-ui/lab/";
-import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
-import AddToQueueOutlinedIcon from '@material-ui/icons/AddToQueueOutlined';
-import HourglassEmptyOutlinedIcon from '@material-ui/icons/HourglassEmptyOutlined';
-import StarOutlinedIcon from '@material-ui/icons/StarOutlined';
-import MenuBookOutlinedIcon from '@material-ui/icons/MenuBookOutlined';
+import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
+import AddToQueueOutlinedIcon from "@material-ui/icons/AddToQueueOutlined";
+import HourglassEmptyOutlinedIcon from "@material-ui/icons/HourglassEmptyOutlined";
+import StarOutlinedIcon from "@material-ui/icons/StarOutlined";
+import MenuBookOutlinedIcon from "@material-ui/icons/MenuBookOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
 import { LINKS } from "../Constants";
-import bckg1 from "../images/logo-values.png";
+import logoValues from "../images/logo-values@2x.png";
+import pictureTopDesktop from "../images/home-desktop@2x.png";
+import pictureTop1280 from "../images/home-1280.png";
+import pictureTopMobile from "../images/home-mobile.png";
 
 export default function Home() {
   const style = makeStyles({
@@ -33,12 +36,29 @@ export default function Home() {
       display: "flex",
       flexDirection: "column",
     },
+    top: {
+      height: "800px",
+      backgroundImage: `url(${pictureTopDesktop})`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "100%",
+      "@media (max-width: 1280px)": {
+        backgroundImage: `url(${pictureTop1280})`,
+        height: "640px",
+      },
+      "@media (max-width: 768px)": {
+        backgroundImage: `url(${pictureTopMobile})`,
+        height: "400px",
+      },
+    },
     title: {
       display: "flex",
       marginTop: "264px",
       fontSize: "48px",
       "@media (max-width: 1280px)": {
         fontSize: "24px",
+      },
+      "@media (max-width: 768px)": {
+        marginTop: "80px",
       },
     },
     buttons: {
@@ -48,9 +68,33 @@ export default function Home() {
         flexWrap: "wrap",
       },
     },
+    generalInfo: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexWrap: "wrap",
+      marginBottom: "124px",
+    },
+    information: {
+      textAlign: "left",
+      width: "70%",
+      "@media (max-width: 1280px)": {
+        width: "100%",
+        marginBottom: "24px",
+      },
+    },
+    infoTimeline: {
+      width: "100%",
+      marginBottom: "24px",
+    },
     photo: {
-      width: "75vw",
-      marginBottom: "56px",
+      width: "100%",
+    },
+    photoContainer: {
+      width: "30%",
+      "@media (max-width: 1280px)": {
+        width: "80%",
+      },
     },
     btn: {
       width: "204px",
@@ -60,18 +104,18 @@ export default function Home() {
       textTransform: "none",
       "@media (max-width: 1280px)": {
         marginTop: "32px",
+        width: "124px",
+        height: "56px",
+        fontSize: "24px",
+      },
+      "@media (max-width: 768px)": {
+        width: "auto",
+        height: "auto",
+        fontSize: "18px",
       },
     },
     btn1: {
-      width: "204px",
-      height: "70px",
-      fontSize: "32px",
-      marginRight: "40px",
-      textTransform: "none",
-      backgroundColor: "#FFFFFF",
-      "@media (max-width: 1280px)": {
-        marginTop: "32px",
-      },
+      background: "white",
     },
     btnNext: {
       marginLeft: "8px",
@@ -89,15 +133,12 @@ export default function Home() {
       marginBottom: "125px",
       "@media (max-width: 1280px)": {
         flexWrap: "wrap",
+        order: "2",
       },
     },
     panelComponents: {
       width: "80%",
       padding: "1em",
-    },
-    information: {
-      textAlign: "left",
-      marginBottom: "128px",
     },
     paper: {
       padding: "0.5em",
@@ -105,6 +146,9 @@ export default function Home() {
     paperLeft: {
       padding: "0.5em",
       textAlign: "left",
+    },
+    btnStepper: {
+      marginRight: "8px",
     },
   })();
 
@@ -198,25 +242,29 @@ export default function Home() {
 
   return (
     <div className={style.main}>
-      <div className={style.title}>
-        <h2>Let&apos;s start our future!</h2>
-      </div>
-      <div className={style.buttons}>
-        <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.link}>
-          <Button variant="outlined" color="primary" className={style.btn1}>
-            Sign up
-          </Button>
-        </NavLink>
-        <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.link}>
-          <Button variant="contained" color="primary" className={style.btn}>
-            Log in
-          </Button>
-        </NavLink>
+      <div className={style.top}>
+        <div className={style.title}>
+          <h2>Let&apos;s start our future!</h2>
+        </div>
+        <div className={style.buttons}>
+          <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.link}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={`${style.btn} ${style.btn1}`}
+            >
+              Sign up
+            </Button>
+          </NavLink>
+          <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.link}>
+            <Button variant="contained" color="primary" className={style.btn}>
+              Log in
+            </Button>
+          </NavLink>
+        </div>
       </div>
 
-      <img src={bckg1} alt="" className={style.photo} />
-
-      <div>
+      <div className={style.generalInfo}>
         <p className={style.information}>
           Welcome to the Scienture Conference, an international science
           conference that brings together researchers from various fields:
@@ -227,6 +275,9 @@ export default function Home() {
           events, while on the [Keynote Speakers] you can read about our
           leaders. Don't wait any longer, join now!
         </p>
+        <div className={style.photoContainer}>
+          <img src={logoValues} alt="" className={style.photo} />
+        </div>
       </div>
       <div className={style.panel}>
         <div className={style.panelComponents}>
@@ -283,7 +334,7 @@ export default function Home() {
                 <StepContent>
                   <Typography>{getStepTwoContent(index)}</Typography>
                   <div>
-                    <div>
+                    <div className={style.btnStepper}>
                       <Button
                         disabled={activeStepTwo === 0}
                         variant="outlined"
@@ -321,7 +372,7 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <p className={style.information}>
+        <p className={`${style.information} ${style.infoTimeline}`}>
           The entire course of the conference was divided into several stages in
           order to allow participation and demonstrate the position of the
           author of a scientific work or a reviewer. The evaluation of multiple
@@ -367,7 +418,7 @@ export default function Home() {
           </TimelineItem>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot color="primary" variant="outlined">
+              <TimelineDot color="primary">
                 <HourglassEmptyOutlinedIcon />
               </TimelineDot>
               <TimelineConnector />
@@ -403,7 +454,7 @@ export default function Home() {
           </TimelineItem>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot color="grey">
+              <TimelineDot color="primary">
                 <MenuBookOutlinedIcon />
               </TimelineDot>
             </TimelineSeparator>
@@ -412,7 +463,10 @@ export default function Home() {
                 <Typography variant="h6" component="h1">
                   Disclosure of works
                 </Typography>
-                <Typography>Positively evaluated works are available to all members of our website!</Typography>
+                <Typography>
+                  Positively evaluated works are available to all members of our
+                  website!
+                </Typography>
               </Paper>
             </TimelineContent>
           </TimelineItem>

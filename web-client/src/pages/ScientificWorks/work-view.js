@@ -11,7 +11,7 @@ import defaultPhoto from "../../images/default-avatar.png";
 
 export default function WorkView() {
   const style = makeStyles({
-    path: {
+    breadcrumbs: {
       textAlign: "left",
       color: "#767676",
       fontSize: "12px",
@@ -26,8 +26,11 @@ export default function WorkView() {
     title: {
       fontWeight: "bold",
     },
-    menu: {
-      paddingTop: "800px",
+    versions: {
+      marginTop: "104px",
+    },
+    version: {
+      marginBottom: "16px",
     },
   })();
 
@@ -98,14 +101,14 @@ export default function WorkView() {
     isSuccessedLoad && (
       <div>
         {data.mode === "Author" ? (
-          <p className={style.path}>
+          <p className={style.breadcrumbs}>
             <Link to={LINKS.PROFILE} className={style.link}>
               My profile
             </Link>{" "}
             / <span className={style.title}>My Work</span>
           </p>
         ) : (
-          <p className={style.path}>
+          <p className={style.breadcrumbs}>
             <Link to={LINKS.WORKS} className={style.link}>
               Scientific works
             </Link>{" "}
@@ -121,10 +124,10 @@ export default function WorkView() {
           workPDF={workPDF}
         />
 
-        <div className={style.menu}>
+        <div className={style.versions}>
           {data.mode !== "Participant" &&
             data.versions.map((version, i) => (
-              <div key={i}>
+              <div key={i} className={style.version}>
                 <VersionPanel
                   version={version}
                   mode={data.mode}

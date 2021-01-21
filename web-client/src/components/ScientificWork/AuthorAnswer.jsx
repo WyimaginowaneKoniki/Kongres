@@ -6,28 +6,59 @@ export default function AuthorAnswer(props) {
   const style = makeStyles({
     answer: {
       width: "600px",
-      margin: "20px",
-      marginLeft: "150px",
+      marginLeft: "144px",
+      marginTop: "16px",
       display: "flex",
+      marginBottom: "48px",
+      "@media only screen and (max-width: 1080px)": {
+        marginLeft: "64px",
+        fontSize: "16px",
+        flexWrap: "wrap",
+      },
+      "@media only screen and (max-width: 768px)": {
+        width: "60vw",
+        marginLeft: "0",
+        justifyContent: "flex-start",
+        lineHeight: "1.5em"
+      },
     },
     userInfo: {
       width: "80px",
       alignItems: "center",
     },
     image: {
-      width: "80px",
-      height: "80px",
+      objectFit: "cover",
+      width: "72px",
+      height: "72px",
       borderRadius: "50px",
+      boxShadow: "2px 2px 4px #C0C4E233",
+      "@media only screen and (max-width: 1080px)": {
+        width: "40px",
+        height: "40px",
+      },
     },
     userName: {
       textAlign: "center",
+      lineHeight: "1.2em",
+      fontSize: "16px",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "12px",
+        lineHeight: "1em",
+      },
     },
     answerContent: {
-      width: "470px",
-      alignItems: "center",
+      marginLeft: "24px",
+      textAlign: "left",
+      "@media only screen and (max-width: 1080px)": {
+        fontSize: "16px",
+      },
+      "@media only screen and (max-width: 768px)": {
+        marginLeft: "8px",
+      },
     },
     date: {
-      color: "grey",
+      fontSize: "14px",
+      color: "#767676",
     },
     answerText: {
       textAlign: "left",

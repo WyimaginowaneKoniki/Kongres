@@ -13,11 +13,10 @@ export default function DropZone(props) {
       },
     },
     dropContainer: {
-      margin: "0px",
+      margin: "0",
       height: "400px",
       border: "4px dashed #DFE2F8",
       opacity: 1,
-
       "@media only screen and (max-width: 1480px)": {
         border: "none",
         height: "auto",
@@ -34,8 +33,7 @@ export default function DropZone(props) {
     },
     dropMessage: {
       textAlign: "center",
-      color: "#aaaaaa",
-      fontFamily: "Arial",
+      color: "#767676",
       fontSize: "20px",
     },
     uploadIcon: {
@@ -110,9 +108,7 @@ export default function DropZone(props) {
     fileSize: {
       color: "#767676",
       width: "100px",
-      "@media only screen and (max-width: 1480px)": {
-        width: "129px",
-      },
+      fontSize: "14px",
     },
     exit: {
       width: "21px",
@@ -128,6 +124,9 @@ export default function DropZone(props) {
       size: "16px",
       border: "1px solid #54457F4D",
       backgroundColor: "white",
+      "@media only screen and (max-width: 768px)": {
+        marginTop: "16px",
+      },
     },
     bottom: {
       justifyContent: "flex-start",
@@ -187,9 +186,7 @@ export default function DropZone(props) {
     } else if (!isFileValid) {
       ShowMessage("Invalid file format. Only PDF file format can be uploaded.");
     } else if (!isSizeValid) {
-      ShowMessage(
-        "Too large file. Only file not greather than 20 MB can be uploaded."
-      );
+      ShowMessage("Too large file. Only file not greather than 20 MB can be uploaded.");
     } else {
       file = f;
       SetFileName(file.name);
@@ -260,15 +257,14 @@ export default function DropZone(props) {
             <BackupOutlinedIcon className={style.uploadIcon} />
 
             <Box lineHeight={2} m={1} className={style.dragText}>
-<div className={style.dragDesc}>              Drag & Drop file here
-              <br />
-              or
-              <br /></div>
-              <Button
-                variant="outlined"
-                className={style.btn}
-                onClick={OpenDialog}
-              >
+              <div className={style.dragDesc}>
+                {" "}
+                Drag & Drop file here
+                <br />
+                or
+                <br />
+              </div>
+              <Button variant="outlined" className={style.btn} onClick={OpenDialog}>
                 Browse file
               </Button>
             </Box>
