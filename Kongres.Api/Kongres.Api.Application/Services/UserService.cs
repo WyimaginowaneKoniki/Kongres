@@ -138,6 +138,8 @@ namespace Kongres.Api.Application.Services
                 base64Photo = $"data:image/{photoExtension};base64,{authorPhoto}";
             }
 
+            var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(uint.Parse(userId));
+
             return new MyProfileUserDto()
             {
                 Name = user.Name,
@@ -147,7 +149,8 @@ namespace Kongres.Api.Application.Services
                 University = user.University,
                 Specialization = user.Specialization,
                 PhotoBase64 = base64Photo,
-                Role = user.UserName.Split(":")[0]
+                Role = user.UserName.Split(":")[0],
+                WorkId = scientificWork?.Id ?? 0
             };
         }
     }

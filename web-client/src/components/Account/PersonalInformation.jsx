@@ -74,6 +74,7 @@ export default function PersonalInformation(props) {
     setAcademicTitle(props.info.academicTitle);
     setSpecialization(props.info.specialization);
     setRole(props.info.role);
+    setPhoto(props.info.photoBase64);
   }, [
     props.info.name,
     props.info.surname,
@@ -83,6 +84,7 @@ export default function PersonalInformation(props) {
     props.info.academicTitle,
     props.info.specialization,
     props.info.role,
+    props.info.photoBase64,
   ]);
 
   const [role, setRole] = React.useState(props.info.role);
@@ -96,6 +98,7 @@ export default function PersonalInformation(props) {
   const [academicTitle, setAcademicTitle] = React.useState(
     props.info.academicTitle
   );
+  const [photo, setPhoto] = React.useState(props.info.photoBase64);
 
   const schema = yup.object().shape({
     firstName: yup
@@ -288,9 +291,7 @@ export default function PersonalInformation(props) {
             </TextField>
 
             {/* Avatar */}
-            {role === "Participant"&& (
-              <Avatar name="avatar" />
-            )}
+            {role === "Participant" && <Avatar photo={photo} name="avatar" />}
 
             {/* Button Submit */}
             <Button

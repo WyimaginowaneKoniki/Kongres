@@ -10,5 +10,6 @@
         public string Specialization { get; set; }
         public string PhotoBase64 { get; set; }
         public string Role { get; set; }
+        public uint WorkId { get; set; }
     }
 }

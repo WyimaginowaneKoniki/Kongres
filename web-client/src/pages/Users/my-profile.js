@@ -67,7 +67,6 @@ export default function MyProfile(props) {
         })
         .then((resp) => {
           SetUserInfo(resp.data);
-          console.log(resp.data);
         })
         .catch((_) => {
           history.push({
@@ -81,8 +80,6 @@ export default function MyProfile(props) {
   const [info, SetInfo] = React.useState("blue");
   const [password, SetPassword] = React.useState("black");
 
-  const moveToWork = () => {};
-
   const moveToPersonalInformation = () => {
     SetPanel(true);
     SetInfo("blue");
@@ -95,14 +92,24 @@ export default function MyProfile(props) {
     SetInfo("black");
   };
 
-  const moveToLogOut = () => {};
+  const moveToLogOut = () => {
+    localStorage.removeItem("jwt");
+    window.location.href = URL;
+  };
 
   return (
     <div className={style.main}>
       <h1 className={style.h1}> My Profile</h1>
       <div className={style.left}>
-        <h2 className={style.h2} onClick={moveToWork}>
-          Add work / My work
+        <h2 className={style.h2}>
+         {userInfo.workId === 0 ?
+         <NavLink exact to={LINKS.ADDING_WORK} className={style.link}>
+            Add work 
+          </NavLink> :
+          <NavLink exact to={`${LINKS.WORKS}/${userInfo.workId}`} className={style.link}>
+            My work 
+          </NavLink>
+         }
         </h2>
         <h2
           className={style.h2}
@@ -118,12 +125,12 @@ export default function MyProfile(props) {
         >
           Change password
         </h2>
-        <h2 className={style.h2} onClick={moveToLogOut}>
-          Log out
-        </h2>
         <NavLink exact to="/regulations" className={style.link}>
           <h2 className={style.h2}>Rules</h2>
         </NavLink>
+        <h2 className={style.h2} onClick={moveToLogOut}>
+          Log out
+        </h2>
       </div>
       <div className={style.right}>
         {panel ? <PersonalInformation info={userInfo} /> : <ChangePassword />}
