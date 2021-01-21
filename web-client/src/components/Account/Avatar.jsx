@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Button, Snackbar } from "@material-ui/core/";
 
-export default function Avatar() {
+export default function Avatar(props) {
   const style = makeStyles({
     main: {
       marginBottom: "16px",
@@ -66,7 +66,11 @@ export default function Avatar() {
   return (
     <div className={style.main}>
       <div className={style.photoButton}>
-        <img src={avatarURL} alt="" id="img" className={style.photo} />
+        {props.photo ? (
+          <img src={props.photo} alt="" id="img" className={style.photo} />
+        ) : (
+          <img src={avatarURL} alt="" id="img" className={style.photo} />
+        )}
         <Button
           variant="outlined"
           color="primary"
@@ -85,7 +89,11 @@ export default function Avatar() {
         </Button>
       </div>
       {avatarURL !== defaultPicture && (
-        <Button color="secondary" onClick={onRemovePicture} className={style.btnDelete}>
+        <Button
+          color="secondary"
+          onClick={onRemovePicture}
+          className={style.btnDelete}
+        >
           Delete photo
         </Button>
       )}

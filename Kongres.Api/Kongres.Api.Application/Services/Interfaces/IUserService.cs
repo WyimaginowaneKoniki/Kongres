@@ -12,5 +12,6 @@ namespace Kongres.Api.Application.Services.Interfaces
         Task RegisterAsync(UserTypeEnum userType, CreateUserCommand command);
         Task LoginAsync(UserTypeEnum userType, LoginUserCommand request);
         Task<string> GetUserName(string userId);
+        Task<MyProfileUserDto> GetInformationForMyProfileAsync(string userId);
     }
 }

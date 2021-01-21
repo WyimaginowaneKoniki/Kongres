@@ -27,7 +27,6 @@ export default function ChangePassword() {
     form: {
       display: "flex",
       flexDirection: "column",
-      float: "left",
       textAlign: "left",
       maxWidth: "400px",
       margin: "16px",
