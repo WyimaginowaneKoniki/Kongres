@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonalInformation from "../../components/Account/PersonalInformation";
+import ChangePassword from "../../components/Account/ChangePassword";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { URL_API, LINKS } from "../../Constants";
@@ -82,8 +83,21 @@ export default function MyProfile(props) {
     })();
   }, [history, userInfo]);
 
+  const [panel, SetPanel] = React.useState(true);
   const [info, SetInfo] = React.useState("#6069A9");
-  SetInfo(info);
+  const [password, SetPassword] = React.useState("black");
+
+  const moveToPersonalInformation = () => {
+    SetPanel(true);
+    SetInfo("#6069A9");
+    SetPassword("black");
+  };
+
+  const moveToChangePassword = () => {
+    SetPanel(false);
+    SetPassword("#6069A9");
+    SetInfo("black");
+  };
 
   const moveToLogOut = () => {
     localStorage.removeItem("jwt");
@@ -96,22 +110,41 @@ export default function MyProfile(props) {
       <div className={style.main}>
         <div className={style.left}>
           <p className={style.profileLinks}>
-          {userInfo.workId === 0 ?
-         <NavLink exact to={LINKS.ADDING_WORK} className={style.link}>
-            Add work 
-          </NavLink> :
-          <NavLink exact to={`${LINKS.WORKS}/${userInfo.workId}`} className={style.link}>
-            My work 
-          </NavLink>
-         }
+            {userInfo.role === "Reviewer" && (
+              <NavLink exact to={LINKS.REVIEWS} className={style.link}>
+                My reviews
+              </NavLink>
+            )}
+            {userInfo.role === "Participant" && userInfo.workId === 0 && (
+              <NavLink exact to={LINKS.ADDING_WORK} className={style.link}>
+                Add work
+              </NavLink>
+            )}
+            {userInfo.role === "Participant" && userInfo.workId === 1 && (
+              <NavLink
+                exact
+                to={`${LINKS.WORKS}/${userInfo.workId}`}
+                className={style.link}
+              >
+                My work
+              </NavLink>
+            )}
           </p>
           <p
             className={style.profileLinks}
+            onClick={moveToPersonalInformation}
             style={{ color: info }}
           >
             Personal Information
           </p>
 
+          <p
+            className={style.profileLinks}
+            onClick={moveToChangePassword}
+            style={{ color: password }}
+          >
+            Change password
+          </p>
           <p
             className={`${style.profileLinks} ${style.smallLinks}`}
             onClick={moveToLogOut}
@@ -123,7 +156,7 @@ export default function MyProfile(props) {
           </NavLink>
         </div>
         <div className={style.right}>
-        <PersonalInformation info={userInfo} />
+          {panel ? <PersonalInformation info={userInfo} /> : <ChangePassword />}
         </div>
       </div>
     </div>
