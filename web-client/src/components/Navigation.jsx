@@ -4,7 +4,14 @@ import "../index.css";
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, IconButton, Drawer, List, ListItem } from "@material-ui/core/";
+import {
+  Box,
+  Button,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+} from "@material-ui/core/";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOpen from "@material-ui/icons/MenuOpen";
 import Logo from "../images/logo.png";
@@ -15,7 +22,7 @@ export default function Navigation(props) {
   const style = makeStyles({
     logo: {
       width: "210px",
-      "@media (max-width: 768px)": {
+      "@media (max-width: 1410px)": {
         width: "144px",
       },
     },
@@ -47,7 +54,9 @@ export default function Navigation(props) {
       height: "56px",
       borderRadius: "50px",
       marginLeft: "16px",
-      "@media (max-width: 768px)": {
+      "@media (max-width: 1410px)": {
+        marginTop: "24px",
+        marginRight: "16px",
         width: "48px",
         height: "48px",
       },
@@ -77,7 +86,7 @@ export default function Navigation(props) {
       textAlign: "right",
       color: "#767676",
       lineHeight: "1em",
-      margin: 'auto',
+      margin: "auto",
       "&:hover": {
         cursor: "pointer",
         color: "#000000",
@@ -96,6 +105,7 @@ export default function Navigation(props) {
     },
     paperAnchorTop: {
       marginTop: "120px",
+      width: "250px",
     },
     linkMenu: {
       fontWeight: "bold",
@@ -142,8 +152,6 @@ export default function Navigation(props) {
     listMenu: {
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
     },
   })();
 
@@ -201,7 +209,11 @@ export default function Navigation(props) {
           {props.userInfo.role === "Participant" &&
             props.userInfo.scientificWorkId === 0 && (
               <Box>
-                <NavLink exact to={LINKS.ADDING_WORK} className={style.linkButton}>
+                <NavLink
+                  exact
+                  to={LINKS.ADDING_WORK}
+                  className={style.linkButton}
+                >
                   <Button
                     className={style.btn}
                     color="primary"
@@ -227,7 +239,9 @@ export default function Navigation(props) {
           <NavLink exact to={LINKS.PROFILE}>
             <img
               className={style.avatar}
-              src={props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar}
+              src={
+                props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar
+              }
               alt="Avatar"
             />
           </NavLink>
@@ -241,7 +255,11 @@ export default function Navigation(props) {
             Reviewer? <a href={LINKS.REVIEWER_LOGIN}>Log in</a> or
             <a href={LINKS.REVIEWER_SIGN_UP}> Sign up</a>
           </p>
-          <NavLink exact to={LINKS.PARTICIPANT_SIGN_UP} className={style.linkButton}>
+          <NavLink
+            exact
+            to={LINKS.PARTICIPANT_SIGN_UP}
+            className={style.linkButton}
+          >
             <Button
               className={style.btnSignup}
               color="primary"
@@ -251,7 +269,11 @@ export default function Navigation(props) {
               Sign up
             </Button>
           </NavLink>
-          <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
+          <NavLink
+            exact
+            to={LINKS.PARTICIPANT_LOGIN}
+            className={style.linkButton}
+          >
             <Button
               className={style.btnLogin}
               color="primary"
@@ -271,13 +293,17 @@ export default function Navigation(props) {
       {/* Logo */}
       <Box>
         <NavLink exact to="/">
-          <img className={style.logo} src={Logo} alt="Scienture conference logo" />
+          <img
+            className={style.logo}
+            src={Logo}
+            alt="Scienture conference logo"
+          />
         </NavLink>
       </Box>
       <Drawer
         open={isDrawerOpen}
-        anchor="top"
-        variant="persistent"
+        anchor="left"
+        //variant="persistent"
         classes={{ paper: style.paperAnchorTop }}
       >
         <List className={style.listMenu}>
@@ -338,7 +364,11 @@ export default function Navigation(props) {
                 </NavLink>
               )}
               {!props.userInfo && (
-                <NavLink exact to={LINKS.PARTICIPANT_LOGIN} className={style.linkButton}>
+                <NavLink
+                  exact
+                  to={LINKS.PARTICIPANT_LOGIN}
+                  className={style.linkButton}
+                >
                   <Button
                     className={style.btnLogin}
                     color="primary"
@@ -353,7 +383,11 @@ export default function Navigation(props) {
 
               {props.userInfo && props.userInfo.role === "Reviewer" && (
                 <Box>
-                  <NavLink exact to={LINKS.REVIEWS} className={style.linkButton}>
+                  <NavLink
+                    exact
+                    to={LINKS.REVIEWS}
+                    className={style.linkButton}
+                  >
                     <Button
                       className={style.btn}
                       color="primary"
@@ -395,7 +429,11 @@ export default function Navigation(props) {
                 props.userInfo.role === "Participant" &&
                 props.userInfo.scientificWorkId === 0 && (
                   <Box>
-                    <NavLink exact to={LINKS.ADDING_WORK} className={style.linkButton}>
+                    <NavLink
+                      exact
+                      to={LINKS.ADDING_WORK}
+                      className={style.linkButton}
+                    >
                       <Button
                         className={style.btn}
                         color="primary"
@@ -432,7 +470,11 @@ export default function Navigation(props) {
             <NavLink exact to={LINKS.PROFILE} className={style.linkButton}>
               <img
                 className={style.avatar}
-                src={props.userInfo.photoBase64 ? props.userInfo.photoBase64 : Avatar}
+                src={
+                  props.userInfo.photoBase64
+                    ? props.userInfo.photoBase64
+                    : Avatar
+                }
                 alt=""
               />
             </NavLink>
