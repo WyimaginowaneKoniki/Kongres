@@ -79,12 +79,16 @@ export default function PersonalInformation(props) {
     props.info.role,
   ]);
 
-  const [specialization, setSpecialization] = React.useState(props.info.specialization);
+  const [specialization, setSpecialization] = React.useState(
+    props.info.specialization
+  );
   const [firstName, setFirstName] = React.useState(props.info.name);
   const [lastName, setLastName] = React.useState(props.info.surname);
   const [email, setEmail] = React.useState(props.info.email);
   const [university, setUniversity] = React.useState(props.info.university);
-  const [academicTitle, setAcademicTitle] = React.useState(props.info.academicTitle);
+  const [academicTitle, setAcademicTitle] = React.useState(
+    props.info.academicTitle
+  );
 
   const schema = yup.object().shape({
     firstName: yup
@@ -101,7 +105,9 @@ export default function PersonalInformation(props) {
       .string()
       .email("Email should have correct format")
       .required("Required field"),
-    university: yup.string().max(255, "University should be 255 character long or less"),
+    university: yup
+      .string()
+      .max(255, "University should be 255 character long or less"),
     academicTitle: yup
       .string()
       .max(255, "Academic title should be 255 character long or less"),
@@ -240,7 +246,6 @@ export default function PersonalInformation(props) {
             />
 
             {/* Specialization Input - Select*/}
-
             <TextField
               className={style.textField}
               inputRef={register}
