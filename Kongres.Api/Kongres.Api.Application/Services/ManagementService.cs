@@ -13,19 +13,16 @@ namespace Kongres.Api.Application.Services
     public class ManagementService : IManagementService
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
-        private readonly IReviewerRepository _reviewerRepository;
         private readonly IReviewerScientificWorkRepository _reviewersScientificWorkRepository;
         private readonly IUserRepository _userRepository;
         private readonly IEmailSender _emailSender;
 
         public ManagementService(IScientificWorkRepository scientificWorkRepository,
-                            IReviewerRepository reviewerRepository,
                             IReviewerScientificWorkRepository reviewersScientificWorkRepository,
                             IUserRepository userRepository,
                             IEmailSender emailSender)
         {
             _scientificWorkRepository = scientificWorkRepository;
-            _reviewerRepository = reviewerRepository;
             _reviewersScientificWorkRepository = reviewersScientificWorkRepository;
             _userRepository = userRepository;
             _emailSender = emailSender;
@@ -38,7 +35,7 @@ namespace Kongres.Api.Application.Services
             {
                 // get reviewers and scientific works
                 var scientificWorks = await _scientificWorkRepository.GetAllBySpecializationAsync(category);
-                var reviewers = await _reviewerRepository.GetAllBySpecializationAsync(category);
+                var reviewers = await _userRepository.GetAllBySpecializationAsync(category);
 
                 // get work's ids
                 // and

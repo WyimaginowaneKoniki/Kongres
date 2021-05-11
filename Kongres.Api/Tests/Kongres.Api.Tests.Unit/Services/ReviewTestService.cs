@@ -156,22 +156,21 @@ namespace Kongres.Api.Tests.Unit.Services
             var rating = (byte)3;
             var scientificWorkId = 2u;
 
-            _scientificWorkRepositoryMock.Reset();
-            _scientificWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(false);
+            _reviewersWorkRepositoryMock.Reset();
+            _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(false);
 
             _scientificWorkFileRepositoryMock.Reset();
             _userStoreMock.Reset();
             _fileManagerMock.Reset();
             _reviewRepositoryMock.Reset();
             _emailSenderMock.Reset();
-            _reviewersWorkRepositoryMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
             err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
+            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(It.IsAny<uint>()), Times.Never);
             _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.IsAny<ScientificWork>()), Times.Never);
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(It.IsAny<uint>()), Times.Never);
@@ -212,8 +211,8 @@ namespace Kongres.Api.Tests.Unit.Services
                 }
             };
 
-            _scientificWorkRepositoryMock.Reset();
-            _scientificWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
+            _reviewersWorkRepositoryMock.Reset();
+            _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
 
             _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId)).ReturnsAsync(scientificWork);
@@ -222,14 +221,13 @@ namespace Kongres.Api.Tests.Unit.Services
             _fileManagerMock.Reset();
             _reviewRepositoryMock.Reset();
             _emailSenderMock.Reset();
-            _reviewersWorkRepositoryMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
             err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
+            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(It.IsAny<uint>()), Times.Never);
             _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.IsAny<ScientificWork>()), Times.Never);
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(It.IsAny<uint>()), Times.Never);
@@ -277,7 +275,6 @@ namespace Kongres.Api.Tests.Unit.Services
             var authorEmail = "author@mail.com";
 
             _scientificWorkRepositoryMock.Reset();
-            _scientificWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
 
             _scientificWorkFileRepositoryMock.Reset();
@@ -297,6 +294,7 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
+            _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
 
             _emailSenderMock.Reset();
             _emailSenderMock.Setup(x => x.SendReceiveReviewEmailAsync(authorEmail, scientificWorkId));
@@ -306,7 +304,6 @@ namespace Kongres.Api.Tests.Unit.Services
 
             err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.IsAny<ScientificWork>()), Times.Never);
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(It.IsAny<uint>()), Times.Never);
@@ -325,7 +322,8 @@ namespace Kongres.Api.Tests.Unit.Services
                                                                              y.VersionOfScientificWork == version)), Times.Once);
 
             _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-
+            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
+            
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
             _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
@@ -361,7 +359,6 @@ namespace Kongres.Api.Tests.Unit.Services
             var scientificWork = new ScientificWork() { Status = StatusEnum.UnderReview };
 
             _scientificWorkRepositoryMock.Reset();
-            _scientificWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _scientificWorkRepositoryMock.Setup(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Rejected)));
@@ -385,7 +382,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
-
+            _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
+            
             _emailSenderMock.Reset();
             _emailSenderMock.Setup(x => x.SendToAuthorWorkGotRejectedAsync(authorEmail, scientificWorkId));
 
@@ -394,7 +392,6 @@ namespace Kongres.Api.Tests.Unit.Services
 
             err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Rejected)), Times.Once);
@@ -413,7 +410,8 @@ namespace Kongres.Api.Tests.Unit.Services
                                                                              y.VersionOfScientificWork == version)), Times.Once);
 
             _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-
+            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
+            
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(authorEmail, scientificWorkId), Times.Once);
             _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
@@ -449,7 +447,6 @@ namespace Kongres.Api.Tests.Unit.Services
             var scientificWork = new ScientificWork() { Status = StatusEnum.UnderReview };
 
             _scientificWorkRepositoryMock.Reset();
-            _scientificWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _scientificWorkRepositoryMock.Setup(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Correcting)));
@@ -473,7 +470,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
-
+            _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
+            
             _emailSenderMock.Reset();
             _emailSenderMock.Setup(x => x.SendNewVersionEnabledEmailAsync(authorEmail, scientificWorkId));
 
@@ -482,7 +480,6 @@ namespace Kongres.Api.Tests.Unit.Services
 
             err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Correcting)), Times.Once);
@@ -501,7 +498,8 @@ namespace Kongres.Api.Tests.Unit.Services
                                                                              y.VersionOfScientificWork == version)), Times.Once);
 
             _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-
+            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
+            
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
             _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(authorEmail, scientificWorkId), Times.Once);
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
@@ -537,7 +535,6 @@ namespace Kongres.Api.Tests.Unit.Services
             var scientificWork = new ScientificWork() { Status = StatusEnum.UnderReview };
 
             _scientificWorkRepositoryMock.Reset();
-            _scientificWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _scientificWorkRepositoryMock.Setup(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Accepted)));
@@ -561,7 +558,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
-
+            _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
+            
             _emailSenderMock.Reset();
             _emailSenderMock.Setup(x => x.SendToAuthorWorkGotAcceptedAsync(authorEmail, scientificWorkId));
 
@@ -570,7 +568,6 @@ namespace Kongres.Api.Tests.Unit.Services
 
             err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Accepted)), Times.Once);
@@ -589,7 +586,8 @@ namespace Kongres.Api.Tests.Unit.Services
                                                                              y.VersionOfScientificWork == version)), Times.Once);
 
             _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-
+            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
+            
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
             _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
             _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(authorEmail, scientificWorkId), Times.Once);

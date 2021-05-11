@@ -445,7 +445,7 @@ namespace Kongres.Api.Tests.Unit.Services
 
             ScientificWorkWithReviewDto dto = null;
 
-            _reviewRepositoryMock.Reset();
+            _reviewerScientificWorkRepositoryMock.Reset();
             _fileManagerMock.Reset();
             _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Reset();
@@ -458,7 +458,7 @@ namespace Kongres.Api.Tests.Unit.Services
             dto.Should().BeNull();
 
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsReviewerAsync(It.IsAny<uint>(), It.IsAny<uint>()), Times.Never);
+            _reviewerScientificWorkRepositoryMock.Verify(x => x.IsReviewerAsync(It.IsAny<uint>(), It.IsAny<uint>()), Times.Never);
             _fileManagerMock.Verify(x => x.GetBase64FileAsync(It.IsAny<string>()), Times.Never);
             _scientificWorkFileRepositoryMock.Verify(x => x.GetVersionsWithReviews(It.IsAny<uint>()), Times.Never);
         }
@@ -598,8 +598,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkFileRepositoryMock.Reset();
 
-            _reviewRepositoryMock.Reset();
-            _reviewRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(false);
+            _reviewerScientificWorkRepositoryMock.Reset();
+            _reviewerScientificWorkRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(false);
 
             _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.GetBase64FileAsync(author.Photo)).ReturnsAsync(randomBase64);
@@ -613,7 +613,7 @@ namespace Kongres.Api.Tests.Unit.Services
             scientificWorkWithReviewDto.Should().BeEquivalentTo(expectedDto);
 
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsReviewerAsync(scientificWorkId, userId), Times.Once);
+            _reviewerScientificWorkRepositoryMock.Verify(x => x.IsReviewerAsync(scientificWorkId, userId), Times.Once);
             _fileManagerMock.Verify(x => x.GetBase64FileAsync(author.Photo), Times.Once);
             _scientificWorkFileRepositoryMock.Verify(x => x.GetVersionsWithReviews(It.IsAny<uint>()), Times.Never);
         }
@@ -792,8 +792,8 @@ namespace Kongres.Api.Tests.Unit.Services
             _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetVersionsWithReviews(scientificWorkId)).ReturnsAsync(scientificWork.Versions);
 
-            _reviewRepositoryMock.Reset();
-            _reviewRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(true);
+            _reviewerScientificWorkRepositoryMock.Reset();
+            _reviewerScientificWorkRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(true);
 
             _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.GetBase64FileAsync(author.Photo)).ReturnsAsync(randomBase64);
@@ -808,7 +808,7 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
             _scientificWorkFileRepositoryMock.Verify(x => x.GetVersionsWithReviews(scientificWorkId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsReviewerAsync(scientificWorkId, userId), Times.Once);
+            _reviewerScientificWorkRepositoryMock.Verify(x => x.IsReviewerAsync(scientificWorkId, userId), Times.Once);
             _fileManagerMock.Verify(x => x.GetBase64FileAsync(author.Photo), Times.Once);
         }
 
@@ -1005,7 +1005,7 @@ namespace Kongres.Api.Tests.Unit.Services
             _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetVersionsWithReviews(scientificWorkId)).ReturnsAsync(scientificWork.Versions);
 
-            _reviewRepositoryMock.Reset();
+            _reviewerScientificWorkRepositoryMock.Reset();
 
             _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.GetBase64FileAsync(author.Photo)).ReturnsAsync(randomBase64);
@@ -1020,7 +1020,7 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
             _scientificWorkFileRepositoryMock.Verify(x => x.GetVersionsWithReviews(scientificWorkId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsReviewerAsync(It.IsAny<uint>(), It.IsAny<uint>()), Times.Never);
+            _reviewerScientificWorkRepositoryMock.Verify(x => x.IsReviewerAsync(It.IsAny<uint>(), It.IsAny<uint>()), Times.Never);
             _fileManagerMock.Verify(x => x.GetBase64FileAsync(author.Photo), Times.Once);
         }
         
@@ -1133,8 +1133,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkFileRepositoryMock.Reset();
 
-            _reviewRepositoryMock.Reset();
-            _reviewRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(false);
+            _reviewerScientificWorkRepositoryMock.Reset();
+            _reviewerScientificWorkRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(false);
 
             _fileManagerMock.Reset();
 
@@ -1147,7 +1147,7 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
             _scientificWorkFileRepositoryMock.Verify(x => x.GetVersionsWithReviews(It.IsAny<uint>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.IsReviewerAsync(It.IsAny<uint>(), It.IsAny<uint>()), Times.Once);
+            _reviewerScientificWorkRepositoryMock.Verify(x => x.IsReviewerAsync(It.IsAny<uint>(), It.IsAny<uint>()), Times.Once);
             _fileManagerMock.Verify(x => x.GetBase64FileAsync(author.Photo), Times.Never);
         }
 

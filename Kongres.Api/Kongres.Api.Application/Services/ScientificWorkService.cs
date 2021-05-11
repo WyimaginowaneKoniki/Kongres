@@ -159,7 +159,7 @@ namespace Kongres.Api.Application.Services
 
             if (scientificWork.MainAuthor.Id == userId)
                 mode = "Author";
-            else if (await _reviewRepository.IsReviewerAsync(scientificWorkId, userId))
+            else if (await _reviewersWorkRepository.IsReviewerAsync(scientificWorkId, userId))
                 mode = "Reviewer";
             else
                 mode = "Participant";

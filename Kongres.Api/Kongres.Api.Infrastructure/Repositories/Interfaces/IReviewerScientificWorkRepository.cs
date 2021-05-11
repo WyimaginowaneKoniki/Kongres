@@ -10,5 +10,8 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks);
         Task<IEnumerable<string>> GetEmailsOfReviewersByWorkIdAsync(uint scientificWorkId);
         int GetReviewersCount(uint scientificWorkId);
+        Task<bool> IsReviewerAsync(uint scientificWorkId, uint userId);
+        Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId);
+
     }
 }

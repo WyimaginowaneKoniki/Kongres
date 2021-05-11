@@ -46,12 +46,6 @@ namespace Kongres.Api.Infrastructure.Repositories
                                              .AnyAsync(x => x.MainAuthor.Id == userId &&
                                                             x.Versions.Any(y => y.Reviews.Any(k => k.Id == reviewOfWorkId)));
 
-        public async Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId)
-            => await _context.ReviewersScienceWorks.Include(x => x.ScientificWork)
-                                                   .Include(x => x.User)
-                                                   .AnyAsync(x => x.User.Id == userId &&
-                                                                  x.ScientificWork.Id == scientificWorkId);
-
         public async Task<byte> GetNumberOfVersionsByAuthorIdAsync(uint userId)
         {
             var scientificWork = await _context.ScientificWorks.Include(x => x.MainAuthor)
@@ -75,6 +69,7 @@ namespace Kongres.Api.Infrastructure.Repositories
             => await _context.ScientificWorks.Where(x => x.Id == scientificWorkId)
                                              .Select(x => x.MainAuthor.Email)
                                              .SingleAsync();
+
         public async Task<uint> GetIdOfWorkByAuthorIdAsync(uint authorId)
             => await _context.ScientificWorks.Where(x => x.MainAuthor.Id == authorId)
                                              .Select(x => x.Id)
