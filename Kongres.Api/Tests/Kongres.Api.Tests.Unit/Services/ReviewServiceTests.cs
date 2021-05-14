@@ -17,7 +17,7 @@ using Xunit;
 
 namespace Kongres.Api.Tests.Unit.Services
 {
-    public class ReviewTestService
+    public class ReviewServiceTests
     {
         private readonly Mock<IScientificWorkRepository> _scientificWorkRepositoryMock;
         private readonly Mock<IScientificWorkFileRepository> _scientificWorkFileRepositoryMock;
@@ -29,7 +29,7 @@ namespace Kongres.Api.Tests.Unit.Services
         private readonly UserManager<User> _userManager;
         private readonly IReviewService _service;
 
-        public ReviewTestService()
+        public ReviewServiceTests()
         {
             _scientificWorkRepositoryMock = new Mock<IScientificWorkRepository>();
             _scientificWorkFileRepositoryMock = new Mock<IScientificWorkFileRepository>();

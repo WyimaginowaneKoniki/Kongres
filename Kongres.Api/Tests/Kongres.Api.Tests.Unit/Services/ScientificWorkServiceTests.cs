@@ -21,7 +21,7 @@ using Xunit;
 
 namespace Kongres.Api.Tests.Unit.Services
 {
-    public class ScientificWorkTestService
+    public class ScientificWorkServiceTests
     {
         private readonly Mock<IScientificWorkRepository> _scientificWorkRepositoryMock;
         private readonly Mock<IScientificWorkFileRepository> _scientificWorkFileRepositoryMock;
@@ -33,7 +33,7 @@ namespace Kongres.Api.Tests.Unit.Services
         private readonly UserManager<User> _userManager;
         private readonly ScientificWorkService _service;
 
-        public ScientificWorkTestService()
+        public ScientificWorkServiceTests()
         {
             _scientificWorkFileRepositoryMock = new Mock<IScientificWorkFileRepository>();
             _scientificWorkRepositoryMock = new Mock<IScientificWorkRepository>();
