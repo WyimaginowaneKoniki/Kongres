@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
@@ -13,32 +8,30 @@ using Kongres.Api.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Kongres.Api.Tests.Unit.Services
 {
-    public class ReviewServiceTests
+    public class ReviewServiceTests : IDisposable
     {
-        private readonly Mock<IScientificWorkRepository> _scientificWorkRepositoryMock;
-        private readonly Mock<IScientificWorkFileRepository> _scientificWorkFileRepositoryMock;
-        private readonly Mock<IReviewerScientificWorkRepository> _reviewersWorkRepositoryMock;
-        private readonly Mock<IReviewRepository> _reviewRepositoryMock;
-        private readonly Mock<IFileManager> _fileManagerMock;
-        private readonly Mock<IEmailSender> _emailSenderMock;
-        private readonly Mock<IUserStore<User>> _userStoreMock;
+        private readonly Mock<IScientificWorkRepository> _scientificWorkRepositoryMock = new Mock<IScientificWorkRepository>();
+        private readonly Mock<IScientificWorkFileRepository> _scientificWorkFileRepositoryMock = new Mock<IScientificWorkFileRepository>();
+        private readonly Mock<IReviewerScientificWorkRepository> _reviewersWorkRepositoryMock = new Mock<IReviewerScientificWorkRepository>();
+        private readonly Mock<IReviewRepository> _reviewRepositoryMock = new Mock<IReviewRepository>();
+        private readonly Mock<IFileManager> _fileManagerMock = new Mock<IFileManager>();
+        private readonly Mock<IEmailSender> _emailSenderMock = new Mock<IEmailSender>();
+        private readonly Mock<IUserStore<User>> _userStoreMock = new Mock<IUserStore<User>>();
         private readonly UserManager<User> _userManager;
         private readonly IReviewService _service;
 
         public ReviewServiceTests()
         {
-            _scientificWorkRepositoryMock = new Mock<IScientificWorkRepository>();
-            _scientificWorkFileRepositoryMock = new Mock<IScientificWorkFileRepository>();
-            _reviewersWorkRepositoryMock = new Mock<IReviewerScientificWorkRepository>();
-            _reviewRepositoryMock = new Mock<IReviewRepository>();
-            _fileManagerMock = new Mock<IFileManager>();
-            _emailSenderMock = new Mock<IEmailSender>();
-            _userStoreMock = new Mock<IUserStore<User>>();
-
             _userManager = new UserManager<User>(_userStoreMock.Object, null, null, null, null, null, null, null, null);
 
             _service = new ReviewService(_scientificWorkRepositoryMock.Object,
@@ -50,6 +43,18 @@ namespace Kongres.Api.Tests.Unit.Services
                                                 _emailSenderMock.Object);
         }
 
+
+        public void Dispose()
+        {
+            _scientificWorkRepositoryMock.Reset();
+            _scientificWorkFileRepositoryMock.Reset();
+            _reviewersWorkRepositoryMock.Reset();
+            _reviewRepositoryMock.Reset();
+            _fileManagerMock.Reset();
+            _emailSenderMock.Reset();
+            _userStoreMock.Reset();
+        }
+
         [Fact]
         public async Task AddAnswerToReviewAsyncUserIsNotAuthorDoNothing()
         {
@@ -57,24 +62,14 @@ namespace Kongres.Api.Tests.Unit.Services
             var reviewId = 2u;
             var asnwerMsg = "Hello, my friend";
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(false);
 
-            _reviewRepositoryMock.Reset();
-            _userStoreMock.Reset();
-            _emailSenderMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddAnswerToReviewAsync(userId, reviewId, asnwerMsg));
 
-            err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.GetReviewByIdAsync(It.IsAny<uint>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.AddAnswerToReviewAsync(It.IsAny<Review>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.GetWorkIdByReviewIdAsync(It.IsAny<uint>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.GetEmailOfReviewerByReviewIdAsync(It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendReceiveAnswerEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
+            err.Should().BeNull();
         }
 
         [Fact]
@@ -84,26 +79,16 @@ namespace Kongres.Api.Tests.Unit.Services
             var reviewId = 2u;
             var asnwerMsg = "Hello, my friend";
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(true);
 
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(new Review() { Answer = new Answer() });
 
-            _userStoreMock.Reset();
-            _emailSenderMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddAnswerToReviewAsync(userId, reviewId, asnwerMsg));
 
-            err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.GetReviewByIdAsync(reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.AddAnswerToReviewAsync(It.IsAny<Review>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.GetWorkIdByReviewIdAsync(It.IsAny<uint>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.GetEmailOfReviewerByReviewIdAsync(It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendReceiveAnswerEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
+            err.Should().BeNull();
         }
 
         [Fact]
@@ -120,31 +105,21 @@ namespace Kongres.Api.Tests.Unit.Services
             var scientificWorkId = 3u;
             var reviewerEmail = "First@email.com";
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(true);
 
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(review);
             _reviewRepositoryMock.Setup(x => x.AddAnswerToReviewAsync(It.Is<Review>(y => y.Answer.User == user && y.Answer.Comment == asnwerMsg)));
             _reviewRepositoryMock.Setup(x => x.GetWorkIdByReviewIdAsync(reviewId)).ReturnsAsync(scientificWorkId);
             _reviewRepositoryMock.Setup(x => x.GetEmailOfReviewerByReviewIdAsync(reviewId)).ReturnsAsync(reviewerEmail);
 
-            _userStoreMock.Reset();
             _userStoreMock.Setup(x => x.FindByIdAsync(userId.ToString(), CancellationToken.None)).ReturnsAsync(user);
 
-            _emailSenderMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddAnswerToReviewAsync(userId, reviewId, asnwerMsg));
 
-            err.Should().BeNull();
 
-            _scientificWorkRepositoryMock.Verify(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.GetReviewByIdAsync(reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.AddAnswerToReviewAsync(It.Is<Review>(y => y.Answer.User == user && y.Answer.Comment == asnwerMsg)), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.GetWorkIdByReviewIdAsync(reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.GetEmailOfReviewerByReviewIdAsync(reviewId), Times.Once);
-            _emailSenderMock.Verify(x => x.SendReceiveAnswerEmailAsync(reviewerEmail, scientificWorkId), Times.Once);
+            err.Should().BeNull();
         }
 
         [Fact]
@@ -156,36 +131,14 @@ namespace Kongres.Api.Tests.Unit.Services
             var rating = (byte)3;
             var scientificWorkId = 2u;
 
-            _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(false);
 
-            _scientificWorkFileRepositoryMock.Reset();
-            _userStoreMock.Reset();
-            _fileManagerMock.Reset();
-            _reviewRepositoryMock.Reset();
-            _emailSenderMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
-            err.Should().BeNull();
 
-            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(It.IsAny<uint>()), Times.Never);
-            _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.IsAny<ScientificWork>()), Times.Never);
-            _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(It.IsAny<uint>()), Times.Never);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetNewestVersionWithReviewsAsync(It.IsAny<uint>()), Times.Never);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetReviewsCountInNewestVersion(It.IsAny<uint>()), Times.Never);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetRatingSumFromVersion(It.IsAny<uint>()), Times.Never);
-            _scientificWorkFileRepositoryMock.Verify(x => x.AddRatingAsync(It.IsAny<ScientificWorkFile>()), Times.Never);
-            _userStoreMock.Verify(x => x.FindByIdAsync(It.IsAny<string>(), CancellationToken.None), Times.Never);
-            _fileManagerMock.Verify(x => x.SaveFileAsync(It.IsAny<IFormFile>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.AddReviewAsync(It.IsAny<Review>()), Times.Never);
-            _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendReceiveReviewEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
+            err.Should().BeNull();
         }
 
         [Fact]
@@ -211,44 +164,15 @@ namespace Kongres.Api.Tests.Unit.Services
                 }
             };
 
-            _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
 
-            _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId)).ReturnsAsync(scientificWork);
-
-            _userStoreMock.Reset();
-            _fileManagerMock.Reset();
-            _reviewRepositoryMock.Reset();
-            _emailSenderMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
+
             err.Should().BeNull();
-
-            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(It.IsAny<uint>()), Times.Never);
-            _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.IsAny<ScientificWork>()), Times.Never);
-            _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(It.IsAny<uint>()), Times.Never);
-
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetReviewsCountInNewestVersion(It.IsAny<uint>()), Times.Never);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetRatingSumFromVersion(It.IsAny<uint>()), Times.Never);
-            _scientificWorkFileRepositoryMock.Verify(x => x.AddRatingAsync(It.IsAny<ScientificWorkFile>()), Times.Never);
-
-            _userStoreMock.Verify(x => x.FindByIdAsync(It.IsAny<string>(), CancellationToken.None), Times.Never);
-
-            _fileManagerMock.Verify(x => x.SaveFileAsync(It.IsAny<IFormFile>()), Times.Never);
-
-            _reviewRepositoryMock.Verify(x => x.AddReviewAsync(It.IsAny<Review>()), Times.Never);
-
-            _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(It.IsAny<uint>()), Times.Never);
-
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendReceiveReviewEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
         }
 
         [Fact]
@@ -274,60 +198,30 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var authorEmail = "author@mail.com";
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
 
-            _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId)).ReturnsAsync(version);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetReviewsCountInNewestVersion(scientificWorkId)).Returns(reviewsCount);
 
-            _userStoreMock.Reset();
             _userStoreMock.Setup(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None)).ReturnsAsync(reviewer);
 
-            _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.SaveFileAsync(reviewFile)).ReturnsAsync(randomFileName);
 
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
                                                                                  y.Rating == rating && y.File == randomFileName &&
                                                                                  y.VersionOfScientificWork == version)));
 
-            _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
             _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
 
-            _emailSenderMock.Reset();
             _emailSenderMock.Setup(x => x.SendReceiveReviewEmailAsync(authorEmail, scientificWorkId));
+
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
+
             err.Should().BeNull();
-
-            _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.IsAny<ScientificWork>()), Times.Never);
-            _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(It.IsAny<uint>()), Times.Never);
-
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetReviewsCountInNewestVersion(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetRatingSumFromVersion(It.IsAny<uint>()), Times.Never);
-            _scientificWorkFileRepositoryMock.Verify(x => x.AddRatingAsync(It.IsAny<ScientificWorkFile>()), Times.Never);
-
-            _userStoreMock.Verify(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None), Times.Once);
-
-            _fileManagerMock.Verify(x => x.SaveFileAsync(reviewFile), Times.Once);
-
-            _reviewRepositoryMock.Verify(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
-                                                                             y.Rating == rating && y.File == randomFileName &&
-                                                                             y.VersionOfScientificWork == version)), Times.Once);
-
-            _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
-            
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendReceiveReviewEmailAsync(authorEmail, scientificWorkId), Times.Once);
         }
 
         [Fact]
@@ -358,64 +252,34 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var scientificWork = new ScientificWork() { Status = StatusEnum.UnderReview };
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _scientificWorkRepositoryMock.Setup(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Rejected)));
 
-            _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId)).ReturnsAsync(version);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetReviewsCountInNewestVersion(scientificWorkId)).Returns(reviewsCount);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetRatingSumFromVersion(version.Id)).ReturnsAsync(ratingSum);
             _scientificWorkFileRepositoryMock.Setup(x => x.AddRatingAsync(It.Is<ScientificWorkFile>(y => y.Rating == 1)));
 
-            _userStoreMock.Reset();
             _userStoreMock.Setup(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None)).ReturnsAsync(reviewer);
 
-            _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.SaveFileAsync(reviewFile)).ReturnsAsync(randomFileName);
 
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
                                                                                  y.Rating == rating && y.File == randomFileName &&
                                                                                  y.VersionOfScientificWork == version)));
 
-            _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
             _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
-            
-            _emailSenderMock.Reset();
+
             _emailSenderMock.Setup(x => x.SendToAuthorWorkGotRejectedAsync(authorEmail, scientificWorkId));
+
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
+
             err.Should().BeNull();
-
-            _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Rejected)), Times.Once);
-
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetReviewsCountInNewestVersion(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetRatingSumFromVersion(version.Id), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.AddRatingAsync(It.Is<ScientificWorkFile>(y => y.Rating == 1)), Times.Once);
-
-            _userStoreMock.Verify(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None), Times.Once);
-
-            _fileManagerMock.Verify(x => x.SaveFileAsync(reviewFile), Times.Once);
-
-            _reviewRepositoryMock.Verify(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
-                                                                             y.Rating == rating && y.File == randomFileName &&
-                                                                             y.VersionOfScientificWork == version)), Times.Once);
-
-            _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
-            
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(authorEmail, scientificWorkId), Times.Once);
-            _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendReceiveReviewEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
         }
 
         [Fact]
@@ -446,64 +310,34 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var scientificWork = new ScientificWork() { Status = StatusEnum.UnderReview };
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _scientificWorkRepositoryMock.Setup(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Correcting)));
 
-            _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId)).ReturnsAsync(version);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetReviewsCountInNewestVersion(scientificWorkId)).Returns(reviewsCount);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetRatingSumFromVersion(version.Id)).ReturnsAsync(ratingSum);
             _scientificWorkFileRepositoryMock.Setup(x => x.AddRatingAsync(It.Is<ScientificWorkFile>(y => y.Rating == 2)));
 
-            _userStoreMock.Reset();
             _userStoreMock.Setup(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None)).ReturnsAsync(reviewer);
 
-            _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.SaveFileAsync(reviewFile)).ReturnsAsync(randomFileName);
 
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
                                                                                  y.Rating == rating && y.File == randomFileName &&
                                                                                  y.VersionOfScientificWork == version)));
 
-            _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
             _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
-            
-            _emailSenderMock.Reset();
+
             _emailSenderMock.Setup(x => x.SendNewVersionEnabledEmailAsync(authorEmail, scientificWorkId));
+
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
+
             err.Should().BeNull();
-
-            _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Correcting)), Times.Once);
-
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetReviewsCountInNewestVersion(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetRatingSumFromVersion(version.Id), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.AddRatingAsync(It.Is<ScientificWorkFile>(y => y.Rating == 2)), Times.Once);
-
-            _userStoreMock.Verify(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None), Times.Once);
-
-            _fileManagerMock.Verify(x => x.SaveFileAsync(reviewFile), Times.Once);
-
-            _reviewRepositoryMock.Verify(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
-                                                                             y.Rating == rating && y.File == randomFileName &&
-                                                                             y.VersionOfScientificWork == version)), Times.Once);
-
-            _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
-            
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(authorEmail, scientificWorkId), Times.Once);
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendReceiveReviewEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
         }
 
         [Fact]
@@ -534,64 +368,34 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var scientificWork = new ScientificWork() { Status = StatusEnum.UnderReview };
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _scientificWorkRepositoryMock.Setup(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Accepted)));
 
-            _scientificWorkFileRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId)).ReturnsAsync(version);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetReviewsCountInNewestVersion(scientificWorkId)).Returns(reviewsCount);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetRatingSumFromVersion(version.Id)).ReturnsAsync(ratingSum);
             _scientificWorkFileRepositoryMock.Setup(x => x.AddRatingAsync(It.Is<ScientificWorkFile>(y => y.Rating == 3)));
 
-            _userStoreMock.Reset();
             _userStoreMock.Setup(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None)).ReturnsAsync(reviewer);
 
-            _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.SaveFileAsync(reviewFile)).ReturnsAsync(randomFileName);
 
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
                                                                                  y.Rating == rating && y.File == randomFileName &&
                                                                                  y.VersionOfScientificWork == version)));
 
-            _reviewersWorkRepositoryMock.Reset();
             _reviewersWorkRepositoryMock.Setup(x => x.GetReviewersCount(scientificWorkId)).Returns(reviewerCount);
             _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(true);
-            
-            _emailSenderMock.Reset();
+
             _emailSenderMock.Setup(x => x.SendToAuthorWorkGotAcceptedAsync(authorEmail, scientificWorkId));
+
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
+
             err.Should().BeNull();
-
-            _scientificWorkRepositoryMock.Verify(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.GetWorkByIdAsync(scientificWorkId), Times.Once);
-            _scientificWorkRepositoryMock.Verify(x => x.ChangeStatusAsync(It.Is<ScientificWork>(y => y.Status == StatusEnum.Accepted)), Times.Once);
-
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetReviewsCountInNewestVersion(scientificWorkId), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.GetRatingSumFromVersion(version.Id), Times.Once);
-            _scientificWorkFileRepositoryMock.Verify(x => x.AddRatingAsync(It.Is<ScientificWorkFile>(y => y.Rating == 3)), Times.Once);
-
-            _userStoreMock.Verify(x => x.FindByIdAsync(reviewerId.ToString(), CancellationToken.None), Times.Once);
-
-            _fileManagerMock.Verify(x => x.SaveFileAsync(reviewFile), Times.Once);
-
-            _reviewRepositoryMock.Verify(x => x.AddReviewAsync(It.Is<Review>(y => y.Reviewer == reviewer &&
-                                                                             y.Rating == rating && y.File == randomFileName &&
-                                                                             y.VersionOfScientificWork == version)), Times.Once);
-
-            _reviewersWorkRepositoryMock.Verify(x => x.GetReviewersCount(scientificWorkId), Times.Once);
-            _reviewersWorkRepositoryMock.Verify(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId), Times.Once);
-            
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotRejectedAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendNewVersionEnabledEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
-            _emailSenderMock.Verify(x => x.SendToAuthorWorkGotAcceptedAsync(authorEmail, scientificWorkId), Times.Once);
-            _emailSenderMock.Verify(x => x.SendReceiveReviewEmailAsync(It.IsAny<string>(), It.IsAny<uint>()), Times.Never);
         }
 
         [Fact]
@@ -602,25 +406,16 @@ namespace Kongres.Api.Tests.Unit.Services
 
             Stream returnedStream = null;
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(false);
-
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.IsAuthorOfReview(userId, reviewId)).ReturnsAsync(false);
 
-            _fileManagerMock.Reset();
 
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
 
+
             err.Should().BeNull();
-
             returnedStream.Should().BeNull();
-
-            _scientificWorkRepositoryMock.Verify(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsAuthorOfReview(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.GetReviewByIdAsync(It.IsAny<uint>()), Times.Never);
-            _fileManagerMock.Verify(x => x.GetStreamOfFile(It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
@@ -638,29 +433,19 @@ namespace Kongres.Api.Tests.Unit.Services
 
             Stream returnedStream = null;
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(true);
-
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(review);
-
-            _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.GetStreamOfFile(review.File)).Returns(streamOfFile);
 
 
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
 
+
             err.Should().BeNull();
-
             returnedStream.Should().BeEquivalentTo(streamOfFile);
-
-            _scientificWorkRepositoryMock.Verify(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsAuthorOfReview(It.IsAny<uint>(), It.IsAny<uint>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.GetReviewByIdAsync(reviewId), Times.Once);
-            _fileManagerMock.Verify(x => x.GetStreamOfFile(review.File), Times.Once);
         }
-        
+
         [Fact]
         public async Task GetStreamOfReviewFileAsyncUserIsReviewerReturnStream()
         {
@@ -676,27 +461,18 @@ namespace Kongres.Api.Tests.Unit.Services
 
             Stream returnedStream = null;
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(false);
-
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.IsAuthorOfReview(userId, reviewId)).ReturnsAsync(true);
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(review);
-
-            _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.GetStreamOfFile(review.File)).Returns(streamOfFile);
-            
+
+
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
 
+
             err.Should().BeNull();
-
             returnedStream.Should().BeEquivalentTo(streamOfFile);
-
-            _scientificWorkRepositoryMock.Verify(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsAuthorOfReview(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.GetReviewByIdAsync(reviewId), Times.Once);
-            _fileManagerMock.Verify(x => x.GetStreamOfFile(review.File), Times.Once);
         }
 
         [Fact]
@@ -712,26 +488,17 @@ namespace Kongres.Api.Tests.Unit.Services
 
             Stream returnedStream = null;
 
-            _scientificWorkRepositoryMock.Reset();
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(true);
-
-            _reviewRepositoryMock.Reset();
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(review);
-
-            _fileManagerMock.Reset();
             _fileManagerMock.Setup(x => x.GetStreamOfFile(review.File));
-            
+
+
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
 
+
             err.Should().BeNull();
-
             returnedStream.Should().BeNull();
-
-            _scientificWorkRepositoryMock.Verify(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId), Times.Once);
-            _reviewRepositoryMock.Verify(x => x.IsAuthorOfReview(It.IsAny<uint>(), It.IsAny<uint>()), Times.Never);
-            _reviewRepositoryMock.Verify(x => x.GetReviewByIdAsync(reviewId), Times.Once);
-            _fileManagerMock.Verify(x => x.GetStreamOfFile(It.IsAny<string>()), Times.Never);
         }
     }
 }
