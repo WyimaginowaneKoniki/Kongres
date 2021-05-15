@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using FluentAssertions;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
@@ -27,6 +28,7 @@ namespace Kongres.Api.Tests.Unit.Services
         private readonly Mock<IFileManager> _fileManagerMock = new Mock<IFileManager>();
         private readonly Mock<IEmailSender> _emailSenderMock = new Mock<IEmailSender>();
         private readonly Mock<IUserStore<User>> _userStoreMock = new Mock<IUserStore<User>>();
+        private readonly Faker _faker = new Faker();
         private readonly UserManager<User> _userManager;
         private readonly IReviewService _service;
 
@@ -59,15 +61,13 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddAnswerToReviewAsyncUserIsNotAuthorDoNothing()
         {
             var userId = 1u;
-            var reviewId = 2u;
-            var asnwerMsg = "Hello, my friend";
+            var reviewId = 1u;
+            var asnwerMsg = _faker.Lorem.Paragraph();
 
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(false);
 
-
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddAnswerToReviewAsync(userId, reviewId, asnwerMsg));
-
 
             err.Should().BeNull();
         }
@@ -76,17 +76,14 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddAnswerToReviewAsyncReviewAlreadyHaveAnswerDoNothing()
         {
             var userId = 1u;
-            var reviewId = 2u;
-            var asnwerMsg = "Hello, my friend";
+            var reviewId = 1u;
+            var asnwerMsg = _faker.Lorem.Paragraph();
 
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(true);
-
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(new Review() { Answer = new Answer() });
-
 
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddAnswerToReviewAsync(userId, reviewId, asnwerMsg));
-
 
             err.Should().BeNull();
         }
@@ -95,15 +92,16 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddAnswerToReviewAsyncAddAnswerSuccess()
         {
             var userId = 1u;
-            var reviewId = 2u;
-            var asnwerMsg = "Hello, my friend";
+            var reviewId = 1u;
+            var scientificWorkId = 1u;
+
+            var asnwerMsg = _faker.Lorem.Paragraph();
 
             var review = new Review() { Answer = null };
 
             var user = new User() { Id = userId };
 
-            var scientificWorkId = 3u;
-            var reviewerEmail = "First@email.com";
+            var reviewerEmail = _faker.Internet.Email();
 
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(true);
 
@@ -114,10 +112,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _userStoreMock.Setup(x => x.FindByIdAsync(userId.ToString(), CancellationToken.None)).ReturnsAsync(user);
 
-
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddAnswerToReviewAsync(userId, reviewId, asnwerMsg));
-
 
             err.Should().BeNull();
         }
@@ -126,17 +122,15 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddReviewAsyncUserIsNotReviewerOfWorkDoNothing()
         {
             var reviewerId = 1u;
-            var reviewMsg = "This is my review!";
-            var reviewFile = new FormFile(null, 42534, 2345, "NameHaHa", "FileNameHueHue");
-            var rating = (byte)3;
+            var reviewMsg = _faker.Rant.Review();
+            var reviewFile = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
+            var rating = _faker.Random.Byte(1, 3);
             var scientificWorkId = 2u;
 
             _reviewersWorkRepositoryMock.Setup(x => x.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId)).ReturnsAsync(false);
 
-
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
-
 
             err.Should().BeNull();
         }
@@ -145,9 +139,9 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddReviewAsyncWorkAlreadyHaveReviewFromThisUserDoNothing()
         {
             var reviewerId = 1u;
-            var reviewMsg = "This is my review!";
-            var reviewFile = new FormFile(null, 42534, 2345, "NameHaHa", "FileNameHueHue");
-            var rating = (byte)3;
+            var reviewMsg = _faker.Rant.Review();
+            var reviewFile = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
+            var rating = _faker.Random.Byte(1, 3);
             var scientificWorkId = 2u;
 
             var scientificWork = new ScientificWorkFile()
@@ -171,7 +165,6 @@ namespace Kongres.Api.Tests.Unit.Services
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
 
-
             err.Should().BeNull();
         }
 
@@ -179,9 +172,9 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddReviewAsyncAddNotLastInVersionReviewOnlyAddReviewToDb()
         {
             var reviewerId = 1u;
-            var reviewMsg = "This is my review!";
-            var reviewFile = new FormFile(null, 42534, 2345, "NameHaHa", "FileNameHueHue");
-            var rating = (byte)3;
+            var reviewMsg = _faker.Rant.Review();
+            var reviewFile = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
+            var rating = _faker.Random.Byte(1, 3);
             var scientificWorkId = 2u;
 
             var version = new ScientificWorkFile()
@@ -191,12 +184,12 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var reviewer = new User() { Id = reviewerId };
 
-            var randomFileName = "afertgh35he.png";
+            var randomFileName = _faker.System.FileName(".pdf");
 
             var reviewerCount = 3;
             var reviewsCount = 1;
 
-            var authorEmail = "author@mail.com";
+            var authorEmail = _faker.Internet.Email();
 
             _scientificWorkRepositoryMock.Setup(x => x.GetEmailOfAuthorByWorkIdAsync(scientificWorkId)).ReturnsAsync(authorEmail);
 
@@ -228,9 +221,9 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddReviewAsyncAllReviewersAddedReviewSetRejectedStatus()
         {
             var reviewerId = 1u;
-            var reviewMsg = "This is my review!";
-            var reviewFile = new FormFile(null, 42534, 2345, "NameHaHa", "FileNameHueHue");
-            var rating = (byte)3;
+            var reviewMsg = _faker.Rant.Review();
+            var reviewFile = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
+            var rating = _faker.Random.Byte(1, 3);
             var scientificWorkId = 2u;
 
             var version = new ScientificWorkFile()
@@ -241,12 +234,12 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var reviewer = new User() { Id = reviewerId };
 
-            var randomFileName = "afertgh35he.png";
+            var randomFileName = _faker.System.FileName("pdf");
 
             var reviewerCount = 3;
             var reviewsCount = 3;
 
-            var authorEmail = "author@mail.com";
+            var authorEmail = _faker.Internet.Email();
 
             var ratingSum = 4;
 
@@ -274,10 +267,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _emailSenderMock.Setup(x => x.SendToAuthorWorkGotRejectedAsync(authorEmail, scientificWorkId));
 
-
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
-
 
             err.Should().BeNull();
         }
@@ -286,9 +277,9 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddReviewAsyncAllReviewersAddedReviewSetCorrectingStatus()
         {
             var reviewerId = 1u;
-            var reviewMsg = "This is my review!";
-            var reviewFile = new FormFile(null, 42534, 2345, "NameHaHa", "FileNameHueHue");
-            var rating = (byte)3;
+            var reviewMsg = _faker.Rant.Review();
+            var reviewFile = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
+            var rating = _faker.Random.Byte(1, 3);
             var scientificWorkId = 2u;
 
             var version = new ScientificWorkFile()
@@ -299,12 +290,12 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var reviewer = new User() { Id = reviewerId };
 
-            var randomFileName = "afertgh35he.png";
+            var randomFileName = _faker.System.FileName("pdf");
 
             var reviewerCount = 3;
             var reviewsCount = 3;
 
-            var authorEmail = "author@mail.com";
+            var authorEmail = _faker.Internet.Email();
 
             var ratingSum = 6;
 
@@ -332,10 +323,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _emailSenderMock.Setup(x => x.SendNewVersionEnabledEmailAsync(authorEmail, scientificWorkId));
 
-
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
-
 
             err.Should().BeNull();
         }
@@ -344,9 +333,9 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddReviewAsyncAllReviewersAddedReviewSetAcceptedStatus()
         {
             var reviewerId = 1u;
-            var reviewMsg = "This is my review!";
-            var reviewFile = new FormFile(null, 42534, 2345, "NameHaHa", "FileNameHueHue");
-            var rating = (byte)3;
+            var reviewMsg = _faker.Rant.Review();
+            var reviewFile = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
+            var rating = _faker.Random.Byte(1, 3);
             var scientificWorkId = 2u;
 
             var version = new ScientificWorkFile()
@@ -357,12 +346,12 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var reviewer = new User() { Id = reviewerId };
 
-            var randomFileName = "afertgh35he.png";
+            var randomFileName = _faker.System.FileName("pdf");
 
             var reviewerCount = 3;
             var reviewsCount = 3;
 
-            var authorEmail = "author@mail.com";
+            var authorEmail = _faker.Internet.Email();
 
             var ratingSum = 9;
 
@@ -390,10 +379,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _emailSenderMock.Setup(x => x.SendToAuthorWorkGotAcceptedAsync(authorEmail, scientificWorkId));
 
-
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddReviewAsync(reviewerId, reviewMsg, reviewFile, rating, scientificWorkId));
-
 
             err.Should().BeNull();
         }
@@ -409,10 +396,8 @@ namespace Kongres.Api.Tests.Unit.Services
             _scientificWorkRepositoryMock.Setup(x => x.IsAuthorOfScientificWorkByReviewIdAsync(userId, reviewId)).ReturnsAsync(false);
             _reviewRepositoryMock.Setup(x => x.IsAuthorOfReview(userId, reviewId)).ReturnsAsync(false);
 
-
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
-
 
             err.Should().BeNull();
             returnedStream.Should().BeNull();
@@ -426,10 +411,10 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var review = new Review()
             {
-                File = "agsertn2345l.png"
+                File = _faker.System.FileName("pdf")
             };
 
-            var streamOfFile = new MemoryStream(Encoding.UTF8.GetBytes("whatever"));
+            var streamOfFile = new MemoryStream(Encoding.UTF8.GetBytes(_faker.Random.String(7)));
 
             Stream returnedStream = null;
 
@@ -437,10 +422,8 @@ namespace Kongres.Api.Tests.Unit.Services
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(review);
             _fileManagerMock.Setup(x => x.GetStreamOfFile(review.File)).Returns(streamOfFile);
 
-
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
-
 
             err.Should().BeNull();
             returnedStream.Should().BeEquivalentTo(streamOfFile);
@@ -454,10 +437,10 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var review = new Review()
             {
-                File = "agsertn2345l.png"
+                File = _faker.System.FileName("pdf")
             };
 
-            var streamOfFile = new MemoryStream(Encoding.UTF8.GetBytes("whatever"));
+            var streamOfFile = new MemoryStream(Encoding.UTF8.GetBytes(_faker.Random.String(7)));
 
             Stream returnedStream = null;
 
@@ -466,10 +449,8 @@ namespace Kongres.Api.Tests.Unit.Services
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(review);
             _fileManagerMock.Setup(x => x.GetStreamOfFile(review.File)).Returns(streamOfFile);
 
-
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
-
 
             err.Should().BeNull();
             returnedStream.Should().BeEquivalentTo(streamOfFile);
@@ -492,10 +473,8 @@ namespace Kongres.Api.Tests.Unit.Services
             _reviewRepositoryMock.Setup(x => x.GetReviewByIdAsync(reviewId)).ReturnsAsync(review);
             _fileManagerMock.Setup(x => x.GetStreamOfFile(review.File));
 
-
             var err = await Record.ExceptionAsync(async
                 () => returnedStream = await _service.GetStreamOfReviewFileAsync(userId, reviewId));
-
 
             err.Should().BeNull();
             returnedStream.Should().BeNull();

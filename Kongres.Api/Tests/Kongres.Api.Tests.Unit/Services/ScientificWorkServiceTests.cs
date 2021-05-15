@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using FluentAssertions;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
@@ -32,6 +33,7 @@ namespace Kongres.Api.Tests.Unit.Services
         private readonly Mock<IUserStore<User>> _userStoreMock = new Mock<IUserStore<User>>();
         private readonly UserManager<User> _userManager;
         private readonly ScientificWorkService _service;
+        private readonly Faker _faker = new Faker();
 
         public ScientificWorkServiceTests()
         {
@@ -64,16 +66,16 @@ namespace Kongres.Api.Tests.Unit.Services
             var user = new User()
             {
                 Id = 1,
-                Name = "John",
-                Surname = "Smith",
-                NormalizedUserName = "PARTICIPANT:JOHN@SMITH.COM"
+                Name = _faker.Person.FirstName,
+                Surname = _faker.Person.LastName,
+                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Participant), _faker.Internet.Email())
             };
 
-            const uint scientificWorkId = 1;
-            const string title = "TheTitle";
-            const string description = "Description";
-            const string authors = "ListOfAuthors";
-            const string specialization = "Mathematics";
+            var scientificWorkId = 1u;
+            var title = _faker.Commerce.ProductName();
+            var description = _faker.Commerce.ProductDescription();
+            var authors = string.Join(" ", Enumerable.Range(1, 5).Select(_ => _faker.Person.FullName));
+            var specialization = "Mathematics";
 
             var id = 0u;
 
@@ -83,10 +85,8 @@ namespace Kongres.Api.Tests.Unit.Services
             _scientificWorkRepositoryMock.Setup(x => x.AddAsync(It.Is<ScientificWork>(y => y.MainAuthor == user && y.Status == StatusEnum.WaitingForDrawOfReviewers)));
             _scientificWorkRepositoryMock.Setup(x => x.GetIdOfWorkByAuthorIdAsync(user.Id)).ReturnsAsync(scientificWorkId);
 
-
             var err = await Record.ExceptionAsync(async
                 () => id = await _service.AddBasicInfoAsync(user.Id, title, description, authors, specialization));
-
 
             err.Should().BeNull();
             id.Should().BeInRange(scientificWorkId, scientificWorkId);
@@ -98,24 +98,22 @@ namespace Kongres.Api.Tests.Unit.Services
             var user = new User()
             {
                 Id = 1,
-                Name = "John",
-                Surname = "Smith",
-                NormalizedUserName = "REVIEWER:JOHN@SMITH.COM"
+                Name = _faker.Person.FirstName,
+                Surname = _faker.Person.LastName,
+                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Reviewer), _faker.Internet.Email())
             };
 
-            const string title = "TheTitle";
-            const string description = "Description";
-            const string authors = "ListOfAuthors";
-            const string specialization = "Mathematics";
+            var title = _faker.Commerce.ProductName();
+            var description = _faker.Commerce.ProductDescription();
+            var authors = string.Join(" ", Enumerable.Range(1, 5).Select(_ => _faker.Person.FullName));
+            var specialization = "Mathematics";
 
             var id = 0u;
 
             _userStoreMock.Setup(x => x.FindByIdAsync(user.Id.ToString(), CancellationToken.None)).ReturnsAsync(user);
 
-
             var err = await Record.ExceptionAsync(async
                 () => id = await _service.AddBasicInfoAsync(user.Id, title, description, authors, specialization));
-
 
             err.Should().BeOfType<AuthenticationException>();
             id.Should().BeInRange(0, 0);
@@ -124,28 +122,27 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task AddBasicInfoAsyncThrowInvalidOperationExceptionWhenUserAlreadyAddWork()
         {
+
             var user = new User()
             {
                 Id = 1,
-                Name = "John",
-                Surname = "Smith",
-                NormalizedUserName = "PARTICIPANT:JOHN@SMITH.COM"
+                Name = _faker.Person.FirstName,
+                Surname = _faker.Person.LastName,
+                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Participant), _faker.Internet.Email())
             };
 
-            const string title = "TheTitle";
-            const string description = "Description";
-            const string authors = "ListOfAuthors";
-            const string specialization = "Mathematics";
+            var title = _faker.Commerce.ProductName();
+            var description = _faker.Commerce.ProductDescription();
+            var authors = string.Join(" ", Enumerable.Range(1, 5).Select(_ => _faker.Person.FullName));
+            var specialization = "Mathematics";
 
             var id = 0u;
 
             _userStoreMock.Setup(x => x.FindByIdAsync(user.Id.ToString(), CancellationToken.None)).ReturnsAsync(user);
             _scientificWorkRepositoryMock.Setup(x => x.GetByAuthorIdAsync(user.Id)).ReturnsAsync(new ScientificWork());
 
-
             var err = await Record.ExceptionAsync(async
                 () => id = await _service.AddBasicInfoAsync(user.Id, title, description, authors, specialization));
-
 
             err.Should().BeOfType<InvalidOperationException>();
             id.Should().BeInRange(0, 0);
@@ -154,16 +151,16 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task AddVersionAsyncAddFirstSuccess()
         {
-            uint userId = 1;
-            var file = new FormFile(null, 23545, 342465, "HeHeNameHeHe", "FileNameHeHe");
+            var userId = 1u;
+            var file = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
 
-            var randomNameOfFile = "askdfbalrtbl.png";
+            var randomNameOfFile = _faker.System.FileName("pdf");
 
             var scientificWork = new ScientificWork()
             {
                 Id = 1,
-                Name = "title of work",
-                Description = "Lorem ipsum",
+                Name = _faker.Commerce.ProductName(),
+                Description = _faker.Commerce.ProductDescription(),
                 Status = StatusEnum.WaitingForDrawOfReviewers
             };
 
@@ -180,10 +177,8 @@ namespace Kongres.Api.Tests.Unit.Services
                                                                                               y.FileName == newVersion.FileName &&
                                                                                               y.ScientificWork == newVersion.ScientificWork)));
 
-
             var err = await Record.ExceptionAsync(async
                 () => await _service.AddVersionAsync(userId, file, true));
-
 
             err.Should().BeNull();
         }
@@ -192,17 +187,17 @@ namespace Kongres.Api.Tests.Unit.Services
         public async Task AddVersionAsyncAddNextVersionsSuccess()
         {
             uint userId = 1;
-            var file = new FormFile(null, 23545, 342465, "HeHeNameHeHe", "FileNameHeHe");
+            var file = new FormFile(null, _faker.Random.Long(), _faker.Random.Long(), _faker.Internet.UserName(), _faker.System.FileName("pdf"));
 
-            var randomNameOfFile = "askdfbalrtbl.png";
+            var randomNameOfFile = _faker.System.FileName("pdf");
 
             byte versionNumber = 1;
 
             var scientificWork = new ScientificWork()
             {
                 Id = 1,
-                Name = "title of work",
-                Description = "Lorem ipsum",
+                Name = _faker.Commerce.ProductName(),
+                Description = _faker.Commerce.ProductDescription(),
                 Status = StatusEnum.UnderReview
             };
 
@@ -213,12 +208,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 ScientificWork = scientificWork
             };
 
-            var reviewerEmails = new List<string>()
-            {
-                "First@email.com",
-                "Second@email.com",
-                "Third@email.com"
-            };
+            var reviewerEmails = Enumerable.Range(1, 3).Select(_ => _faker.Internet.Email());
 
             _scientificWorkRepositoryMock.Setup(x => x.GetNumberOfVersionsByAuthorIdAsync(It.IsAny<uint>())).ReturnsAsync(versionNumber);
             _scientificWorkRepositoryMock.Setup(x => x.GetByAuthorIdAsync(userId)).ReturnsAsync(scientificWork);
@@ -230,16 +220,13 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _reviewerScientificWorkRepositoryMock.Setup(x => x.GetEmailsOfReviewersByWorkIdAsync(scientificWork.Id)).ReturnsAsync(reviewerEmails);
 
-            _emailSenderMock.Setup(x => x.SendAddedNewVersionEmailAsync(It.IsIn<string>(reviewerEmails), scientificWork.Id));
-
+            _emailSenderMock.Setup(x => x.SendAddedNewVersionEmailAsync(It.IsIn(reviewerEmails), scientificWork.Id));
 
             var err = await Record.ExceptionAsync(async
                             () => await _service.AddVersionAsync(userId, file));
 
-
             err.Should().BeNull();
-
-            _emailSenderMock.Verify(x => x.SendAddedNewVersionEmailAsync(It.IsIn<string>(reviewerEmails), scientificWork.Id), Times.Exactly(3));
+            _emailSenderMock.Verify(x => x.SendAddedNewVersionEmailAsync(It.IsAny<string>(), scientificWork.Id), Times.Exactly(3));
         }
 
         [Fact]
@@ -250,10 +237,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkRepositoryMock.Setup(x => x.GetApprovedWorksAsync()).ReturnsAsync(Enumerable.Empty<ScientificWork>());
 
-
             var err = await Record.ExceptionAsync(async
                 () => approvedWorks = await _service.GetApprovedWorksAsync());
-
 
             err.Should().BeNull();
             approvedWorks.Should().BeEquivalentTo(expectedList);
@@ -262,90 +247,52 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task GetApprovedWorksAsyncReturnListOfWorks()
         {
-            var fakeWorks = new List<ScientificWork>()
-            {
-                new ScientificWork()
+            var userId = 0u;
+            var scientificWorkId = 0u;
+            var fakeWorks = new Faker<ScientificWork>().Rules(
+                (f, o) =>
                 {
-                    Id = 1,
-                    Name = "Nice title of work",
-                    Description = "Amazing description of work",
-                    MainAuthor = new User()
+                    o.Id = scientificWorkId++;
+                    o.Name = f.Commerce.ProductName();
+                    o.Description = f.Commerce.ProductDescription();
+                    o.MainAuthor = new User()
                     {
-                        Id = 1,
-                        Name = "John",
-                        Surname = "Smith"
-                    },
-                    OtherAuthors = null,
-                    Status = StatusEnum.Accepted,
-                    CreationDate = DateTime.UtcNow,
-                    Versions = new List<ScientificWorkFile>()
-                    {
-                        new ScientificWorkFile()
-                        {
-                            Version = 1,
-                            DateAdd = DateTime.UtcNow
-                        },
-                        new ScientificWorkFile()
-                        {
-                            Version = 2,
-                            DateAdd = DateTime.UtcNow.AddDays(2)
-                        }
-                    }
-                },
-                new ScientificWork()
-                {
-                    Id = 5,
-                    Name = "Bad title of work",
-                    Description = "The worst description of work in the entire world",
-                    MainAuthor = new User()
-                    {
-                        Id = 3,
-                        Name = "Nikola",
-                        Surname = "Tesla"
-                    },
-                    OtherAuthors = "Thomas Unknown, Elisabeth Harmon",
-                    Status = StatusEnum.Accepted,
-                    Versions = new List<ScientificWorkFile>()
-                    {
-                        new ScientificWorkFile()
-                        {
-                            Version = 1,
-                            DateAdd = DateTime.UtcNow
-                        },
-                    }
-                }
-            };
+                        Id = userId++,
+                        Name = f.Person.FirstName,
+                        Surname = f.Person.LastName
+                    };
+                    o.OtherAuthors = string.Join(", ", Enumerable.Range(1, 3).Select(_ => f.Person.FullName));
+                    o.Status = StatusEnum.Accepted;
+                    o.CreationDate = f.Date.Recent();
+                    o.Versions = Enumerable.Range(1, f.Random.Number(1, 3))
+                                           .Select(x => new ScientificWorkFile()
+                                           {
+                                               Version = (byte)x,
+                                               DateAdd = DateTime.UtcNow.AddDays(x)
+                                           });
+                }).Generate(3);
 
-            var expectedList = new List<ScientificWorkDto>()
+            var expectedList = new List<ScientificWorkDto>();
+
+            foreach (var item in fakeWorks)
             {
-                new ScientificWorkDto()
+                expectedList.Add(new ScientificWorkDto()
                 {
-                    Id = 1,
-                    Authors = "John Smith",
-                    Title = fakeWorks[0].Name,
-                    Description = fakeWorks[0].Description,
-                    CreationDate = fakeWorks[0].CreationDate.ToString("g"),
-                    UpdateDate = fakeWorks[0].Versions.ElementAt(1).DateAdd.ToString("g")
-                },
-                new ScientificWorkDto()
-                {
-                    Id = 5,
-                    Authors = "Nikola Tesla, Thomas Unknown, Elisabeth Harmon",
-                    Title = fakeWorks[1].Name,
-                    Description = fakeWorks[1].Description,
-                    CreationDate = fakeWorks[1].CreationDate.ToString("g"),
-                    UpdateDate = fakeWorks[1].Versions.ElementAt(0).DateAdd.ToString("g")
-                }
-            };
+                    Id = item.Id,
+                    Title = item.Name,
+                    Authors = $"{item.MainAuthor.Name} {item.MainAuthor.Surname}, {item.OtherAuthors}",
+                    Description = item.Description,
+                    CreationDate = item.CreationDate.ToString("g"),
+                    UpdateDate = item.Versions.Last().DateAdd.ToString("g")
+                });
+            }
 
             IEnumerable<ScientificWorkDto> approvedWorks = null;
 
             _scientificWorkRepositoryMock.Setup(x => x.GetApprovedWorksAsync()).ReturnsAsync(fakeWorks);
 
-
             var err = await Record.ExceptionAsync(async
                 () => approvedWorks = await _service.GetApprovedWorksAsync());
-
 
             err.Should().BeNull();
             approvedWorks.Should().BeEquivalentTo(expectedList);
@@ -360,10 +307,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionAsync(scientificWorkId)).ReturnsAsync((ScientificWorkFile)null);
 
-
             var err = await Record.ExceptionAsync(async
                 () => workStream = await _service.GetStreamOfScientificWorkAsync(scientificWorkId));
-
 
             err.Should().BeNull();
             workStream.Should().BeNull();
@@ -377,20 +322,18 @@ namespace Kongres.Api.Tests.Unit.Services
             var scientificFileWork = new ScientificWorkFile()
             {
                 Id = 1,
-                FileName = "WonderfulNameOfFile.png"
+                FileName = _faker.System.FileName("pdf")
             };
 
             Stream workStream = null;
 
-            var expectedWorkStream = new MemoryStream(Encoding.UTF8.GetBytes("whatever"));
+            var expectedWorkStream = new MemoryStream(Encoding.UTF8.GetBytes(_faker.Random.String(7)));
 
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionAsync(scientificFileWork.Id)).ReturnsAsync(scientificFileWork);
             _fileManagerMock.Setup(x => x.GetStreamOfFile(scientificFileWork.FileName)).Returns(expectedWorkStream);
 
-
             var err = await Record.ExceptionAsync(async
                 () => workStream = await _service.GetStreamOfScientificWorkAsync(scientificWorkId));
-
 
             err.Should().BeNull();
             workStream.Should().NotBeNull();
@@ -407,10 +350,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync((ScientificWork)null);
 
-
             var err = await Record.ExceptionAsync(async
                 () => dto = await _service.GetWorkByIdAsync(userId, scientificWorkId));
-
 
             err.Should().BeNull();
             dto.Should().BeNull();
@@ -419,105 +360,36 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task GetWorkByIdAsyncParticipantSeeOnlyWorkInformation()
         {
-            var userId = 1u;
+            var authorId = 1u;
+            var userId = authorId + 1;
             var scientificWorkId = 1u;
 
-            var randomBase64 = "fasnljkbt432b634jhvk123j42=";
-
-            var author = new User()
-            {
-                Id = 2,
-                Photo = "asdf.png",
-                Name = "John",
-                Surname = "Smith",
-                Degree = "Master of Science",
-                University = "Polsl"
-            };
-            var reviewer1 = new User()
-            {
-                Id = 1,
-            };
-            var reviewer2 = new User()
-            {
-                Id = 3,
-            };
+            var randomBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(_faker.Random.String(7)));
 
             var scientificWork = new ScientificWork()
             {
                 Id = scientificWorkId,
-                Name = "Nice Work Title",
-                Description = "Amazing work description",
+                Name = _faker.Commerce.ProductName(),
+                Description = _faker.Commerce.ProductDescription(),
                 CreationDate = DateTime.UtcNow,
-                OtherAuthors = "Thomas Unknown, Elisabeth Harmon",
+                OtherAuthors = string.Join(", ", Enumerable.Range(1, 3).Select(_ => _faker.Person.FullName)),
                 Status = StatusEnum.Accepted,
-                MainAuthor = author,
-                Versions = new List<ScientificWorkFile>()
+                MainAuthor = new User()
                 {
-                    new ScientificWorkFile()
-                    {
-                        Id = 1,
-                        Version = 1,
-                        DateAdd = DateTime.UtcNow,
-                        Reviews = new List<Review>()
-                        {
-                            new Review()
-                            {
-                                Id = 1,
-                                DateReview = DateTime.UtcNow,
-                                Comment = "Good job",
-                                Rating = 2,
-                                Reviewer = reviewer1
-                            },
-                            new Review()
-                            {
-                                Id = 2,
-                                DateReview = DateTime.UtcNow,
-                                File = "asdf.png",
-                                Rating = 1,
-                                Reviewer = reviewer2,
-                                Answer = new Answer()
-                                {
-                                    Id = 1,
-                                    Comment = "Ok",
-                                    AnswerDate = DateTime.UtcNow,
-                                    User = author
-                                }
-                            }
-                        }
-                    },
-                    new ScientificWorkFile()
-                    {
-                        Id = 2,
-                        Version = 2,
-                        DateAdd = DateTime.UtcNow.AddDays(1),
-                        Reviews = new List<Review>()
-                        {
-                            new Review()
-                            {
-                                Id = 3,
-                                DateReview = DateTime.UtcNow,
-                                File = "asgdbh.png",
-                                Rating = 3,
-                                Reviewer = reviewer1,
-                                Answer = new Answer()
-                                {
-                                    Id = 1,
-                                    Comment = "Thx",
-                                    AnswerDate = DateTime.UtcNow,
-                                    User = author
-                                }
-                            },
-                            new Review()
-                            {
-                                Id = 4,
-                                DateReview = DateTime.UtcNow,
-                                Comment = "asfdknj",
-                                Rating = 3,
-                                Reviewer = reviewer2,
-                            }
-                        }
-                    }
-                }
+                    Id = authorId,
+                    Name = _faker.Person.FirstName,
+                    Surname = _faker.Person.LastName,
+                    Photo = _faker.System.FileName("png"),
+                    Degree = _faker.Name.JobTitle(),
+                    University = _faker.Company.CompanyName()
+                },
+                Versions = Enumerable.Range(0, 2)
+                                      .Select(x => new ScientificWorkFile()
+                                      {
+                                          Id = (uint)x,
+                                          Version = (byte)x,
+                                          DateAdd = DateTime.UtcNow.AddDays(x)
+                                      })
             };
 
             ScientificWorkWithReviewDto scientificWorkWithReviewDto = null;
@@ -526,13 +398,13 @@ namespace Kongres.Api.Tests.Unit.Services
             {
                 Status = scientificWork.Status.ToString(),
                 Versions = null,
-                Mode = "Participant",
+                Mode = nameof(UserTypeEnum.Participant),
                 MainAuthor = new UserDto()
                 {
-                    Degree = author.Degree,
-                    Name = "John Smith",
+                    Degree = scientificWork.MainAuthor.Degree,
+                    Name = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}",
                     Photo = $"data:image/png;base64,{randomBase64}",
-                    University = author.University
+                    University = scientificWork.MainAuthor.University
                 },
                 ScientificWork = new ScientificWorkDto()
                 {
@@ -541,19 +413,17 @@ namespace Kongres.Api.Tests.Unit.Services
                     Description = scientificWork.Description,
                     Specialization = scientificWork.Specialization,
                     CreationDate = scientificWork.CreationDate.ToString("g"),
-                    UpdateDate = scientificWork.Versions.ElementAt(1).DateAdd.ToString("g"),
+                    UpdateDate = scientificWork.Versions.Last().DateAdd.ToString("g"),
                     Authors = scientificWork.OtherAuthors,
                 }
             };
 
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _reviewerScientificWorkRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(false);
-            _fileManagerMock.Setup(x => x.GetBase64FileAsync(author.Photo)).ReturnsAsync(randomBase64);
-
+            _fileManagerMock.Setup(x => x.GetBase64FileAsync(scientificWork.MainAuthor.Photo)).ReturnsAsync(randomBase64);
 
             var err = await Record.ExceptionAsync(async
                 () => scientificWorkWithReviewDto = await _service.GetWorkByIdAsync(userId, scientificWorkId));
-
 
             err.Should().BeNull();
 
@@ -564,112 +434,130 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task GetWorkByIdAsyncReviewerSeeOnlyOwnReviews()
         {
-            var userId = 1u;
-            var scientificWorkId = 1u;
+            var authorId = 1u;
+            var userId = 2u;
+            var reviewer2Id = 3u;
 
-            var randomBase64 = "fasnljkbt432b634jhvk123j42=";
+            var scientificWorkId = 1u;
+            var versionsId = 0u;
+            var reviewId = 1u;
+            var answerId = 1u;
+
+            var randomBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(_faker.Random.String(7)));
 
             var author = new User()
             {
-                Id = 2,
-                Photo = "asdf.png",
-                Name = "John",
-                Surname = "Smith",
-                Degree = "Master of Science",
-                University = "Polsl"
+                Id = authorId,
+                Name = _faker.Person.FirstName,
+                Surname = _faker.Person.LastName,
+                Photo = _faker.System.FileName("png"),
+                Degree = _faker.Name.JobTitle(),
+                University = _faker.Company.CompanyName()
             };
-            var reviewer1 = new User()
-            {
-                Id = 1
-            };
-            var reviewer2 = new User()
-            {
-                Id = 3
-            };
+
+            var reviewer1 = new User() { Id = userId };
+            var reviewer2 = new User() { Id = reviewer2Id };
 
             var scientificWork = new ScientificWork()
             {
                 Id = scientificWorkId,
-                Name = "Nice Work Title",
-                Description = "Amazing work description",
+                Name = _faker.Commerce.ProductName(),
+                Description = _faker.Commerce.ProductDescription(),
                 CreationDate = DateTime.UtcNow,
-                OtherAuthors = "Thomas Unknown, Elisabeth Harmon",
+                OtherAuthors = string.Join(", ", Enumerable.Range(1, 3).Select(_ => _faker.Person.FullName)),
                 Status = StatusEnum.Accepted,
                 MainAuthor = author,
                 Versions = new List<ScientificWorkFile>()
                 {
-                    new ScientificWorkFile()
-                    {
-                        Id = 1,
-                        Version = 1,
-                        DateAdd = DateTime.UtcNow,
+                    new ScientificWorkFile(){
+                        Id = ++versionsId,
+                        Version = (byte)versionsId,
+                        DateAdd = DateTime.UtcNow.AddDays(versionsId),
                         Reviews = new List<Review>()
                         {
                             new Review()
                             {
-                                Id = 1,
+                                Id = reviewId++,
                                 DateReview = DateTime.UtcNow,
-                                Comment = "Good job",
-                                Rating = 2,
+                                Comment = _faker.Rant.Review(),
+                                Rating = _faker.Random.Byte(1, 3),
                                 Reviewer = reviewer1
                             },
                             new Review()
                             {
-                                Id = 2,
+                                Id = reviewId++,
                                 DateReview = DateTime.UtcNow,
-                                File = "asdf.png",
-                                Rating = 1,
+                                File = _faker.System.FileName("pdf"),
+                                Rating = _faker.Random.Byte(1, 3),
                                 Reviewer = reviewer2,
                                 Answer = new Answer()
                                 {
-                                    Id = 1,
-                                    Comment = "Ok",
+                                    Id = answerId++,
+                                    Comment = _faker.Lorem.Sentence(5),
                                     AnswerDate = DateTime.UtcNow,
                                     User = author
                                 }
                             }
                         }
                     },
-                    new ScientificWorkFile()
-                    {
-                        Id = 2,
-                        Version = 2,
-                        DateAdd = DateTime.UtcNow.AddDays(1),
+                    new ScientificWorkFile(){
+                        Id = ++versionsId,
+                        Version = (byte)versionsId,
+                        DateAdd = DateTime.UtcNow.AddDays(versionsId),
                         Reviews = new List<Review>()
                         {
                             new Review()
                             {
-                                Id = 3,
+                                Id = reviewId++,
                                 DateReview = DateTime.UtcNow,
-                                File = "asgdbh.png",
-                                Rating = 3,
+                                File = _faker.System.FileName("pdf"),
+                                Rating = _faker.Random.Byte(1, 3),
                                 Reviewer = reviewer1,
                                 Answer = new Answer()
                                 {
-                                    Id = 1,
-                                    Comment = "Thx",
+                                    Id = answerId++,
+                                    Comment = _faker.Lorem.Sentence(5),
                                     AnswerDate = DateTime.UtcNow,
                                     User = author
                                 }
                             },
                             new Review()
                             {
-                                Id = 4,
+                                Id = reviewId++,
                                 DateReview = DateTime.UtcNow,
-                                Comment = "asfdknj",
-                                Rating = 3,
-                                Reviewer = reviewer2,
+                                Comment = _faker.Rant.Review(),
+                                Rating = _faker.Random.Byte(1, 3),
+                                Reviewer = reviewer2
                             }
                         }
-                    }
+                    },
                 }
             };
+
 
             ScientificWorkWithReviewDto scientificWorkWithReviewDto = null;
 
             var expectedDto = new ScientificWorkWithReviewDto()
             {
+                Mode = nameof(UserTypeEnum.Reviewer),
                 Status = scientificWork.Status.ToString(),
+                MainAuthor = new UserDto()
+                {
+                    Degree = author.Degree,
+                    Name = $"{author.Name} {author.Surname}",
+                    Photo = $"data:image/png;base64,{randomBase64}",
+                    University = author.University
+                },
+                ScientificWork = new ScientificWorkDto()
+                {
+                    Id = scientificWork.Id,
+                    Title = scientificWork.Name,
+                    Description = scientificWork.Description,
+                    Specialization = scientificWork.Specialization,
+                    CreationDate = scientificWork.CreationDate.ToString("g"),
+                    UpdateDate = scientificWork.Versions.Last().DateAdd.ToString("g"),
+                    Authors = scientificWork.OtherAuthors,
+                },
                 Versions = new List<VersionDto>()
                 {
                     new VersionDto()
@@ -709,11 +597,135 @@ namespace Kongres.Api.Tests.Unit.Services
                         }
                     }
                 },
-                Mode = "Reviewer",
+            };
+
+            _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
+            _scientificWorkFileRepositoryMock.Setup(x => x.GetVersionsWithReviews(scientificWorkId)).ReturnsAsync(scientificWork.Versions);
+            _reviewerScientificWorkRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(true);
+            _fileManagerMock.Setup(x => x.GetBase64FileAsync(author.Photo)).ReturnsAsync(randomBase64);
+
+            var err = await Record.ExceptionAsync(async
+                () => scientificWorkWithReviewDto = await _service.GetWorkByIdAsync(userId, scientificWorkId));
+
+            err.Should().BeNull();
+
+            scientificWorkWithReviewDto.Should().NotBeNull();
+            scientificWorkWithReviewDto.Should().BeEquivalentTo(expectedDto);
+        }
+
+        [Fact]
+        public async Task GetWorkByIdAsyncAuthorSeeEverything()
+        {
+            var userId = 1u;
+            var reviewer1Id = 2u;
+            var reviewer2Id = 3u;
+
+            var scientificWorkId = 1u;
+            var versionsId = 0u;
+            var reviewId = 1u;
+            var answerId = 1u;
+
+            var randomBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(_faker.Random.String(7)));
+
+            var author = new User()
+            {
+                Id = userId,
+                Name = _faker.Person.FirstName,
+                Surname = _faker.Person.LastName,
+                Photo = _faker.System.FileName("png"),
+                Degree = _faker.Name.JobTitle(),
+                University = _faker.Company.CompanyName()
+            };
+
+            var reviewer1 = new User() { Id = reviewer1Id };
+            var reviewer2 = new User() { Id = reviewer2Id };
+
+            var scientificWork = new ScientificWork()
+            {
+                Id = scientificWorkId,
+                Name = _faker.Commerce.ProductName(),
+                Description = _faker.Commerce.ProductDescription(),
+                CreationDate = DateTime.UtcNow,
+                OtherAuthors = string.Join(", ", Enumerable.Range(1, 3).Select(_ => _faker.Person.FullName)),
+                Status = StatusEnum.Accepted,
+                MainAuthor = author,
+                Versions = new List<ScientificWorkFile>()
+                {
+                    new ScientificWorkFile(){
+                        Id = ++versionsId,
+                        Version = (byte)versionsId,
+                        DateAdd = DateTime.UtcNow.AddDays(versionsId),
+                        Reviews = new List<Review>()
+                        {
+                            new Review()
+                            {
+                                Id = reviewId++,
+                                DateReview = DateTime.UtcNow,
+                                Comment = _faker.Rant.Review(),
+                                Rating = _faker.Random.Byte(1, 3),
+                                Reviewer = reviewer1
+                            },
+                            new Review()
+                            {
+                                Id = reviewId++,
+                                DateReview = DateTime.UtcNow,
+                                File = _faker.System.FileName("pdf"),
+                                Rating = _faker.Random.Byte(1, 3),
+                                Reviewer = reviewer2,
+                                Answer = new Answer()
+                                {
+                                    Id = answerId++,
+                                    Comment = _faker.Lorem.Sentence(5),
+                                    AnswerDate = DateTime.UtcNow,
+                                    User = author
+                                }
+                            }
+                        }
+                    },
+                    new ScientificWorkFile(){
+                        Id = ++versionsId,
+                        Version = (byte)versionsId,
+                        DateAdd = DateTime.UtcNow.AddDays(versionsId),
+                        Reviews = new List<Review>()
+                        {
+                            new Review()
+                            {
+                                Id = reviewId++,
+                                DateReview = DateTime.UtcNow,
+                                File = _faker.System.FileName("pdf"),
+                                Rating = _faker.Random.Byte(1, 3),
+                                Reviewer = reviewer1,
+                                Answer = new Answer()
+                                {
+                                    Id = answerId++,
+                                    Comment = _faker.Lorem.Sentence(5),
+                                    AnswerDate = DateTime.UtcNow,
+                                    User = author
+                                }
+                            },
+                            new Review()
+                            {
+                                Id = reviewId++,
+                                DateReview = DateTime.UtcNow,
+                                Comment = _faker.Rant.Review(),
+                                Rating = _faker.Random.Byte(1, 3),
+                                Reviewer = reviewer2
+                            }
+                        }
+                    },
+                }
+            };
+
+            ScientificWorkWithReviewDto scientificWorkWithReviewDto = null;
+
+            var expectedDto = new ScientificWorkWithReviewDto()
+            {
+                Status = scientificWork.Status.ToString(),
+                Mode = "Author",
                 MainAuthor = new UserDto()
                 {
                     Degree = author.Degree,
-                    Name = "John Smith",
+                    Name = $"{author.Name} {author.Surname}",
                     Photo = $"data:image/png;base64,{randomBase64}",
                     University = author.University
                 },
@@ -727,133 +739,6 @@ namespace Kongres.Api.Tests.Unit.Services
                     UpdateDate = scientificWork.Versions.ElementAt(1).DateAdd.ToString("g"),
                     Authors = scientificWork.OtherAuthors,
                 },
-            };
-
-            _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
-            _scientificWorkFileRepositoryMock.Setup(x => x.GetVersionsWithReviews(scientificWorkId)).ReturnsAsync(scientificWork.Versions);
-            _reviewerScientificWorkRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(true);
-            _fileManagerMock.Setup(x => x.GetBase64FileAsync(author.Photo)).ReturnsAsync(randomBase64);
-
-
-            var err = await Record.ExceptionAsync(async
-                () => scientificWorkWithReviewDto = await _service.GetWorkByIdAsync(userId, scientificWorkId));
-
-
-            err.Should().BeNull();
-
-            scientificWorkWithReviewDto.Should().NotBeNull();
-            scientificWorkWithReviewDto.Should().BeEquivalentTo(expectedDto);
-        }
-
-        [Fact]
-        public async Task GetWorkByIdAsyncAuthorSeeEverything()
-        {
-            var userId = 2u;
-            var scientificWorkId = 1u;
-
-            var randomBase64 = "fasnljkbt432b634jhvk123j42=";
-
-            var author = new User()
-            {
-                Id = 2,
-                Photo = "asdf.png",
-                Name = "John",
-                Surname = "Smith",
-                Degree = "Master of Science",
-                University = "Polsl"
-            };
-            var reviewer1 = new User()
-            {
-                Id = 1
-            };
-            var reviewer2 = new User()
-            {
-                Id = 3
-            };
-
-            var scientificWork = new ScientificWork()
-            {
-                Id = scientificWorkId,
-                Name = "Nice Work Title",
-                Description = "Amazing work description",
-                CreationDate = DateTime.UtcNow,
-                OtherAuthors = "Thomas Unknown, Elisabeth Harmon",
-                Status = StatusEnum.Accepted,
-                MainAuthor = author,
-                Versions = new List<ScientificWorkFile>()
-                {
-                    new ScientificWorkFile()
-                    {
-                        Id = 1,
-                        Version = 1,
-                        DateAdd = DateTime.UtcNow,
-                        Reviews = new List<Review>()
-                        {
-                            new Review()
-                            {
-                                Id = 1,
-                                DateReview = DateTime.UtcNow,
-                                Comment = "Good job",
-                                Rating = 2,
-                                Reviewer = reviewer1
-                            },
-                            new Review()
-                            {
-                                Id = 2,
-                                DateReview = DateTime.UtcNow,
-                                File = "asdf.png",
-                                Rating = 1,
-                                Reviewer = reviewer2,
-                                Answer = new Answer()
-                                {
-                                    Id = 1,
-                                    Comment = "Ok",
-                                    AnswerDate = DateTime.UtcNow,
-                                    User = author
-                                }
-                            }
-                        }
-                    },
-                    new ScientificWorkFile()
-                    {
-                        Id = 2,
-                        Version = 2,
-                        DateAdd = DateTime.UtcNow.AddDays(1),
-                        Reviews = new List<Review>()
-                        {
-                            new Review()
-                            {
-                                Id = 3,
-                                DateReview = DateTime.UtcNow,
-                                File = "asgdbh.png",
-                                Rating = 3,
-                                Reviewer = reviewer1,
-                                Answer = new Answer()
-                                {
-                                    Id = 1,
-                                    Comment = "Thx",
-                                    AnswerDate = DateTime.UtcNow,
-                                    User = author
-                                }
-                            },
-                            new Review()
-                            {
-                                Id = 4,
-                                DateReview = DateTime.UtcNow,
-                                Comment = "asfdknj",
-                                Rating = 3,
-                                Reviewer = reviewer2,
-                            }
-                        }
-                    }
-                }
-            };
-
-            ScientificWorkWithReviewDto scientificWorkWithReviewDto = null;
-
-            var expectedDto = new ScientificWorkWithReviewDto()
-            {
-                Status = scientificWork.Status.ToString(),
                 Versions = new List<VersionDto>()
                 {
                     new VersionDto()
@@ -911,35 +796,15 @@ namespace Kongres.Api.Tests.Unit.Services
                             }
                         }
                     }
-                },
-                Mode = "Author",
-                MainAuthor = new UserDto()
-                {
-                    Degree = author.Degree,
-                    Name = "John Smith",
-                    Photo = $"data:image/png;base64,{randomBase64}",
-                    University = author.University
-                },
-                ScientificWork = new ScientificWorkDto()
-                {
-                    Id = scientificWork.Id,
-                    Title = scientificWork.Name,
-                    Description = scientificWork.Description,
-                    Specialization = scientificWork.Specialization,
-                    CreationDate = scientificWork.CreationDate.ToString("g"),
-                    UpdateDate = scientificWork.Versions.ElementAt(1).DateAdd.ToString("g"),
-                    Authors = scientificWork.OtherAuthors,
-                },
+                }
             };
 
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetVersionsWithReviews(scientificWorkId)).ReturnsAsync(scientificWork.Versions);
             _fileManagerMock.Setup(x => x.GetBase64FileAsync(author.Photo)).ReturnsAsync(randomBase64);
 
-
             var err = await Record.ExceptionAsync(async
                 () => scientificWorkWithReviewDto = await _service.GetWorkByIdAsync(userId, scientificWorkId));
-
 
             err.Should().BeNull();
 
@@ -950,103 +815,34 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task GetWorkByIdAsyncThrowAuthenticationExceptionWhenUserIsParticipantAndWorkIsNotAccepted()
         {
+            var authorId = 1u;
+            var reviewer1Id = 2u;
+            var reviewer2Id = 3u;
             var userId = 4u;
             var scientificWorkId = 1u;
 
             var author = new User()
             {
-                Id = 2,
-                Photo = "asdf.png",
-                Name = "John",
-                Surname = "Smith",
-                Degree = "Master of Science",
-                University = "Polsl"
+                Id = authorId,
+                Name = _faker.Person.FirstName,
+                Surname = _faker.Person.LastName,
+                Photo = _faker.System.FileName("png"),
+                Degree = _faker.Name.JobTitle(),
+                University = _faker.Company.CompanyName()
             };
-            var reviewer1 = new User()
-            {
-                Id = 1
-            };
-            var reviewer2 = new User()
-            {
-                Id = 3
-            };
+
+            var reviewer1 = new User() { Id = reviewer1Id };
+            var reviewer2 = new User() { Id = reviewer2Id };
 
             var scientificWork = new ScientificWork()
             {
                 Id = scientificWorkId,
-                Name = "Nice Work Title",
-                Description = "Amazing work description",
+                Name = _faker.Commerce.ProductName(),
+                Description = _faker.Commerce.ProductDescription(),
                 CreationDate = DateTime.UtcNow,
-                OtherAuthors = "Thomas Unknown, Elisabeth Harmon",
+                OtherAuthors = string.Join(", ", Enumerable.Range(1, 3).Select(_ => _faker.Person.FullName)),
                 Status = StatusEnum.UnderReview,
                 MainAuthor = author,
-                Versions = new List<ScientificWorkFile>()
-                {
-                    new ScientificWorkFile()
-                    {
-                        Id = 1,
-                        Version = 1,
-                        DateAdd = DateTime.UtcNow,
-                        Reviews = new List<Review>()
-                        {
-                            new Review()
-                            {
-                                Id = 1,
-                                DateReview = DateTime.UtcNow,
-                                Comment = "Good job",
-                                Rating = 2,
-                                Reviewer = reviewer1
-                            },
-                            new Review()
-                            {
-                                Id = 2,
-                                DateReview = DateTime.UtcNow,
-                                File = "asdf.png",
-                                Rating = 1,
-                                Reviewer = reviewer2,
-                                Answer = new Answer()
-                                {
-                                    Id = 1,
-                                    Comment = "Ok",
-                                    AnswerDate = DateTime.UtcNow,
-                                    User = author
-                                }
-                            }
-                        }
-                    },
-                    new ScientificWorkFile()
-                    {
-                        Id = 2,
-                        Version = 2,
-                        DateAdd = DateTime.UtcNow.AddDays(1),
-                        Reviews = new List<Review>()
-                        {
-                            new Review()
-                            {
-                                Id = 3,
-                                DateReview = DateTime.UtcNow,
-                                File = "asgdbh.png",
-                                Rating = 3,
-                                Reviewer = reviewer1,
-                                Answer = new Answer()
-                                {
-                                    Id = 1,
-                                    Comment = "Thx",
-                                    AnswerDate = DateTime.UtcNow,
-                                    User = author
-                                }
-                            },
-                            new Review()
-                            {
-                                Id = 4,
-                                DateReview = DateTime.UtcNow,
-                                Comment = "asfdknj",
-                                Rating = 3,
-                                Reviewer = reviewer2,
-                            }
-                        }
-                    }
-                }
             };
 
             ScientificWorkWithReviewDto scientificWorkWithReviewDto = null;
@@ -1054,10 +850,8 @@ namespace Kongres.Api.Tests.Unit.Services
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
             _reviewerScientificWorkRepositoryMock.Setup(x => x.IsReviewerAsync(scientificWorkId, userId)).ReturnsAsync(false);
 
-
             var err = await Record.ExceptionAsync(async
                 () => scientificWorkWithReviewDto = await _service.GetWorkByIdAsync(userId, scientificWorkId));
-
 
             err.Should().BeOfType<AuthenticationException>();
             scientificWorkWithReviewDto.Should().BeNull();
@@ -1069,7 +863,7 @@ namespace Kongres.Api.Tests.Unit.Services
             var user = new User()
             {
                 Id = 1,
-                NormalizedUserName = "PARTICIPANT:JOHN@SMITH.COM"
+                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Participant), _faker.Internet.Email())
             };
 
             _userStoreMock.Setup(x => x.FindByIdAsync(user.Id.ToString(), CancellationToken.None)).ReturnsAsync(user);
@@ -1083,104 +877,69 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task GetListOfWorksForReviewerReturnList()
         {
+            var workId = 1u;
+            var userId = 1u;
+            var authorId = 2u;
+
             var user = new User()
             {
-                Id = 1,
-                NormalizedUserName = "REVIEWER:JOHN@SMITH.COM"
+                Id = userId,
+                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Reviewer), _faker.Internet.Email())
             };
 
-            var fakeWorks = new List<ScientificWork>()
+            var fakeWorks = new Faker<ScientificWork>().Rules((f, o) =>
             {
-                new ScientificWork()
+                o.Id = workId++;
+                o.Name = f.Commerce.ProductName();
+                o.Description = f.Commerce.ProductDescription();
+                o.OtherAuthors = string.Join(", ", Enumerable.Range(1, 3).Select(_ => f.Person.FullName));
+                o.Status = f.PickRandomWithout<StatusEnum>(StatusEnum.WaitingForDrawOfReviewers);
+                o.CreationDate = DateTime.UtcNow;
+                o.MainAuthor = new User()
                 {
-                    Id = 1,
-                    Name = "Nice title of work",
-                    Description = "Amazing description of work",
-                    MainAuthor = new User()
-                    {
-                        Id = 1,
-                        Name = "John",
-                        Surname = "Smith"
-                    },
-                    OtherAuthors = null,
-                    Status = StatusEnum.Accepted,
-                    CreationDate = DateTime.UtcNow,
-                    Versions = new List<ScientificWorkFile>()
-                    {
-                        new ScientificWorkFile()
-                        {
-                            Version = 1,
-                            DateAdd = DateTime.UtcNow
-                        },
-                        new ScientificWorkFile()
-                        {
-                            Version = 2,
-                            DateAdd = DateTime.UtcNow.AddDays(2)
-                        }
-                    }
-                },
-                new ScientificWork()
-                {
-                    Id = 5,
-                    Name = "Bad title of work",
-                    Description = "The worst description of work in the entire world",
-                    MainAuthor = new User()
-                    {
-                        Id = 3,
-                        Name = "Nikola",
-                        Surname = "Tesla"
-                    },
-                    OtherAuthors = "Thomas Unknown, Elisabeth Harmon",
-                    Status = StatusEnum.UnderReview,
-                    Versions = new List<ScientificWorkFile>()
-                    {
-                        new ScientificWorkFile()
-                        {
-                            Version = 1,
-                            DateAdd = DateTime.UtcNow
-                        },
-                    }
-                }
-            };
+                    Id = authorId,
+                    Name = f.Person.FirstName,
+                    Surname = f.Person.LastName
+                };
+                o.Versions = Enumerable.Range(1, f.Random.Number(1, 3))
+                                       .Select(x => new ScientificWorkFile()
+                                       {
+                                           Version = (byte)x,
+                                           DateAdd = DateTime.UtcNow.AddDays(x)
+                                       }) ;
+            }).Generate(3);
 
-            var expectedList = new List<ScientificWorkWithStatusDto>()
+            var expectedList = new List<ScientificWorkWithStatusDto>();
+
+            foreach (var item in fakeWorks)
             {
-                new ScientificWorkWithStatusDto()
+                expectedList.Add(new ScientificWorkWithStatusDto()
                 {
-                    Id = 1,
-                    Authors = "John Smith",
-                    Title = fakeWorks[0].Name,
-                    Description = fakeWorks[0].Description,
-                    CreationDate = fakeWorks[0].CreationDate.ToString("g"),
-                    UpdateDate = fakeWorks[0].Versions.ElementAt(1).DateAdd.ToString("g"),
-                    Status = fakeWorks[0].Status.ToString()
-                },
-                new ScientificWorkWithStatusDto()
-                {
-                    Id = 5,
-                    Authors = "Nikola Tesla, Thomas Unknown, Elisabeth Harmon",
-                    Title = fakeWorks[1].Name,
-                    Description = fakeWorks[1].Description,
-                    CreationDate = fakeWorks[1].CreationDate.ToString("g"),
-                    UpdateDate = fakeWorks[1].Versions.ElementAt(0).DateAdd.ToString("g"),
-                    Status = fakeWorks[1].Status.ToString()
-                }
-            };
+                    Id = item.Id,
+                    Title = item.Name,
+                    Authors = $"{item.MainAuthor.Name} {item.MainAuthor.Surname}, {item.OtherAuthors}",
+                    Description = item.Description,
+                    CreationDate = item.CreationDate.ToString("g"),
+                    UpdateDate = item.Versions.Last().DateAdd.ToString("g"),
+                    Status = item.Status.ToString()
+                });
+            }
 
             IEnumerable<ScientificWorkWithStatusDto> dto = null;
 
-            _userStoreMock.Setup(x => x.FindByIdAsync(user.Id.ToString(), CancellationToken.None)).ReturnsAsync(user);
-            _reviewerScientificWorkRepositoryMock.Setup(x => x.GetListOfWorksForReviewer(user.Id)).Returns(fakeWorks);
-
+            _userStoreMock.Setup(x => x.FindByIdAsync(userId.ToString(), CancellationToken.None)).ReturnsAsync(user);
+            _reviewerScientificWorkRepositoryMock.Setup(x => x.GetListOfWorksForReviewer(userId)).Returns(fakeWorks);
 
             var err = await Record.ExceptionAsync(async
-                () => dto = await _service.GetListOfWorksForReviewer(user.Id));
-
+                () => dto = await _service.GetListOfWorksForReviewer(userId));
 
             err.Should().BeNull();
 
             dto.Should().NotBeNull();
             dto.Should().BeEquivalentTo(expectedList);
         }
+
+        private string NormilizeUsername(string userType, string email)
+            => $"{userType.ToUpper()}:{email.ToUpper()}";
     }
 }
