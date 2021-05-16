@@ -6,7 +6,7 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
 {
     public interface IReviewerScientificWorkRepository : IRepository
     {
-        IEnumerable<ScientificWork> GetListOfWorksForReviewer(uint reviewerId);
+        Task<IEnumerable<ScientificWork>> GetListOfWorksForReviewerAsync(uint reviewerId);
         Task AddAsync(IEnumerable<ReviewersScienceWork> reviewersScienceWorks);
         Task<IEnumerable<string>> GetEmailsOfReviewersByWorkIdAsync(uint scientificWorkId);
         int GetReviewersCount(uint scientificWorkId);
