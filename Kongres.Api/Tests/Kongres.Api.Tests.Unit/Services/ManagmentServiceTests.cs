@@ -162,7 +162,6 @@ namespace Kongres.Api.Tests.Unit.Services
                 o.MainAuthor = fakeUser.Generate();
             }).Generate(scientificWorksCount);
 
-
             var reviewers = fakeUser.Generate(reviewersCount);
 
             _scientificWorkRepositoryMock.Setup(x => x.GetAllBySpecializationAsync(category)).ReturnsAsync(scientificWorks);
@@ -191,7 +190,6 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task AssignReviewersToScientificWorkAsyncAuthorCannotBeReviewerOfOwnWork()
         {
-
             var scientificWorksCount = 4;
             var reviewersCCount = 4;
             var category = "Biology";

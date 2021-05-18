@@ -12,6 +12,5 @@ namespace Kongres.Api.Infrastructure.Repositories.Interfaces
         int GetReviewersCount(uint scientificWorkId);
         Task<bool> IsReviewerAsync(uint scientificWorkId, uint userId);
         Task<bool> IsReviewerOfScientificWorkAsync(uint userId, uint scientificWorkId);
-
     }
 }

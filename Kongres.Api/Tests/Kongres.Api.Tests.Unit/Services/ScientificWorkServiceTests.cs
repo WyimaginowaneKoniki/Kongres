@@ -48,7 +48,6 @@ namespace Kongres.Api.Tests.Unit.Services
                                                 _emailSenderMock.Object);
         }
 
-
         public void Dispose()
         {
             _scientificWorkRepositoryMock.Reset();
@@ -125,7 +124,6 @@ namespace Kongres.Api.Tests.Unit.Services
         [Fact]
         public async Task AddBasicInfoAsyncThrowInvalidOperationExceptionWhenUserAlreadyAddWork()
         {
-
             var user = new User()
             {
                 Id = 1,
@@ -652,7 +650,6 @@ namespace Kongres.Api.Tests.Unit.Services
                 }
             };
 
-
             ScientificWorkWithReviewDto returnedDto = null;
 
             var expectedDto = new ScientificWorkWithReviewDto()
@@ -927,7 +924,6 @@ namespace Kongres.Api.Tests.Unit.Services
             returnedDto.Should().NotBeNull();
             returnedDto.Should().BeEquivalentTo(expectedDto);
 
-
             _scientificWorkFileRepositoryMock.Verify(x => x.GetVersionsWithReviews(scientificWorkId), Times.Once);
         }
 
@@ -947,7 +943,6 @@ namespace Kongres.Api.Tests.Unit.Services
                 Degree = _faker.Name.JobTitle(),
                 University = _faker.Company.CompanyName()
             };
-
 
             var scientificWork = new ScientificWork()
             {

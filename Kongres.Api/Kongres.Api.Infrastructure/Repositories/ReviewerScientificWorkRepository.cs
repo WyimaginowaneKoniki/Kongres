@@ -39,7 +39,6 @@ namespace Kongres.Api.Infrastructure.Repositories
         public int GetReviewersCount(uint scientificWorkId)
             => _context.ReviewersScienceWorks.Count(x => x.ScientificWork.Id == scientificWorkId);
 
-
         // check if reviewer is assign to given scientific work
         public async Task<bool> IsReviewerAsync(uint scientificWorkId, uint userId)
             => await _context.ReviewersScienceWorks.Include(x => x.User)

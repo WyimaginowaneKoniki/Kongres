@@ -45,7 +45,6 @@ namespace Kongres.Api.Tests.Unit.Services
                                                 _emailSenderMock.Object);
         }
 
-
         public void Dispose()
         {
             _scientificWorkRepositoryMock.Reset();
@@ -231,7 +230,6 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var reviewerCount = 3;
             var reviewsCount = 1;
-
 
             _scientificWorkFileRepositoryMock.Setup(x => x.GetNewestVersionWithReviewsAsync(scientificWorkId)).ReturnsAsync(version);
             _scientificWorkFileRepositoryMock.Setup(x => x.GetReviewsCountInNewestVersion(scientificWorkId)).Returns(reviewsCount);
