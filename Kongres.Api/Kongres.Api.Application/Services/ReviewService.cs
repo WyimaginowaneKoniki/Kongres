@@ -73,7 +73,7 @@ namespace Kongres.Api.Application.Services
         public async Task AddReviewAsync(uint reviewerId, string reviewMsg, IFormFile reviewFile, byte rating, uint scientificWorkId)
         {
             // check if user is a reviewer for given ScientificWork
-            var isReviewerOfScientificWork = await _scientificWorkRepository.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId);
+            var isReviewerOfScientificWork = await _reviewersWorkRepository.IsReviewerOfScientificWorkAsync(reviewerId, scientificWorkId);
 
             if (!isReviewerOfScientificWork)
                 return;
@@ -129,7 +129,7 @@ namespace Kongres.Api.Application.Services
                 {
                     work.Status = StatusEnum.Correcting;
                     newestVersion.Rating = 2;
-                    
+
                     await _emailSender.SendNewVersionEnabledEmailAsync(emailOfAuthor, scientificWorkId);
                 }
                 else

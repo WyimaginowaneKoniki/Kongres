@@ -11,28 +11,20 @@ namespace Kongres.Api.Application.Services
             SeedRoles(roleManager);
         }
 
-        private static void SeedRoles(RoleManager<Role> roleManager)
+        private static async void SeedRoles(RoleManager<Role> roleManager)
         {
-            if (!roleManager.RoleExistsAsync(nameof(UserTypeEnum.Participant)).Result)
+            var participantExists = await roleManager.RoleExistsAsync(nameof(UserTypeEnum.Participant));
+            if (!participantExists)
             {
                 var role = new Role { Name = nameof(UserTypeEnum.Participant) };
-                var result = roleManager.CreateAsync(role).Result;
-
-                if (!result.Succeeded)
-                {
-                    // Log about error
-                }
+                await roleManager.CreateAsync(role);
             }
 
-            if (!roleManager.RoleExistsAsync(nameof(UserTypeEnum.Reviewer)).Result)
+            var reviewerExists = await roleManager.RoleExistsAsync(nameof(UserTypeEnum.Reviewer));
+            if (!reviewerExists)
             {
                 var role = new Role { Name = nameof(UserTypeEnum.Reviewer) };
-                var result = roleManager.CreateAsync(role).Result;
-
-                if (!result.Succeeded)
-                {
-                    // Log about error
-                }
+                await roleManager.CreateAsync(role);
             }
         }
     }

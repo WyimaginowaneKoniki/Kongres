@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Kongres.Api.Application.Services.Interfaces;
+﻿using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
 using Kongres.Api.Infrastructure.Repositories.Interfaces;
-using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kongres.Api.Application.Services
 {
     public class ManagementService : IManagementService
     {
         private readonly IScientificWorkRepository _scientificWorkRepository;
-        private readonly IReviewerRepository _reviewerRepository;
         private readonly IReviewerScientificWorkRepository _reviewersScientificWorkRepository;
         private readonly IUserRepository _userRepository;
         private readonly IEmailSender _emailSender;
 
         public ManagementService(IScientificWorkRepository scientificWorkRepository,
-                            IReviewerRepository reviewerRepository,
                             IReviewerScientificWorkRepository reviewersScientificWorkRepository,
                             IUserRepository userRepository,
                             IEmailSender emailSender)
         {
             _scientificWorkRepository = scientificWorkRepository;
-            _reviewerRepository = reviewerRepository;
             _reviewersScientificWorkRepository = reviewersScientificWorkRepository;
             _userRepository = userRepository;
             _emailSender = emailSender;
@@ -38,7 +34,7 @@ namespace Kongres.Api.Application.Services
             {
                 // get reviewers and scientific works
                 var scientificWorks = await _scientificWorkRepository.GetAllBySpecializationAsync(category);
-                var reviewers = await _reviewerRepository.GetAllBySpecializationAsync(category);
+                var reviewers = await _userRepository.GetAllBySpecializationAsync(category);
 
                 // get work's ids
                 // and
@@ -47,14 +43,14 @@ namespace Kongres.Api.Application.Services
                 var scientificWorkIds = scientificWorks.Select(x =>
                     (
                         id: x.Id,
-                        authorAsReviewerId: reviewers.SingleOrDefault(y => y.Email == x.MainAuthor.Email)?.Id ?? 0
+                        authorAsReviewerId: reviewers.SingleOrDefault(y => y.NormalizedEmail == x.MainAuthor.NormalizedEmail)?.Id ?? 0
                     )).ToArray();
 
                 var reviewerIds = reviewers.Select(x => x.Id).ToArray();
 
                 // send information to authors/reviewers about too small number of works/reviewers
                 // and set status to rejected
-                if (reviewerIds.Length < 4 || scientificWorkIds.Count() < 4)
+                if (reviewerIds.Length < 4 || scientificWorkIds.Length < 4)
                 {
                     for (var i = 0; i < reviewerIds.Length; i++)
                     {
@@ -62,11 +58,9 @@ namespace Kongres.Api.Application.Services
                         await _emailSender.SendDoNotGetAssignToAnyWork(reviewerEmail);
                     }
 
-
                     foreach (var scientificWork in scientificWorks)
                     {
-                        var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
-                        await _emailSender.SendWorkDidNotGetReviewers(authorEmail);
+                        await _emailSender.SendWorkDidNotGetReviewers(scientificWork.MainAuthor.Email);
 
                         scientificWork.Status = StatusEnum.Rejected;
                         await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
@@ -99,8 +93,7 @@ namespace Kongres.Api.Application.Services
                 // and change status to UnderReview
                 foreach (var scientificWork in scientificWorks)
                 {
-                    var authorEmail = _userRepository.GetEmailById(scientificWork.MainAuthor.Id);
-                    await _emailSender.SendReviewersAssignmentInformationAsync(authorEmail, scientificWork.Id);
+                    await _emailSender.SendReviewersAssignmentInformationAsync(scientificWork.MainAuthor.Email, scientificWork.Id);
 
                     scientificWork.Status = StatusEnum.UnderReview;
                     await _scientificWorkRepository.ChangeStatusAsync(scientificWork);
@@ -116,7 +109,7 @@ namespace Kongres.Api.Application.Services
             if (works.Count < reviewers.Length)
                 numberOfAssignReviewers = 4;
 
-            var n = (int)Math.Round((float)reviewers.Length / reviewers.Length);
+            var n = (int)Math.Round((float)reviewers.Length / works.Count);
             var reviewWorkAssignCount = n < numberOfAssignReviewers ? numberOfAssignReviewers : n;
 
             // store assign reviewers to scientific works

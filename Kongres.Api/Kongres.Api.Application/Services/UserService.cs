@@ -48,7 +48,7 @@ namespace Kongres.Api.Application.Services
 
             string base64Photo = null;
 
-            if (!(user.Photo is null))
+            if (user.Photo != null)
             {
                 var photo = await _fileManager.GetBase64FileAsync(user.Photo);
                 var photoExtension = user.Photo.Split(".")[^1];
@@ -113,7 +113,7 @@ namespace Kongres.Api.Application.Services
         {
             var user = await _userManager.FindByIdAsync(userId);
 
-            var isParticipant = await _userManager.IsInRoleAsync(user, "Participant");
+            var isParticipant = await _userManager.IsInRoleAsync(user, nameof(UserTypeEnum.Participant));
             if (!isParticipant)
                 throw new AuthenticationException();
 

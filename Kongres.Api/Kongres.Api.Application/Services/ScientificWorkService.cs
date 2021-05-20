@@ -46,7 +46,7 @@ namespace Kongres.Api.Application.Services
             string specialization)
         {
             var user = await _userManager.FindByIdAsync(authorId.ToString());
-            
+
             if (user.NormalizedUserName.Split(":")[0] != "PARTICIPANT")
                 throw new AuthenticationException();
 
@@ -112,32 +112,17 @@ namespace Kongres.Api.Application.Services
         {
             var listOfScientificWorks = await _scientificWorkRepository.GetApprovedWorksAsync();
 
-            var listOfScientificWorksDto = new List<ScientificWorkDto>();
-
-            foreach (var scientificWork in listOfScientificWorks)
+            return listOfScientificWorks.Select(x => new ScientificWorkDto()
             {
-                var authors = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}";
-
-                // Sometimes the work doesn't include other authors except main one
-                if (!(scientificWork.OtherAuthors is null))
-                    authors += $", {scientificWork.OtherAuthors}";
-
-                var scientificWorkDto = new ScientificWorkDto()
-                {
-                    Id = scientificWork.Id,
-                    Authors = authors,
-                    Title = scientificWork.Name,
-                    Description = scientificWork.Description,
-                    CreationDate = scientificWork.CreationDate.ToString("g"),
-                    // Get date of latest update of work
-                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
-                    Specialization = scientificWork.Specialization
-                };
-
-                listOfScientificWorksDto.Add(scientificWorkDto);
-            }
-
-            return listOfScientificWorksDto;
+                Id = x.Id,
+                Authors = GetAuthors(x.MainAuthor, x.OtherAuthors),
+                Title = x.Name,
+                Description = x.Description,
+                CreationDate = x.CreationDate.ToString("g"),
+                // Get date of latest update of work
+                UpdateDate = x.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
+                Specialization = x.Specialization
+            });
         }
 
         public async Task<Stream> GetStreamOfScientificWorkAsync(uint workId)
@@ -159,7 +144,7 @@ namespace Kongres.Api.Application.Services
 
             if (scientificWork.MainAuthor.Id == userId)
                 mode = "Author";
-            else if (await _reviewRepository.IsReviewerAsync(scientificWorkId, userId))
+            else if (await _reviewersWorkRepository.IsReviewerAsync(scientificWorkId, userId))
                 mode = "Reviewer";
             else
                 mode = "Participant";
@@ -212,6 +197,7 @@ namespace Kongres.Api.Application.Services
 
                     foreach (var review in version.Reviews)
                     {
+                        // reviewer should see only own reviews and answers to these reviews
                         if (mode == "Reviewer" && review.Reviewer.Id != userId)
                             continue;
 
@@ -254,32 +240,33 @@ namespace Kongres.Api.Application.Services
             if (user.NormalizedUserName.Split(":")[0] != "REVIEWER")
                 throw new AuthenticationException();
 
-            var scientificWorks = _reviewersWorkRepository.GetListOfWorksForReviewer(reviewerId);
+            var scientificWorks = await _reviewersWorkRepository.GetListOfWorksForReviewerAsync(reviewerId);
 
-            var scientificWorksDto = new List<ScientificWorkWithStatusDto>();
-
-            foreach (var scientificWork in scientificWorks)
+            return scientificWorks.Select(x => new ScientificWorkWithStatusDto()
             {
-                var authors = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}";
+                Id = x.Id,
+                Title = x.Name,
+                Description = x.Description,
+                Authors = GetAuthors(x.MainAuthor, x.OtherAuthors),
+                Specialization = x.Specialization,
+                CreationDate = x.CreationDate.ToString("g"),
+                UpdateDate = x.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
+                Status = x.Status.ToString()
+            });
+        }
 
-                // Sometimes the work doesn't include other authors except main one
-                if (!(scientificWork.OtherAuthors is null))
-                    authors += $", {scientificWork.OtherAuthors}";
+        // Get string of authors
+        // returns only one author when there is no otherAuthors
+        // otherwise returns author's names divided by ','
+        private string GetAuthors(User mainAuthor, string otherAuthors)
+        {
+            var authors = $"{mainAuthor.Name} {mainAuthor.Surname}";
 
-                scientificWorksDto.Add(new ScientificWorkWithStatusDto()
-                {
-                    Id = scientificWork.Id,
-                    Title = scientificWork.Name,
-                    Description = scientificWork.Description,
-                    Authors = authors,
-                    Specialization = scientificWork.Specialization,
-                    CreationDate = scientificWork.CreationDate.ToString("g"),
-                    UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
-                    Status = scientificWork.Status.ToString()
-                });
-            }
+            // Sometimes the work doesn't include other authors except main one
+            if (!(otherAuthors is null))
+                authors += $", {otherAuthors}";
 
-            return scientificWorksDto;
+            return authors;
         }
     }
 }
