@@ -9,6 +9,7 @@ namespace Kongres.Api.Application.Mappers
             => new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<ScientificWorkProfile>();
             }).CreateMapper();
     }
 }

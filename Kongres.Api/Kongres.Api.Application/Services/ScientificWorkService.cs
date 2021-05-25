@@ -114,17 +114,7 @@ namespace Kongres.Api.Application.Services
         {
             var listOfScientificWorks = await _scientificWorkRepository.GetApprovedWorksAsync();
 
-            return listOfScientificWorks.Select(x => new ScientificWorkDto()
-            {
-                Id = x.Id,
-                Authors = GetAuthors(x.MainAuthor, x.OtherAuthors),
-                Title = x.Name,
-                Description = x.Description,
-                CreationDate = x.CreationDate.ToString("g"),
-                // Get date of latest update of work
-                UpdateDate = x.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
-                Specialization = x.Specialization
-            });
+            return listOfScientificWorks.Select(x => _mapper.Map<ScientificWorkDto>(x));
         }
 
         public async Task<Stream> GetStreamOfScientificWorkAsync(uint workId)
@@ -155,16 +145,7 @@ namespace Kongres.Api.Application.Services
             if (scientificWork.Status != StatusEnum.Accepted && mode == nameof(UserTypeEnum.Participant))
                 throw new AuthenticationException();
 
-            var scientificWorkDto = new ScientificWorkDto()
-            {
-                Id = scientificWork.Id,
-                Title = scientificWork.Name,
-                Description = scientificWork.Description,
-                Specialization = scientificWork.Specialization,
-                CreationDate = scientificWork.CreationDate.ToString("g"),
-                UpdateDate = scientificWork.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
-                Authors = scientificWork.OtherAuthors,
-            };
+            var scientificWorkDto = _mapper.Map<ScientificWorkWithOtherAuthorsDto>(scientificWork);
 
             var mainAuthor = _mapper.Map<UserDto>(scientificWork.MainAuthor);
             mainAuthor.Photo = UserHelper.GetBase64Photo(_fileManager, mainAuthor.Photo);
@@ -176,39 +157,11 @@ namespace Kongres.Api.Application.Services
             {
                 var versions = await _scientificWorkFileRepository.GetVersionsWithReviews(scientificWorkId);
 
-                versionsDto = new List<VersionDto>();
+                // reviewer should see only own reviews and answers to these reviews
+                if (mode == nameof(UserTypeEnum.Reviewer))
+                    versions.ToList().ForEach(x => x.Reviews = x.Reviews.Where(x => x.Reviewer.Id != userId));
 
-                // every version of work includes reviews
-                foreach (var version in versions)
-                {
-                    var reviewsDto = new List<ReviewDto>();
-
-                    foreach (var review in version.Reviews)
-                    {
-                        // reviewer should see only own reviews and answers to these reviews
-                        if (mode == nameof(UserTypeEnum.Reviewer) && review.Reviewer.Id != userId)
-                            continue;
-
-                        reviewsDto.Add(new ReviewDto()
-                        {
-                            Id = review.Id,
-                            ReviewDate = review.DateReview.ToString("g"),
-                            ReviewMsg = review.Comment,
-                            IsReviewFileExist = review.File != null,
-                            Rating = review.Rating,
-                            AnswerDate = review?.Answer?.AnswerDate.ToString("g"),
-                            AnswerMsg = review?.Answer?.Comment
-                        });
-                    }
-
-                    versionsDto.Add(new VersionDto()
-                    {
-                        Date = version.DateAdd.ToString("g"),
-                        VersionNumber = version.Version,
-                        Reviews = reviewsDto,
-                        Rating = version.Rating
-                    });
-                }
+                versionsDto = _mapper.Map<List<VersionDto>>(versions);
             }
 
             return new ScientificWorkWithReviewDto()
@@ -230,24 +183,7 @@ namespace Kongres.Api.Application.Services
 
             var scientificWorks = await _reviewersWorkRepository.GetListOfWorksForReviewerAsync(reviewerId);
 
-            return scientificWorks.Select(x => new ScientificWorkWithStatusDto()
-            {
-                Id = x.Id,
-                Title = x.Name,
-                Description = x.Description,
-                Authors = GetAuthors(x.MainAuthor, x.OtherAuthors),
-                Specialization = x.Specialization,
-                CreationDate = x.CreationDate.ToString("g"),
-                UpdateDate = x.Versions.OrderBy(x => x.Version).Last().DateAdd.ToString("g"),
-                Status = x.Status.ToString()
-            });
+            return scientificWorks.Select(x => _mapper.Map<ScientificWorkWithStatusDto>(x));
         }
-
-        // Get string of authors
-        // returns only one author when there is no otherAuthors
-        // otherwise returns author's names divided by ','
-        private string GetAuthors(User mainAuthor, string otherAuthors)
-            => otherAuthors is null ? UserHelper.GetFullName(mainAuthor)
-                                    : $"{UserHelper.GetFullName(mainAuthor)}, {otherAuthors}";
     }
 }

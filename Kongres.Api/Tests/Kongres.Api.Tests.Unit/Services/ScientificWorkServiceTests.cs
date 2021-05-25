@@ -42,8 +42,11 @@ namespace Kongres.Api.Tests.Unit.Services
         {
             _userManager = new UserManager<User>(_userStoreMock.Object, null, null, null, null, null, null, null, null);
 
-            var configuration = new MapperConfiguration(cfg
-                => cfg.AddProfile<UserProfile>());
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<ScientificWorkProfile>();
+            });
 
             _mapper = new Mapper(configuration);
 
@@ -297,15 +300,7 @@ namespace Kongres.Api.Tests.Unit.Services
                                            });
                 }).Generate(3);
 
-            var expectedList = fakeWorks.Select(x => new ScientificWorkDto()
-            {
-                Id = x.Id,
-                Title = x.Name,
-                Authors = UserHelper.GetFullName(x.MainAuthor),
-                Description = x.Description,
-                CreationDate = x.CreationDate.ToString("g"),
-                UpdateDate = x.Versions.Last().DateAdd.ToString("g")
-            });
+            var expectedList = fakeWorks.Select(x => _mapper.Map<ScientificWorkDto>(x));
 
             IEnumerable<ScientificWorkDto> returnedScientificWorks = null;
 
@@ -348,15 +343,7 @@ namespace Kongres.Api.Tests.Unit.Services
                                            });
                 }).Generate(3);
 
-            var expectedList = fakeWorks.Select(x => new ScientificWorkDto()
-            {
-                Id = x.Id,
-                Title = x.Name,
-                Authors = $"{UserHelper.GetFullName(x.MainAuthor)}, {x.OtherAuthors}",
-                Description = x.Description,
-                CreationDate = x.CreationDate.ToString("g"),
-                UpdateDate = x.Versions.Last().DateAdd.ToString("g")
-            });
+            var expectedList = fakeWorks.Select(x => _mapper.Map<ScientificWorkDto>(x));
 
             IEnumerable<ScientificWorkDto> returnedScientificWorks = null;
 
@@ -475,16 +462,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 Versions = null,
                 Mode = nameof(UserTypeEnum.Participant),
                 MainAuthor = _mapper.Map<UserDto>(scientificWork.MainAuthor),
-                ScientificWork = new ScientificWorkDto()
-                {
-                    Id = scientificWork.Id,
-                    Title = scientificWork.Name,
-                    Description = scientificWork.Description,
-                    Specialization = scientificWork.Specialization,
-                    CreationDate = scientificWork.CreationDate.ToString("g"),
-                    UpdateDate = scientificWork.Versions.Last().DateAdd.ToString("g"),
-                    Authors = scientificWork.OtherAuthors,
-                }
+                ScientificWork = _mapper.Map<ScientificWorkWithOtherAuthorsDto>(scientificWork)
             };
 
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
@@ -658,55 +636,13 @@ namespace Kongres.Api.Tests.Unit.Services
                 Mode = nameof(UserTypeEnum.Reviewer),
                 Status = scientificWork.Status.ToString(),
                 MainAuthor = _mapper.Map<UserDto>(author),
-                ScientificWork = new ScientificWorkDto()
+                ScientificWork = _mapper.Map<ScientificWorkWithOtherAuthorsDto>(scientificWork),
+                Versions = scientificWork.Versions.Select(x => new VersionDto()
                 {
-                    Id = scientificWork.Id,
-                    Title = scientificWork.Name,
-                    Description = scientificWork.Description,
-                    Specialization = scientificWork.Specialization,
-                    CreationDate = scientificWork.CreationDate.ToString("g"),
-                    UpdateDate = scientificWork.Versions.Last().DateAdd.ToString("g"),
-                    Authors = scientificWork.OtherAuthors,
-                },
-                Versions = new List<VersionDto>()
-                {
-                    new VersionDto()
-                    {
-                        Date = scientificWork.Versions.ElementAt(0).DateAdd.ToString("g"),
-                        VersionNumber = scientificWork.Versions.ElementAt(0).Version,
-                        Reviews = new List<ReviewDto>()
-                        {
-                            new ReviewDto()
-                            {
-                                Id = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).Id,
-                                Rating = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).Rating,
-                                IsReviewFileExist = false,
-                                ReviewDate = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).DateReview.ToString("g"),
-                                ReviewMsg = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).Comment,
-                                AnswerDate = null,
-                                AnswerMsg = null
-                            }
-                        }
-                    },
-                    new VersionDto()
-                    {
-                        Date = scientificWork.Versions.ElementAt(1).DateAdd.ToString("g"),
-                        VersionNumber = scientificWork.Versions.ElementAt(1).Version,
-                        Reviews = new List<ReviewDto>()
-                        {
-                            new ReviewDto()
-                            {
-                                Id = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Id,
-                                Rating = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Rating,
-                                IsReviewFileExist = true,
-                                ReviewDate = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).DateReview.ToString("g"),
-                                ReviewMsg = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Comment,
-                                AnswerDate = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Answer.AnswerDate.ToString("g"),
-                                AnswerMsg = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Answer.Comment
-                            }
-                        }
-                    }
-                },
+                    Date = x.DateAdd.ToString("g"),
+                    VersionNumber = x.Version,
+                    Reviews = new List<ReviewDto>() { _mapper.Map<ReviewDto>(x.Reviews.ElementAt(0)) }
+                })
             };
 
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
@@ -832,74 +768,8 @@ namespace Kongres.Api.Tests.Unit.Services
                 Status = scientificWork.Status.ToString(),
                 Mode = "Author",
                 MainAuthor = _mapper.Map<UserDto>(author),
-                ScientificWork = new ScientificWorkDto()
-                {
-                    Id = scientificWork.Id,
-                    Title = scientificWork.Name,
-                    Description = scientificWork.Description,
-                    Specialization = scientificWork.Specialization,
-                    CreationDate = scientificWork.CreationDate.ToString("g"),
-                    UpdateDate = scientificWork.Versions.ElementAt(1).DateAdd.ToString("g"),
-                    Authors = scientificWork.OtherAuthors,
-                },
-                Versions = new List<VersionDto>()
-                {
-                    new VersionDto()
-                    {
-                        Date = scientificWork.Versions.ElementAt(0).DateAdd.ToString("g"),
-                        VersionNumber = scientificWork.Versions.ElementAt(0).Version,
-                        Reviews = new List<ReviewDto>()
-                        {
-                            new ReviewDto()
-                            {
-                                Id = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).Id,
-                                Rating = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).Rating,
-                                IsReviewFileExist = false,
-                                ReviewDate = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).DateReview.ToString("g"),
-                                ReviewMsg = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(0).Comment,
-                                AnswerDate = null,
-                                AnswerMsg = null
-                            },
-                            new ReviewDto()
-                            {
-                                Id = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(1).Id,
-                                Rating = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(1).Rating,
-                                IsReviewFileExist = true,
-                                ReviewDate = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(1).DateReview.ToString("g"),
-                                AnswerDate = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(1).Answer.AnswerDate.ToString("g"),
-                                AnswerMsg = scientificWork.Versions.ElementAt(0).Reviews.ElementAt(1).Answer.Comment
-                            }
-                        }
-                    },
-                    new VersionDto()
-                    {
-                        Date = scientificWork.Versions.ElementAt(1).DateAdd.ToString("g"),
-                        VersionNumber = scientificWork.Versions.ElementAt(1).Version,
-                        Reviews = new List<ReviewDto>()
-                        {
-                            new ReviewDto()
-                            {
-                                Id = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Id,
-                                Rating = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Rating,
-                                IsReviewFileExist = true,
-                                ReviewDate = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).DateReview.ToString("g"),
-                                ReviewMsg = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Comment,
-                                AnswerDate = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Answer.AnswerDate.ToString("g"),
-                                AnswerMsg = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(0).Answer.Comment
-                            },
-                            new ReviewDto()
-                            {
-                                Id = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(1).Id,
-                                Rating = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(1).Rating,
-                                IsReviewFileExist = false,
-                                ReviewDate = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(1).DateReview.ToString("g"),
-                                ReviewMsg = scientificWork.Versions.ElementAt(1).Reviews.ElementAt(1).Comment,
-                                AnswerDate = null,
-                                AnswerMsg = null
-                            }
-                        }
-                    }
-                }
+                ScientificWork = _mapper.Map<ScientificWorkWithOtherAuthorsDto>(scientificWork),
+                Versions = _mapper.Map<List<VersionDto>>(scientificWork.Versions)
             };
 
             _scientificWorkRepositoryMock.Setup(x => x.GetWorkByIdAsync(scientificWorkId)).ReturnsAsync(scientificWork);
@@ -1010,16 +880,7 @@ namespace Kongres.Api.Tests.Unit.Services
                                        });
             }).Generate(3);
 
-            var expectedList = fakeWorks.Select(x => new ScientificWorkWithStatusDto()
-            {
-                Id = x.Id,
-                Title = x.Name,
-                Authors = $"{UserHelper.GetFullName(x.MainAuthor)}, {x.OtherAuthors}",
-                Description = x.Description,
-                CreationDate = x.CreationDate.ToString("g"),
-                UpdateDate = x.Versions.Last().DateAdd.ToString("g"),
-                Status = x.Status.ToString()
-            });
+            var expectedList = fakeWorks.Select(x => _mapper.Map<ScientificWorkWithStatusDto>(x));
 
             IEnumerable<ScientificWorkWithStatusDto> returnedDto = null;
 
