@@ -1,6 +1,8 @@
-﻿using Bogus;
+﻿using AutoMapper;
+using Bogus;
 using FluentAssertions;
 using Kongres.Api.Application.Commands.Users;
+using Kongres.Api.Application.Mappers.Profiles;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
@@ -32,6 +34,7 @@ namespace Kongres.Api.Tests.Unit.Services
         private readonly Mock<FakeSignInManager> _signInManagerMock = new Mock<FakeSignInManager>();
         private readonly IUserService _userService;
         private readonly Faker _faker = new Faker();
+        private readonly IMapper _mapper;
 
         public UserServiceTests()
         {
@@ -42,13 +45,19 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var memoryCache = serviceProvider.GetService<IMemoryCache>();
 
+            var configuration = new MapperConfiguration(cfg
+                => cfg.AddProfile<UserProfile>());
+
+            _mapper = new Mapper(configuration);
+
             _userService = new UserService(_userManagerMock.Object,
                                            _signInManagerMock.Object,
                                            _jwtHandlerMock.Object,
                                            memoryCache,
                                            _scientificWorkRepositoryMock.Object,
                                            _fileManagerMock.Object,
-                                           _emailSendeMock.Object);
+                                           _emailSendeMock.Object,
+                                           _mapper);
         }
 
         public void Dispose()
@@ -76,12 +85,8 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var scientificWork = new ScientificWork() { Id = 1 };
 
-            var expectedDto = new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = nameof(UserTypeEnum.Participant),
-                ScientificWorkId = scientificWork.Id
-            };
+            var expectedDto = _mapper.Map<HeaderUserInfoDto>(user);
+            expectedDto.ScientificWorkId = scientificWork.Id;
 
             HeaderUserInfoDto returnedDto = null;
 
@@ -112,11 +117,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 UserName = $"{UserTypeEnum.Participant}:{_faker.Person.Email}"
             };
 
-            var expectedDto = new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = nameof(UserTypeEnum.Participant),
-            };
+            var expectedDto = _mapper.Map<HeaderUserInfoDto>(user);
 
             HeaderUserInfoDto returnedDto = null;
 
@@ -150,12 +151,8 @@ namespace Kongres.Api.Tests.Unit.Services
                 Photo = _faker.System.FileName(photoExtension)
             };
 
-            var expectedDto = new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = nameof(UserTypeEnum.Participant),
-                PhotoBase64 = $"data:image/{photoExtension};base64,{randomBase64}"
-            };
+            var expectedDto = _mapper.Map<HeaderUserInfoDto>(user);
+            expectedDto.PhotoBase64 = $"data:image/{photoExtension};base64,{randomBase64}";
 
             HeaderUserInfoDto returnedDto = null;
 
@@ -432,16 +429,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 UserName = $"{nameof(UserTypeEnum.Participant)}:{_faker.Person.Email}"
             };
 
-            var expectedDto = new MyProfileUserDto()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                AcademicTitle = user.Degree,
-                University = user.University,
-                Specialization = user.Specialization,
-                Role = nameof(UserTypeEnum.Participant),
-            };
+            var expectedDto = _mapper.Map<MyProfileUserDto>(user);
 
             MyProfileUserDto returnedDto = null;
 
@@ -478,17 +466,9 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var scientificWork = new ScientificWork() { Id = 1u };
 
-            var expectedDto = new MyProfileUserDto()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                AcademicTitle = user.Degree,
-                University = user.University,
-                Specialization = user.Specialization,
-                Role = nameof(UserTypeEnum.Participant),
-                WorkId = scientificWork.Id
-            };
+
+            var expectedDto = _mapper.Map<MyProfileUserDto>(user);
+            expectedDto.WorkId = scientificWork.Id;
 
             MyProfileUserDto returnedDto = null;
 

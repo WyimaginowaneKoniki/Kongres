@@ -1,4 +1,5 @@
-﻿using Kongres.Api.Application.Services.Interfaces;
+﻿using AutoMapper;
+using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Entities;
 using Kongres.Api.Domain.Enums;
@@ -20,26 +21,26 @@ namespace Kongres.Api.Application.Services
         private readonly IScientificWorkRepository _scientificWorkRepository;
         private readonly IScientificWorkFileRepository _scientificWorkFileRepository;
         private readonly IReviewerScientificWorkRepository _reviewersWorkRepository;
-        private readonly IReviewRepository _reviewRepository;
         private readonly UserManager<User> _userManager;
         private readonly IFileManager _fileManager;
         private readonly IEmailSender _emailSender;
+        private readonly IMapper _mapper;
 
         public ScientificWorkService(IScientificWorkRepository scientificWorkRepository,
                                     IScientificWorkFileRepository scientificWorkFileRepository,
                                     IReviewerScientificWorkRepository reviewersWorkRepository,
-                                    IReviewRepository reviewRepository,
                                     UserManager<User> userManager,
                                     IFileManager fileManager,
-                                    IEmailSender emailSender)
+                                    IEmailSender emailSender, 
+                                    IMapper mapper)
         {
             _scientificWorkRepository = scientificWorkRepository;
             _scientificWorkFileRepository = scientificWorkFileRepository;
-            _reviewRepository = reviewRepository;
             _userManager = userManager;
             _fileManager = fileManager;
             _emailSender = emailSender;
             _reviewersWorkRepository = reviewersWorkRepository;
+            _mapper = mapper;
         }
 
         public async Task<uint> AddBasicInfoAsync(uint authorId, string title, string description, string authors,
@@ -173,13 +174,8 @@ namespace Kongres.Api.Application.Services
                 base64Photo = $"data:image/{photoExtension};base64,{authorPhoto}";
             }
 
-            var mainAuthor = new UserDto()
-            {
-                Name = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}",
-                Degree = scientificWork.MainAuthor.Degree,
-                University = scientificWork.MainAuthor.University,
-                Photo = base64Photo
-            };
+            var mainAuthor = _mapper.Map<UserDto>(scientificWork.MainAuthor);
+            mainAuthor.Photo = base64Photo;
 
             List<VersionDto> versionsDto = null;
 

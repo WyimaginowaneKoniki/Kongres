@@ -1,5 +1,7 @@
-﻿using Bogus;
+﻿using AutoMapper;
+using Bogus;
 using FluentAssertions;
+using Kongres.Api.Application.Mappers.Profiles;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
@@ -27,25 +29,30 @@ namespace Kongres.Api.Tests.Unit.Services
         private readonly Mock<IScientificWorkRepository> _scientificWorkRepositoryMock = new Mock<IScientificWorkRepository>();
         private readonly Mock<IScientificWorkFileRepository> _scientificWorkFileRepositoryMock = new Mock<IScientificWorkFileRepository>();
         private readonly Mock<IReviewerScientificWorkRepository> _reviewerScientificWorkRepositoryMock = new Mock<IReviewerScientificWorkRepository>();
-        private readonly Mock<IReviewRepository> _reviewRepositoryMock = new Mock<IReviewRepository>();
         private readonly Mock<IFileManager> _fileManagerMock = new Mock<IFileManager>();
         private readonly Mock<IEmailSender> _emailSenderMock = new Mock<IEmailSender>();
         private readonly Mock<IUserStore<User>> _userStoreMock = new Mock<IUserStore<User>>();
         private readonly UserManager<User> _userManager;
         private readonly ScientificWorkService _service;
         private readonly Faker _faker = new Faker();
+        private readonly IMapper _mapper;
 
         public ScientificWorkServiceTests()
         {
             _userManager = new UserManager<User>(_userStoreMock.Object, null, null, null, null, null, null, null, null);
 
+            var configuration = new MapperConfiguration(cfg
+                => cfg.AddProfile<UserProfile>());
+
+            _mapper = new Mapper(configuration);
+
             _service = new ScientificWorkService(_scientificWorkRepositoryMock.Object,
                                                 _scientificWorkFileRepositoryMock.Object,
                                                 _reviewerScientificWorkRepositoryMock.Object,
-                                                _reviewRepositoryMock.Object,
                                                 _userManager,
                                                 _fileManagerMock.Object,
-                                                _emailSenderMock.Object);
+                                                _emailSenderMock.Object,
+                                                _mapper);
         }
 
         public void Dispose()
@@ -53,7 +60,6 @@ namespace Kongres.Api.Tests.Unit.Services
             _scientificWorkRepositoryMock.Reset();
             _scientificWorkFileRepositoryMock.Reset();
             _reviewerScientificWorkRepositoryMock.Reset();
-            _reviewRepositoryMock.Reset();
             _fileManagerMock.Reset();
             _emailSenderMock.Reset();
             _userStoreMock.Reset();
@@ -467,13 +473,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 Status = scientificWork.Status.ToString(),
                 Versions = null,
                 Mode = nameof(UserTypeEnum.Participant),
-                MainAuthor = new UserDto()
-                {
-                    Degree = scientificWork.MainAuthor.Degree,
-                    Name = $"{scientificWork.MainAuthor.Name} {scientificWork.MainAuthor.Surname}",
-                    Photo = null,
-                    University = scientificWork.MainAuthor.University
-                },
+                MainAuthor = _mapper.Map<UserDto>(scientificWork.MainAuthor),
                 ScientificWork = new ScientificWorkDto()
                 {
                     Id = scientificWork.Id,
@@ -656,13 +656,7 @@ namespace Kongres.Api.Tests.Unit.Services
             {
                 Mode = nameof(UserTypeEnum.Reviewer),
                 Status = scientificWork.Status.ToString(),
-                MainAuthor = new UserDto()
-                {
-                    Degree = author.Degree,
-                    Name = $"{author.Name} {author.Surname}",
-                    Photo = null,
-                    University = author.University
-                },
+                MainAuthor = _mapper.Map<UserDto>(author),
                 ScientificWork = new ScientificWorkDto()
                 {
                     Id = scientificWork.Id,
@@ -836,13 +830,7 @@ namespace Kongres.Api.Tests.Unit.Services
             {
                 Status = scientificWork.Status.ToString(),
                 Mode = "Author",
-                MainAuthor = new UserDto()
-                {
-                    Degree = author.Degree,
-                    Name = $"{author.Name} {author.Surname}",
-                    Photo = null,
-                    University = author.University
-                },
+                MainAuthor = _mapper.Map<UserDto>(author),
                 ScientificWork = new ScientificWorkDto()
                 {
                     Id = scientificWork.Id,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using AutoMapper;
 using Kongres.Api.Application.Commands.Users;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
@@ -23,6 +24,7 @@ namespace Kongres.Api.Application.Services
         private readonly IEmailSender _emailSender;
         private readonly IJwtHandler _jwtHandler;
         private readonly IMemoryCache _cache;
+        private readonly IMapper _mapper;
 
         public UserService(UserManager<User> userManager,
                             SignInManager<User> signInManager,
@@ -30,7 +32,8 @@ namespace Kongres.Api.Application.Services
                             IMemoryCache cache,
                             IScientificWorkRepository scientificWorkRepository,
                             IFileManager fileManager,
-                            IEmailSender emailSender)
+                            IEmailSender emailSender, 
+                            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +42,7 @@ namespace Kongres.Api.Application.Services
             _scientificWorkRepository = scientificWorkRepository;
             _fileManager = fileManager;
             _emailSender = emailSender;
+            _mapper = mapper;
         }
 
         public async Task<HeaderUserInfoDto> GetUserInfoForHeaderAsync(string userId)
@@ -55,13 +59,11 @@ namespace Kongres.Api.Application.Services
                 base64Photo = $"data:image/{photoExtension};base64,{photo}";
             }
 
-            return new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = user.UserName.Split(":")[0],
-                PhotoBase64 = base64Photo,
-                ScientificWorkId = scientificWork?.Id ?? 0
-            };
+            var dto = _mapper.Map<HeaderUserInfoDto>(user);
+            dto.PhotoBase64 = base64Photo;
+            dto.ScientificWorkId = scientificWork?.Id ?? 0;
+
+            return dto;
         }
 
         public async Task RegisterAsync(UserTypeEnum userType, CreateUserCommand command)
@@ -139,18 +141,11 @@ namespace Kongres.Api.Application.Services
 
             var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(uint.Parse(userId));
 
-            return new MyProfileUserDto()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                AcademicTitle = user.Degree,
-                University = user.University,
-                Specialization = user.Specialization,
-                PhotoBase64 = base64Photo,
-                Role = user.UserName.Split(":")[0],
-                WorkId = scientificWork?.Id ?? 0
-            };
+            var dto = _mapper.Map<MyProfileUserDto>(user);
+            dto.PhotoBase64 = base64Photo;
+            dto.WorkId = scientificWork?.Id ?? 0;
+
+            return dto;
         }
     }
 }
