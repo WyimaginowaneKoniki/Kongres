@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kongres.Api.Application.Helpers;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Entities;
@@ -31,7 +32,7 @@ namespace Kongres.Api.Application.Services
                                     IReviewerScientificWorkRepository reviewersWorkRepository,
                                     UserManager<User> userManager,
                                     IFileManager fileManager,
-                                    IEmailSender emailSender, 
+                                    IEmailSender emailSender,
                                     IMapper mapper)
         {
             _scientificWorkRepository = scientificWorkRepository;
@@ -48,7 +49,7 @@ namespace Kongres.Api.Application.Services
         {
             var user = await _userManager.FindByIdAsync(authorId.ToString());
 
-            if (user.NormalizedUserName.Split(":")[0] != "PARTICIPANT")
+            if (UserHelper.GetRole(user) != nameof(UserTypeEnum.Participant))
                 throw new AuthenticationException();
 
             var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(authorId);
@@ -132,7 +133,7 @@ namespace Kongres.Api.Application.Services
             if (scientificWork is null)
                 return null;
 
-            return await Task.FromResult(_fileManager.GetStreamOfFile(scientificWork.FileName));
+            return _fileManager.GetStreamOfFile(scientificWork.FileName);
         }
 
         public async Task<ScientificWorkWithReviewDto> GetWorkByIdAsync(uint userId, uint scientificWorkId)
@@ -146,12 +147,12 @@ namespace Kongres.Api.Application.Services
             if (scientificWork.MainAuthor.Id == userId)
                 mode = "Author";
             else if (await _reviewersWorkRepository.IsReviewerAsync(scientificWorkId, userId))
-                mode = "Reviewer";
+                mode = nameof(UserTypeEnum.Reviewer);
             else
-                mode = "Participant";
+                mode = nameof(UserTypeEnum.Participant);
 
             // participant can see this work only when it's approved
-            if (scientificWork.Status != StatusEnum.Accepted && mode == "Participant")
+            if (scientificWork.Status != StatusEnum.Accepted && mode == nameof(UserTypeEnum.Participant))
                 throw new AuthenticationException();
 
             var scientificWorkDto = new ScientificWorkDto()
@@ -165,22 +166,13 @@ namespace Kongres.Api.Application.Services
                 Authors = scientificWork.OtherAuthors,
             };
 
-            string base64Photo = null;
-
-            if (scientificWork.MainAuthor.Photo != null)
-            {
-                var authorPhoto = await _fileManager.GetBase64FileAsync(scientificWork.MainAuthor.Photo);
-                var photoExtension = scientificWork.MainAuthor.Photo.Split(".")[^1];
-                base64Photo = $"data:image/{photoExtension};base64,{authorPhoto}";
-            }
-
             var mainAuthor = _mapper.Map<UserDto>(scientificWork.MainAuthor);
-            mainAuthor.Photo = base64Photo;
+            mainAuthor.Photo = UserHelper.GetBase64Photo(_fileManager, mainAuthor.Photo);
 
             List<VersionDto> versionsDto = null;
 
             // normal user should not see reviews
-            if (mode != "Participant")
+            if (mode != nameof(UserTypeEnum.Participant))
             {
                 var versions = await _scientificWorkFileRepository.GetVersionsWithReviews(scientificWorkId);
 
@@ -194,7 +186,7 @@ namespace Kongres.Api.Application.Services
                     foreach (var review in version.Reviews)
                     {
                         // reviewer should see only own reviews and answers to these reviews
-                        if (mode == "Reviewer" && review.Reviewer.Id != userId)
+                        if (mode == nameof(UserTypeEnum.Reviewer) && review.Reviewer.Id != userId)
                             continue;
 
                         reviewsDto.Add(new ReviewDto()
@@ -233,7 +225,7 @@ namespace Kongres.Api.Application.Services
         {
             var user = await _userManager.FindByIdAsync(reviewerId.ToString());
 
-            if (user.NormalizedUserName.Split(":")[0] != "REVIEWER")
+            if (UserHelper.GetRole(user) != nameof(UserTypeEnum.Reviewer))
                 throw new AuthenticationException();
 
             var scientificWorks = await _reviewersWorkRepository.GetListOfWorksForReviewerAsync(reviewerId);
@@ -255,14 +247,7 @@ namespace Kongres.Api.Application.Services
         // returns only one author when there is no otherAuthors
         // otherwise returns author's names divided by ','
         private string GetAuthors(User mainAuthor, string otherAuthors)
-        {
-            var authors = $"{mainAuthor.Name} {mainAuthor.Surname}";
-
-            // Sometimes the work doesn't include other authors except main one
-            if (!(otherAuthors is null))
-                authors += $", {otherAuthors}";
-
-            return authors;
-        }
+            => otherAuthors is null ? UserHelper.GetFullName(mainAuthor)
+                                    : $"{UserHelper.GetFullName(mainAuthor)}, {otherAuthors}";
     }
 }

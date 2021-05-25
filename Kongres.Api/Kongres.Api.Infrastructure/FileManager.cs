@@ -42,7 +42,7 @@ namespace Kongres.Api.Infrastructure
         {
             var filePath = Path.Combine(_directoryPath, fileName);
             var file = await File.ReadAllBytesAsync(filePath);
-            return await Task.FromResult(Convert.ToBase64String(file));
+            return Convert.ToBase64String(file);
         }
     }
 }

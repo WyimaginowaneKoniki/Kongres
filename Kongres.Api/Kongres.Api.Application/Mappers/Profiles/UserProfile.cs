@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using Kongres.Api.Application.Helpers;
 using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Entities;
-using System;
 
 namespace Kongres.Api.Application.Mappers.Profiles
 {
@@ -10,15 +10,15 @@ namespace Kongres.Api.Application.Mappers.Profiles
         public UserProfile()
         {
             CreateMap<User, HeaderUserInfoDto>()
-                .ForMember(dto => dto.Name, o => o.MapFrom(x => $"{x.Name} {x.Surname}"))
-                .ForMember(dto => dto.Role, o => o.MapFrom(x => x.UserName.Split(":", StringSplitOptions.None)[0]));
+                .ForMember(dto => dto.Name, o => o.MapFrom(x => UserHelper.GetFullName(x)))
+                .ForMember(dto => dto.Role, o => o.MapFrom(x => UserHelper.GetRole(x)));
 
             CreateMap<User, MyProfileUserDto>()
                 .ForMember(dto => dto.AcademicTitle, o => o.MapFrom(x => x.Degree))
-                .ForMember(dto => dto.Role, o => o.MapFrom(x => x.UserName.Split(":", StringSplitOptions.None)[0]));
+                .ForMember(dto => dto.Role, o => o.MapFrom(x => UserHelper.GetRole(x)));
 
             CreateMap<User, UserDto>()
-                .ForMember(dto => dto.Name, o => o.MapFrom(x => $"{x.Name} {x.Surname}"));
+                .ForMember(dto => dto.Name, o => o.MapFrom(x => UserHelper.GetFullName(x)));
         }
     }
 }

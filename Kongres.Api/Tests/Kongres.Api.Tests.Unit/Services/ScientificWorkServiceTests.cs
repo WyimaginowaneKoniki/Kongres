@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Bogus;
 using FluentAssertions;
+using Kongres.Api.Application.Helpers;
 using Kongres.Api.Application.Mappers.Profiles;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Application.Services.Interfaces;
@@ -73,7 +74,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 Id = 1,
                 Name = _faker.Person.FirstName,
                 Surname = _faker.Person.LastName,
-                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Participant))
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email)
             };
 
             var scientificWorkId = 1u;
@@ -107,7 +108,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 Id = 1,
                 Name = _faker.Person.FirstName,
                 Surname = _faker.Person.LastName,
-                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Reviewer))
+                UserName = UserHelper.GetUserName(UserTypeEnum.Reviewer, _faker.Person.Email)
             };
 
             var title = _faker.Commerce.ProductName();
@@ -135,7 +136,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 Id = 1,
                 Name = _faker.Person.FirstName,
                 Surname = _faker.Person.LastName,
-                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Participant))
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email)
             };
 
             var title = _faker.Commerce.ProductName();
@@ -300,7 +301,7 @@ namespace Kongres.Api.Tests.Unit.Services
             {
                 Id = x.Id,
                 Title = x.Name,
-                Authors = $"{x.MainAuthor.Name} {x.MainAuthor.Surname}",
+                Authors = UserHelper.GetFullName(x.MainAuthor),
                 Description = x.Description,
                 CreationDate = x.CreationDate.ToString("g"),
                 UpdateDate = x.Versions.Last().DateAdd.ToString("g")
@@ -351,7 +352,7 @@ namespace Kongres.Api.Tests.Unit.Services
             {
                 Id = x.Id,
                 Title = x.Name,
-                Authors = $"{x.MainAuthor.Name} {x.MainAuthor.Surname}, {x.OtherAuthors}",
+                Authors = $"{UserHelper.GetFullName(x.MainAuthor)}, {x.OtherAuthors}",
                 Description = x.Description,
                 CreationDate = x.CreationDate.ToString("g"),
                 UpdateDate = x.Versions.Last().DateAdd.ToString("g")
@@ -961,7 +962,7 @@ namespace Kongres.Api.Tests.Unit.Services
             var user = new User()
             {
                 Id = 1,
-                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Participant))
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email)
             };
 
             _userStoreMock.Setup(x => x.FindByIdAsync(user.Id.ToString(), CancellationToken.None)).ReturnsAsync(user);
@@ -984,7 +985,7 @@ namespace Kongres.Api.Tests.Unit.Services
             var user = new User()
             {
                 Id = userId,
-                NormalizedUserName = NormilizeUsername(nameof(UserTypeEnum.Reviewer))
+                UserName = UserHelper.GetUserName(UserTypeEnum.Reviewer, _faker.Person.Email)
             };
 
             var fakeWorks = new Faker<ScientificWork>().Rules((f, o) =>
@@ -1013,7 +1014,7 @@ namespace Kongres.Api.Tests.Unit.Services
             {
                 Id = x.Id,
                 Title = x.Name,
-                Authors = $"{x.MainAuthor.Name} {x.MainAuthor.Surname}, {x.OtherAuthors}",
+                Authors = $"{UserHelper.GetFullName(x.MainAuthor)}, {x.OtherAuthors}",
                 Description = x.Description,
                 CreationDate = x.CreationDate.ToString("g"),
                 UpdateDate = x.Versions.Last().DateAdd.ToString("g"),
@@ -1035,8 +1036,5 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _reviewerScientificWorkRepositoryMock.Verify(x => x.GetListOfWorksForReviewerAsync(userId), Times.Once);
         }
-
-        private string NormilizeUsername(string userType)
-            => $"{userType}:{_faker.Internet.Email()}".ToUpper();
     }
 }
