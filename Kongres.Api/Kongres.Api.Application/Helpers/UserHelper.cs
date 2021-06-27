@@ -15,15 +15,15 @@ namespace Kongres.Api.Application.Helpers
         public static string GetUserName(UserTypeEnum role, string email)
             => $"{role}:{email}";
 
-        public static string GetBase64Photo(IFileManager fileManager, string photoName)
+        public static string GetBase64Photo(IFileManager fileManager, string fileName)
         {
-            if (string.IsNullOrWhiteSpace(photoName))
+            if (string.IsNullOrWhiteSpace(fileName))
                 return null;
 
-            var authorPhoto = fileManager.GetBase64FileAsync(photoName).Result;
-            var photoExtension = photoName.Split(".")[^1];
+            var photoBase64 = fileManager.GetBase64FileAsync(fileName).Result;
+            var photoExtension = fileName.Split(".")[^1];
 
-            return $"data:image/{photoExtension};base64,{authorPhoto}";
+            return $"data:image/{photoExtension};base64,{photoBase64}";
         }
     }
 }
