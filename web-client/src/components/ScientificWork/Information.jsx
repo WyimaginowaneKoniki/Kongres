@@ -230,7 +230,11 @@ export default function Information(props) {
           <div className={style.author}>
             <span className={style.shared}>Shared by</span>
             <div className={style.authorInfo}>
-              <img src={props.author.photo} className={style.photo} alt=""></img>
+              <img
+                src={props.author.photo}
+                className={style.photo}
+                alt=""
+              ></img>
               <div className={style.authorDesc}>
                 <p className={style.authorName}>{props.author.name}</p>
                 <p className={style.degree}>{props.author.degree}</p>
@@ -241,7 +245,7 @@ export default function Information(props) {
 
           <div className={style.authors}>
             <p className={style.shared}>Other authors</p>
-            <p className={style.authorName}>{props.scientificWork.authors}</p>
+            <p className={style.authorName}>{props.scientificWork.otherAuthors}</p>
           </div>
         </div>
         <p className={style.description}>{props.scientificWork.description}</p>
