@@ -52,7 +52,6 @@ export default function WorkView() {
   useEffect(() => {
     let id = window.location.pathname.split("/").slice(-1)[0];
     if (isNaN(id)) id = null;
-    console.log(location.state?.detail ? location.state?.detail : id);
 
     const token = localStorage.getItem("jwt");
 
