@@ -20,6 +20,7 @@ using Quartz;
 using System.Text;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
+using Kongres.Api.Application.Mappers;
 
 namespace Kongres.Api.WebApi
 {
@@ -82,6 +83,7 @@ namespace Kongres.Api.WebApi
             services.AddTransient<IUserStore<User>, UserStore>();
             services.AddTransient<IRoleStore<Role>, RoleStore>();
             services.AddSingleton<IFileManager, FileManager>();
+            services.AddSingleton(AutoMapperConfig.Initialize());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

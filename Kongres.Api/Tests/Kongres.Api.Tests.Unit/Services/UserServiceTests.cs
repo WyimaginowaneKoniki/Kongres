@@ -1,6 +1,9 @@
-﻿using Bogus;
+﻿using AutoMapper;
+using Bogus;
 using FluentAssertions;
 using Kongres.Api.Application.Commands.Users;
+using Kongres.Api.Application.Helpers;
+using Kongres.Api.Application.Mappers.Profiles;
 using Kongres.Api.Application.Services;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
@@ -32,6 +35,7 @@ namespace Kongres.Api.Tests.Unit.Services
         private readonly Mock<FakeSignInManager> _signInManagerMock = new Mock<FakeSignInManager>();
         private readonly IUserService _userService;
         private readonly Faker _faker = new Faker();
+        private readonly IMapper _mapper;
 
         public UserServiceTests()
         {
@@ -42,13 +46,19 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var memoryCache = serviceProvider.GetService<IMemoryCache>();
 
+            var configuration = new MapperConfiguration(cfg
+                => cfg.AddProfile<UserProfile>());
+
+            _mapper = new Mapper(configuration);
+
             _userService = new UserService(_userManagerMock.Object,
                                            _signInManagerMock.Object,
                                            _jwtHandlerMock.Object,
                                            memoryCache,
                                            _scientificWorkRepositoryMock.Object,
                                            _fileManagerMock.Object,
-                                           _emailSendeMock.Object);
+                                           _emailSendeMock.Object,
+                                           _mapper);
         }
 
         public void Dispose()
@@ -71,17 +81,13 @@ namespace Kongres.Api.Tests.Unit.Services
                 Id = userId,
                 Name = _faker.Person.FirstName,
                 Surname = _faker.Person.LastName,
-                UserName = $"{UserTypeEnum.Participant}:{_faker.Person.Email}"
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email)
             };
 
             var scientificWork = new ScientificWork() { Id = 1 };
 
-            var expectedDto = new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = nameof(UserTypeEnum.Participant),
-                ScientificWorkId = scientificWork.Id
-            };
+            var expectedDto = _mapper.Map<HeaderUserInfoDto>(user);
+            expectedDto.ScientificWorkId = scientificWork.Id;
 
             HeaderUserInfoDto returnedDto = null;
 
@@ -109,14 +115,10 @@ namespace Kongres.Api.Tests.Unit.Services
                 Id = userId,
                 Name = _faker.Person.FirstName,
                 Surname = _faker.Person.LastName,
-                UserName = $"{UserTypeEnum.Participant}:{_faker.Person.Email}"
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email)
             };
 
-            var expectedDto = new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = nameof(UserTypeEnum.Participant),
-            };
+            var expectedDto = _mapper.Map<HeaderUserInfoDto>(user);
 
             HeaderUserInfoDto returnedDto = null;
 
@@ -146,16 +148,12 @@ namespace Kongres.Api.Tests.Unit.Services
                 Id = userId,
                 Name = _faker.Person.FirstName,
                 Surname = _faker.Person.LastName,
-                UserName = $"{UserTypeEnum.Participant}:{_faker.Person.Email}",
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email),
                 Photo = _faker.System.FileName(photoExtension)
             };
 
-            var expectedDto = new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = nameof(UserTypeEnum.Participant),
-                PhotoBase64 = $"data:image/{photoExtension};base64,{randomBase64}"
-            };
+            var expectedDto = _mapper.Map<HeaderUserInfoDto>(user);
+            expectedDto.PhotoBase64 = $"data:image/{photoExtension};base64,{randomBase64}";
 
             HeaderUserInfoDto returnedDto = null;
 
@@ -195,7 +193,7 @@ namespace Kongres.Api.Tests.Unit.Services
             {
                 Id = 0,
                 Name = command.FirstName,
-                UserName = $"{userType}:{command.Email}",
+                UserName = UserHelper.GetUserName(userType, command.Email),
                 Surname = command.LastName,
                 Degree = command.AcademicTitle,
                 Email = command.Email,
@@ -239,7 +237,7 @@ namespace Kongres.Api.Tests.Unit.Services
             var user = new User
             {
                 Id = 0,
-                UserName = $"{userType}:{command.Email}",
+                UserName = UserHelper.GetUserName(userType, command.Email),
                 Email = command.Email,
             };
 
@@ -274,7 +272,7 @@ namespace Kongres.Api.Tests.Unit.Services
             var user = new User
             {
                 Id = 0,
-                UserName = $"{userType}:{command.Email}",
+                UserName = UserHelper.GetUserName(userType, command.Email),
                 Email = command.Email,
             };
 
@@ -303,7 +301,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 Email = _faker.Person.Email
             };
 
-            var userName = $"{userType}:{command.Email}";
+            var userName = UserHelper.GetUserName(userType, command.Email);
 
             _userManagerMock.Setup(x => x.FindByNameAsync(userName)).ReturnsAsync((User)null);
 
@@ -324,7 +322,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 TokenId = _faker.Random.Guid()
             };
 
-            var userName = $"{userType}:{command.Email}";
+            var userName = UserHelper.GetUserName(userType, command.Email);
 
             var user = new User()
             {
@@ -394,7 +392,7 @@ namespace Kongres.Api.Tests.Unit.Services
                 Surname = _faker.Person.LastName
             };
 
-            var expectedStr = $"{user.Name} {user.Surname}";
+            var expectedStr = UserHelper.GetFullName(user);
 
             var returnedStr = "";
 
@@ -429,19 +427,10 @@ namespace Kongres.Api.Tests.Unit.Services
                 Degree = _faker.Name.JobTitle(),
                 University = _faker.Company.CompanyName(),
                 Specialization = _faker.Commerce.Categories(1)[0],
-                UserName = $"{nameof(UserTypeEnum.Participant)}:{_faker.Person.Email}"
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email)
             };
 
-            var expectedDto = new MyProfileUserDto()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                AcademicTitle = user.Degree,
-                University = user.University,
-                Specialization = user.Specialization,
-                Role = nameof(UserTypeEnum.Participant),
-            };
+            var expectedDto = _mapper.Map<MyProfileUserDto>(user);
 
             MyProfileUserDto returnedDto = null;
 
@@ -473,22 +462,13 @@ namespace Kongres.Api.Tests.Unit.Services
                 Degree = _faker.Name.JobTitle(),
                 University = _faker.Company.CompanyName(),
                 Specialization = _faker.Commerce.Categories(1)[0],
-                UserName = $"{nameof(UserTypeEnum.Participant)}:{_faker.Person.Email}"
+                UserName = UserHelper.GetUserName(UserTypeEnum.Participant, _faker.Person.Email)
             };
 
             var scientificWork = new ScientificWork() { Id = 1u };
 
-            var expectedDto = new MyProfileUserDto()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                AcademicTitle = user.Degree,
-                University = user.University,
-                Specialization = user.Specialization,
-                Role = nameof(UserTypeEnum.Participant),
-                WorkId = scientificWork.Id
-            };
+            var expectedDto = _mapper.Map<MyProfileUserDto>(user);
+            expectedDto.WorkId = scientificWork.Id;
 
             MyProfileUserDto returnedDto = null;
 
@@ -504,54 +484,6 @@ namespace Kongres.Api.Tests.Unit.Services
 
             _userManagerMock.Verify(x => x.FindByIdAsync(userId.ToString()), Times.Once);
             _scientificWorkRepositoryMock.Verify(x => x.GetByAuthorIdAsync(userId), Times.Once);
-        }
-
-        [Fact]
-        public async Task GetInformationFroMyProfileAsyncSuccessReturnDtoWithUserPhoto()
-        {
-            var userId = 1u;
-
-            var photoBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(_faker.Random.String(7)));
-            var photoExtension = "png";
-
-            var user = new User()
-            {
-                Id = userId,
-                Name = _faker.Person.FirstName,
-                Surname = _faker.Person.LastName,
-                Email = _faker.Person.Email,
-                Degree = _faker.Name.JobTitle(),
-                University = _faker.Company.CompanyName(),
-                Specialization = _faker.Commerce.Categories(1)[0],
-                UserName = $"{nameof(UserTypeEnum.Participant)}:{_faker.Person.Email}",
-                Photo = _faker.System.FileName(photoExtension)
-            };
-
-            var expectedDto = new MyProfileUserDto()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                AcademicTitle = user.Degree,
-                University = user.University,
-                Specialization = user.Specialization,
-                Role = nameof(UserTypeEnum.Participant),
-                PhotoBase64 = $"data:image/{photoExtension};base64,{photoBase64}"
-            };
-
-            MyProfileUserDto returnedDto = null;
-
-            _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString())).ReturnsAsync(user);
-            _scientificWorkRepositoryMock.Setup(x => x.GetByAuthorIdAsync(userId)).ReturnsAsync((ScientificWork)null);
-
-            _fileManagerMock.Setup(x => x.GetBase64FileAsync(user.Photo)).ReturnsAsync(photoBase64);
-
-            var err = await Record.ExceptionAsync(async () => returnedDto = await _userService.GetInformationForMyProfileAsync(userId.ToString()));
-
-            err.Should().BeNull();
-
-            returnedDto.Should().NotBeNull();
-            returnedDto.Should().BeEquivalentTo(expectedDto);
         }
     }
 }

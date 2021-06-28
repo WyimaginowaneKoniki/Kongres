@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using AutoMapper;
 using Kongres.Api.Application.Commands.Users;
+using Kongres.Api.Application.Helpers;
 using Kongres.Api.Application.Services.Interfaces;
 using Kongres.Api.Domain.DTOs;
 using Kongres.Api.Domain.Entities;
@@ -23,6 +25,7 @@ namespace Kongres.Api.Application.Services
         private readonly IEmailSender _emailSender;
         private readonly IJwtHandler _jwtHandler;
         private readonly IMemoryCache _cache;
+        private readonly IMapper _mapper;
 
         public UserService(UserManager<User> userManager,
                             SignInManager<User> signInManager,
@@ -30,7 +33,8 @@ namespace Kongres.Api.Application.Services
                             IMemoryCache cache,
                             IScientificWorkRepository scientificWorkRepository,
                             IFileManager fileManager,
-                            IEmailSender emailSender)
+                            IEmailSender emailSender,
+                            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +43,7 @@ namespace Kongres.Api.Application.Services
             _scientificWorkRepository = scientificWorkRepository;
             _fileManager = fileManager;
             _emailSender = emailSender;
+            _mapper = mapper;
         }
 
         public async Task<HeaderUserInfoDto> GetUserInfoForHeaderAsync(string userId)
@@ -46,22 +51,11 @@ namespace Kongres.Api.Application.Services
             var user = await _userManager.FindByIdAsync(userId);
             var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(user.Id);
 
-            string base64Photo = null;
+            var dto = _mapper.Map<HeaderUserInfoDto>(user);
+            dto.PhotoBase64 = UserHelper.GetBase64Photo(_fileManager, user.Photo);
+            dto.ScientificWorkId = scientificWork?.Id ?? 0;
 
-            if (user.Photo != null)
-            {
-                var photo = await _fileManager.GetBase64FileAsync(user.Photo);
-                var photoExtension = user.Photo.Split(".")[^1];
-                base64Photo = $"data:image/{photoExtension};base64,{photo}";
-            }
-
-            return new HeaderUserInfoDto()
-            {
-                Name = $"{user.Name} {user.Surname}",
-                Role = user.UserName.Split(":")[0],
-                PhotoBase64 = base64Photo,
-                ScientificWorkId = scientificWork?.Id ?? 0
-            };
+            return dto;
         }
 
         public async Task RegisterAsync(UserTypeEnum userType, CreateUserCommand command)
@@ -69,7 +63,7 @@ namespace Kongres.Api.Application.Services
             var user = new User
             {
                 Name = command.FirstName,
-                UserName = $"{userType}:{command.Email}",
+                UserName = UserHelper.GetUserName(userType, command.Email),
                 Surname = command.LastName,
                 Degree = command.AcademicTitle,
                 Email = command.Email,
@@ -93,7 +87,7 @@ namespace Kongres.Api.Application.Services
 
         public async Task LoginAsync(UserTypeEnum userType, LoginUserCommand request)
         {
-            var userName = $"{userType}:{request.Email}";
+            var userName = UserHelper.GetUserName(userType, request.Email);
 
             var user = await _userManager.FindByNameAsync(userName);
 
@@ -121,36 +115,20 @@ namespace Kongres.Api.Application.Services
             if (scientificWork != null)
                 throw new InvalidOperationException();
 
-            return $"{user.Name} {user.Surname}";
+            return UserHelper.GetFullName(user);
         }
 
         public async Task<MyProfileUserDto> GetInformationForMyProfileAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
-            string base64Photo = null;
-
-            if (user.Photo != null)
-            {
-                var authorPhoto = await _fileManager.GetBase64FileAsync(user.Photo);
-                var photoExtension = user.Photo.Split(".")[^1];
-                base64Photo = $"data:image/{photoExtension};base64,{authorPhoto}";
-            }
-
             var scientificWork = await _scientificWorkRepository.GetByAuthorIdAsync(uint.Parse(userId));
 
-            return new MyProfileUserDto()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                AcademicTitle = user.Degree,
-                University = user.University,
-                Specialization = user.Specialization,
-                PhotoBase64 = base64Photo,
-                Role = user.UserName.Split(":")[0],
-                WorkId = scientificWork?.Id ?? 0
-            };
+            var dto = _mapper.Map<MyProfileUserDto>(user);
+            dto.PhotoBase64 = UserHelper.GetBase64Photo(_fileManager, user.Photo);
+            dto.WorkId = scientificWork?.Id ?? 0;
+
+            return dto;
         }
     }
 }
