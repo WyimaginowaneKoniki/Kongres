@@ -21,7 +21,6 @@ namespace Kongres.Api.Tests.Unit.Mappers.Profiles
         private readonly ScientificWork _scientificWork;
         private readonly DateTimeFormatter _dateTimeFormatter = new DateTimeFormatter();
 
-
         public ScientificWorkProfileTests()
         {
             var configuration = new MapperConfiguration(cfg
@@ -197,7 +196,6 @@ namespace Kongres.Api.Tests.Unit.Mappers.Profiles
 
             returned.Should().BeEquivalentTo(expected);
         }
-
 
         [Fact]
         public void MapScientificWorkFileToVersionDto()

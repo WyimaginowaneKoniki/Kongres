@@ -467,7 +467,6 @@ namespace Kongres.Api.Tests.Unit.Services
 
             var scientificWork = new ScientificWork() { Id = 1u };
 
-
             var expectedDto = _mapper.Map<MyProfileUserDto>(user);
             expectedDto.WorkId = scientificWork.Id;
 
