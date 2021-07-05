@@ -98,7 +98,7 @@ export default function ReviewerComment(props) {
   const downloadReview = () => {
     const token = localStorage.getItem("jwt");
     axios
-      .get(`${URL_API}/Review/Download/${props.reviewId}`, {
+      .get(`${URL_API}/reviews/${props.reviewId}/download`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: "blob",
       })

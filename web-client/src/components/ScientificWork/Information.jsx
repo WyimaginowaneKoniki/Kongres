@@ -196,7 +196,7 @@ export default function Information(props) {
       var token = localStorage.getItem("jwt");
 
       axios
-        .post(`${URL_API}/ScientificWork/AddVersion`, formData, {
+        .post(`${URL_API}/scientific-works/version`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(() => window.location.reload());

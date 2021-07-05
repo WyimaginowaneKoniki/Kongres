@@ -62,7 +62,7 @@ export default function MyReviews() {
 
     (async () => {
       await axios
-        .get(`${URL_API}/Reviewer/MyReviews`, {
+        .get(`${URL_API}/reviewers/reviews`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {

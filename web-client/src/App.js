@@ -20,7 +20,7 @@ import MyProfile from "./pages/Users/my-profile";
 import SignInReviewer from "./pages/Users/Reviewer/signin-reviewer";
 import SignInParticipant from "./pages/Users/Participant/signin-participant";
 import WorkView from "./pages/ScientificWorks/work-view";
-import { LINKS, URL } from "./Constants";
+import { LINKS, URL, URL_API } from "./Constants";
 import Error404 from "./pages/error-404";
 import axios from "axios";
 import EmailConfirmationToken from "./pages/email-confirmation-token";
@@ -35,7 +35,7 @@ export default function App() {
     if (!token) setUserInfo(null);
     else {
       axios
-        .get(`${URL}/api/User`, {
+        .get(`${URL_API}/users`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {

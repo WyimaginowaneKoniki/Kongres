@@ -130,7 +130,7 @@ export default function AddingWork() {
 
     (async () => {
       await axios
-        .get(`${URL_API}/Participant/GetInfoForAddWork`, {
+        .get(`${URL_API}/participants/work-info`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {
@@ -370,7 +370,7 @@ export default function AddingWork() {
       const token = localStorage.getItem("jwt");
       (async () => {
         axios
-          .post(`${URL_API}/ScientificWork/AddWork`, formData, {
+          .post(`${URL_API}/scientific-works`, formData, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((response) => {

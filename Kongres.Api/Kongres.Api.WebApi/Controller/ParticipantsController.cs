@@ -11,24 +11,26 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Kongres.Api.WebApi.Controller
 {
-    public class ParticipantController : ApiControllerBase
+
+    [Route("api/participants")]
+    public class ParticipantsController : ApiControllerBase
     {
         private readonly IMemoryCache _cache;
-        public ParticipantController(IMediator mediator, IMemoryCache cache) : base(mediator)
+        public ParticipantsController(IMediator mediator, IMemoryCache cache) : base(mediator)
         {
             _cache = cache;
         }
 
-        // api/Participant/Register
-        [HttpPost("Register")]
+        // POST /api/participants/register
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm] CreateParticipantCommand command)
         {
             await CommandAsync(command);
             return Ok();
         }
 
-        // api/Participant/Login
-        [HttpPost("Login")]
+        // POST /api/participants/login
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginParticipantCommand command)
         {
             command.TokenId = Guid.NewGuid();
@@ -45,9 +47,10 @@ namespace Kongres.Api.WebApi.Controller
             return Ok(token);
         }
 
+        // GET /api/participants/work-info
         [Authorize]
-        [HttpGet("GetInfoForAddWork")]
-        public async Task<IActionResult> GetInfoForAddWork()
+        [HttpGet("work-info")]
+        public async Task<IActionResult> GetWorkInfo()
         {
             var command = new GetInfoForAddWorkQuery
             {

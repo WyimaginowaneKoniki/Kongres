@@ -22,7 +22,7 @@ export default function SignUpParticipant() {
   };
 
   const Register = (data) => {
-    axios.post(`${URL_API}/Participant/Register`, data).then((response) => {
+    axios.post(`${URL_API}/participants/register`, data).then((response) => {
       // OK
       if (response.status === 200) {
         window.location.href = URL;

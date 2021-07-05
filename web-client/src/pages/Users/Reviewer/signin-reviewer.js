@@ -16,7 +16,7 @@ export default function SignInReviewer() {
 
   const Login = (data) => {
     return axios
-      .post(`${URL_API}/Reviewer/Login`, data)
+      .post(`${URL_API}/reviewers/login`, data)
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("jwt", response.data);

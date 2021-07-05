@@ -12,24 +12,25 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Kongres.Api.WebApi.Controller
 {
-    public class ReviewerController : ApiControllerBase
+    [Route("api/reviewers")]
+    public class ReviewersController : ApiControllerBase
     {
         private readonly IMemoryCache _cache;
-        public ReviewerController(IMediator mediator, IMemoryCache cache) : base(mediator)
+        public ReviewersController(IMediator mediator, IMemoryCache cache) : base(mediator)
         {
             _cache = cache;
         }
 
-        // api/Reviewer/Register
-        [HttpPost("Register")]
+        // POST api/reviewers/register
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm] CreateReviewerCommand command)
         {
             await CommandAsync(command);
             return Ok();
         }
 
-        // api/Reviewer/Login
-        [HttpPost("Login")]
+        // POST api/reviewers/login
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginReviewerCommand command)
         {
             command.TokenId = Guid.NewGuid();
@@ -46,9 +47,9 @@ namespace Kongres.Api.WebApi.Controller
             return Ok(token);
         }
 
-        // api/Reviewer/MyReviews
+        // GET api/reviewers/reviews
         [Authorize]
-        [HttpGet("MyReviews")]
+        [HttpGet("reviews")]
         public async Task<IActionResult> GetListOfWorks([FromQuery] GetListOfWorksCommand command)
         {
             command.ReviewerId = HttpContext.User.Identity.Name;

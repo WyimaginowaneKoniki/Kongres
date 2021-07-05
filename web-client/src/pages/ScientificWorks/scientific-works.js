@@ -56,7 +56,7 @@ export default function ScientificWorks() {
     },
   ]);
 
-  // base on:
+  // based on:
   // https://www.robinwieruch.de/react-hooks-fetch-data
 
   // GET request
@@ -66,7 +66,7 @@ export default function ScientificWorks() {
     const fetchData = async () => {
       var token = localStorage.getItem("jwt");
       await axios
-        .get(`${URL_API}/ScientificWork`, {
+        .get(`${URL_API}/scientific-works`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {

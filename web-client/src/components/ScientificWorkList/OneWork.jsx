@@ -102,7 +102,7 @@ export default function OneWork(props) {
     const token = localStorage.getItem("jwt");
 
     axios
-      .get(`${URL_API}/ScientificWork/Download/${Number(props.id)}`, {
+      .get(`${URL_API}/scientific-works/${Number(props.id)}/download`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: "blob",
       })

@@ -119,7 +119,7 @@ export default function AuthorAnswerInput(props) {
 
     const token = localStorage.getItem("jwt");
 
-    axios.post(`${URL_API}/Review/AddAnswer`, formData, {
+    axios.post(`${URL_API}/reviews/answer`, formData, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

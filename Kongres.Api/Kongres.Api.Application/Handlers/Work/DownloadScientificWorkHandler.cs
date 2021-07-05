@@ -17,6 +17,6 @@ namespace Kongres.Api.Application.Handlers.Work
         }
 
         public async Task<Stream> Handle(DownloadScientificWorkQuery request, CancellationToken cancellationToken)
-            => await _scientificWorkService.GetStreamOfScientificWorkAsync(request.WorkId);
+            => await _scientificWorkService.GetStreamOfScientificWorkAsync(request.ScientificWorkId);
     }
 }
