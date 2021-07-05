@@ -7,7 +7,6 @@ using Kongres.Api.Application.Queries.Review;
 
 namespace Kongres.Api.WebApi.Controller
 {
-
     [Route("api/reviews")]
     public class ReviewsController : ApiControllerBase
     {
@@ -23,7 +22,6 @@ namespace Kongres.Api.WebApi.Controller
             await CommandAsync(command);
             return Ok();
         }
-
 
         // POST /api/reviews
         [Authorize]

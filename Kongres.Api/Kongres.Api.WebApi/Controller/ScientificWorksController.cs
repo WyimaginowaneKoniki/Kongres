@@ -77,7 +77,6 @@ namespace Kongres.Api.WebApi.Controller
             return Ok(scientificWork);
         }
 
-
         // GET /api/scientific-works/{scinetificWorkId}/download
         [Authorize]
         [HttpGet("{ScientificWorkId}/download")]

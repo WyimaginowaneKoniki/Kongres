@@ -11,7 +11,6 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Kongres.Api.WebApi.Controller
 {
-
     [Route("api/participants")]
     public class ParticipantsController : ApiControllerBase
     {
