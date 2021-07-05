@@ -58,7 +58,7 @@ export default function WorkView() {
     // get all data about scientific work with reviews
     (async () => {
       await axios
-        .get(`${URL_API}/ScientificWork/${Number(id)}`, {
+        .get(`${URL_API}/scientific-works/${Number(id)}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {
@@ -78,7 +78,7 @@ export default function WorkView() {
     // get scientific work file
     (async () => {
       await axios
-        .get(`${URL_API}/ScientificWork/Download/${Number(id)}`, {
+        .get(`${URL_API}/scientific-works/${Number(id)}/download`, {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob",
         })

@@ -16,7 +16,7 @@ export default function SignInParticipant() {
 
   const Login = (data) => {
     return axios
-      .post(`${URL_API}/Participant/Login`, data)
+      .post(`${URL_API}/participants/login`, data)
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("jwt", response.data);

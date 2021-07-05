@@ -28,7 +28,7 @@ export default function EmailConfirmationToken() {
     });
 
     axios
-      .post(`${URL_API}/User/Confirm`, {
+      .post(`${URL_API}/users/confirm`, {
         confirmToken: params[0].substr(14),
         userId: params[1],
       })

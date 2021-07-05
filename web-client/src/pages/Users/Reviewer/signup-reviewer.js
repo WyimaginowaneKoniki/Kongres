@@ -21,7 +21,7 @@ export default function SignUpReviewer() {
   };
 
   const Register = (data) => {
-    axios.post(`${URL_API}/Reviewer/Register`, data).then((response) => {
+    axios.post(`${URL_API}/reviewers/register`, data).then((response) => {
       // OK
       if (response.status === 200) {
         window.location.href = URL;

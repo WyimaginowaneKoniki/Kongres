@@ -7,22 +7,25 @@ using Kongres.Api.Application.Queries.Review;
 
 namespace Kongres.Api.WebApi.Controller
 {
-    public class ReviewController : ApiControllerBase
+    [Route("api/reviews")]
+    public class ReviewsController : ApiControllerBase
     {
-        public ReviewController(IMediator mediator) : base(mediator)
+        public ReviewsController(IMediator mediator) : base(mediator)
         { }
 
+        // POST /api/reviews/answer
         [Authorize]
-        [HttpPost("AddAnswer")]
-        public async Task<IActionResult> AddAnswerToReview([FromForm] AddAnswerToReviewCommand command)
+        [HttpPost("answer")]
+        public async Task<IActionResult> AddAnswer([FromForm] AddAnswerToReviewCommand command)
         {
             command.UserId = HttpContext.User.Identity.Name;
             await CommandAsync(command);
             return Ok();
         }
 
+        // POST /api/reviews
         [Authorize]
-        [HttpPost("AddReview")]
+        [HttpPost]
         public async Task<IActionResult> AddReview([FromForm] AddReviewCommand command)
         {
             command.UserId = HttpContext.User.Identity.Name;
@@ -30,8 +33,9 @@ namespace Kongres.Api.WebApi.Controller
             return Ok();
         }
 
+        // GET /api/reviews/download/{reviewId:int}
         [Authorize]
-        [HttpGet("Download/{ReviewId}")]
+        [HttpGet("download/{reviewId}")]
         public async Task<IActionResult> Download([FromHeader] DownloadReviewFileQuery query)
         {
             query.UserId = HttpContext.User.Identity.Name;

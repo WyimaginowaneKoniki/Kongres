@@ -6,18 +6,21 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Kongres.Api.WebApi.Controller
 {
-    public class UserController : ApiControllerBase
+    [Route("api/users")]
+    public class UsersController : ApiControllerBase
     {
-        public UserController(IMediator mediator) : base(mediator)
+        public UsersController(IMediator mediator) : base(mediator)
         { }
 
-        [HttpPost("Confirm")]
+        // POST /api/users/confirm
+        [HttpPost("confirm")]
         public async Task<IActionResult> ConfirmAccount([FromBody] ConfirmUserQuery query)
         {
             await CommandAsync(query);
             return Ok();
         }
 
+        // GET /api/users
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetBasicInfo()
@@ -30,8 +33,9 @@ namespace Kongres.Api.WebApi.Controller
             return Ok(userInfo);
         }
 
+        // GET /api/users/profile
         [Authorize]
-        [HttpGet("MyProfile")]
+        [HttpGet("profile")]
         public async Task<IActionResult> GetInformationForMyProfile()
         {
             var query = new GetInformationForMyProfileQuery()

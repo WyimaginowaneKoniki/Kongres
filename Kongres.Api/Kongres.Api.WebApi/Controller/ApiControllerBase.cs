@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 namespace Kongres.Api.WebApi.Controller
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class ApiControllerBase : ControllerBase
     {
         private readonly IMediator _mediator;

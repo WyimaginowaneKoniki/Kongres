@@ -11,13 +11,15 @@ using Kongres.Api.Domain.DTOs;
 
 namespace Kongres.Api.WebApi.Controller
 {
-    public class ScientificWorkController : ApiControllerBase
+    [Route("api/scientific-works")]
+    public class ScientificWorksController : ApiControllerBase
     {
-        public ScientificWorkController(IMediator mediator) : base(mediator)
+        public ScientificWorksController(IMediator mediator) : base(mediator)
         { }
 
+        // POST /api/scientific-works
         [Authorize]
-        [HttpPost("AddWork")]
+        [HttpPost]
         public async Task<IActionResult> AddWork([FromForm] AddWorkCommand command)
         {
             command.AuthorId = HttpContext.User.Identity.Name;
@@ -36,11 +38,12 @@ namespace Kongres.Api.WebApi.Controller
                 return BadRequest();
             }
 
-            return Created("ScientificWork/", new { ScientificWorkId = id });
+            return Created("scientific-works/", new { ScientificWorkId = id });
         }
 
+        // POST /api/scientific-works/version
         [Authorize]
-        [HttpPost("AddVersion")]
+        [HttpPost("version")]
         public async Task<IActionResult> AddVersion([FromForm] AddVersionCommand command)
         {
             command.UserId = HttpContext.User.Identity.Name;
@@ -48,13 +51,15 @@ namespace Kongres.Api.WebApi.Controller
             return Ok();
         }
 
+        // GET  /api/scientific-works
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
             => Ok(await CommandAsync(new GetApprovedWorksQuery()));
 
+        // GET /api/scientific-works/{scientificWorkId}
         [Authorize]
-        [HttpGet("{ScientificWorkId}")]
+        [HttpGet("{scientificWorkId}")]
         public async Task<IActionResult> GetById([FromHeader] GetWorkQuery query)
         {
             query.UserId = uint.Parse(HttpContext.User.Identity.Name ?? "0");
@@ -72,8 +77,9 @@ namespace Kongres.Api.WebApi.Controller
             return Ok(scientificWork);
         }
 
+        // GET /api/scientific-works/{scinetificWorkId}/download
         [Authorize]
-        [HttpGet("Download/{WorkId}")]
+        [HttpGet("{ScientificWorkId}/download")]
         public async Task<IActionResult> Download([FromHeader] DownloadScientificWorkQuery query)
         {
             var fileStream = await CommandAsync(query);

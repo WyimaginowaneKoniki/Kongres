@@ -193,7 +193,7 @@ export default function ReviewerCommentInput(props) {
 
     const token = localStorage.getItem("jwt");
 
-    axios.post(`${URL_API}/Review/AddReview`, formData, {
+    axios.post(`${URL_API}/reviews`, formData, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

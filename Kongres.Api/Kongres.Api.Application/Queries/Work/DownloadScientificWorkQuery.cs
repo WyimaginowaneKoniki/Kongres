@@ -5,6 +5,6 @@ namespace Kongres.Api.Application.Queries.Work
 {
     public class DownloadScientificWorkQuery : IRequest<Stream>
     {
-        public uint WorkId { get; set; }
+        public uint ScientificWorkId { get; set; }
     }
 }

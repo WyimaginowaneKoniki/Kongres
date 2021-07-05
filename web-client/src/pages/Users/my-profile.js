@@ -68,7 +68,7 @@ export default function MyProfile(props) {
     const token = localStorage.getItem("jwt");
     (async () => {
       await axios
-        .get(`${URL_API}/User/MyProfile`, {
+        .get(`${URL_API}/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((resp) => {
